@@ -1,0 +1,109 @@
+/*TOOLTIPS*/
+.tip {
+   text-align: left;
+   width:auto;
+   max-width:500px;
+}
+
+.tip-title {
+  font-size: 5px;
+  text-align:center;
+  margin-bottom:2px;
+}
+
+/*TOOLTIPS*/
+.tip {
+    color: #111;
+    width: 139px;
+    background-color: white;
+    border:1px solid #ccc;
+    -moz-box-shadow:#555 2px 2px 8px;
+    -webkit-box-shadow:#555 2px 2px 8px;
+    -o-box-shadow:#555 2px 2px 8px;
+    box-shadow:#555 2px 2px 8px;
+    opacity:0.9;
+    filter:alpha(opacity=90);
+    font-size:10px;
+    font-family:Verdana, Geneva, Arial, Helvetica, sans-serif;
+    padding:7px;
+}
+
+div.panel-body {
+    overflow: hidden;
+}
+
+div#infovis {
+    margin: auto;
+    overflow: hidden;
+    height: 350px;
+}
+
+div#infovis-canvaswidget {
+    display: block;
+    overflow: hidden;
+    height: 350px;
+}
+
+div#infovis-canvas {
+    width: 100%;
+    height: 100%;
+}
+
+div#infovis-label {
+    overflow: visible;
+    position: absolute;
+    top: 85px;
+    width: 884px;
+    height: 0px;
+}
+
+div.log, div.main-center-content {
+    text-align: left;
+    right: 0;
+    width: 120px;
+}
+
+div#node-details, div.main-center-content {
+    padding-top: 15px;
+    padding-left: 3px;
+    padding-bottom: 15px;
+    margin:7px;
+    font-size:12px;
+}
+
+div.main-center-content h4 {
+    font-size: 1.0em;
+    font-weight: bold;
+    color: #23A4FF;
+}
+
+div#node-details {
+    position: absolute;
+    display: inline-block;
+    top: 80px;
+    left:205px;
+    z-index: 10;
+    background-color:rgba(175,175,175,0.4);
+    border-right: thick double #23A4FF;
+    list-style:none;
+}
+
+div#legend {
+    padding-left: 3px;
+}
+
+div#legend img {
+    vertical-align: middle;
+}
+
+#graphviewer-mainform button {
+    width: 130px;
+}
+
+div#log {
+    margin-bottom: 10px;
+    top: 100px;
+    font-size:1.0em;
+    font-weight:bold;
+    color:#23A4FF;
+}

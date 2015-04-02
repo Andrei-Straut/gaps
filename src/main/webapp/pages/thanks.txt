@@ -1,0 +1,29 @@
+JGAP
+http://jgap.sourceforge.net/
+
+JGraphT
+http://jgrapht.org/
+
+Binary Cart
+http://binarycart.com/
+
+Bootstrap
+http://getbootstrap.com/
+
+Angular
+https://angularjs.org/
+
+JIT
+http://philogb.github.io/jit/
+
+Prefuse loader for JIT
+https://github.com/prefuse/Prefuse
+
+Angular notifications
+https://github.com/alexcrack/angular-ui-notification
+
+Bootstrap slider
+http://www.eyecon.ro/bootstrap-slider/
+
+Morris Charts
+http://morrisjs.github.io/morris.js/
