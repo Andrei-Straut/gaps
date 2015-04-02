@@ -1,4 +1,4 @@
-package com.andrei.straut.pathsearch.controller;
+package com.andreistraut.pathsearch.controller;
 
 import com.andreistraut.pathsearch.datamodel.genetics.GenerationStatistic;
 import com.andreistraut.pathsearch.datamodel.genetics.GeneticEvolver;
