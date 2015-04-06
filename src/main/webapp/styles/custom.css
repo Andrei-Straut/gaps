@@ -127,7 +127,7 @@ body {
     margin: auto;
     background-color: #fff !important;
     padding: 10px;
-    padding-left: 60px;
+    padding-left: 30px;
 }
 
 .text-center {
@@ -155,6 +155,9 @@ p {
 }
 span.label {
     display: inline-block;
+}
+.fa-3x {
+    font-size: 2em;
 }
 /*==============================================
    DASHBOARD STYLES    
@@ -297,42 +300,37 @@ span.label {
     max-height:170px;
     max-width:170px;
 }
-
 .navbar-cls-top .navbar-brand {
     color: #fff;
     background: #C90000;
     width: 350px;
     text-align: left;
-    height: 60px;
-    font-size: 30px;
+    height: 40px;
+    font-size: 25px;
     font-weight: 700;
 }
-
+.navbar-brand {
+    padding: 10px 20px;
+}
 .active-menu {
     background-color:#C90000!important;
 }
-
 .arrow {
     float: right;
 }
-
 .fa.arrow:before {
     content: "\f104";
 }
-
 .active > a > .fa.arrow:before {
     content: "\f107";
 }
-
 .nav-second-level li,
 .nav-third-level li {
     border-bottom: none !important;
 }
-
 .nav-second-level li a {
     padding-left: 37px;
 }
-
 .nav-third-level li a {
     padding-left: 55px;
 }
@@ -352,7 +350,7 @@ span.label {
 }
 .sidebar-collapse > .nav > li > a {
     padding-top: 10px;
-    padding-right: 0px;
+    padding-right: 5px;
 }
 .sidebar-collapse > .nav > li {
     border-bottom: 1px solid rgba(107, 108, 109, 0.19);
@@ -394,6 +392,9 @@ span.label {
 .nav-third-level > li > a:before  {
     left:40px;
 }
+.navbar {
+    min-height: 40px;
+}
 .navbar-side {
     border:none;
     background-color: #202020;
@@ -406,7 +407,6 @@ span.label {
     background: #C90000;
     color:#fff;
 }
-
 .navbar-default {
     border:0px solid black;
 }
@@ -419,15 +419,14 @@ span.label {
 .navbar-default .navbar-toggle {
     border-color: #fff;
 }
-
 .navbar-default .navbar-toggle .icon-bar {
     background-color: #FFF;
 }
 .nav > li {
     height: auto;
 }
-.nav > li > a > i {
-    margin-right:10px;
+.nav > li > a {
+    padding: 10px 10px;
 }
 div.toggle {
     vertical-align: initial;
@@ -455,15 +454,12 @@ div.toggle {
     #page-wrapper{
         margin: 0 0 0 0px;
         padding: 15px 30px;
-
     }
-
     .navbar-side {
         z-index: 1;
         position: fixed;
-        margin-top: 60px;
+        margin-top: 40px;
     }
-
     .navbar {
         border-radius: 0px; 
     }
