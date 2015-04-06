@@ -37,6 +37,7 @@ psga.controller('psgacontroller', ['$scope', 'Socket', 'Notification', function 
 
                 $scope.resetPathStatisticsAndTable();
                 $scope.resetGeneticStatisticsAndView();
+                $scope.resetCompareStatisticsAndView();
                 $scope.geneticEvolution = $socket.computePaths($scope.geneticSettings);
                 $scope.geneticEvolution.then(function (response) {
 
@@ -116,6 +117,7 @@ psga.controller('psgacontroller', ['$scope', 'Socket', 'Notification', function 
             $scope.resetGraphStatistics();
             $scope.resetPathStatisticsAndTable();
             $scope.resetGeneticStatisticsAndView();
+            $scope.resetCompareStatisticsAndView();
             $scope.graph = jitInit($data);
             $(window).scrollTop($(window).scrollTop() + 1);
             $(window).scrollTop($(window).scrollTop() - 1);
@@ -270,6 +272,7 @@ psga.controller('psgacontroller', ['$scope', 'Socket', 'Notification', function 
                 $slider.on('slide', function (ev) {
                     $scope.sliderEvent(ev);
                 });
+                $slider.slider('setValue', 0);
 
                 $('div.slider.slider-horizontal').css('width', '100%');
                 $scope.evolutionChart.initialize('morris-bar-cost-chart',
@@ -308,9 +311,9 @@ psga.controller('psgacontroller', ['$scope', 'Socket', 'Notification', function 
 
             $scope.evolutionChart.clear('morris-bar-cost-chart');
 
-            var slider = $('div.slider.slider-horizontal');
-            if (slider && slider.parentElement) {
-                var parent = slider.parentElement;
+            var $slider = $('div.slider.slider-horizontal');
+            if ($slider && $slider.parentElement) {
+                var parent = $slider.parentElement;
                 while (parent.firstChild) {
                     parent.removeChild(parent.firstChild);
                 }
@@ -364,15 +367,26 @@ psga.controller('psgacontroller', ['$scope', 'Socket', 'Notification', function 
             $scope.load.compareStatisticsDisplayed = $('#compare-statistics-viewer-toggle').prop('checked');
             $scope.$apply();
         };
+        $scope.resetCompareStatisticsAndView = function () {
+            $scope.compareStatisticsKShortest.startTimestamp = {};
+            $scope.compareStatisticsKShortest.endTimestamp = {};
+            $scope.compareStatisticsKShortest.compareDiffTimestamp = {};
+            $scope.compareStatisticsKShortest.compareChart = [];
+            $scope.compareStatisticsKShortest.chromosomes = [];
+
+            $scope.compareChart.clear('morris-bar-compare-chart');
+
+            $scope.load.compareStatisticsLoaded = false;
+        };
         $scope.updateCompareStatistics = function (data, geneticStatistics) {
             if (data) {
                 $scope.compareStatisticsKShortest.chromosomes.push(data);
 
                 var resultsCompareChart = {};
-                resultsCompareChart.y = $scope.compareStatisticsKShortest.compareChart.length;
+                resultsCompareChart.y = 'PSGA Best, KShortest #' + $scope.compareStatisticsKShortest.compareChart.length;
                 resultsCompareChart.PSGA = geneticStatistics.bestPathCost;
                 resultsCompareChart.KShortest = data.cost;
-                
+
                 $scope.compareStatisticsKShortest.compareChart.push(resultsCompareChart);
             }
         };
@@ -486,7 +500,7 @@ psga.controller('psgacontroller', ['$scope', 'Socket', 'Notification', function 
                     duration: GraphViewerOptions.selectAnimationDuration
                 });
             }
-
+            
             $scope.geneticStatistics.selectedGeneration = {};
             $scope.geneticStatistics.selectedGenerationIndex = 0;
         };

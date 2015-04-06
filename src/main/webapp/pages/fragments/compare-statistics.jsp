@@ -30,10 +30,10 @@
                     <h3>Best Path Cost: {{compareStatisticsKShortest.chromosomes[0].cost}}</h3>
                     <h3>Best Path Fitness: {{compareStatisticsKShortest.chromosomes[0].fitness}}</h3>
                     <h3 
-                        ng-if="compareStatisticsKShortest.chromosomes[0].cost <= geneticStatistics.bestPathCost">
+                        ng-if="compareStatisticsKShortest.chromosomes[0].cost < geneticStatistics.bestPathCost">
                         Winner: KShortest</h3>
                     <h3 
-                        ng-if="compareStatisticsKShortest.chromosomes[0].cost > geneticStatistics.bestPathCost">
+                        ng-if="compareStatisticsKShortest.chromosomes[0].cost >= geneticStatistics.bestPathCost">
                         Winner: PSGA</h3>
                     
                     <h3>Search Started: {{convertTime(compareStatisticsKShortest.startTimestamp)}}</h3>
