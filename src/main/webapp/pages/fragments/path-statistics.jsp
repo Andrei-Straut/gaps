@@ -7,7 +7,7 @@
                     <div class="panel panel-default">
                         <div class="panel-heading">
                             <label class="checkbox-inline">
-                                <input id="path-statistics-viewer-toggle" type="checkbox" checked data-toggle="toggle">
+                                <input id="path-statistics-viewer-toggle" type="checkbox" checked data-toggle="toggle" data-on="Hide" data-off="Show">
                             </label>
                             Path Statistics&nbsp;&nbsp;
                             (<span class="label label-default">Neutral Edge Cost</span>

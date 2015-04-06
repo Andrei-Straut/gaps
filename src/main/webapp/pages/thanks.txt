@@ -25,5 +25,8 @@ https://github.com/alexcrack/angular-ui-notification
 Bootstrap slider
 http://www.eyecon.ro/bootstrap-slider/
 
+Bootstrap toggle
+http://www.bootstraptoggle.com/
+
 Morris Charts
 http://morrisjs.github.io/morris.js/

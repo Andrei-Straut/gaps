@@ -104,16 +104,16 @@ psga.controller('psgacontroller', ['$scope', 'Socket', 'Notification', function 
             $(window).scrollTop($(window).scrollTop() - 1);
             $scope.load.graphViewerLoaded = true;
 
-            $('#graph-viewer-toggle').bootstrapToggle({
+            var $graphViewerToggle = $('#graph-viewer-toggle').bootstrapToggle({
                 on: 'Hide',
                 off: 'Show'
             });
-            $('#graph-viewer-toggle').change(function () {
+            $graphViewerToggle.change(function () {
                 $scope.hideGraphView();
             });
         };
         $scope.hideGraphView = function () {
-            $scope.load.graphDisplayed = !$scope.load.graphDisplayed;
+            $scope.load.graphDisplayed = $('#graph-viewer-toggle').prop('checked');
             $scope.$apply();
         };
         $scope.resetGraphView = function () {
@@ -148,16 +148,16 @@ psga.controller('psgacontroller', ['$scope', 'Socket', 'Notification', function 
             $scope.load.graphStatisticsLoaded = true;
             $scope.notifySuccess('Loaded');
 
-            $('#graph-statistics-viewer-toggle').bootstrapToggle({
+            var $graphStatisticsToggle = $('#graph-statistics-viewer-toggle').bootstrapToggle({
                 on: 'Hide',
                 off: 'Show'
             });
-            $('#graph-statistics-viewer-toggle').change(function () {
+            $graphStatisticsToggle.change(function () {
                 $scope.hideGraphStatisticsView();
             });
         };
         $scope.hideGraphStatisticsView = function () {
-            $scope.load.graphStatisticsDisplayed = !$scope.load.graphStatisticsDisplayed;
+            $scope.load.graphStatisticsDisplayed = $('#graph-statistics-viewer-toggle').prop('checked');
             $scope.$apply();
         };
         $scope.resetGraphStatistics = function () {
@@ -178,16 +178,16 @@ psga.controller('psgacontroller', ['$scope', 'Socket', 'Notification', function 
             $scope.load.pathStatisticsLoaded = true;
             $scope.notifySuccess('Paths Computed');
 
-            $('#path-statistics-viewer-toggle').bootstrapToggle({
+            var $pathStatisticsToggle = $('#path-statistics-viewer-toggle').bootstrapToggle({
                 on: 'Hide',
                 off: 'Show'
             });
-            $('#path-statistics-viewer-toggle').change(function () {
+            $pathStatisticsToggle.change(function () {
                 $scope.hidePathStatisticsView();
             });
         };
         $scope.hidePathStatisticsView = function () {
-            $scope.load.pathStatisticsDisplayed = !$scope.load.pathStatisticsDisplayed;
+            $scope.load.pathStatisticsDisplayed = $('#path-statistics-viewer-toggle').prop('checked');
             $scope.$apply();
         };
         $scope.updatePathStatisticsData = function (path) {
@@ -261,16 +261,16 @@ psga.controller('psgacontroller', ['$scope', 'Socket', 'Notification', function 
                 window.clearInterval(interval);
             }, 1000);
 
-            $('#genetic-statistics-viewer-toggle').bootstrapToggle({
+            var $geneticStatisticsToggle = $('#genetic-statistics-viewer-toggle').bootstrapToggle({
                 on: 'Hide',
                 off: 'Show'
             });
-            $('#genetic-statistics-viewer-toggle').change(function () {
+            $geneticStatisticsToggle.change(function () {
                 $scope.hideGeneticStatisticsView();
             });
         };
         $scope.hideGeneticStatisticsView = function() {
-            $scope.load.geneticStatisticsDisplayed = !$scope.load.geneticStatisticsDisplayed;
+            $scope.load.geneticStatisticsDisplayed = $('#genetic-statistics-viewer-toggle').prop('checked');
             $scope.$apply();
         };
         $scope.resetGeneticStatisticsAndView = function () {

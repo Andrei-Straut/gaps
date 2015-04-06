@@ -5,7 +5,7 @@
             <div class="panel panel-default">
                 <div class="panel-heading">
                     <label class="checkbox-inline">
-                        <input id="graph-viewer-toggle" type="checkbox" checked data-toggle="toggle">
+                        <input id="graph-viewer-toggle" type="checkbox" checked data-toggle="toggle" data-on="Hide" data-off="Show">
                     </label>
                     Graph
                 </div>
