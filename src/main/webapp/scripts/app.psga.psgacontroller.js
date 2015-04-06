@@ -21,12 +21,10 @@ psga.controller('psgacontroller', ['$scope', 'Socket', 'Notification', function 
                         $scope.initGraphView(response.data.graph);
                         $scope.initGraphStatistics(response.data);
                     } else {
-                        $scope.errorText = response.description;
-                        $('#modalLoadingError').modal('show');
+                        $scope.notifyError(response.description, $('#modalLoadingError'));
                     }
                 }).catch(function (e) {
-                    $scope.errorText = e.description;
-                    $('#modalLoadingError').modal('show');
+                    $scope.notifyError(e.description, $('#modalLoadingError'));
                 });
                 window.clearInterval(interval);
             }, 1000);
@@ -47,12 +45,10 @@ psga.controller('psgacontroller', ['$scope', 'Socket', 'Notification', function 
 
                         $scope.evolve();
                     } else {
-                        $scope.errorText = response.description;
-                        $('#modalLoadingError').modal('show');
+                        $scope.notifyError(response.description, $('#modalLoadingError'));
                     }
                 }, function (error) {
-                    $scope.errorText = error.description;
-                    $('#modalLoadingError').modal('show');
+                    $scope.notifyError(error.description, $('#modalLoadingError'));
                 }, function (update) {
                     if (update.data && update.data.path) {
                         $scope.updatePathStatisticsData(update.data.path);
@@ -76,12 +72,10 @@ psga.controller('psgacontroller', ['$scope', 'Socket', 'Notification', function 
                         $scope.notifySuccess('Done');
                         $scope.load.evolutionComputed = true;
                     } else {
-                        $scope.errorText = response.description;
-                        $('#modalLoadingError').modal('show');
+                        $scope.notifyError(response.description, $('#modalLoadingError'));
                     }
                 }, function (error) {
-                    $scope.errorText = error.description;
-                    $('#modalLoadingError').modal('show');
+                    $scope.notifyError(error.description, $('#modalLoadingError'));
                 }, function (update) {
                     $scope.updateGeneticStatisticsData(update.data);
                 });
@@ -137,13 +131,13 @@ psga.controller('psgacontroller', ['$scope', 'Socket', 'Notification', function 
             }
             $scope.load.graphViewerLoaded = false;
         };
-        $scope.initGraphStatistics = function($data) {
+        $scope.initGraphStatistics = function ($data) {
             var table = $('#graph-direct-edges').DataTable();
             angular.forEach($data.edges, function (edgeValue, edgeKey) {
                 table.row.add([edgeValue.data.id, edgeValue.nodeFrom, edgeValue.nodeTo, edgeValue.data.cost]);
             });
             table.draw();
-                        
+
             $scope.graphStatistics = $data.statistics;
             $scope.load.graphStatisticsLoaded = true;
             $scope.notifySuccess('Loaded');
@@ -269,7 +263,7 @@ psga.controller('psgacontroller', ['$scope', 'Socket', 'Notification', function 
                 $scope.hideGeneticStatisticsView();
             });
         };
-        $scope.hideGeneticStatisticsView = function() {
+        $scope.hideGeneticStatisticsView = function () {
             $scope.load.geneticStatisticsDisplayed = $('#genetic-statistics-viewer-toggle').prop('checked');
             $scope.$apply();
         };
@@ -368,6 +362,11 @@ psga.controller('psgacontroller', ['$scope', 'Socket', 'Notification', function 
             $scope.load.wipType = '';
             Notification.success({message: notification, delay: $scope.notificationTime});
         };
+        $scope.notifyError = function (notification, $modalElement) {
+            $scope.load.wip = false;
+            $scope.errorText = notification;
+            $modalElement.modal('show');
+        };
         // Due to problems with webkit transition detection, clear notifications manually
         $scope.clearNotifs = function (delay) {
             var interval = window.setInterval(function () {
@@ -425,7 +424,7 @@ psga.controller('psgacontroller', ['$scope', 'Socket', 'Notification', function 
                     duration: GraphViewerOptions.selectAnimationDuration
                 });
             }
-            
+
             $scope.geneticStatistics.selectedGeneration = {};
             $scope.geneticStatistics.selectedGenerationIndex = 0;
         };

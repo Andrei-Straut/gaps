@@ -101,7 +101,7 @@
                                 id="graph-viewer-generate-graph" 
                                 class="btn btn-primary btn-lg"
                                 type="submit" 
-                                ng-disabled="graphgenerationsettings.$invalid" 
+                                ng-disabled="graphgenerationsettings.$invalid || load.wip" 
                                 ng-click="processGraph();">Generate!</button>
                         </div>
                     </form>
@@ -241,7 +241,7 @@
                             <button id="graph-viewer-start-evolution"
                                     type="submit"
                                     class="btn btn-primary btn-lg"
-                                    ng-disabled="!(load.graphStatisticsLoaded) || geneticsettings.$invalid"
+                                    ng-disabled="!(load.graphStatisticsLoaded) || geneticsettings.$invalid || load.wip"
                                     ng-click="computePaths();">Evolve!</button>
                         </div>
                     </form>
