@@ -46,13 +46,22 @@
                        data-original-title="Graph"><i class="fa fa-arrows-alt fa-3x"></i></a>
                 </li>
                 <li>
-                    <a ng-click="setActive('nav-menu-left-graph-statistics');" 
-                       id="nav-menu-left-graph-statistics" 
+                    <a ng-click="setActive('nav-menu-left-genetic-statistics');" 
+                       id="nav-menu-left-genetic-statistics" 
                        class="nav-menu-left" 
-                       href="#graph-statistics"
+                       href="#genetic-statistics"
                        data-toggle="tooltip" 
                        data-placement="right" 
-                       data-original-title="Graph Statistics"><i class="fa fa-bar-chart-o fa-3x"></i></a>
+                       data-original-title="Genetic Statistics"><i class="fa fa-venus-mars fa-3x"></i></a>
+                </li>
+                <li>
+                    <a ng-click="setActive('nav-menu-left-genetic-statistics');" 
+                       id="nav-menu-left-genetic-statistics" 
+                       class="nav-menu-left" 
+                       href="#genetic-statistics"
+                       data-toggle="tooltip" 
+                       data-placement="right" 
+                       data-original-title="Results Compare Statistics"><i class="fa fa-pie-chart fa-3x"></i></a>
                 </li>
                 <li>
                     <a ng-click="setActive('nav-menu-left-path-statistics');" 
@@ -64,13 +73,13 @@
                        data-original-title="Path Search Statistics"><i class="fa fa-line-chart fa-3x"></i></a>
                 </li>
                 <li>
-                    <a ng-click="setActive('nav-menu-left-genetic-statistics');" 
-                       id="nav-menu-left-genetic-statistics" 
+                    <a ng-click="setActive('nav-menu-left-graph-statistics');" 
+                       id="nav-menu-left-graph-statistics" 
                        class="nav-menu-left" 
-                       href="#genetic-statistics"
+                       href="#graph-statistics"
                        data-toggle="tooltip" 
                        data-placement="right" 
-                       data-original-title="Genetic Statistics"><i class="fa fa-venus-mars fa-3x"></i></a>
+                       data-original-title="Graph Statistics"><i class="fa fa-bar-chart-o fa-3x"></i></a>
                 </li>
             </ul>
         </div>

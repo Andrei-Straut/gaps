@@ -9,11 +9,11 @@ import com.andreistraut.pathsearch.datamodel.graph.DirectedWeightedGraphPath;
 import com.andreistraut.pathsearch.datamodel.translator.GraphGeneticsTranslator;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import org.jgap.Configuration;
 import org.jgap.GeneticOperator;
 import org.jgap.Genotype;
 import org.jgap.InvalidConfigurationException;
-import org.jgap.Population;
 import org.jgap.event.EventManager;
 import org.jgap.impl.BestChromosomesSelector;
 import org.jgap.impl.StockRandomGenerator;
@@ -23,10 +23,10 @@ public class GeneticEvolver {
 
     private GeneticConfiguration configuration;
     private final DirectedWeightedGraph graph;
-    private final ArrayList<DirectedWeightedGraphPath> paths;
+    private final List<DirectedWeightedGraphPath> paths;
     private boolean hasInited;
     private Genotype genotype;
-    private Population population;
+    private PathChromosomePopulation population;
     private GenerationStatistic lastStatistic;
 
     private final int numberOfEvolutions;
@@ -55,7 +55,7 @@ public class GeneticEvolver {
     public GeneticEvolver(int numberOfPaths, int numberOfEvolutions,
             int stopConditionPercent,
             DirectedWeightedGraph graph,
-            ArrayList<DirectedWeightedGraphPath> paths) {
+            List<DirectedWeightedGraphPath> paths) {
 
         this.numberOfEvolutions = numberOfEvolutions;
         this.stopConditionPercent = stopConditionPercent;
@@ -146,7 +146,7 @@ public class GeneticEvolver {
         return statistic;
     }
 
-    public Population init() throws InvalidConfigurationException {
+    public PathChromosomePopulation init() throws InvalidConfigurationException {
 
         this.configuration = this.initConfiguration(this.paths.size(), this.graph);
         ArrayList<PathChromosome> chromosomes = this.initChromosomes(this.configuration);

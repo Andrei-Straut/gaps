@@ -75,7 +75,7 @@
                     <h3>Fitness: {{geneticStatistics.bestPathFitness}}</h3>
                     <h3>Path Length: {{geneticStatistics.bestPathEdgeNumber}}</h3>
                     <h3>Evolution Started: {{convertTime(geneticStatistics.startTimestamp)}}</h3>
-                    <h3>Evolution Started: {{convertTime(geneticStatistics.endTimestamp)}}</h3>
+                    <h3>Evolution Finished: {{convertTime(geneticStatistics.endTimestamp)}}</h3>
                     <h3>Total Time: {{convertTime(geneticStatistics.evolutionDiffTimestamp)}}</h3>
                 </div>
             </div>                      

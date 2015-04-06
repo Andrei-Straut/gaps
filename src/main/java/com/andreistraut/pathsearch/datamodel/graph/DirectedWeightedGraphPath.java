@@ -10,14 +10,14 @@ import org.jgrapht.GraphPath;
 public class DirectedWeightedGraphPath implements GraphPath<Node, DirectedWeightedEdge> {
 
     private final DirectedWeightedGraph graph;
-    private ArrayList<DirectedWeightedEdge> edgeList;
+    private List<DirectedWeightedEdge> edgeList;
 
     public DirectedWeightedGraphPath(DirectedWeightedGraph graph) {
 	this.graph = graph;
     }
 
     public DirectedWeightedGraphPath(DirectedWeightedGraph graph, 
-	    ArrayList<DirectedWeightedEdge> edgeList) {
+	    List<DirectedWeightedEdge> edgeList) {
 	
 	this(graph);
 	this.edgeList = edgeList;

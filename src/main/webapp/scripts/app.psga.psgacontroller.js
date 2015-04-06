@@ -42,7 +42,6 @@ psga.controller('psgacontroller', ['$scope', 'Socket', 'Notification', function 
 
                     if (response.status === 200) {
                         $scope.initPathStatistics();
-
                         $scope.evolve();
                     } else {
                         $scope.notifyError(response.description, $('#modalLoadingError'));
@@ -67,10 +66,10 @@ psga.controller('psgacontroller', ['$scope', 'Socket', 'Notification', function 
                 $scope.geneticEvolution.then(function (response) {
 
                     if (response.status === 200) {
-                        $scope.notifySuccess('Evolved');
                         $scope.initGeneticStatistics();
-                        $scope.notifySuccess('Done');
                         $scope.load.evolutionComputed = true;
+
+                        $scope.compare();
                     } else {
                         $scope.notifyError(response.description, $('#modalLoadingError'));
                     }
@@ -82,6 +81,30 @@ psga.controller('psgacontroller', ['$scope', 'Socket', 'Notification', function 
                 window.clearInterval(interval);
             }, 1000);
         };
+        $scope.compare = function () {
+            $scope.compareStatisticsKShortest.startTimestamp = new Date();
+            $scope.notifyInfo('Comparing Results...');
+
+            var interval = window.setInterval(function () {
+                $scope.geneticResultsCompare = $socket.compare($scope.compareSettings);
+
+                $scope.geneticResultsCompare.then(function (response) {
+
+                    if (response.status === 200) {
+                        $scope.initCompareStatistics();
+                        $scope.load.compareStatisticsLoaded = true;
+                        $scope.notifySuccess('Done');
+                    } else {
+                        $scope.notifyError(response.description, $('#modalLoadingError'));
+                    }
+                }, function (error) {
+                    $scope.notifyError(error.description, $('#modalLoadingError'));
+                }, function (update) {
+                    $scope.updateCompareStatistics(update.data, $scope.geneticStatistics);
+                });
+                window.clearInterval(interval);
+            }, 1000);
+        }
 
         /*
          * =====================================================================
@@ -236,6 +259,7 @@ psga.controller('psgacontroller', ['$scope', 'Socket', 'Notification', function 
             $scope.load.pathStatisticsLoaded = false;
         };
         $scope.initGeneticStatistics = function () {
+            $scope.notifySuccess('Evolved');
             $scope.geneticStatistics.endTimestamp = new Date();
             $scope.geneticStatistics.evolutionDiffTimestamp = $scope.geneticStatistics.endTimestamp - $scope.geneticStatistics.startTimestamp;
             $scope.notifyInfo('Computing Statistics...');
@@ -315,6 +339,44 @@ psga.controller('psgacontroller', ['$scope', 'Socket', 'Notification', function 
             generationDataChart.a = data.endBestCost;
             $scope.geneticStatistics.generationChart.push(generationDataChart);
         };
+        $scope.initCompareStatistics = function () {
+            $scope.compareStatisticsKShortest.endTimestamp = new Date();
+            $scope.compareStatisticsKShortest.compareDiffTimestamp =
+                    $scope.compareStatisticsKShortest.endTimestamp - $scope.compareStatisticsKShortest.startTimestamp;
+
+            var interval = window.setInterval(function () {
+
+                $scope.compareChart.initialize('morris-bar-compare-chart', $scope.compareStatisticsKShortest.compareChart);
+                $scope.load.compareStatisticsLoaded = true;
+
+                window.clearInterval(interval);
+            }, 1000);
+
+            var $compareStatisticsToggle = $('#compare-statistics-viewer-toggle').bootstrapToggle({
+                on: 'Hide',
+                off: 'Show'
+            });
+            $compareStatisticsToggle.change(function () {
+                $scope.hideCompareStatisticsView();
+            });
+        };
+        $scope.hideCompareStatisticsView = function () {
+            $scope.load.compareStatisticsDisplayed = $('#compare-statistics-viewer-toggle').prop('checked');
+            $scope.$apply();
+        };
+        $scope.updateCompareStatistics = function (data, geneticStatistics) {
+            if (data) {
+                $scope.compareStatisticsKShortest.chromosomes.push(data);
+
+                var resultsCompareChart = {};
+                resultsCompareChart.y = $scope.compareStatisticsKShortest.compareChart.length;
+                resultsCompareChart.PSGA = geneticStatistics.bestPathCost;
+                resultsCompareChart.KShortest = data.cost;
+                
+                $scope.compareStatisticsKShortest.compareChart.push(resultsCompareChart);
+            }
+        };
+
 
         /*
          * =====================================================================
@@ -464,7 +526,9 @@ psga.controller('psgacontroller', ['$scope', 'Socket', 'Notification', function 
             pathStatisticsDisplayed: true,
             evolutionComputed: false,
             geneticStatisticsLoaded: false,
-            geneticStatisticsDisplayed: true
+            geneticStatisticsDisplayed: true,
+            compareStatisticsLoaded: false,
+            compareStatisticsDisplayed: true
         };
         // Settings for graph generation
         $scope.graphSettings = {
@@ -483,6 +547,11 @@ psga.controller('psgacontroller', ['$scope', 'Socket', 'Notification', function 
             numberOfEvolutions: 10000,
             stopConditionPercent: 100
         };
+        $scope.compareSettings = {
+            sourceNode: $scope.geneticSettings.sourceNode,
+            destinationNode: $scope.geneticSettings.destinationNode,
+            numberOfPaths: 5
+        },
         // Graph statistics per edge
         $scope.graphStatistics = {
             numberOfNodes: 1,
@@ -526,6 +595,14 @@ psga.controller('psgacontroller', ['$scope', 'Socket', 'Notification', function 
             generationChart: [],
             generations: []
         };
+        // JGraphT KShortestPath comparison
+        $scope.compareStatisticsKShortest = {
+            startTimestamp: {},
+            endTimestamp: {},
+            compareDiffTimestamp: {},
+            compareChart: [],
+            chromosomes: []
+        };
         // Websocket error messages
         $scope.errorText = '';
         // Notification duration
@@ -553,6 +630,41 @@ psga.controller('psgacontroller', ['$scope', 'Socket', 'Notification', function 
             },
             initialize: function (element, data) {
                 $scope.evolutionChart.chart(element, data);
+            },
+            clear: function (elementId) {
+                var chartWrapper = document.getElementById(elementId);
+                if (chartWrapper && chartWrapper.firstChild) {
+                    while (chartWrapper.firstChild) {
+                        chartWrapper.removeChild(chartWrapper.firstChild);
+                    }
+                }
+                $(chartWrapper).css('height', 'auto');
+
+            }
+        };
+        $scope.compareChart = {
+            chart: function (element, data) {
+                console.log(data);
+                jQuery('#main-menu').metisMenu();
+                jQuery(window).bind("load resize", function () {
+                    if (jQuery(this).width() < 768) {
+                        jQuery('div.sidebar-collapse').addClass('collapse');
+                    } else {
+                        jQuery('div.sidebar-collapse').removeClass('collapse');
+                    }
+                });
+                Morris.Bar({
+                    element: element,
+                    data: data,
+                    xkey: 'y',
+                    ykeys: ['PSGA', 'KShortest'],
+                    labels: ['PSGA', 'KShortest'],
+                    hideHover: 'auto',
+                    resize: true
+                });
+            },
+            initialize: function (element, data) {
+                $scope.compareChart.chart(element, data);
             },
             clear: function (elementId) {
                 var chartWrapper = document.getElementById(elementId);

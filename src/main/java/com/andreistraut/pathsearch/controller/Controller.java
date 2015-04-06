@@ -2,6 +2,9 @@ package com.andreistraut.pathsearch.controller;
 
 import com.andreistraut.pathsearch.datamodel.genetics.GenerationStatistic;
 import com.andreistraut.pathsearch.datamodel.genetics.GeneticEvolver;
+import com.andreistraut.pathsearch.datamodel.genetics.PathChromosome;
+import com.andreistraut.pathsearch.datamodel.genetics.PathChromosomePopulation;
+import com.andreistraut.pathsearch.datamodel.graph.DirectedWeightedEdge;
 import com.andreistraut.pathsearch.datamodel.graph.DirectedWeightedGraph;
 import com.andreistraut.pathsearch.datamodel.graph.DirectedWeightedGraphPath;
 import com.andreistraut.pathsearch.datamodel.graph.GraphSettings;
@@ -13,6 +16,7 @@ import com.google.gson.JsonSyntaxException;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.LinkedList;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.servlet.http.HttpServletResponse;
@@ -21,7 +25,9 @@ import javax.websocket.OnMessage;
 import javax.websocket.OnOpen;
 import javax.websocket.Session;
 import javax.websocket.server.ServerEndpoint;
+import org.jgap.IChromosome;
 import org.jgap.InvalidConfigurationException;
+import org.jgrapht.GraphPath;
 
 /**
  * @ServerEndpoint handling the communication between the client and the server.
@@ -37,6 +43,7 @@ public class Controller {
 	GetGraph,
 	ComputePaths,
 	Evolve,
+	Compare,
 	Unknown
     }
 
@@ -101,48 +108,8 @@ public class Controller {
 		break;
 	    }
 	    case ComputePaths: {
-		response = new MessageResponse(request.getCallbackId());
-
-		if (!this.validatePathRequest(request)) {
-		    Logger.getLogger(Controller.class.getName()).log(Level.SEVERE,
-			    "Request from " + session.getId() + " invalid. Path request malformed, missing parameters");
-		    response
-			    .setStatus(HttpServletResponse.SC_BAD_REQUEST)
-			    .setIsEnded(true)
-			    .setDescription("Path request malformed, missing parameters");
-		    respond(session, response);
-		    return;
-		}
-
-		if (this.graph == null) {
-		    Logger.getLogger(Controller.class.getName()).log(Level.SEVERE,
-			    "Request from " + session.getId() + ": Could not find computed graph. Cannot continue");
-		    response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR)
-			    .setIsEnded(true)
-			    .setDescription("Could not find computed graph. Cannot continue");
-		    respond(session, response);
-		    return;
-		}
-
-		int sourceNode = request.getData().get("sourceNode").getAsInt();
-		int destinationNode = request.getData().get("destinationNode").getAsInt();
-
-		if (sourceNode == destinationNode) {
-		    response.setStatus(HttpServletResponse.SC_BAD_REQUEST)
-			    .setIsEnded(true)
-			    .setDescription("Source and destination nodes must be different");
-		    respond(session, response);
-		    return;
-		}
-
-		if (this.graph.getNodes().size() < sourceNode
-			|| this.graph.getNodes().size() < destinationNode) {
-		    Logger.getLogger(Controller.class.getName()).log(Level.SEVERE,
-			    "Request from " + session.getId() + ": Source or destination node not found in graph");
-		    
-		    response.setStatus(HttpServletResponse.SC_BAD_REQUEST)
-			    .setIsEnded(true)
-			    .setDescription("Source or destination node not found in graph");
+		response = validatePathRequest(session, request);
+		if (response.getStatus() != HttpServletResponse.SC_OK) {
 		    respond(session, response);
 		    return;
 		}
@@ -151,6 +118,8 @@ public class Controller {
 			request.getData().get("sourceNode").getAsInt(),
 			request.getData().get("destinationNode").getAsInt(),
 			request.getData().get("numberOfPaths").getAsInt());
+		Logger.getLogger(Controller.class.getName()).log(Level.INFO,
+			"Request from " + session.getId() + " with callback ID: " + request.getCallbackId() + ". Finished processing paths");
 
 		for (DirectedWeightedGraphPath path : this.paths) {
 		    respond(session, new MessageResponse(request.getCallbackId(), 200, false, "Ok", path.toJson()));
@@ -163,44 +132,12 @@ public class Controller {
 		break;
 	    }
 	    case Evolve: {
-		response = new MessageResponse(request.getCallbackId());
-
-		if (!this.validatePathRequest(request)) {
-		    Logger.getLogger(Controller.class.getName()).log(Level.SEVERE,
-			    "Request from " + session.getId() + " invalid: Path request malformed or source or destination node id do not exist");
-		    response
-			    .setStatus(HttpServletResponse.SC_BAD_REQUEST)
-			    .setIsEnded(true)
-			    .setDescription("Path request malformed or source or destination node id do not exist");
-		    respond(session, response);
-		    return;
-		}
-
-		if (this.graph == null) {
-		    Logger.getLogger(Controller.class.getName()).log(Level.SEVERE,
-			    "Request from " + session.getId() + ": Could not find computed graph. Cannot continue");
-		    response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR)
-			    .setIsEnded(true)
-			    .setDescription("Could not find computed graph. Cannot continue");
-		    respond(session, response);
-		    return;
-		}
-
-		if (this.paths == null || this.paths.isEmpty()) {
-		    Logger.getLogger(Controller.class.getName()).log(Level.SEVERE,
-			    "Request from " + session.getId() + ": could not find computed paths. Cannot continue");
-		    response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR)
-			    .setIsEnded(true)
-			    .setDescription("Could not find computed paths. Cannot continue");
-		    respond(session, response);
-		    return;
-		}
+		response = validateGeneticRequest(session, request);
 
 		try {
-		    int numberOfEvolutions = request.getData().get("numberOfEvolutions").getAsInt();
 		    GeneticEvolver evolver = new GeneticEvolver(
 			    request.getData().get("numberOfPaths").getAsInt(),
-			    numberOfEvolutions,
+			    request.getData().get("numberOfEvolutions").getAsInt(),
 			    request.getData().get("stopConditionPercent").getAsInt(),
 			    this.graph, this.paths);
 
@@ -241,6 +178,57 @@ public class Controller {
 			    .setIsEnded(true)
 			    .setDescription("Error running genetic algorithm " + e.getMessage());
 		    return;
+		}
+
+		Logger.getLogger(Controller.class.getName()).log(Level.INFO,
+			"Request from " + session.getId() + " with callback ID " + request.getCallbackId() + " processed");
+
+		break;
+	    }
+	    case Compare: {
+		response = validateCompareRequest(session, request);
+		if (response.getStatus() != HttpServletResponse.SC_OK) {
+		    respond(session, response);
+		    return;
+		}
+
+		Node source = this.graph.getNodes().get(request.getData().get("sourceNode").getAsInt());
+		Node target = this.graph.getNodes().get(request.getData().get("destinationNode").getAsInt());
+		List<GraphPath<Node, DirectedWeightedEdge>> kShortestPaths
+			= this.graph.getKShortestPaths(
+				source, target, request.getData().get("numberOfPaths").getAsInt());
+		List<DirectedWeightedGraphPath> directedPaths = new ArrayList<DirectedWeightedGraphPath>();
+		
+		for (GraphPath<Node, DirectedWeightedEdge> kshortestPath : kShortestPaths) {
+		    DirectedWeightedGraphPath path = new DirectedWeightedGraphPath(graph, kshortestPath.getEdgeList());
+		    directedPaths.add(path);
+		}
+
+		GeneticEvolver evolver = new GeneticEvolver(
+			request.getData().get("numberOfPaths").getAsInt(),
+			0,
+			0,
+			this.graph, directedPaths);
+
+		try {
+		    List<IChromosome> chromosomes = evolver.init().getChromosomes();
+		    for (IChromosome chromosome : chromosomes) {
+			response
+				.setStatus(HttpServletResponse.SC_OK)
+				.setIsEnded(false)
+				.setData(((PathChromosome) chromosome).toJson())
+				.setDescription("Ok");
+			respond(session, response);
+		    }
+
+		    response
+			    .setStatus(HttpServletResponse.SC_OK)
+			    .setIsEnded(true)
+			    .setData(null)
+			    .setDescription("Ok");
+		    respond(session, response);
+		} catch (InvalidConfigurationException ex) {
+		    Logger.getLogger(Controller.class.getName()).log(Level.SEVERE, null, ex);
 		}
 
 		Logger.getLogger(Controller.class.getName()).log(Level.INFO,
@@ -311,26 +299,143 @@ public class Controller {
 	return response;
     }
 
-    private boolean validatePathRequest(MessageRequest pathRequest) {
-	if (pathRequest.getData().has("sourceNode")
-		&& pathRequest.getData().has("destinationNode")
-		&& pathRequest.getData().has("numberOfPaths")
-		&& pathRequest.getData().has("numberOfEvolutions")
-		&& pathRequest.getData().has("stopConditionPercent")) {
+    private MessageResponse validatePathRequest(Session session, MessageRequest request) {
+	MessageResponse response = new MessageResponse(request.getCallbackId());
 
-	    return true;
+	if (!request.getData().has("sourceNode")
+		|| !request.getData().has("destinationNode")
+		|| !request.getData().has("numberOfPaths")) {
+
+	    Logger.getLogger(Controller.class.getName()).log(Level.SEVERE,
+		    "Request from " + session.getId() + " invalid. Path request malformed, missing parameters");
+	    response
+		    .setStatus(HttpServletResponse.SC_BAD_REQUEST)
+		    .setIsEnded(true)
+		    .setDescription("Path request malformed, missing parameters");
+	    return response;
 	}
 
-	return false;
+	if (this.graph == null) {
+	    Logger.getLogger(Controller.class.getName()).log(Level.SEVERE,
+		    "Request from " + session.getId() + ": Could not find computed graph. Cannot continue");
+	    response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR)
+		    .setIsEnded(true)
+		    .setDescription("Could not find computed graph. Cannot continue");
+	    return response;
+	}
+
+	int sourceNode = request.getData().get("sourceNode").getAsInt();
+	int destinationNode = request.getData().get("destinationNode").getAsInt();
+
+	if (sourceNode == destinationNode) {
+	    response.setStatus(HttpServletResponse.SC_BAD_REQUEST)
+		    .setIsEnded(true)
+		    .setDescription("Source and destination nodes must be different");
+	    return response;
+	}
+
+	if (this.graph.getNodes().size() < sourceNode
+		|| this.graph.getNodes().size() < destinationNode) {
+
+	    Logger.getLogger(Controller.class.getName()).log(Level.SEVERE,
+		    "Request from " + session.getId() + ": Source or destination node not found in graph");
+
+	    response.setStatus(HttpServletResponse.SC_BAD_REQUEST)
+		    .setIsEnded(true)
+		    .setDescription("Source or destination node not found in graph");
+	    respond(session, response);
+	    return response;
+	}
+
+	response
+		.setStatus(HttpServletResponse.SC_OK)
+		.setIsEnded(true)
+		.setDescription("Ok");
+	return response;
+    }
+
+    private MessageResponse validateGeneticRequest(Session session, MessageRequest request) {
+	MessageResponse response = new MessageResponse(request.getCallbackId());
+
+	if (!request.getData().has("numberOfEvolutions")
+		|| !request.getData().has("stopConditionPercent")) {
+
+	    Logger.getLogger(Controller.class.getName()).log(Level.SEVERE,
+		    "Request from " + session.getId() + " invalid: Genetic request malformed, missing parameters");
+	    response
+		    .setStatus(HttpServletResponse.SC_BAD_REQUEST)
+		    .setIsEnded(true)
+		    .setDescription("Genetic request malformed, missing parameters");
+	    return response;
+	}
+
+	if (this.graph == null) {
+	    Logger.getLogger(Controller.class.getName()).log(Level.SEVERE,
+		    "Request from " + session.getId() + ": Could not find computed graph. Cannot continue");
+	    response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR)
+		    .setIsEnded(true)
+		    .setDescription("Could not find computed graph. Cannot continue");
+	    return response;
+	}
+
+	if (this.paths == null || this.paths.isEmpty()) {
+	    Logger.getLogger(Controller.class.getName()).log(Level.SEVERE,
+		    "Request from " + session.getId() + ": could not find computed paths. Cannot continue");
+	    response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR)
+		    .setIsEnded(true)
+		    .setDescription("Could not find computed paths. Cannot continue");
+	    return response;
+	}
+
+	response
+		.setStatus(HttpServletResponse.SC_OK)
+		.setIsEnded(true)
+		.setDescription("Ok");
+	return response;
+    }
+    
+    private MessageResponse validateCompareRequest(Session session, MessageRequest request) {
+	MessageResponse response = new MessageResponse(request.getCallbackId());
+
+	if (!request.getData().has("sourceNode")
+		|| !request.getData().has("destinationNode")
+		|| !request.getData().has("numberOfPaths")) {
+
+	    Logger.getLogger(Controller.class.getName()).log(Level.SEVERE,
+		    "Request from " + session.getId() + " invalid: Genetic request malformed, missing parameters");
+	    response
+		    .setStatus(HttpServletResponse.SC_BAD_REQUEST)
+		    .setIsEnded(true)
+		    .setDescription("Genetic request malformed, missing parameters");
+	    return response;
+	}
+
+	if (this.graph == null) {
+	    Logger.getLogger(Controller.class.getName()).log(Level.SEVERE,
+		    "Request from " + session.getId() + ": Could not find computed graph. Cannot continue");
+	    response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR)
+		    .setIsEnded(true)
+		    .setDescription("Could not find computed graph. Cannot continue");
+	    return response;
+	}
+
+	response
+		.setStatus(HttpServletResponse.SC_OK)
+		.setIsEnded(true)
+		.setDescription("Ok");
+	return response;
     }
 
     private void respond(Session session, MessageResponse response) {
 	try {
 	    session.getBasicRemote().sendText(response.toJsonString());
+
 	} catch (IOException ex) {
-	    Logger.getLogger(Controller.class.getName()).log(Level.INFO,
-		    "Error occurred responding to graph request: " + ex.getMessage(), ex);
+	    Logger.getLogger(Controller.class
+		    .getName()).log(Level.INFO,
+			    "Error occurred responding to graph request: " + ex.getMessage(), ex);
 	}
+
     }
 
     private class MessageRequest {
@@ -417,6 +522,10 @@ public class Controller {
 	    this.isEnded = isEnded;
 	    this.description = description;
 	    this.data = data;
+	}
+
+	public int getStatus() {
+	    return this.status;
 	}
 
 	public MessageResponse setStatus(int status) {

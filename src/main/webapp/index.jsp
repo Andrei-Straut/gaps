@@ -68,6 +68,8 @@
                     
                     <%@include file="/pages/fragments/genetic-statistics.jsp" %>
                     
+                    <%@include file="/pages/fragments/compare-statistics.jsp" %>
+                    
                     <%@include file="/pages/fragments/path-statistics.jsp" %>
 
                     <%@include file="/pages/fragments/graph-statistics.jsp" %>

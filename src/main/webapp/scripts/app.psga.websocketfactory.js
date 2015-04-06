@@ -43,6 +43,14 @@ psga.factory('Socket', ['$q', '$rootScope', function ($q, $rootScope) {
             var promise = sendRequest(request);
             return promise;
         };
+        Service.compare = function (geneticSettings) {
+            var request = {
+                type: "Compare",
+                data: geneticSettings
+            };
+            var promise = sendRequest(request);
+            return promise;
+        };
         function sendRequest(request) {
             var defer = $q.defer();
             var callbackId = getCallbackId();
