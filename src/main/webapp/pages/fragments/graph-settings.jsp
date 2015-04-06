@@ -241,7 +241,7 @@
                             <button id="graph-viewer-start-evolution"
                                     type="submit"
                                     class="btn btn-primary btn-lg"
-                                    ng-disabled="!(load.graphStatisticsLoaded) || graphgenerationsettings.$invalid"
+                                    ng-disabled="!(load.graphStatisticsLoaded) || geneticsettings.$invalid"
                                     ng-click="computePaths();">Evolve!</button>
                         </div>
                     </form>
