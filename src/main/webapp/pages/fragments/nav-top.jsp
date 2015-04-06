@@ -58,7 +58,7 @@
                     <a ng-click="setActive('nav-menu-left-genetic-statistics');" 
                        id="nav-menu-left-genetic-statistics" 
                        class="nav-menu-left" 
-                       href="#genetic-statistics"
+                       href="#compare-statistics"
                        data-toggle="tooltip" 
                        data-placement="right" 
                        data-original-title="Results Compare Statistics"><i class="fa fa-pie-chart fa-3x"></i></a>
