@@ -644,7 +644,6 @@ psga.controller('psgacontroller', ['$scope', 'Socket', 'Notification', function 
         };
         $scope.compareChart = {
             chart: function (element, data) {
-                console.log(data);
                 jQuery('#main-menu').metisMenu();
                 jQuery(window).bind("load resize", function () {
                     if (jQuery(this).width() < 768) {
