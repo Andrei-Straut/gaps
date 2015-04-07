@@ -190,8 +190,12 @@ public class EdgeGene extends BaseGene {
 	    percentage = percentage * 100;
 	}
 	
+	if(percentage > 100)  {
+	    percentage = 100;
+	}
+	
 	Random generator = new Random();
-	int next = generator.nextInt(99);
+	int next = generator.nextInt(100);
 	
 	//If we get lucky and score less or equal to the chance, we have a mutation
 	if(next <= (percentage)) {

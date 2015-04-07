@@ -1,8 +1,11 @@
 package com.andreistraut.pathsearch.datamodel.graph;
 
 import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import org.junit.Assert;
 import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.Test;
 
 /**
@@ -26,6 +29,12 @@ public class GraphPathComparatorTest {
     private DirectedWeightedGraph graph;
 
     public GraphPathComparatorTest() {
+    }
+    
+    @BeforeClass
+    public static void setUpClass() {
+	Logger.getLogger(DirectedWeightedGraph.class.getName()).log(Level.INFO,
+		GraphPathComparatorTest.class.toString() + " TEST: Graph Path Comparator");    
     }
 
     @Before

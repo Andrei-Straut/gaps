@@ -2,8 +2,11 @@ package com.andreistraut.pathsearch.datamodel.graph;
 
 import com.google.gson.JsonObject;
 import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import org.junit.Assert;
 import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.Test;
 
 public class DirectedWeightedGraphPathTest {
@@ -19,6 +22,12 @@ public class DirectedWeightedGraphPathTest {
     private DirectedWeightedGraphPath path;
 
     public DirectedWeightedGraphPathTest() {
+    }
+    
+    @BeforeClass
+    public static void setUpClass() {
+	Logger.getLogger(DirectedWeightedGraph.class.getName()).log(Level.INFO,
+		DirectedWeightedGraphPathTest.class.toString() + " TEST: Graph Path");    
     }
 
     @Before

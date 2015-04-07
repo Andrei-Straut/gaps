@@ -35,6 +35,7 @@ public class NodeTest {
 
     @Test
     public void testHashCode() {
+	//TODO: Refactor this
 	Node first = new Node("Node1", "Node1");
 	Node second = new Node("Node1", "Node1");
 	assertEquals(second.hashCode(), first.hashCode());
@@ -63,6 +64,7 @@ public class NodeTest {
 
     @Test
     public void testEquals() {
+	//TODO: Refactor this
 	Node first = new Node("Node1", "Node1");
 	Node second = new Node("Node1", "Node1");
 	Assert.assertTrue(first.equals(second));
@@ -92,6 +94,7 @@ public class NodeTest {
 
     @Test
     public void testToString() {
+	//TODO: Refactor this
 	Node first = new Node("Node1", "Node1");
 	Node second = new Node("Node1", "Node1");
 	assertEquals(second.toString(), first.toString());
@@ -121,6 +124,7 @@ public class NodeTest {
 
     @Test
     public void testToJson() {
+	//TODO: Refactor this
 	Node first = new Node("Node1", "Node1");
 	JsonObject nodeJson = first.toJson();
 	
