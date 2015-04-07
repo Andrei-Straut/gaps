@@ -19,8 +19,8 @@ public class DirectedWeightedGraphTest {
     private Node third;
     private DirectedWeightedEdge firstToSecond;
     private DirectedWeightedEdge secondToThird;
-    private int firstToSecondCost = 1;
-    private int secondToThirdCost = 2;
+    private final int firstToSecondCost = 1;
+    private final int secondToThirdCost = 2;
     private DirectedWeightedGraph graph;
     
     public DirectedWeightedGraphTest() {
