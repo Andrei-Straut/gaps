@@ -16,6 +16,9 @@ public class Node implements ICloneable {
 
     private String id;
     private String name;
+    
+    private final int HASH = 7;
+    private final int HASH_SEED = 71;
 
     public Node(String id) {
 	this.id = id;
@@ -72,9 +75,9 @@ public class Node implements ICloneable {
 
     @Override
     public int hashCode() {
-	int hash = 7;
-	hash = 71 * hash + (this.id != null ? this.id.hashCode() : 0);
-	hash = 71 * hash + (this.name != null ? this.name.hashCode() : 0);
+	int hash = HASH;
+	hash = HASH_SEED * hash + (this.id != null ? this.id.hashCode() : 0);
+	hash = HASH_SEED * hash + (this.name != null ? this.name.hashCode() : 0);
 	return hash;
     }
 
@@ -101,7 +104,7 @@ public class Node implements ICloneable {
     }
 
     @Override
-    public Object clone() {
+    public Node clone() {
 	return new Node(this.getId(), this.getName());
     }
 }

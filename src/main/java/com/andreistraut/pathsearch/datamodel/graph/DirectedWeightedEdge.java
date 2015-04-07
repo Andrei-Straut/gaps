@@ -1,21 +1,16 @@
 package com.andreistraut.pathsearch.datamodel.graph;
 
 import com.google.gson.JsonObject;
-import java.util.UUID;
 import org.jgrapht.graph.DefaultWeightedEdge;
 
 public class DirectedWeightedEdge extends DefaultWeightedEdge {
     
-    private final int id;
     private Node source;
     private Node destination;
     private int cost;
     private boolean isDirected;
     
     public DirectedWeightedEdge(Node source, Node destination) {
-	int tempId = UUID.randomUUID().hashCode();
-	this.id = tempId >= 0 ? tempId : tempId * -1;
-	
 	this.source = source;
 	this.destination = destination;
 	this.isDirected = true;
@@ -123,7 +118,7 @@ public class DirectedWeightedEdge extends DefaultWeightedEdge {
 	
 	edgeJson.addProperty("nodeFrom", this.source.getId());
 	edgeJson.addProperty("nodeTo", this.destination.getId());
-	edgeDataJson.addProperty("id", this.id);
+	edgeDataJson.addProperty("id", this.hashCode());
 	edgeDataJson.addProperty("cost", this.cost);
 	edgeDataJson.addProperty("isDirected", this.isDirected);
 	edgeJson.add("data", edgeDataJson);

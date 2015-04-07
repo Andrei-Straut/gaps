@@ -2,7 +2,6 @@ package com.andreistraut.pathsearch.datamodel.graph;
 
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
-import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.text.ParseException;
 import java.util.ArrayList;

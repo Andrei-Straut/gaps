@@ -3,7 +3,6 @@ package com.andreistraut.pathsearch.controller;
 import com.andreistraut.pathsearch.datamodel.genetics.GenerationStatistic;
 import com.andreistraut.pathsearch.datamodel.genetics.GeneticEvolver;
 import com.andreistraut.pathsearch.datamodel.genetics.PathChromosome;
-import com.andreistraut.pathsearch.datamodel.genetics.PathChromosomePopulation;
 import com.andreistraut.pathsearch.datamodel.graph.DirectedWeightedEdge;
 import com.andreistraut.pathsearch.datamodel.graph.DirectedWeightedGraph;
 import com.andreistraut.pathsearch.datamodel.graph.DirectedWeightedGraphPath;
