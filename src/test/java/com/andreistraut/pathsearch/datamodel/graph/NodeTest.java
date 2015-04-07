@@ -3,35 +3,20 @@ package com.andreistraut.pathsearch.datamodel.graph;
 import com.google.gson.JsonObject;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import org.junit.After;
-import org.junit.AfterClass;
 import org.junit.Assert;
-import org.junit.Before;
-import org.junit.BeforeClass;
 import org.junit.Test;
 import static org.junit.Assert.*;
+import org.junit.BeforeClass;
 
 public class NodeTest {
 
     public NodeTest() {
     }
-
+    
     @BeforeClass
     public static void setUpClass() {
-    }
-
-    @AfterClass
-    public static void tearDownClass() {
-    }
-
-    @Before
-    public void setUp() {
 	Logger.getLogger(DirectedWeightedGraph.class.getName()).log(Level.INFO,
-		NodeTest.class.toString() + " TEST: Node");
-    }
-
-    @After
-    public void tearDown() {
+		NodeTest.class.toString() + " TEST: Node");    
     }
 
     @Test
@@ -138,6 +123,11 @@ public class NodeTest {
     public void testToJson() {
 	Node first = new Node("Node1", "Node1");
 	JsonObject nodeJson = first.toJson();
+	
+	Assert.assertTrue(nodeJson.has("id"));
+	Assert.assertTrue(nodeJson.has("name"));
+	Assert.assertTrue(nodeJson.has("data"));
+	
 	assertEquals("Node1", nodeJson.get("id").getAsString());
 	assertEquals("Node1", nodeJson.get("name").getAsString());
 

@@ -3,8 +3,6 @@ package com.andreistraut.pathsearch.datamodel.graph;
 import com.google.gson.JsonObject;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import org.junit.After;
-import org.junit.AfterClass;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.BeforeClass;
@@ -20,25 +18,16 @@ public class DirectedWeightedEdgeTest {
 
     @BeforeClass
     public static void setUpClass() {
-    }
-
-    @AfterClass
-    public static void tearDownClass() {
+	Logger.getLogger(DirectedWeightedGraph.class.getName()).log(Level.INFO,
+		DirectedWeightedEdgeTest.class.toString() + " TEST: Edge");
     }
 
     @Before
     public void setUp() {
-	Logger.getLogger(DirectedWeightedGraph.class.getName()).log(Level.INFO,
-		NodeTest.class.toString() + " TEST: Edge");
-
 	source = new Node("1", "1");
 	destination = new Node("2", "2");
     }
 
-    @After
-    public void tearDown() {
-    }
-    
     @Test
     public void testGetSource() {
 	DirectedWeightedEdge edge = new DirectedWeightedEdge(source, destination);
@@ -280,9 +269,14 @@ public class DirectedWeightedEdgeTest {
 	DirectedWeightedEdge second;
 	JsonObject firstJson;
 	JsonObject secondJson;
-	
+
 	first = new DirectedWeightedEdge(source, destination, 100, true);
 	firstJson = first.toJson();
+	
+	Assert.assertTrue(firstJson.has("nodeFrom"));
+	Assert.assertTrue(firstJson.has("nodeTo"));
+	Assert.assertTrue(firstJson.has("data"));
+	
 	Assert.assertTrue(source.getId().equals(firstJson.get("nodeFrom").getAsString()));
 	Assert.assertTrue(destination.getId().equals(firstJson.get("nodeTo").getAsString()));
 	Assert.assertTrue(first.hashCode() == firstJson.get("data").getAsJsonObject().get("id").getAsInt());

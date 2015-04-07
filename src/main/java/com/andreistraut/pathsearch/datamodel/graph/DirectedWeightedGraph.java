@@ -101,7 +101,7 @@ public class DirectedWeightedGraph extends DirectedPseudograph<Node, DirectedWei
 	return nodesList;
     }
 
-    public ArrayList<DirectedWeightedEdge> initEdges() throws InvalidConfigurationException {
+    public ArrayList<DirectedWeightedEdge> initEdges() {
 	ArrayList<Node> nodesList = this.getNodes();
 
 	ArrayList<DirectedWeightedEdge> edgeList = new ArrayList<DirectedWeightedEdge>();

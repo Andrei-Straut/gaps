@@ -280,11 +280,6 @@ public class Controller {
 		    .setIsEnded(true)
 		    .setDescription("Ok")
 		    .setData(graph.toJson());
-	} catch (InvalidConfigurationException ex) {
-	    Logger.getLogger(Controller.class.getName()).log(Level.SEVERE,
-		    "Configuration error generating the graph: " + ex.getMessage(), ex);
-
-	    response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR).setDescription(ex.getMessage());
 	} catch (IllegalArgumentException e) {
 	    Logger.getLogger(Controller.class.getName()).log(Level.SEVERE,
 		    "There was an error generating the graph: " + e.getMessage(), e);

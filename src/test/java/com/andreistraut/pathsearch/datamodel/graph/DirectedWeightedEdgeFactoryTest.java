@@ -1,7 +1,7 @@
 package com.andreistraut.pathsearch.datamodel.graph;
 
-import org.junit.After;
-import org.junit.AfterClass;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.BeforeClass;
@@ -19,24 +19,17 @@ public class DirectedWeightedEdgeFactoryTest {
 
     public DirectedWeightedEdgeFactoryTest() {
     }
-
+    
     @BeforeClass
     public static void setUpClass() {
-    }
-
-    @AfterClass
-    public static void tearDownClass() {
+	Logger.getLogger(DirectedWeightedGraph.class.getName()).log(Level.INFO,
+		DirectedWeightedEdgeFactoryTest.class.toString() + " TEST: Edge Factory");    
     }
 
     @Before
-    public void setUp() {
-
+    public void setUp() {	
 	source = new Node("1", "1");
 	destination = new Node("2", "2");
-    }
-
-    @After
-    public void tearDown() {
     }
 
     @Test
