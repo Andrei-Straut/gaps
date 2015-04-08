@@ -1,7 +1,5 @@
 package com.andreistraut.gaps.datamodel.genetics;
 
-import com.andreistraut.gaps.datamodel.genetics.GeneticConfiguration;
-import com.andreistraut.gaps.datamodel.genetics.EdgeGene;
 import com.andreistraut.gaps.datamodel.graph.DirectedWeightedEdge;
 import com.andreistraut.gaps.datamodel.graph.DirectedWeightedGraph;
 import com.andreistraut.gaps.datamodel.graph.Node;

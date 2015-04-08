@@ -29,7 +29,7 @@ public class PathChromosome extends BaseChromosome implements IChromosome {
 
     private final long serialVersionUID = 1L;
     private final int MAX_FITNESS_VALUE = 100000;
-    private final int MIN_FITNESS_VALUE = -10000000;
+    private final int MIN_FITNESS_VALUE = -100000;
 
     private ArrayList<EdgeGene> genes;
     private Node source;
@@ -131,8 +131,8 @@ public class PathChromosome extends BaseChromosome implements IChromosome {
 
     /**
      * Returns the Gene
-     * ({@link com.andreistraut.gaps.datamodel.graph.DirectedWeightedEdge})
-     * with the lowest cost within the PathChromosome
+     * ({@link com.andreistraut.gaps.datamodel.graph.DirectedWeightedEdge}) with
+     * the lowest cost within the PathChromosome
      *
      * @return The Gene (DirectedWeightedEdge) with the lowest cost
      */
@@ -150,8 +150,8 @@ public class PathChromosome extends BaseChromosome implements IChromosome {
 
     /**
      * Returns the Gene
-     * ({@link com.andreistraut.gaps.datamodel.graph.DirectedWeightedEdge})
-     * with the highest cost within the PathChromosome
+     * ({@link com.andreistraut.gaps.datamodel.graph.DirectedWeightedEdge}) with
+     * the highest cost within the PathChromosome
      *
      * @return The Gene (DirectedWeightedEdge) with the highest cost
      */
@@ -169,8 +169,8 @@ public class PathChromosome extends BaseChromosome implements IChromosome {
 
     /**
      * Returns the index of the Gene
-     * ({@link com.andreistraut.gaps.datamodel.graph.DirectedWeightedEdge})
-     * with the lowest cost within the PathChromosome
+     * ({@link com.andreistraut.gaps.datamodel.graph.DirectedWeightedEdge}) with
+     * the lowest cost within the PathChromosome
      *
      * @return The index of the Gene (DirectedWeightedEdge) with the lowest cost
      */
@@ -180,8 +180,8 @@ public class PathChromosome extends BaseChromosome implements IChromosome {
 
     /**
      * Returns the index of the Gene
-     * ({@link com.andreistraut.gaps.datamodel.graph.DirectedWeightedEdge})
-     * with the highest cost within the PathChromosome
+     * ({@link com.andreistraut.gaps.datamodel.graph.DirectedWeightedEdge}) with
+     * the highest cost within the PathChromosome
      *
      * @return The index of the Gene (DirectedWeightedEdge) with the highest
      * cost
@@ -192,8 +192,8 @@ public class PathChromosome extends BaseChromosome implements IChromosome {
 
     /**
      * Returns the Gene
-     * ({@link com.andreistraut.gaps.datamodel.graph.DirectedWeightedEdge})
-     * at the given index (locus) within the PathChromosome
+     * ({@link com.andreistraut.gaps.datamodel.graph.DirectedWeightedEdge}) at
+     * the given index (locus) within the PathChromosome
      *
      * @param desiredLocus
      * @return Gene at index specified as parameter
@@ -214,8 +214,8 @@ public class PathChromosome extends BaseChromosome implements IChromosome {
 
     /**
      * Sets the Gene
-     * ({@link com.andreistraut.gaps.datamodel.graph.DirectedWeightedEdge})
-     * at the given index (locus) within the PathChromosome with the specified
+     * ({@link com.andreistraut.gaps.datamodel.graph.DirectedWeightedEdge}) at
+     * the given index (locus) within the PathChromosome with the specified
      * value. Replaces previous existing gene at given position
      *
      * @param index index to set the value at
@@ -227,22 +227,12 @@ public class PathChromosome extends BaseChromosome implements IChromosome {
     }
 
     /**
-     * Removes Gene at specified index. Does internal bounds check
-     *
-     * @param index The index of the Gene to remove
-     */
-    public void removeGene(int index) {
-	if (this.genes.size() > index) {
-	    this.genes.remove(index);
-	}
-    }
-
-    /**
      * Sets the Gene
-     * ({@link com.andreistraut.gaps.datamodel.graph.DirectedWeightedEdge})
-     * at the given index (locus) within the PathChromosome with the specified
+     * ({@link com.andreistraut.gaps.datamodel.graph.DirectedWeightedEdge}) at
+     * the given index (locus) within the PathChromosome with the specified
      * value. Replaces previous existing gene at given position. Optionally
-     * check if the value is valid (is referenced by previous and next genes)
+     * check if the value is seemsValid (is referenced by previous and next
+     * genes)
      *
      * @param index index to set the value at
      * @param gene value to set
@@ -291,13 +281,24 @@ public class PathChromosome extends BaseChromosome implements IChromosome {
     }
 
     /**
+     * Removes Gene at specified index. Does internal bounds check
+     *
+     * @param index The index of the Gene to remove
+     */
+    public void removeGene(int index) {
+	if (this.genes.size() > index) {
+	    this.genes.remove(index);
+	}
+    }
+
+    /**
      * Return an array containing all the genes
-     * (({@link com.andreistraut.gaps.datamodel.graph.DirectedWeightedEdge}))
-     * in the PathChromosome
+     * (({@link com.andreistraut.gaps.datamodel.graph.DirectedWeightedEdge})) in
+     * the PathChromosome
      *
      * @return An array containing all the genes
-     * ({@link com.andreistraut.gaps.datamodel.graph.DirectedWeightedEdge})
-     * in the PathChromosome
+     * ({@link com.andreistraut.gaps.datamodel.graph.DirectedWeightedEdge}) in
+     * the PathChromosome
      */
     @Override
     public Gene[] getGenes() {
@@ -325,12 +326,12 @@ public class PathChromosome extends BaseChromosome implements IChromosome {
 
     /**
      * Return A list containing all the genes
-     * ({@link com.andreistraut.gaps.datamodel.graph.DirectedWeightedEdge})
-     * in the PathChromosome
+     * ({@link com.andreistraut.gaps.datamodel.graph.DirectedWeightedEdge}) in
+     * the PathChromosome
      *
      * @return A list containing all the genes
-     * ({@link com.andreistraut.gaps.datamodel.graph.DirectedWeightedEdge})
-     * in this PathChromosome
+     * ({@link com.andreistraut.gaps.datamodel.graph.DirectedWeightedEdge}) in
+     * this PathChromosome
      */
     public ArrayList<EdgeGene> getGenesList() {
 	return this.genes;
@@ -341,8 +342,8 @@ public class PathChromosome extends BaseChromosome implements IChromosome {
      * ({@link com.andreistraut.gaps.datamodel.graph.DirectedWeightedEdge})
      *
      * @param genesList The genes
-     * ({@link com.andreistraut.gaps.datamodel.graph.DirectedWeightedEdge})
-     * to set to this PathChromosome
+     * ({@link com.andreistraut.gaps.datamodel.graph.DirectedWeightedEdge}) to
+     * set to this PathChromosome
      */
     public void setGenesList(ArrayList<EdgeGene> genesList) {
 	this.genes = genesList;
@@ -405,15 +406,15 @@ public class PathChromosome extends BaseChromosome implements IChromosome {
 
 	int cost = 0;
 
-	if (startIndex < 0) {
+	if (startIndex < 0 || startIndex >= this.size()) {
 	    startIndex = 0;
 	}
 
-	if (endIndex > this.size() - 1) {
-	    endIndex = this.size();
+	if (endIndex >= this.size()) {
+	    endIndex = this.size() - 1;
 	}
 
-	for (int i = startIndex; i < endIndex; i++) {
+	for (int i = startIndex; i <= endIndex; i++) {
 	    cost += this.genes.get(i).getAllele().getCost();
 	}
 
@@ -421,8 +422,17 @@ public class PathChromosome extends BaseChromosome implements IChromosome {
     }
 
     /**
+     * Retrieves the maximum possible fitness value of this PathChromosome
+     *
+     * @return The maximum possible fitness value of this PathChromosome
+     */
+    public int getMaxFitnessValue() {
+	return MAX_FITNESS_VALUE;
+    }
+
+    /**
      * Retrieves the fitness value of this PathChromosome. Higher values are
-     * better
+     * better. Is calculated as the inverse of cost
      *
      * @return The fitness of this PathChromosome
      */
@@ -432,14 +442,7 @@ public class PathChromosome extends BaseChromosome implements IChromosome {
 	    return MIN_FITNESS_VALUE;
 	}
 
-	int cost = 0;
-
-	for (EdgeGene gene : this.genes) {
-	    cost += gene.getAllele().getCost();
-	}
-
-	this.fitnessValue = MAX_FITNESS_VALUE - cost;
-	return this.fitnessValue;
+	return this.MAX_FITNESS_VALUE - this.getCost();
     }
 
     /**
@@ -477,12 +480,17 @@ public class PathChromosome extends BaseChromosome implements IChromosome {
 
     /**
      * Compares the fitness value of the current PathChromosome with the one of
-     * the PathChromosome given as parameter
+     * the PathChromosome given as parameter (strict compare)
      *
      * @param chromosome PathChromosome to compare fitness value to
-     * @return True if this PathChromosome is fitter, false otherwise
+     * @return True if this PathChromosome is strictly fitter (no equality
+     * included), false otherwise
      */
     public boolean isFitterThan(PathChromosome chromosome) {
+	if (chromosome == null) {
+	    return true;
+	}
+	
 	return this.getFitnessValue() > chromosome.getFitnessValue();
     }
 
@@ -651,9 +659,9 @@ public class PathChromosome extends BaseChromosome implements IChromosome {
      * @return True if this PathChromosome is a legal path, false otherwise
      */
     public boolean isLegal() {
-	boolean valid = (this.genes != null && this.genes.size() > 0);
+	boolean seemsValid = (this.genes != null && this.genes.size() > 0);
 
-	if (source == null || destination == null) {
+	if (source == null || destination == null || !seemsValid) {
 	    return false;
 	}
 
@@ -662,7 +670,7 @@ public class PathChromosome extends BaseChromosome implements IChromosome {
 	    return false;
 	}
 
-	if (valid) {
+	if (seemsValid) {
 	    for (int i = 0; i < genes.size() - 1; i++) {
 		/* 
 		 Continuity check from source to destination:
@@ -679,7 +687,7 @@ public class PathChromosome extends BaseChromosome implements IChromosome {
 	    }
 	}
 
-	return valid;
+	return seemsValid;
     }
 
     /**
@@ -725,10 +733,10 @@ public class PathChromosome extends BaseChromosome implements IChromosome {
     public String getUniqueIDTemplate(int a_index) {
 	throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
-    
+
     public JsonObject toJson() {
 	JsonObject jsonChromosome = new JsonObject();
-	
+
 	jsonChromosome.add("nodeFrom", this.source.toJson());
 	jsonChromosome.add("nodeTo", this.destination.toJson());
 	jsonChromosome.addProperty("fitness", this.getFitnessValue());
@@ -736,13 +744,13 @@ public class PathChromosome extends BaseChromosome implements IChromosome {
 	jsonChromosome.addProperty("isLegal", this.isLegal());
 	jsonChromosome.addProperty("isSelectedForNextGeneration", this.isSelectedForNextGeneration);
 	jsonChromosome.addProperty("age", this.age);
-	
+
 	JsonArray path = new JsonArray();
-	for(EdgeGene gene : this.getGenesList()) {
+	for (EdgeGene gene : this.getGenesList()) {
 	    path.add(gene.getAllele().toJson());
-	}	
+	}
 	jsonChromosome.add("path", path);
-	
+
 	return jsonChromosome;
     }
 
