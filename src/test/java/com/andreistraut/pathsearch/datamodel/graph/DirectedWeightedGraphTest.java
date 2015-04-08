@@ -28,7 +28,7 @@ public class DirectedWeightedGraphTest {
     
     @BeforeClass
     public static void setUpClass() {
-	Logger.getLogger(DirectedWeightedGraph.class.getName()).log(Level.INFO,
+	Logger.getLogger(DirectedWeightedGraphTest.class.getName()).log(Level.INFO,
 		DirectedWeightedGraphTest.class.toString() + " TEST: Graph");
     }
     

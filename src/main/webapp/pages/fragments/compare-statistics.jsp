@@ -34,7 +34,7 @@
                         Winner: KShortest</h3>
                     <h3 
                         ng-if="compareStatisticsKShortest.chromosomes[0].cost >= geneticStatistics.bestPathCost">
-                        Winner: PSGA</h3>
+                        Winner: GAPS</h3>
                     
                     <h3>Search Started: {{convertTime(compareStatisticsKShortest.startTimestamp)}}</h3>
                     <h3>Search Finished: {{convertTime(compareStatisticsKShortest.endTimestamp)}}</h3>

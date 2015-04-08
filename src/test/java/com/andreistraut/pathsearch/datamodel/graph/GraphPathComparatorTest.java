@@ -33,7 +33,7 @@ public class GraphPathComparatorTest {
     
     @BeforeClass
     public static void setUpClass() {
-	Logger.getLogger(DirectedWeightedGraph.class.getName()).log(Level.INFO,
+	Logger.getLogger(GraphPathComparatorTest.class.getName()).log(Level.INFO,
 		GraphPathComparatorTest.class.toString() + " TEST: Graph Path Comparator");    
     }
 

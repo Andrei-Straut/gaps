@@ -22,7 +22,7 @@ public class DirectedWeightedEdgeFactoryTest {
     
     @BeforeClass
     public static void setUpClass() {
-	Logger.getLogger(DirectedWeightedGraph.class.getName()).log(Level.INFO,
+	Logger.getLogger(DirectedWeightedEdgeFactoryTest.class.getName()).log(Level.INFO,
 		DirectedWeightedEdgeFactoryTest.class.toString() + " TEST: Edge Factory");    
     }
 

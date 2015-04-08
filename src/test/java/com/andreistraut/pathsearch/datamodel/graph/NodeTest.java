@@ -19,7 +19,7 @@ public class NodeTest {
 
     @BeforeClass
     public static void setUpClass() {
-	Logger.getLogger(DirectedWeightedGraph.class.getName()).log(Level.INFO,
+	Logger.getLogger(NodeTest.class.getName()).log(Level.INFO,
 		NodeTest.class.toString() + " TEST: Node");
     }
 
@@ -96,8 +96,8 @@ public class NodeTest {
 	first.setName("Node1");
 	second.setId("Node1");
 	second.setName("Node1");
-	assertEquals(first.toString(), first.toString());
-	assertEquals(second.toString(), first.toString());
+	assertFalse(first.toString().equals(second.toString()));
+	assertFalse(second.toString().equals(first.toString()));
     }
 
     @Test
@@ -106,8 +106,8 @@ public class NodeTest {
 	first.setName("Node2");
 	second.setId("Node1");
 	second.setName("Node1");
-	assertEquals(first.toString(), first.toString());
-	assertEquals(second.toString(), first.toString());
+	assertFalse(first.toString().equals(second.toString()));
+	assertFalse(second.toString().equals(first.toString()));
     }
 
     @Test

@@ -1,7 +1,7 @@
 /**
- * Main PSGA controller
+ * Main GAPS controller
  */
-psga.controller('psgacontroller', ['$scope', 'Socket', 'Notification', function ($scope, $socket, Notification) {
+gaps.controller('gapscontroller', ['$scope', 'Socket', 'Notification', function ($scope, $socket, Notification) {
         /*
          * =====================================================================
          * Main functions
@@ -383,8 +383,8 @@ psga.controller('psgacontroller', ['$scope', 'Socket', 'Notification', function 
                 $scope.compareStatisticsKShortest.chromosomes.push(data);
 
                 var resultsCompareChart = {};
-                resultsCompareChart.y = 'PSGA Best, KShortest #' + $scope.compareStatisticsKShortest.compareChart.length;
-                resultsCompareChart.PSGA = geneticStatistics.bestPathCost;
+                resultsCompareChart.y = 'GAPS Best, KShortest #' + $scope.compareStatisticsKShortest.compareChart.length;
+                resultsCompareChart.GAPS = geneticStatistics.bestPathCost;
                 resultsCompareChart.KShortest = data.cost;
 
                 $scope.compareStatisticsKShortest.compareChart.push(resultsCompareChart);
@@ -670,8 +670,8 @@ psga.controller('psgacontroller', ['$scope', 'Socket', 'Notification', function 
                     element: element,
                     data: data,
                     xkey: 'y',
-                    ykeys: ['PSGA', 'KShortest'],
-                    labels: ['PSGA', 'KShortest'],
+                    ykeys: ['GAPS', 'KShortest'],
+                    labels: ['GAPS', 'KShortest'],
                     hideHover: 'auto',
                     resize: true
                 });

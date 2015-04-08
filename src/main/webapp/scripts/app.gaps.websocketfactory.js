@@ -1,7 +1,7 @@
 /**
  * Websocket factory
  */
-psga.factory('Socket', ['$q', '$rootScope', function ($q, $rootScope) {
+gaps.factory('Socket', ['$q', '$rootScope', function ($q, $rootScope) {
         // We return this object to anything injecting our service
         var Service = {};
         // Keep all pending requests here until they get responses

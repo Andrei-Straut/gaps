@@ -1,10 +1,10 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
-<html ng-app="psga">
+<html ng-app="gaps">
     <head>
         <meta charset="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <title>PathSearch Genetics</title>
+        <title>Genetic Algorithm Path Search</title>
 
         <!-- ANGULAR STYLES-->
         <link href="styles/lib/angular/angular.ui-notification.css" rel="stylesheet" />
@@ -45,14 +45,14 @@
         <script src="scripts/lib/morris/raphael-2.1.0.min.js"></script>
         <script src="scripts/lib/morris/morris.js"></script>
         <!-- CUSTOM SCRIPTS -->
-        <script src="scripts/app.psga.js"></script>
-        <script src="scripts/app.psga.psgacontroller.js"></script>
-        <script src="scripts/app.psga.websocketfactory.js"></script>
+        <script src="scripts/app.gaps.js"></script>
+        <script src="scripts/app.gaps.gapscontroller.js"></script>
+        <script src="scripts/app.gaps.websocketfactory.js"></script>
         <script src="scripts/main.js"></script>
 
     </head>
     <body>
-        <div id="wrapper" ng-controller="psgacontroller">
+        <div id="wrapper" ng-controller="gapscontroller">
             <a name="top"></a>
 
             <!-- /. NAV TOP  -->
@@ -74,12 +74,12 @@
 
                     <%@include file="/pages/fragments/graph-statistics.jsp" %>
 
-                    <div class="modal fade" id="modalLoadingError" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
+                    <div class="modal fade" id="modalLoadingError" tabindex="-1" role="dialog" aria-labelledby="loadingError" aria-hidden="true" style="display: none;">
                         <div class="modal-dialog">
                             <div class="modal-content">
                                 <div class="modal-header">
                                     <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-                                    <h4 class="modal-title" id="myModalLabel">Loading error</h4>
+                                    <h4 class="modal-title" id="loadingError">Loading error</h4>
                                 </div>
                                 <div class="modal-body">
                                     An error has occurred loading the data :(<br/>

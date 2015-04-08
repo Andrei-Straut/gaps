@@ -18,7 +18,7 @@ public class DirectedWeightedEdgeTest {
 
     @BeforeClass
     public static void setUpClass() {
-	Logger.getLogger(DirectedWeightedGraph.class.getName()).log(Level.INFO,
+	Logger.getLogger(DirectedWeightedEdgeTest.class.getName()).log(Level.INFO,
 		DirectedWeightedEdgeTest.class.toString() + " TEST: Edge");
     }
 

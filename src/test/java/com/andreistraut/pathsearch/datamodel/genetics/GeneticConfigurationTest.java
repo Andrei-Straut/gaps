@@ -23,7 +23,7 @@ public class GeneticConfigurationTest {
     
     @BeforeClass
     public static void setUpClass() {
-	Logger.getLogger(DirectedWeightedGraph.class.getName()).log(Level.INFO,
+	Logger.getLogger(GeneticConfigurationTest.class.getName()).log(Level.INFO,
 		GeneticConfigurationTest.class.toString() + " TEST: Genetic Configuration");    
     }
 

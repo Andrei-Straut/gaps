@@ -27,8 +27,8 @@ public class EdgeGeneTest {
 
     @BeforeClass
     public static void setUpClass() {
-	Logger.getLogger(DirectedWeightedGraph.class.getName()).log(Level.INFO,
-		GeneticConfigurationTest.class.toString() + " TEST: Edge Gene");
+	Logger.getLogger(EdgeGeneTest.class.getName()).log(Level.INFO,
+		EdgeGeneTest.class.toString() + " TEST: Edge Gene");
     }
 
     @Before

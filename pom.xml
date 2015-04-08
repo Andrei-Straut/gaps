@@ -4,11 +4,11 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>com.andreistraut</groupId>
-    <artifactId>PathSearchGA</artifactId>
+    <artifactId>gaps</artifactId>
     <version>1.0-SNAPSHOT</version>
     <packaging>war</packaging>
 
-    <name>PathSearchGA</name>
+    <name>GAPS</name>
 
     <properties>
         <endorsed.dir>${project.build.directory}/endorsed</endorsed.dir>
