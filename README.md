@@ -16,6 +16,8 @@ How well does it perform?
 --------------
 For small graphs (30 - 100 nodes, 100 - 1000 edges), in ~10% of cases it outperforms [JGraphT's](https://github.com/jgrapht/jgrapht) KShortestPath algorithm when it concerns path costs, and it comes close in terms of runtime performance.
 
+In most cases, it loses to JGraphT, but barely, usually either tied up, or coming close behind.
+
 What are the future plans?
 --------------
 Please check the [issues page](https://github.com/Andrei-Straut/gaps/issues) for a list of upcoming features.
