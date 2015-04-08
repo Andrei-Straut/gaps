@@ -18,6 +18,10 @@ For small graphs (30 - 100 nodes, 100 - 1000 edges), in ~10% of cases it outperf
 
 In most cases, it loses to JGraphT, but barely, usually either tied up, or coming close behind.
 
+What are the limits?
+--------------
+Starting from around 100 nodes / 1000 edges, it becomes a bit sluggish client-side due to graph rendering issues. However, if installed and run client-side (there's a runnable Main class with examples), it performs well even for very large graphs (100k nodes, 1M edges).
+
 What are the future plans?
 --------------
 Please check the [issues page](https://github.com/Andrei-Straut/gaps/issues) for a list of upcoming features.
