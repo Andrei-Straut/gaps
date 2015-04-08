@@ -6,7 +6,7 @@
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
         </button>
-        <a class="navbar-brand" href="index.html">PathSearch Genetics</a>
+        <a class="navbar-brand" href="index.html">Genetic Path Search</a>
     </div>
 
     <div id="spinner-wrapper" style="position: fixed; right: 10px; top: 10px; z-index: 100000;" ng-show="load.wip">
