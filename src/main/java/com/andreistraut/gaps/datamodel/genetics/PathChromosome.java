@@ -490,7 +490,7 @@ public class PathChromosome extends BaseChromosome implements IChromosome {
 	if (chromosome == null) {
 	    return true;
 	}
-	
+
 	return this.getFitnessValue() > chromosome.getFitnessValue();
     }
 
@@ -510,25 +510,25 @@ public class PathChromosome extends BaseChromosome implements IChromosome {
     public ArrayList<EdgeGene> getCyclicGeneSequence() {
 
 	ArrayList<EdgeGene> cycle = new ArrayList<EdgeGene>();
-	LinkedHashMap<Node, EdgeGene> visitedGenes = new LinkedHashMap<Node, EdgeGene>();
+	LinkedHashMap<String, EdgeGene> visitedGenes = new LinkedHashMap<String, EdgeGene>();
 
 	for (EdgeGene gene : this.genes) {
 
 	    /**
 	     * Cycle found
 	     */
-	    if (visitedGenes.containsKey(gene.getAllele().getSource())) {
+	    if (visitedGenes.containsKey(gene.getAllele().getDestination().toString())) {
 		/**
 		 * Find the section containing the cycle
 		 */
-		EdgeGene firstGene = visitedGenes.get(gene.getAllele().getSource());
+		EdgeGene firstGene = visitedGenes.get(gene.getAllele().getDestination().toString());
 		int firstEdgeIndex = this.genes.indexOf(firstGene);
-		int lastEdgeIndex = this.genes.indexOf(gene);
+		int lastEdgeIndex = this.genes.lastIndexOf(gene);
 
-		cycle = new ArrayList<EdgeGene>(this.genes.subList(firstEdgeIndex, lastEdgeIndex));
+		cycle = new ArrayList<EdgeGene>(this.genes.subList(firstEdgeIndex, lastEdgeIndex + 1));
 		return cycle;
 	    } else {
-		visitedGenes.put(gene.getAllele().getSource(), gene);
+		visitedGenes.put(gene.getAllele().getSource().toString(), gene);
 	    }
 	}
 

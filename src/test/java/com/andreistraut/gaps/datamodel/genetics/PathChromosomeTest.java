@@ -23,8 +23,8 @@ public class PathChromosomeTest {
     private DirectedWeightedEdge secondToThirdEdge;
     private DirectedWeightedGraph graph;
 
-    private EdgeGene firstGene;
-    private EdgeGene secondGene;
+    private EdgeGene firstToSecondGene;
+    private EdgeGene secondToThirdGene;
     private ArrayList<EdgeGene> genes;
     private GeneticConfiguration conf;
 
@@ -50,12 +50,12 @@ public class PathChromosomeTest {
 
 	conf = new GeneticConfiguration("EdgeGeneTest", graph);
 
-	firstGene = new EdgeGene(firstToSecondEdge, conf);
-	secondGene = new EdgeGene(secondToThirdEdge, conf);
+	firstToSecondGene = new EdgeGene(firstToSecondEdge, conf);
+	secondToThirdGene = new EdgeGene(secondToThirdEdge, conf);
 
 	genes = new ArrayList<EdgeGene>();
-	genes.add(firstGene);
-	genes.add(secondGene);
+	genes.add(firstToSecondGene);
+	genes.add(secondToThirdGene);
     }
 
     @BeforeClass
@@ -65,15 +65,27 @@ public class PathChromosomeTest {
     }
 
     @Test
+    public void testConstructorNullConfiguration() throws InvalidConfigurationException {
+	//It's ok, this is supposed to throw exception. In fact, we are testing if indeed it does
+	PathChromosome chromosome;
+	try {
+	    chromosome = new PathChromosome(null, genes, firstNode, thirdNode);
+	} catch (InvalidConfigurationException ex) {
+	    Assert.assertTrue(ex.getClass() == InvalidConfigurationException.class);
+	    Assert.assertTrue(ex.getMessage().equals("Configuration to be set must not be null!"));
+	}
+    }
+
+    @Test
     public void testGetLowestCostGene() throws InvalidConfigurationException {
 	PathChromosome chromosome = new PathChromosome(conf, genes, firstNode, thirdNode);
-	Assert.assertTrue(firstGene == chromosome.getLowestCostGene());
+	Assert.assertTrue(firstToSecondGene == chromosome.getLowestCostGene());
     }
 
     @Test
     public void testGetHighestCostGene() throws InvalidConfigurationException {
 	PathChromosome chromosome = new PathChromosome(conf, genes, firstNode, thirdNode);
-	Assert.assertTrue(secondGene == chromosome.getHighestCostGene());
+	Assert.assertTrue(secondToThirdGene == chromosome.getHighestCostGene());
     }
 
     @Test
@@ -90,7 +102,7 @@ public class PathChromosomeTest {
 
     @Test
     public void testSetGene_2argsFirstGeneValidGene() throws InvalidConfigurationException {
-	// Set a valid gene at the first position. Expected: gene is set, genes list size not modified
+	// Set a valid secondToFirstGene at the chromosome position. Expected: secondToFirstGene is set, genes list size not modified
 	PathChromosome chromosome = new PathChromosome(conf, genes, firstNode, thirdNode);
 	int originalNoOfGenes = chromosome.getGenesList().size();
 
@@ -106,7 +118,7 @@ public class PathChromosomeTest {
 
     @Test
     public void testSetGene_2argsFirstGeneInvalidGene() throws InvalidConfigurationException {
-	// Set an invalid gene at the first position, without checking validity. Expected: gene is set
+	// Set an invalid secondToFirstGene at the chromosome position, without checking validity. Expected: secondToFirstGene is set
 	PathChromosome chromosome = new PathChromosome(conf, genes, firstNode, thirdNode);
 	int originalNoOfGenes = chromosome.getGenesList().size();
 
@@ -122,7 +134,7 @@ public class PathChromosomeTest {
 
     @Test
     public void testSetGene_2argsLastGeneValidGene() throws InvalidConfigurationException {
-	// Set a valid gene at the last position. Expected: gene is set, genes list size not modified
+	// Set a valid secondToFirstGene at the last position. Expected: secondToFirstGene is set, genes list size not modified
 	PathChromosome chromosome = new PathChromosome(conf, genes, firstNode, thirdNode);
 	int originalNoOfGenes = chromosome.getGenesList().size();
 
@@ -138,7 +150,7 @@ public class PathChromosomeTest {
 
     @Test
     public void testSetGene_2argsLastGeneInvalidGene() throws InvalidConfigurationException {
-	// Set an invalid gene at the last position. Expected: gene is set, genes list size not modified
+	// Set an invalid secondToFirstGene at the last position. Expected: secondToFirstGene is set, genes list size not modified
 	PathChromosome chromosome = new PathChromosome(conf, genes, firstNode, thirdNode);
 	int originalNoOfGenes = chromosome.getGenesList().size();
 
@@ -154,7 +166,7 @@ public class PathChromosomeTest {
 
     @Test
     public void testSetGene_3argsFirstGeneValidGeneCheckValidity() throws InvalidConfigurationException {
-	// Set a valid gene, and check validity. Expected: gene is set
+	// Set a valid secondToFirstGene, and check validity. Expected: secondToFirstGene is set
 	PathChromosome chromosome = new PathChromosome(conf, genes, firstNode, thirdNode);
 	DirectedWeightedEdge edge = new DirectedWeightedEdge(firstNode, secondNode);
 	EdgeGene gene = new EdgeGene(edge, conf);
@@ -166,7 +178,7 @@ public class PathChromosomeTest {
 
     @Test
     public void testSetGene_3argsFirstGeneValidGeneSkipValidity() throws InvalidConfigurationException {
-	// Set a valid gene, without checking validity. Expected: gene is set
+	// Set a valid secondToFirstGene, without checking validity. Expected: secondToFirstGene is set
 	PathChromosome chromosome = new PathChromosome(conf, genes, firstNode, thirdNode);
 	DirectedWeightedEdge edge = new DirectedWeightedEdge(firstNode, secondNode);
 	EdgeGene gene = new EdgeGene(edge, conf);
@@ -178,7 +190,7 @@ public class PathChromosomeTest {
 
     @Test
     public void testSetGene_3argsFirstGeneInvalidGeneSkipValidity() throws InvalidConfigurationException {
-	// Set a invalid gene, without checking validity. Expected: gene is set
+	// Set a invalid secondToFirstGene, without checking validity. Expected: secondToFirstGene is set
 	PathChromosome chromosome = new PathChromosome(conf, genes, firstNode, thirdNode);
 	DirectedWeightedEdge edge = new DirectedWeightedEdge(secondNode, thirdNode);
 	EdgeGene gene = new EdgeGene(edge, conf);
@@ -190,7 +202,7 @@ public class PathChromosomeTest {
 
     @Test
     public void testSetGene_3argsFirstGeneInvalidGeneCheckValidity() throws InvalidConfigurationException {
-	// Set an invalid gene at the first position. Expected: gene is  not set, genes list continues unmodified
+	// Set an invalid secondToFirstGene at the chromosome position. Expected: secondToFirstGene is  not set, genes list continues unmodified
 	PathChromosome chromosome = new PathChromosome(conf, genes, firstNode, thirdNode);
 
 	DirectedWeightedEdge edge = new DirectedWeightedEdge(secondNode, thirdNode);
@@ -204,7 +216,7 @@ public class PathChromosomeTest {
 
     @Test
     public void testSetGene_3argsLastGeneValidGeneSkipValidity() throws InvalidConfigurationException {
-	// Set an valid gene at the last position. Expected: gene is  set
+	// Set an valid secondToFirstGene at the last position. Expected: secondToFirstGene is  set
 	PathChromosome chromosome = new PathChromosome(conf, genes, firstNode, thirdNode);
 	DirectedWeightedEdge edge = new DirectedWeightedEdge(firstNode, secondNode);
 	EdgeGene gene = new EdgeGene(edge, conf);
@@ -216,7 +228,7 @@ public class PathChromosomeTest {
 
     @Test
     public void testSetGene_3argsLastGeneInvalidGeneCheckValidity() throws InvalidConfigurationException {
-	// Set an invalid gene at the last position. Expected: gene is  not set
+	// Set an invalid secondToFirstGene at the last position. Expected: secondToFirstGene is  not set
 	PathChromosome chromosome = new PathChromosome(conf, genes, firstNode, thirdNode);
 	int originalNoOfGenes = chromosome.getGenesList().size();
 
@@ -323,6 +335,56 @@ public class PathChromosomeTest {
     }
 
     @Test
+    public void testIsLegalValidChromosome() throws InvalidConfigurationException {
+	PathChromosome chromosome = new PathChromosome(conf, genes, firstNode, thirdNode);
+
+	Assert.assertTrue(chromosome.isLegal());
+    }
+
+    @Test
+    public void testIsLegalInvalidChromosome() throws InvalidConfigurationException {
+	DirectedWeightedEdge edge1 = new DirectedWeightedEdge(secondNode, firstNode);
+	EdgeGene secondToFirstGene = new EdgeGene(edge1, conf);
+
+	ArrayList<EdgeGene> edgeGenes = new ArrayList<EdgeGene>();
+	edgeGenes.add(firstToSecondGene);
+	edgeGenes.add(secondToFirstGene);
+	edgeGenes.add(firstToSecondGene);
+
+	PathChromosome chromosome = new PathChromosome(conf, edgeGenes, firstNode, thirdNode);
+
+	Assert.assertFalse(chromosome.isLegal());
+    }
+
+    @Test
+    public void testIsLegalInvalidChromosomeEmptyEdges() throws InvalidConfigurationException {
+	PathChromosome chromosome = new PathChromosome(conf, new ArrayList<EdgeGene>(), firstNode, thirdNode);
+
+	Assert.assertFalse(chromosome.isLegal());
+    }
+
+    @Test
+    public void testIsLegalValidChromosomeNullSource() throws InvalidConfigurationException {
+	PathChromosome chromosome = new PathChromosome(conf, genes, null, thirdNode);
+
+	Assert.assertFalse(chromosome.isLegal());
+    }
+
+    @Test
+    public void testIsLegalValidChromosomeNullDestination() throws InvalidConfigurationException {
+	PathChromosome chromosome = new PathChromosome(conf, genes, firstNode, null);
+
+	Assert.assertFalse(chromosome.isLegal());
+    }
+
+    @Test
+    public void testIsLegalValidChromosomeNullSourceAndDestination() throws InvalidConfigurationException {
+	PathChromosome chromosome = new PathChromosome(conf, genes, null, null);
+
+	Assert.assertFalse(chromosome.isLegal());
+    }
+
+    @Test
     public void testIsFitterThanHigherFitness() throws InvalidConfigurationException {
 	PathChromosome first = new PathChromosome(conf, genes, firstNode, thirdNode);
 
@@ -400,11 +462,60 @@ public class PathChromosomeTest {
     }
 
     @Test
-    public void testGetCyclicGeneSequence() {
+    public void testGetCyclicGeneSequenceValidChromosome() throws InvalidConfigurationException {
+	DirectedWeightedEdge edge1 = new DirectedWeightedEdge(secondNode, firstNode);
+	EdgeGene secondToFirstGene = new EdgeGene(edge1, conf);
+	DirectedWeightedEdge edge2 = new DirectedWeightedEdge(firstNode, thirdNode);
+	EdgeGene firstToThirdGene = new EdgeGene(edge2, conf);
+
+	ArrayList<EdgeGene> edgeGenes = new ArrayList<EdgeGene>();
+	edgeGenes.add(firstToSecondGene);
+	edgeGenes.add(secondToFirstGene);
+	edgeGenes.add(firstToThirdGene);
+
+	PathChromosome chromosome = new PathChromosome(conf, edgeGenes, firstNode, thirdNode);
+	ArrayList<EdgeGene> cycle = chromosome.getCyclicGeneSequence();
+
+	Assert.assertTrue(chromosome.isLegal());
+
+	System.out.println(cycle.toString());
+	Assert.assertTrue(cycle.get(0) == firstToSecondGene);
+	Assert.assertTrue(cycle.get(1) == secondToFirstGene);
     }
 
     @Test
-    public void testIsLegal() {
+    public void testGetCyclicGeneSequenceInvalidChromosome() throws InvalidConfigurationException {
+	DirectedWeightedEdge edge1 = new DirectedWeightedEdge(secondNode, firstNode);
+	EdgeGene secondToFirstGene = new EdgeGene(edge1, conf);
+
+	ArrayList<EdgeGene> edgeGenes = new ArrayList<EdgeGene>();
+	edgeGenes.add(firstToSecondGene);
+	edgeGenes.add(secondToFirstGene);
+	edgeGenes.add(firstToSecondGene);
+
+	PathChromosome chromosome = new PathChromosome(conf, edgeGenes, firstNode, thirdNode);
+	ArrayList<EdgeGene> cycle = chromosome.getCyclicGeneSequence();
+
+	Assert.assertFalse(chromosome.isLegal());
+	Assert.assertTrue(cycle.get(0) == firstToSecondGene);
+	Assert.assertTrue(cycle.get(1) == secondToFirstGene);
+    }
+
+    @Test
+    public void testGetCyclicGeneSequenceInvalidChromosomeCycleOnly() throws InvalidConfigurationException {
+	DirectedWeightedEdge edge1 = new DirectedWeightedEdge(secondNode, firstNode);
+	EdgeGene secondToFirstGene = new EdgeGene(edge1, conf);
+
+	ArrayList<EdgeGene> edgeGenes = new ArrayList<EdgeGene>();
+	edgeGenes.add(firstToSecondGene);
+	edgeGenes.add(secondToFirstGene);
+
+	PathChromosome chromosome = new PathChromosome(conf, edgeGenes, firstNode, thirdNode);
+	ArrayList<EdgeGene> cycle = chromosome.getCyclicGeneSequence();
+
+	Assert.assertFalse(chromosome.isLegal());
+	Assert.assertTrue(cycle.get(0) == firstToSecondGene);
+	Assert.assertTrue(cycle.get(1) == secondToFirstGene);
     }
 
     @Test
