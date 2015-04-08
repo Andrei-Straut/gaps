@@ -54,11 +54,6 @@ public class DirectedWeightedGraphPathTest {
     }
     
     @Test
-    public void testGetGraph() {
-	Assert.assertTrue(graph.equals(path.getGraph()));
-    }
-
-    @Test
     public void testGetStartVertex() {
 	Assert.assertTrue(path.getStartVertex().equals(first));
     }

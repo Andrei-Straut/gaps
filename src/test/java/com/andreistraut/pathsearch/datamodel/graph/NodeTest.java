@@ -6,132 +6,119 @@ import java.util.logging.Logger;
 import org.junit.Assert;
 import org.junit.Test;
 import static org.junit.Assert.*;
+import org.junit.Before;
 import org.junit.BeforeClass;
 
 public class NodeTest {
 
+    Node first;
+    Node second;
+
     public NodeTest() {
     }
-    
+
     @BeforeClass
     public static void setUpClass() {
 	Logger.getLogger(DirectedWeightedGraph.class.getName()).log(Level.INFO,
-		NodeTest.class.toString() + " TEST: Node");    
+		NodeTest.class.toString() + " TEST: Node");
+    }
+
+    @Before
+    public void setUp() {
+	first = new Node("Node1", "Node1");
+	second = new Node("Node2", "Node2");
     }
 
     @Test
-    public void testSetId() {
-	Node node = new Node("Node1", "Node1");
-	node.setId("Node2");
-	assertEquals("Node2", node.getId());
-    }
-
-    @Test
-    public void testSetName() {
-	Node node = new Node("Node1", "Node1");
-	node.setName("Node2");
-	assertEquals("Node2", node.getName());
-    }
-
-    @Test
-    public void testHashCode() {
-	//TODO: Refactor this
-	Node first = new Node("Node1", "Node1");
-	Node second = new Node("Node1", "Node1");
-	assertEquals(second.hashCode(), first.hashCode());
-
-	first.setId("Node2");
-	first.setName("Node2");
-	second.setId("Node1");
-	second.setId("Node1");
-	Assert.assertFalse(first.hashCode() == second.hashCode());
-	Assert.assertFalse(second.hashCode() == first.hashCode());
-
-	first.setId("Node2");
+    public void testHashCodeEquality() {
+	first.setId("Node1");
 	first.setName("Node1");
 	second.setId("Node1");
-	second.setId("Node1");
-	Assert.assertFalse(first.hashCode() == second.hashCode());
-	Assert.assertFalse(second.hashCode() == first.hashCode());
+	second.setName("Node1");
+	assertEquals(second.hashCode(), first.hashCode());
+    }
 
-	first.setId("Node1");
-	first.setName("Node2");
-	second.setId("Node1");
+    @Test
+    public void testHashCodeDifferentId() {
+	first.setId("Node2");
 	second.setId("Node1");
 	Assert.assertFalse(first.hashCode() == second.hashCode());
 	Assert.assertFalse(second.hashCode() == first.hashCode());
     }
 
     @Test
-    public void testEquals() {
-	//TODO: Refactor this
-	Node first = new Node("Node1", "Node1");
-	Node second = new Node("Node1", "Node1");
+    public void testHashCodeDifferentName() {
+	first.setName("Node2");
+	second.setName("Node1");
+	Assert.assertFalse(first.hashCode() == second.hashCode());
+	Assert.assertFalse(second.hashCode() == first.hashCode());
+    }
+
+    @Test
+    public void testEqualsEquality() {
+	first.setId("Node1");
+	first.setName("Node1");
+	second.setId("Node1");
+	second.setName("Node1");
 	Assert.assertTrue(first.equals(second));
 	Assert.assertTrue(second.equals(first));
+    }
 
+    @Test
+    public void testEqualsDifferentId() {
 	first.setId("Node2");
-	first.setName("Node2");
-	second.setId("Node1");
-	second.setId("Node1");
-	Assert.assertFalse(first.equals(second));
-	Assert.assertFalse(second.equals(first));
-
-	first.setId("Node2");
-	first.setName("Node1");
-	second.setId("Node1");
-	second.setId("Node1");
-	Assert.assertFalse(first.equals(second));
-	Assert.assertFalse(second.equals(first));
-
-	first.setId("Node1");
-	first.setName("Node2");
-	second.setId("Node1");
 	second.setId("Node1");
 	Assert.assertFalse(first.equals(second));
 	Assert.assertFalse(second.equals(first));
     }
 
     @Test
-    public void testToString() {
-	//TODO: Refactor this
-	Node first = new Node("Node1", "Node1");
-	Node second = new Node("Node1", "Node1");
-	assertEquals(second.toString(), first.toString());
-	assertEquals(second.toString(), first.toString());
+    public void testEqualsDifferentName() {
+	first.setName("Node1");
+	second.setName("Node2");
+	Assert.assertFalse(first.equals(second));
+	Assert.assertFalse(second.equals(first));
+    }
 
-	first.setId("Node2");
-	first.setName("Node2");
+    @Test
+    public void testToStringEquality() {
+	first.setId("Node1");
+	first.setName("Node1");
 	second.setId("Node1");
-	second.setId("Node1");
-	Assert.assertFalse(first.toString().equals(second.toString()));
-	Assert.assertFalse(second.toString().equals(first.toString()));
+	second.setName("Node1");
+	assertEquals(second.toString(), first.toString());
+	assertEquals(first.toString(), first.toString());
+    }
 
+    @Test
+    public void testToStringDifferentId() {
 	first.setId("Node2");
 	first.setName("Node1");
 	second.setId("Node1");
-	second.setId("Node1");
-	Assert.assertFalse(first.equals(second));
-	Assert.assertFalse(second.equals(first));
+	second.setName("Node1");
+	assertEquals(first.toString(), first.toString());
+	assertEquals(second.toString(), first.toString());
+    }
 
+    @Test
+    public void testToStringDifferentName() {
 	first.setId("Node1");
 	first.setName("Node2");
 	second.setId("Node1");
-	second.setId("Node1");
-	Assert.assertFalse(first.toString().equals(second.toString()));
-	Assert.assertFalse(second.toString().equals(first.toString()));
+	second.setName("Node1");
+	assertEquals(first.toString(), first.toString());
+	assertEquals(second.toString(), first.toString());
     }
 
     @Test
     public void testToJson() {
-	//TODO: Refactor this
-	Node first = new Node("Node1", "Node1");
+	first = new Node("Node1", "Node1");
 	JsonObject nodeJson = first.toJson();
-	
+
 	Assert.assertTrue(nodeJson.has("id"));
 	Assert.assertTrue(nodeJson.has("name"));
 	Assert.assertTrue(nodeJson.has("data"));
-	
+
 	assertEquals("Node1", nodeJson.get("id").getAsString());
 	assertEquals("Node1", nodeJson.get("name").getAsString());
 

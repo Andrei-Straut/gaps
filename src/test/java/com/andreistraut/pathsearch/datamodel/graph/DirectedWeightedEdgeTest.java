@@ -29,59 +29,6 @@ public class DirectedWeightedEdgeTest {
     }
 
     @Test
-    public void testGetSource() {
-	DirectedWeightedEdge edge = new DirectedWeightedEdge(source, destination);
-	Assert.assertEquals(source, edge.getSource());
-    }
-
-    @Test
-    public void testSetSource() {
-	DirectedWeightedEdge edge = new DirectedWeightedEdge(source, destination);
-	edge.setSource(destination);
-	Assert.assertEquals(destination, edge.getSource());
-    }
-
-    @Test
-    public void testGetDestination() {
-	DirectedWeightedEdge edge = new DirectedWeightedEdge(source, destination);
-	Assert.assertEquals(destination, edge.getDestination());
-    }
-
-    @Test
-    public void testSetDestination() {
-	DirectedWeightedEdge edge = new DirectedWeightedEdge(source, destination);
-	edge.setDestination(source);
-	Assert.assertEquals(source, edge.getDestination());
-    }
-
-    @Test
-    public void testIsDirected() {
-	DirectedWeightedEdge first = new DirectedWeightedEdge(source, destination);
-	Assert.assertEquals(true, first.isDirected());
-
-	DirectedWeightedEdge second = new DirectedWeightedEdge(source, destination, 100, false);
-	Assert.assertEquals(false, second.isDirected());
-    }
-
-    @Test
-    public void testSetIsDirected() {
-	DirectedWeightedEdge edge = new DirectedWeightedEdge(source, destination, 100, true);
-	Assert.assertEquals(true, edge.isDirected());
-
-	edge.setIsDirected(false);
-	Assert.assertEquals(false, edge.isDirected());
-    }
-
-    @Test
-    public void testSetCost() {
-	DirectedWeightedEdge first = new DirectedWeightedEdge(source, destination, 100);
-	Assert.assertEquals(100, first.getCost());
-
-	first.setCost(101);
-	Assert.assertEquals(101, first.getCost());
-    }
-
-    @Test
     public void testEqualsTwoParamConstructor() {
 	DirectedWeightedEdge first = new DirectedWeightedEdge(source, destination);
 	DirectedWeightedEdge second = new DirectedWeightedEdge(source, destination);
@@ -364,7 +311,6 @@ public class DirectedWeightedEdgeTest {
 
     @Test
     public void testToJson() {
-	//TODO: Refactor this
 	DirectedWeightedEdge first;
 	DirectedWeightedEdge second;
 	JsonObject firstJson;

@@ -57,32 +57,6 @@ public class EdgeGeneTest {
     }
 
     @Test
-    public void testGetAllele() throws InvalidConfigurationException {
-	EdgeGene first = new EdgeGene(firstToSecondEdge, conf);
-	Assert.assertEquals(firstToSecondEdge, first.getAllele());
-    }
-
-    @Test
-    public void testSetAllele() throws InvalidConfigurationException {
-	EdgeGene first = new EdgeGene(firstToSecondEdge, conf);
-	first.setAllele(secondToFirstEdge);
-
-	Assert.assertEquals(secondToFirstEdge, first.getAllele());
-    }
-
-    @Test
-    public void testGetConfiguration() throws InvalidConfigurationException {
-	EdgeGene first = new EdgeGene(firstToSecondEdge, conf);
-	Assert.assertTrue(conf == first.getConfiguration());
-    }
-
-    @Test
-    public void testGetInternalValue() throws InvalidConfigurationException {
-	EdgeGene first = new EdgeGene(firstToSecondEdge, conf);
-	Assert.assertEquals(firstToSecondEdge, (DirectedWeightedEdge) first.getInternalValue());
-    }
-
-    @Test
     public void testNewGene() throws InvalidConfigurationException {
 	EdgeGene first = new EdgeGene(firstToSecondEdge, conf);
 	EdgeGene second = (EdgeGene) first.newGene();
@@ -175,18 +149,54 @@ public class EdgeGeneTest {
     }
 
     @Test
-    public void testToString() {
-	//TODO: Finish this
+    public void testCopyConstructor() throws InvalidConfigurationException {
+	EdgeGene first = new EdgeGene(firstToSecondEdge, conf);
+	EdgeGene second = new EdgeGene(first);
+	Assert.assertTrue(first.equals(second));
+	Assert.assertTrue(first.getAllele().equals(second.getAllele()));
+	Assert.assertFalse(first == second);
     }
 
     @Test
-    public void testHashCode() {
-	//TODO: Finish this
+    public void testToStringEquality() throws InvalidConfigurationException {
+	EdgeGene firstGene = new EdgeGene(firstToSecondEdge, conf);
+	EdgeGene secondGene = new EdgeGene(firstToSecondEdge, conf);
+	Assert.assertTrue(firstGene.toString().equals(secondGene.toString()));
     }
 
     @Test
-    public void testEquals() {
-	//TODO: Finish this
+    public void testToStringDifference() throws InvalidConfigurationException {
+	EdgeGene firstGene = new EdgeGene(firstToSecondEdge, conf);
+	EdgeGene secondGene = new EdgeGene(secondToFirstEdge, conf);
+	Assert.assertFalse(firstGene.toString().equals(secondGene.toString()));
+    }
+
+    @Test
+    public void testHashCodeEquality() throws InvalidConfigurationException {
+	EdgeGene firstGene = new EdgeGene(firstToSecondEdge, conf);
+	EdgeGene secondGene = new EdgeGene(firstToSecondEdge, conf);
+	Assert.assertTrue(firstGene.hashCode() == secondGene.hashCode());
+    }
+
+    @Test
+    public void testHashCodeDifference() throws InvalidConfigurationException {
+	EdgeGene firstGene = new EdgeGene(firstToSecondEdge, conf);
+	EdgeGene secondGene = new EdgeGene(secondToFirstEdge, conf);
+	Assert.assertFalse(firstGene.hashCode() == secondGene.hashCode());
+    }
+
+    @Test
+    public void testEqualsEquality() throws InvalidConfigurationException {
+	EdgeGene firstGene = new EdgeGene(firstToSecondEdge, conf);
+	EdgeGene secondGene = new EdgeGene(firstToSecondEdge, conf);
+	Assert.assertTrue(firstGene.equals(secondGene));
+    }
+
+    @Test
+    public void testEqualsDifferencey() throws InvalidConfigurationException {
+	EdgeGene firstGene = new EdgeGene(firstToSecondEdge, conf);
+	EdgeGene secondGene = new EdgeGene(secondToFirstEdge, conf);
+	Assert.assertFalse(firstGene.equals(secondGene));
     }
 
 }
