@@ -39,4 +39,3 @@ Special thanks
 [Bootstrap slider](http://www.eyecon.ro/bootstrap-slider/) and [Bootstrap toggle](http://www.bootstraptoggle.com/) two of the few plugins out there that actually work without extensive hacking or adaptation. Nice work!
 
 [Morris Charts](http://morrisjs.github.io/morris.js/) Put together with JIT, these two pack an unstoppable punch
-
