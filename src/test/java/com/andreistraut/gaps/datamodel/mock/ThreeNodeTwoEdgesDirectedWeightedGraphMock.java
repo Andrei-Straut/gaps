@@ -20,50 +20,50 @@ public class ThreeNodeTwoEdgesDirectedWeightedGraphMock {
     }
 
     public final void reset() {
-	firstNode = new Node("1", "1");
-	secondNode = new Node("2", "2");
-	thirdNode = new Node("3", "3");
+	this.firstNode = new Node("1", "1");
+	this.secondNode = new Node("2", "2");
+	this.thirdNode = new Node("3", "3");
 
-	firstToSecondEdge = new DirectedWeightedEdge(firstNode, secondNode, firstToSecondEdgeCost, true);
-	secondToThirdEdge = new DirectedWeightedEdge(secondNode, thirdNode, secondToThirdEdgeCost, true);
+	this.firstToSecondEdge = new DirectedWeightedEdge(this.firstNode, this.secondNode, this.firstToSecondEdgeCost, true);
+	this.secondToThirdEdge = new DirectedWeightedEdge(this.secondNode, this.thirdNode, this.secondToThirdEdgeCost, true);
 
-	graph = new DirectedWeightedGraph(3, 2);
-	graph.addVertex(firstNode);
-	graph.addVertex(secondNode);
-	graph.addVertex(thirdNode);
-	graph.addEdge(firstNode, secondNode, firstToSecondEdge);
-	graph.addEdge(secondNode, thirdNode, secondToThirdEdge);
+	this.graph = new DirectedWeightedGraph(3, 2);
+	this.graph.addVertex(this.firstNode);
+	this.graph.addVertex(this.secondNode);
+	this.graph.addVertex(this.thirdNode);
+	this.graph.addEdge(this.firstNode, this.secondNode, this.firstToSecondEdge);
+	this.graph.addEdge(this.secondNode, this.thirdNode, this.secondToThirdEdge);
     }
 
     public Node getFirstNode() {
-	return firstNode;
+	return this.firstNode;
     }
 
     public Node getSecondNode() {
-	return secondNode;
+	return this.secondNode;
     }
 
     public Node getThirdNode() {
-	return thirdNode;
+	return this.thirdNode;
     }
 
     public int getFirstToSecondEdgeCost() {
-	return firstToSecondEdgeCost;
+	return this.firstToSecondEdgeCost;
     }
 
     public int getSecondToThirdEdgeCost() {
-	return secondToThirdEdgeCost;
+	return this.secondToThirdEdgeCost;
     }
 
     public DirectedWeightedEdge getFirstToSecondEdge() {
-	return firstToSecondEdge;
+	return this.firstToSecondEdge;
     }
 
     public DirectedWeightedEdge getSecondToThirdEdge() {
-	return secondToThirdEdge;
+	return this.secondToThirdEdge;
     }
 
     public DirectedWeightedGraph getGraph() {
-	return graph;
+	return this.graph;
     }
 }

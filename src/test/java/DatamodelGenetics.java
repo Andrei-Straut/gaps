@@ -8,7 +8,8 @@ import org.junit.runners.Suite;
 @Suite.SuiteClasses({
     com.andreistraut.gaps.datamodel.genetics.EdgeGeneTest.class, 
     com.andreistraut.gaps.datamodel.genetics.PathChromosomeTest.class,
-    com.andreistraut.gaps.datamodel.genetics.PathChromosomeFitnessTest.class
+    com.andreistraut.gaps.datamodel.genetics.PathChromosomeFitnessTest.class,
+    com.andreistraut.gaps.datamodel.genetics.PathChromosomeFitnessComparatorTest.class
     })
 
 public class DatamodelGenetics {    

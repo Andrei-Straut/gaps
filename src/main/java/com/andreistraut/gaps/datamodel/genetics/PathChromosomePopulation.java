@@ -203,7 +203,7 @@ public class PathChromosomePopulation extends Population {
      */
     @Override
     public List determineFittestChromosomes(int numberOfChromosomes) {
-	Collections.sort(this.chromosomes, new PathChromosomeFitnessEvaluator());
+	Collections.sort(this.chromosomes, new PathChromosomeFitnessComparator());
 	
 	return this.chromosomes.subList(0, numberOfChromosomes - 1);
     }

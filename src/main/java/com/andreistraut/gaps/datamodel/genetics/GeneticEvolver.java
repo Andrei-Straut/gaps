@@ -182,7 +182,7 @@ public class GeneticEvolver {
         Configuration.reset();
         config.setAlwaysCaculateFitness(true);
         config.setFitnessFunction(new PathChromosomeFitness());
-        config.setFitnessEvaluator(new PathChromosomeFitnessEvaluator());
+        config.setFitnessEvaluator(new PathChromosomeFitnessComparator());
         config.setKeepPopulationSizeConstant(false);
         config.setPopulationSize(populationSize);
         config.setPreservFittestIndividual(true);

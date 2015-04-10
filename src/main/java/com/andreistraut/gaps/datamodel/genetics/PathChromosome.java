@@ -714,8 +714,13 @@ public class PathChromosome extends BaseChromosome implements IChromosome {
 	}
 
 	PathChromosome other = (PathChromosome) o;
-	if (other.getGenesList() == null || other.getGenesList().isEmpty()) {
+	
+	if(this.isLegal() && !other.isLegal()) {
 	    return Integer.MAX_VALUE;
+	}
+	
+	if(!this.isLegal() && other.isLegal()) {
+	    return Integer.MIN_VALUE;
 	}
 
 	return (int) (this.getFitnessValue() - other.getFitnessValue());

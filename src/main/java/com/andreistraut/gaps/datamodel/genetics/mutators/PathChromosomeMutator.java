@@ -3,7 +3,7 @@ package com.andreistraut.gaps.datamodel.genetics.mutators;
 import com.andreistraut.gaps.datamodel.genetics.EdgeGenePool;
 import com.andreistraut.gaps.datamodel.genetics.GeneticConfiguration;
 import com.andreistraut.gaps.datamodel.genetics.PathChromosome;
-import com.andreistraut.gaps.datamodel.genetics.PathChromosomeFitnessEvaluator;
+import com.andreistraut.gaps.datamodel.genetics.PathChromosomeFitnessComparator;
 import com.andreistraut.gaps.datamodel.genetics.PathChromosomeOperationMode;
 import java.util.Collections;
 import java.util.List;
@@ -117,7 +117,7 @@ public abstract class PathChromosomeMutator extends MutationOperator {
 
     @Override
     public void operate(Population population, List candidateChromosomes) {
-	Collections.sort(candidateChromosomes, new PathChromosomeFitnessEvaluator());
+	Collections.sort(candidateChromosomes, new PathChromosomeFitnessComparator());
 
 	if (candidateChromosomes.size() > 0) {
 	    PathChromosome toMutate = (PathChromosome) candidateChromosomes.get(0);

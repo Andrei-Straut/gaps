@@ -9,7 +9,7 @@ import com.andreistraut.gaps.datamodel.genetics.PathChromosomeOperationMode;
 import com.andreistraut.gaps.datamodel.genetics.PathChromosomeFitness;
 import com.andreistraut.gaps.datamodel.genetics.EdgeGenePool;
 import com.andreistraut.gaps.datamodel.genetics.GenerationStatistic;
-import com.andreistraut.gaps.datamodel.genetics.PathChromosomeFitnessEvaluator;
+import com.andreistraut.gaps.datamodel.genetics.PathChromosomeFitnessComparator;
 import com.andreistraut.gaps.datamodel.genetics.PathChromosomePopulation;
 import com.andreistraut.gaps.datamodel.genetics.mutators.PathChromosomeCycleRemoveMutator;
 import com.andreistraut.gaps.datamodel.genetics.mutators.PathChromosomeMultipleGeneMutator;
@@ -88,7 +88,7 @@ public class Main {
 	GeneticConfiguration configuration = new GeneticConfiguration("GraphConfig");
 	configuration.setAlwaysCaculateFitness(true);
 	configuration.setFitnessFunction(new PathChromosomeFitness());
-	configuration.setFitnessEvaluator(new PathChromosomeFitnessEvaluator());
+	configuration.setFitnessEvaluator(new PathChromosomeFitnessComparator());
 	configuration.setKeepPopulationSizeConstant(false);
 	configuration.setPopulationSize(numberOfPaths);
 	configuration.setPreservFittestIndividual(true);
