@@ -1,7 +1,5 @@
 package com.andreistraut.gaps.datamodel.graph;
 
-import com.andreistraut.gaps.datamodel.graph.DirectedWeightedEdge;
-import com.andreistraut.gaps.datamodel.graph.Node;
 import com.google.gson.JsonObject;
 import java.util.logging.Level;
 import java.util.logging.Logger;

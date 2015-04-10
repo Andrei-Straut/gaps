@@ -1,8 +1,5 @@
 package com.andreistraut.gaps.datamodel.graph;
 
-import com.andreistraut.gaps.datamodel.graph.DirectedWeightedEdge;
-import com.andreistraut.gaps.datamodel.graph.DirectedWeightedEdgeFactory;
-import com.andreistraut.gaps.datamodel.graph.Node;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.junit.Assert;
@@ -10,10 +7,6 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-/**
- *
- * @author straut
- */
 public class DirectedWeightedEdgeFactoryTest {
 
     private Node source;

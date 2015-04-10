@@ -1,10 +1,5 @@
 package com.andreistraut.gaps.datamodel.graph;
 
-import com.andreistraut.gaps.datamodel.graph.GraphPathComparator;
-import com.andreistraut.gaps.datamodel.graph.DirectedWeightedEdge;
-import com.andreistraut.gaps.datamodel.graph.Node;
-import com.andreistraut.gaps.datamodel.graph.DirectedWeightedGraph;
-import com.andreistraut.gaps.datamodel.graph.DirectedWeightedGraphPath;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -13,10 +8,6 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-/**
- *
- * @author straut
- */
 public class GraphPathComparatorTest {
 
     private Node first;
