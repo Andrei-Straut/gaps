@@ -1,7 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package com.andreistraut.gaps.datamodel;
 
 import com.andreistraut.gaps.datamodel.genetics.GeneticConfiguration;
@@ -41,7 +37,6 @@ import org.jgap.impl.BestChromosomesSelector;
 import org.jgap.impl.StockRandomGenerator;
 
 /**
- *
  * Test class to quickly run stuff without having to deploy and run web
  */
 public class Main {

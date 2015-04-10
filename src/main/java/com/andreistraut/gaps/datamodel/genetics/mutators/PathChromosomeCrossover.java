@@ -2,9 +2,7 @@ package com.andreistraut.gaps.datamodel.genetics.mutators;
 
 import com.andreistraut.gaps.datamodel.genetics.GeneticConfiguration;
 import com.andreistraut.gaps.datamodel.genetics.PathChromosome;
-import com.andreistraut.gaps.datamodel.genetics.PathChromosomeFitnessEvaluator;
 import com.andreistraut.gaps.datamodel.genetics.PathChromosomeOperationMode;
-import java.util.Collections;
 import java.util.List;
 import java.util.Random;
 import org.jgap.GeneticOperator;

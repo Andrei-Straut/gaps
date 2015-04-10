@@ -1,6 +1,5 @@
 package com.andreistraut.gaps.datamodel.genetics;
 
-import com.andreistraut.gaps.datamodel.genetics.PathChromosome;
 import java.util.Comparator;
 import org.jgap.DefaultFitnessEvaluator;
 import org.jgap.IChromosome;
@@ -55,6 +54,5 @@ public class PathChromosomeFitnessEvaluator extends DefaultFitnessEvaluator
 	}
 	
 	return 0;
-    }
-    
+    }    
 }
