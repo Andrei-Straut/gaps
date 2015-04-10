@@ -422,12 +422,16 @@ public class PathChromosome extends BaseChromosome implements IChromosome {
     }
 
     /**
-     * Retrieves the maximum possible fitness value of this PathChromosome
+     * Retrieves the minimum possible fitness value of this PathChromosome
      *
-     * @return The maximum possible fitness value of this PathChromosome
+     * @return The minimum possible fitness value of this PathChromosome
      */
     public int getMaxFitnessValue() {
 	return MAX_FITNESS_VALUE;
+    }
+
+    public int getMinFitnessValue() {
+	return MIN_FITNESS_VALUE;
     }
 
     /**

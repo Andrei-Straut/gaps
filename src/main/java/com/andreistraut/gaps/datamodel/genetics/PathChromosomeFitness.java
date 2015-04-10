@@ -30,7 +30,7 @@ public class PathChromosomeFitness extends FitnessFunction {
 	PathChromosome chromosome = (PathChromosome) subject;
 	
 	if (!chromosome.isLegal()) {
-	    return (double) Integer.MIN_VALUE;
+	    return (double) chromosome.getMinFitnessValue();
 	}
 	
 	this.lastComputedFitnessValue = chromosome.getFitnessValue();
