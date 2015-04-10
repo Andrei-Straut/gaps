@@ -26,43 +26,14 @@ public class PathChromosomeFitnessTest {
     
     @Test
     public void testGetLastComputedFitnessValue() {
-	System.out.println("getLastComputedFitnessValue");
-	PathChromosomeFitness instance = new PathChromosomeFitness();
-	double expResult = 0.0;
-	double result = instance.getLastComputedFitnessValue();
-	assertEquals(expResult, result, 0.0);
-	// TODO review the generated test code and remove the default call to fail.
-	fail("The test case is a prototype.");
     }
 
-    /**
-     * Test of getFitnessValue method, of class PathChromosomeFitness.
-     */
     @Test
     public void testGetFitnessValue() {
-	System.out.println("getFitnessValue");
-	IChromosome subject = null;
-	PathChromosomeFitness instance = new PathChromosomeFitness();
-	double expResult = 0.0;
-	double result = instance.getFitnessValue(subject);
-	assertEquals(expResult, result, 0.0);
-	// TODO review the generated test code and remove the default call to fail.
-	fail("The test case is a prototype.");
     }
 
-    /**
-     * Test of evaluate method, of class PathChromosomeFitness.
-     */
     @Test
     public void testEvaluate() {
-	System.out.println("evaluate");
-	IChromosome subject = null;
-	PathChromosomeFitness instance = new PathChromosomeFitness();
-	double expResult = 0.0;
-	double result = instance.evaluate(subject);
-	assertEquals(expResult, result, 0.0);
-	// TODO review the generated test code and remove the default call to fail.
-	fail("The test case is a prototype.");
     }
     
 }

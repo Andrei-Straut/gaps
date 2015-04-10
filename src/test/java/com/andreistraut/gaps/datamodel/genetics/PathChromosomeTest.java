@@ -2,7 +2,6 @@ package com.andreistraut.gaps.datamodel.genetics;
 
 import com.andreistraut.gaps.datamodel.graph.DirectedWeightedEdge;
 import com.andreistraut.gaps.datamodel.graph.DirectedWeightedGraph;
-import com.andreistraut.gaps.datamodel.graph.Node;
 import com.andreistraut.gaps.datamodel.mock.ThreeNodeTwoEdgesDirectedWeightedGraphMock;
 import com.google.gson.JsonObject;
 import java.util.ArrayList;
@@ -39,7 +38,7 @@ public class PathChromosomeTest {
 	conf = new GeneticConfiguration("EdgeGeneTest", graphMock.getGraph());
 
 	firstToSecondGene = new EdgeGene(graphMock.getFirstToSecondEdge(), conf);
-	secondToThirdGene = new EdgeGene(graphMock.getFirstToSecondEdge(), conf);
+	secondToThirdGene = new EdgeGene(graphMock.getSecondToThirdEdge(), conf);
 
 	genes = new ArrayList<EdgeGene>();
 	genes.add(firstToSecondGene);

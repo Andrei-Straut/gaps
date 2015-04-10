@@ -1,8 +1,7 @@
 package com.andreistraut.gaps.datamodel.genetics;
 
 import com.andreistraut.gaps.datamodel.graph.DirectedWeightedEdge;
-import com.andreistraut.gaps.datamodel.graph.DirectedWeightedGraph;
-import com.andreistraut.gaps.datamodel.graph.Node;
+import com.andreistraut.gaps.datamodel.mock.ThreeNodeTwoEdgesDirectedWeightedGraphMock;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import junit.framework.Assert;
@@ -12,14 +11,9 @@ import org.junit.Test;
 import org.junit.BeforeClass;
 
 public class EdgeGeneTest {
-
-    private Node firstNode;
-    private Node secondNode;
-    private DirectedWeightedEdge firstToSecondEdge;
-    private DirectedWeightedEdge secondToFirstEdge;
-    private final int firstToSecondEdgeCost = 1;
-    private final int secondToFirstEdgeCost = 2;
-    private DirectedWeightedGraph graph;
+    private ThreeNodeTwoEdgesDirectedWeightedGraphMock graphMock;
+    DirectedWeightedEdge secondToFirstEdge;
+    
     private GeneticConfiguration conf;
 
     public EdgeGeneTest() {
@@ -32,24 +26,19 @@ public class EdgeGeneTest {
     }
 
     @Before
-    public void setUp() {
-	firstNode = new Node("1", "1");
-	secondNode = new Node("2", "2");
-
-	firstToSecondEdge = new DirectedWeightedEdge(firstNode, secondNode, firstToSecondEdgeCost, true);
-	secondToFirstEdge = new DirectedWeightedEdge(secondNode, firstNode, secondToFirstEdgeCost, true);
-
-	graph = new DirectedWeightedGraph(3, 2);
-	graph.addVertex(firstNode);
-	graph.addVertex(secondNode);
-	graph.addEdge(firstNode, secondNode, firstToSecondEdge);
-
-	conf = new GeneticConfiguration("EdgeGeneTest", graph);
+    public void setUp() throws InvalidConfigurationException {
+	graphMock = new ThreeNodeTwoEdgesDirectedWeightedGraphMock();
+	
+	secondToFirstEdge = new DirectedWeightedEdge(
+		graphMock.getSecondNode(), graphMock.getFirstNode(), 
+		graphMock.getFirstToSecondEdgeCost() + graphMock.getSecondToThirdEdgeCost());
+	
+	conf = new GeneticConfiguration("EdgeGeneTest", graphMock.getGraph());
     }
 
     @Test
     public void testCopy() throws InvalidConfigurationException {
-	EdgeGene first = new EdgeGene(firstToSecondEdge, conf);
+	EdgeGene first = new EdgeGene(graphMock.getFirstToSecondEdge(), conf);
 	EdgeGene second = first.copy();
 
 	Assert.assertFalse(first == second);
@@ -58,7 +47,7 @@ public class EdgeGeneTest {
 
     @Test
     public void testNewGene() throws InvalidConfigurationException {
-	EdgeGene first = new EdgeGene(firstToSecondEdge, conf);
+	EdgeGene first = new EdgeGene(graphMock.getFirstToSecondEdge(), conf);
 	EdgeGene second = (EdgeGene) first.newGene();
 
 	Assert.assertFalse(first == second);
@@ -67,7 +56,7 @@ public class EdgeGeneTest {
 
     @Test
     public void testNewGeneInternal() throws InvalidConfigurationException {
-	EdgeGene first = new EdgeGene(firstToSecondEdge, conf);
+	EdgeGene first = new EdgeGene(graphMock.getFirstToSecondEdge(), conf);
 	EdgeGene second = (EdgeGene) first.newGene();
 
 	Assert.assertFalse(first == second);
@@ -76,7 +65,7 @@ public class EdgeGeneTest {
 
     @Test
     public void testApplyMutationGuaranteed() throws InvalidConfigurationException {
-	EdgeGene first = new EdgeGene(firstToSecondEdge, conf);
+	EdgeGene first = new EdgeGene(graphMock.getFirstToSecondEdge(), conf);
 	int originalCost = first.getAllele().getCost();
 
 	/*
@@ -89,7 +78,7 @@ public class EdgeGeneTest {
 
     @Test
     public void testApplyMutationNoOp() throws InvalidConfigurationException {
-	EdgeGene first = new EdgeGene(firstToSecondEdge, conf);
+	EdgeGene first = new EdgeGene(graphMock.getFirstToSecondEdge(), conf);
 	int originalCost = first.getAllele().getCost();
 
 	first.applyMutation(originalCost, 0);
@@ -98,7 +87,7 @@ public class EdgeGeneTest {
 
     @Test
     public void testCompareToSmallerThan() throws InvalidConfigurationException {
-	EdgeGene first = new EdgeGene(firstToSecondEdge, conf);
+	EdgeGene first = new EdgeGene(graphMock.getFirstToSecondEdge(), conf);
 	EdgeGene second = new EdgeGene(secondToFirstEdge, conf);
 	Assert.assertTrue(
 		first.compareTo(second) == first.getAllele().getCost() - second.getAllele().getCost()
@@ -108,7 +97,7 @@ public class EdgeGeneTest {
     @Test
     public void testCompareToLargerThan() throws InvalidConfigurationException {
 	EdgeGene first = new EdgeGene(secondToFirstEdge, conf);
-	EdgeGene second = new EdgeGene(firstToSecondEdge, conf);
+	EdgeGene second = new EdgeGene(graphMock.getFirstToSecondEdge(), conf);
 	Assert.assertTrue(
 		first.compareTo(second) == first.getAllele().getCost() - second.getAllele().getCost()
 		&& first.compareTo(second) > 0);
@@ -116,14 +105,14 @@ public class EdgeGeneTest {
 
     @Test
     public void testCompareToEquals() throws InvalidConfigurationException {
-	EdgeGene first = new EdgeGene(firstToSecondEdge, conf);
-	EdgeGene second = new EdgeGene(firstToSecondEdge, conf);
+	EdgeGene first = new EdgeGene(graphMock.getFirstToSecondEdge(), conf);
+	EdgeGene second = new EdgeGene(graphMock.getFirstToSecondEdge(), conf);
 	Assert.assertTrue(first.compareTo(second) == 0);
     }
 
     @Test
     public void testCompareToAgainstNullAllele() throws InvalidConfigurationException {
-	EdgeGene first = new EdgeGene(firstToSecondEdge, conf);
+	EdgeGene first = new EdgeGene(graphMock.getFirstToSecondEdge(), conf);
 	EdgeGene second = new EdgeGene(null, conf);
 	Assert.assertTrue(
 		first.compareTo(second) == first.getAllele().getCost()
@@ -150,7 +139,7 @@ public class EdgeGeneTest {
 
     @Test
     public void testCopyConstructor() throws InvalidConfigurationException {
-	EdgeGene first = new EdgeGene(firstToSecondEdge, conf);
+	EdgeGene first = new EdgeGene(graphMock.getFirstToSecondEdge(), conf);
 	EdgeGene second = new EdgeGene(first);
 	Assert.assertTrue(first.equals(second));
 	Assert.assertTrue(first.getAllele().equals(second.getAllele()));
@@ -159,49 +148,49 @@ public class EdgeGeneTest {
 
     @Test
     public void testToStringEquality() throws InvalidConfigurationException {
-	EdgeGene firstGene = new EdgeGene(firstToSecondEdge, conf);
-	EdgeGene secondGene = new EdgeGene(firstToSecondEdge, conf);
+	EdgeGene firstGene = new EdgeGene(graphMock.getFirstToSecondEdge(), conf);
+	EdgeGene secondGene = new EdgeGene(graphMock.getFirstToSecondEdge(), conf);
 	Assert.assertTrue(firstGene.toString().equals(secondGene.toString()));
     }
 
     @Test
     public void testToStringDifference() throws InvalidConfigurationException {
-	EdgeGene firstGene = new EdgeGene(firstToSecondEdge, conf);
+	EdgeGene firstGene = new EdgeGene(graphMock.getFirstToSecondEdge(), conf);
 	EdgeGene secondGene = new EdgeGene(secondToFirstEdge, conf);
 	Assert.assertFalse(firstGene.toString().equals(secondGene.toString()));
     }
 
     @Test
     public void testHashCodeEquality() throws InvalidConfigurationException {
-	EdgeGene firstGene = new EdgeGene(firstToSecondEdge, conf);
-	EdgeGene secondGene = new EdgeGene(firstToSecondEdge, conf);
+	EdgeGene firstGene = new EdgeGene(graphMock.getFirstToSecondEdge(), conf);
+	EdgeGene secondGene = new EdgeGene(graphMock.getFirstToSecondEdge(), conf);
 	Assert.assertTrue(firstGene.hashCode() == secondGene.hashCode());
     }
 
     @Test
     public void testHashCodeDifference() throws InvalidConfigurationException {
-	EdgeGene firstGene = new EdgeGene(firstToSecondEdge, conf);
+	EdgeGene firstGene = new EdgeGene(graphMock.getFirstToSecondEdge(), conf);
 	EdgeGene secondGene = new EdgeGene(secondToFirstEdge, conf);
 	Assert.assertFalse(firstGene.hashCode() == secondGene.hashCode());
     }
 
     @Test
     public void testEqualsEquality() throws InvalidConfigurationException {
-	EdgeGene firstGene = new EdgeGene(firstToSecondEdge, conf);
-	EdgeGene secondGene = new EdgeGene(firstToSecondEdge, conf);
+	EdgeGene firstGene = new EdgeGene(graphMock.getFirstToSecondEdge(), conf);
+	EdgeGene secondGene = new EdgeGene(graphMock.getFirstToSecondEdge(), conf);
 	Assert.assertTrue(firstGene.equals(secondGene));
     }
 
     @Test
     public void testEqualsDifference() throws InvalidConfigurationException {
-	EdgeGene firstGene = new EdgeGene(firstToSecondEdge, conf);
+	EdgeGene firstGene = new EdgeGene(graphMock.getFirstToSecondEdge(), conf);
 	EdgeGene secondGene = new EdgeGene(secondToFirstEdge, conf);
 	Assert.assertFalse(firstGene.equals(secondGene));
     }
 
     @Test
     public void testClone() throws InvalidConfigurationException {
-	EdgeGene firstGene = new EdgeGene(firstToSecondEdge, conf);
+	EdgeGene firstGene = new EdgeGene(graphMock.getFirstToSecondEdge(), conf);
 	EdgeGene secondGene = firstGene.clone();
 	
 	Assert.assertFalse(firstGene == secondGene);
