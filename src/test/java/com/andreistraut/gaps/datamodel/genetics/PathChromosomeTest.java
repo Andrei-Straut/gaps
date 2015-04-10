@@ -27,8 +27,9 @@ public class PathChromosomeTest {
 
     @BeforeClass
     public static void setUpClass() {
-	Logger.getLogger(PathChromosomeTest.class.getName()).log(Level.INFO,
-		PathChromosomeTest.class.toString() + " TEST: PathChromosome");
+	Logger.getLogger(PathChromosomeTest.class.getName()).log(Level.INFO, 
+		"{0} TEST: PathChromosome", 
+		PathChromosomeTest.class.toString());
     }
 
     @Before

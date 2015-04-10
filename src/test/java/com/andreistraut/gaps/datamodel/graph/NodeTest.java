@@ -19,8 +19,9 @@ public class NodeTest {
 
     @BeforeClass
     public static void setUpClass() {
-	Logger.getLogger(NodeTest.class.getName()).log(Level.INFO,
-		NodeTest.class.toString() + " TEST: Node");
+	Logger.getLogger(NodeTest.class.getName()).log(Level.INFO, 
+		"{0} TEST: Node", 
+		NodeTest.class.toString());
     }
 
     @Before

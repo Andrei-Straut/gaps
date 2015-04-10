@@ -18,8 +18,9 @@ public class DirectedWeightedEdgeFactoryTest {
     
     @BeforeClass
     public static void setUpClass() {
-	Logger.getLogger(DirectedWeightedEdgeFactoryTest.class.getName()).log(Level.INFO,
-		DirectedWeightedEdgeFactoryTest.class.toString() + " TEST: Edge Factory");    
+	Logger.getLogger(DirectedWeightedEdgeFactoryTest.class.getName()).log(Level.INFO, 
+		"{0} TEST: Edge Factory", 
+		DirectedWeightedEdgeFactoryTest.class.toString());    
     }
 
     @Before

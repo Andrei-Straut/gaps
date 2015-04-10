@@ -29,8 +29,9 @@ public class GraphPathComparatorTest {
     
     @BeforeClass
     public static void setUpClass() {
-	Logger.getLogger(GraphPathComparatorTest.class.getName()).log(Level.INFO,
-		GraphPathComparatorTest.class.toString() + " TEST: Graph Path Comparator");    
+	Logger.getLogger(GraphPathComparatorTest.class.getName()).log(Level.INFO, 
+		"{0} TEST: Graph Path Comparator", 
+		GraphPathComparatorTest.class.toString());    
     }
 
     @Before

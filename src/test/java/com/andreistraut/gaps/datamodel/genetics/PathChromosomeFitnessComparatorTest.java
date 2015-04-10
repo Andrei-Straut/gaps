@@ -24,8 +24,9 @@ public class PathChromosomeFitnessComparatorTest {
 
     @BeforeClass
     public static void setUpClass() {
-	Logger.getLogger(PathChromosomeFitnessComparatorTest.class.getName()).log(Level.INFO,
-		PathChromosomeFitnessComparatorTest.class.toString() + " TEST: PathChromosome Fitness");
+	Logger.getLogger(PathChromosomeFitnessComparatorTest.class.getName()).log(Level.INFO, 
+		"{0} TEST: PathChromosome Fitness", 
+		PathChromosomeFitnessComparatorTest.class.toString());
     }
 
     @Before
