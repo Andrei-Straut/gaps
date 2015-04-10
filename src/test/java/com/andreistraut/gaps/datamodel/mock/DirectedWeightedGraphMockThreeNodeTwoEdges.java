@@ -4,7 +4,13 @@ import com.andreistraut.gaps.datamodel.graph.DirectedWeightedEdge;
 import com.andreistraut.gaps.datamodel.graph.DirectedWeightedGraph;
 import com.andreistraut.gaps.datamodel.graph.Node;
 
-public class ThreeNodeTwoEdgesDirectedWeightedGraphMock {
+/**
+ * Wrapper nock for a Graph with three nodes and edges. 
+ * 
+ * Nodes are 1, 2, 3
+ * Edges are 1-2 (cost 1), 2-3 (cost 2)
+ */
+public class DirectedWeightedGraphMockThreeNodeTwoEdges {
 
     private Node firstNode;
     private Node secondNode;
@@ -15,7 +21,7 @@ public class ThreeNodeTwoEdgesDirectedWeightedGraphMock {
     private DirectedWeightedEdge secondToThirdEdge;
     private DirectedWeightedGraph graph;
 
-    public ThreeNodeTwoEdgesDirectedWeightedGraphMock() {
+    public DirectedWeightedGraphMockThreeNodeTwoEdges() {
 	this.reset();
     }
 

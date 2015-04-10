@@ -1,7 +1,7 @@
 package com.andreistraut.gaps.datamodel.genetics;
 
-import com.andreistraut.gaps.datamodel.mock.ThreeNodeTwoEdgesDirectedWeightedGraphMock;
-import com.andreistraut.gaps.datamodel.mock.TwoGenePathChromosomeMock;
+import com.andreistraut.gaps.datamodel.mock.DirectedWeightedGraphMockThreeNodeTwoEdges;
+import com.andreistraut.gaps.datamodel.mock.PathChromosomeMockTwoGene;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -13,7 +13,7 @@ import org.junit.BeforeClass;
 
 public class PathChromosomeFitnessTest {
 
-    private ThreeNodeTwoEdgesDirectedWeightedGraphMock graphMock;
+    private DirectedWeightedGraphMockThreeNodeTwoEdges graphMock;
     private GeneticConfiguration conf;
     private ArrayList<EdgeGene> genes;
 
@@ -29,7 +29,7 @@ public class PathChromosomeFitnessTest {
 
     @Before
     public void setUp() throws InvalidConfigurationException {
-	graphMock = new ThreeNodeTwoEdgesDirectedWeightedGraphMock();
+	graphMock = new DirectedWeightedGraphMockThreeNodeTwoEdges();
 	conf = new GeneticConfiguration("PathChromosomeFitnessTest", graphMock.getGraph());
 	EdgeGene firstToSecondGene = new EdgeGene(graphMock.getFirstToSecondEdge(), conf);
 	EdgeGene secondToThirdGene = new EdgeGene(graphMock.getSecondToThirdEdge(), conf);
@@ -41,7 +41,7 @@ public class PathChromosomeFitnessTest {
 
     @Test
     public void testGetLastComputedFitnessValue() throws InvalidConfigurationException {
-	PathChromosome chromosome = new TwoGenePathChromosomeMock(conf).getChromosome();
+	PathChromosome chromosome = new PathChromosomeMockTwoGene(conf).getChromosome();
 	PathChromosomeFitness fitness = new PathChromosomeFitness();
 	double originalFitnessValue = fitness.getLastComputedFitnessValue();
 
@@ -54,7 +54,7 @@ public class PathChromosomeFitnessTest {
 
     @Test
     public void testEvaluateValidChromosome() throws InvalidConfigurationException {
-	PathChromosome chromosome = new TwoGenePathChromosomeMock(conf).getChromosome();
+	PathChromosome chromosome = new PathChromosomeMockTwoGene(conf).getChromosome();
 	PathChromosomeFitness fitness = new PathChromosomeFitness();
 	double fitnessValue = fitness.evaluate(chromosome);
 
@@ -64,7 +64,7 @@ public class PathChromosomeFitnessTest {
 
     @Test
     public void testEvaluateInvalidChromosomeEmptyPath() throws InvalidConfigurationException {
-	PathChromosome chromosome = new TwoGenePathChromosomeMock(conf).getChromosome();
+	PathChromosome chromosome = new PathChromosomeMockTwoGene(conf).getChromosome();
 	chromosome.setGenesList(new ArrayList<EdgeGene>());
 	PathChromosomeFitness fitness = new PathChromosomeFitness();
 	double fitnessValue = fitness.evaluate(chromosome);
@@ -76,7 +76,7 @@ public class PathChromosomeFitnessTest {
 
     @Test
     public void testEvaluateInvalidChromosomeIncompletePath() throws InvalidConfigurationException {
-	PathChromosome chromosome = new TwoGenePathChromosomeMock(conf).getChromosome();
+	PathChromosome chromosome = new PathChromosomeMockTwoGene(conf).getChromosome();
 	chromosome.getGenesList().remove(0);
 	PathChromosomeFitness fitness = new PathChromosomeFitness();
 	double fitnessValue = fitness.evaluate(chromosome);

@@ -1,8 +1,8 @@
 package com.andreistraut.gaps.datamodel.genetics;
 
-import com.andreistraut.gaps.datamodel.mock.OneGenePathChromosomeMock;
-import com.andreistraut.gaps.datamodel.mock.ThreeNodeTwoEdgesDirectedWeightedGraphMock;
-import com.andreistraut.gaps.datamodel.mock.TwoGenePathChromosomeMock;
+import com.andreistraut.gaps.datamodel.mock.PathChromosomeMockOneGene;
+import com.andreistraut.gaps.datamodel.mock.DirectedWeightedGraphMockThreeNodeTwoEdges;
+import com.andreistraut.gaps.datamodel.mock.PathChromosomeMockTwoGene;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -15,7 +15,7 @@ import org.junit.BeforeClass;
 
 public class PathChromosomeFitnessComparatorTest {
 
-    private ThreeNodeTwoEdgesDirectedWeightedGraphMock graphMock;
+    private DirectedWeightedGraphMockThreeNodeTwoEdges graphMock;
     private GeneticConfiguration conf;
     private ArrayList<EdgeGene> genes;
 
@@ -31,7 +31,7 @@ public class PathChromosomeFitnessComparatorTest {
 
     @Before
     public void setUp() throws InvalidConfigurationException {
-	graphMock = new ThreeNodeTwoEdgesDirectedWeightedGraphMock();
+	graphMock = new DirectedWeightedGraphMockThreeNodeTwoEdges();
 	conf = new GeneticConfiguration("PathChromosomeFitnessEvaluatorTest", graphMock.getGraph());
 	EdgeGene firstToSecondGene = new EdgeGene(graphMock.getFirstToSecondEdge(), conf);
 	EdgeGene secondToThirdGene = new EdgeGene(graphMock.getSecondToThirdEdge(), conf);
@@ -43,8 +43,8 @@ public class PathChromosomeFitnessComparatorTest {
 
     @Test
     public void testIsValidFitterThanValidBetterFitness() throws InvalidConfigurationException {
-	PathChromosome first = new OneGenePathChromosomeMock(conf).getChromosome();
-	PathChromosome second = new TwoGenePathChromosomeMock(conf).getChromosome();
+	PathChromosome first = new PathChromosomeMockOneGene(conf).getChromosome();
+	PathChromosome second = new PathChromosomeMockTwoGene(conf).getChromosome();
 	second.setFitnessValue(first.getFitnessValue() - 1);
 
 	PathChromosomeFitnessComparator comparator = new PathChromosomeFitnessComparator();
@@ -56,8 +56,8 @@ public class PathChromosomeFitnessComparatorTest {
 
     @Test
     public void testIsValidFitterThanValidWorseFitness() throws InvalidConfigurationException {
-	PathChromosome first = new TwoGenePathChromosomeMock(conf).getChromosome();
-	PathChromosome second = new OneGenePathChromosomeMock(conf).getChromosome();
+	PathChromosome first = new PathChromosomeMockTwoGene(conf).getChromosome();
+	PathChromosome second = new PathChromosomeMockOneGene(conf).getChromosome();
 
 	PathChromosomeFitnessComparator comparator = new PathChromosomeFitnessComparator();
 
@@ -68,8 +68,8 @@ public class PathChromosomeFitnessComparatorTest {
 
     @Test
     public void testIsValidFitterThanInvalid() throws InvalidConfigurationException {
-	PathChromosome first = new OneGenePathChromosomeMock(conf).getChromosome();
-	PathChromosome second = new TwoGenePathChromosomeMock(conf).getChromosome();
+	PathChromosome first = new PathChromosomeMockOneGene(conf).getChromosome();
+	PathChromosome second = new PathChromosomeMockTwoGene(conf).getChromosome();
 	second.setGenesList(new ArrayList<EdgeGene>());
 	PathChromosomeFitnessComparator comparator = new PathChromosomeFitnessComparator();
 
@@ -80,11 +80,11 @@ public class PathChromosomeFitnessComparatorTest {
 
     @Test
     public void testIsInvalidFitterThanInvalidFalse() throws InvalidConfigurationException {
-	PathChromosome first = new OneGenePathChromosomeMock(conf).getChromosome();
-	PathChromosome second = new TwoGenePathChromosomeMock(conf).getChromosome();
+	PathChromosome first = new PathChromosomeMockOneGene(conf).getChromosome();
+	PathChromosome second = new PathChromosomeMockTwoGene(conf).getChromosome();
 	first.setGenesList(new ArrayList<EdgeGene>());
 	ArrayList<EdgeGene> secondGenes = new ArrayList<EdgeGene>();
-	secondGenes.add(new TwoGenePathChromosomeMock(conf).getFirstToSecondGene());
+	secondGenes.add(new PathChromosomeMockTwoGene(conf).getFirstToSecondGene());
 	second.setGenesList(secondGenes);
 
 	PathChromosomeFitnessComparator comparator = new PathChromosomeFitnessComparator();
@@ -97,7 +97,7 @@ public class PathChromosomeFitnessComparatorTest {
 
     @Test
     public void testIsChromosomeFitterThanObject() throws InvalidConfigurationException {
-	PathChromosome first = new OneGenePathChromosomeMock(conf).getChromosome();
+	PathChromosome first = new PathChromosomeMockOneGene(conf).getChromosome();
 	PathChromosomeFitnessComparator comparator = new PathChromosomeFitnessComparator();
 
 	Assert.assertTrue(comparator.isFitter(first, new Chromosome(conf)));
@@ -105,7 +105,7 @@ public class PathChromosomeFitnessComparatorTest {
 
     @Test
     public void testIsChromosomeFitterThanNull() throws InvalidConfigurationException {
-	PathChromosome first = new OneGenePathChromosomeMock(conf).getChromosome();
+	PathChromosome first = new PathChromosomeMockOneGene(conf).getChromosome();
 	PathChromosomeFitnessComparator comparator = new PathChromosomeFitnessComparator();
 
 	Assert.assertTrue(comparator.isFitter(first, null));
@@ -113,7 +113,7 @@ public class PathChromosomeFitnessComparatorTest {
 
     @Test
     public void testIsObjectFitterThanChromosome() throws InvalidConfigurationException {
-	PathChromosome first = new OneGenePathChromosomeMock(conf).getChromosome();
+	PathChromosome first = new PathChromosomeMockOneGene(conf).getChromosome();
 	PathChromosomeFitnessComparator comparator = new PathChromosomeFitnessComparator();
 
 	Assert.assertFalse(comparator.isFitter(new Chromosome(conf), first));
@@ -121,7 +121,7 @@ public class PathChromosomeFitnessComparatorTest {
 
     @Test
     public void testIsNullFitterThanChromosome() throws InvalidConfigurationException {
-	PathChromosome first = new OneGenePathChromosomeMock(conf).getChromosome();
+	PathChromosome first = new PathChromosomeMockOneGene(conf).getChromosome();
 	PathChromosomeFitnessComparator comparator = new PathChromosomeFitnessComparator();
 
 	Assert.assertFalse(comparator.isFitter(null, first));
@@ -129,8 +129,8 @@ public class PathChromosomeFitnessComparatorTest {
 
     @Test
     public void testCompareValidToValidBetterFitness() throws InvalidConfigurationException {
-	PathChromosome first = new OneGenePathChromosomeMock(conf).getChromosome();
-	PathChromosome second = new TwoGenePathChromosomeMock(conf).getChromosome();
+	PathChromosome first = new PathChromosomeMockOneGene(conf).getChromosome();
+	PathChromosome second = new PathChromosomeMockTwoGene(conf).getChromosome();
 
 	PathChromosomeFitnessComparator comparator = new PathChromosomeFitnessComparator();
 
@@ -142,8 +142,8 @@ public class PathChromosomeFitnessComparatorTest {
 
     @Test
     public void testCompareValidToValidWorseFitness() throws InvalidConfigurationException {
-	PathChromosome first = new TwoGenePathChromosomeMock(conf).getChromosome();
-	PathChromosome second = new OneGenePathChromosomeMock(conf).getChromosome();
+	PathChromosome first = new PathChromosomeMockTwoGene(conf).getChromosome();
+	PathChromosome second = new PathChromosomeMockOneGene(conf).getChromosome();
 
 	PathChromosomeFitnessComparator comparator = new PathChromosomeFitnessComparator();
 
@@ -155,8 +155,8 @@ public class PathChromosomeFitnessComparatorTest {
 
     @Test
     public void testCompareValidToInvalidEmptyPath() throws InvalidConfigurationException {
-	PathChromosome first = new OneGenePathChromosomeMock(conf).getChromosome();
-	PathChromosome second = new TwoGenePathChromosomeMock(conf).getChromosome();
+	PathChromosome first = new PathChromosomeMockOneGene(conf).getChromosome();
+	PathChromosome second = new PathChromosomeMockTwoGene(conf).getChromosome();
 	second.setGenesList(new ArrayList<EdgeGene>());
 
 	PathChromosomeFitnessComparator comparator = new PathChromosomeFitnessComparator();
@@ -169,10 +169,10 @@ public class PathChromosomeFitnessComparatorTest {
 
     @Test
     public void testCompareValidToInvalidIncompletePath() throws InvalidConfigurationException {
-	PathChromosome first = new OneGenePathChromosomeMock(conf).getChromosome();
-	PathChromosome second = new TwoGenePathChromosomeMock(conf).getChromosome();
+	PathChromosome first = new PathChromosomeMockOneGene(conf).getChromosome();
+	PathChromosome second = new PathChromosomeMockTwoGene(conf).getChromosome();
 	ArrayList<EdgeGene> secondGenes = new ArrayList<EdgeGene>();
-	secondGenes.add(new TwoGenePathChromosomeMock(conf).getFirstToSecondGene());
+	secondGenes.add(new PathChromosomeMockTwoGene(conf).getFirstToSecondGene());
 	second.setGenesList(secondGenes);
 
 	PathChromosomeFitnessComparator comparator = new PathChromosomeFitnessComparator();
@@ -185,7 +185,7 @@ public class PathChromosomeFitnessComparatorTest {
 
     @Test
     public void testCompareValidToNull() throws InvalidConfigurationException {
-	PathChromosome first = new OneGenePathChromosomeMock(conf).getChromosome();
+	PathChromosome first = new PathChromosomeMockOneGene(conf).getChromosome();
 	PathChromosome second = null;
 
 	PathChromosomeFitnessComparator comparator = new PathChromosomeFitnessComparator();
@@ -197,7 +197,7 @@ public class PathChromosomeFitnessComparatorTest {
 
     @Test
     public void testCompareValidToObject() throws InvalidConfigurationException {
-	PathChromosome first = new OneGenePathChromosomeMock(conf).getChromosome();
+	PathChromosome first = new PathChromosomeMockOneGene(conf).getChromosome();
 
 	PathChromosomeFitnessComparator comparator = new PathChromosomeFitnessComparator();
 
@@ -208,10 +208,10 @@ public class PathChromosomeFitnessComparatorTest {
 
     @Test
     public void testCompareInvalidIncompletePathToValid() throws InvalidConfigurationException {
-	PathChromosome first = new TwoGenePathChromosomeMock(conf).getChromosome();
-	PathChromosome second = new OneGenePathChromosomeMock(conf).getChromosome();
+	PathChromosome first = new PathChromosomeMockTwoGene(conf).getChromosome();
+	PathChromosome second = new PathChromosomeMockOneGene(conf).getChromosome();
 	ArrayList<EdgeGene> firstGenes = new ArrayList<EdgeGene>();
-	firstGenes.add(new TwoGenePathChromosomeMock(conf).getFirstToSecondGene());
+	firstGenes.add(new PathChromosomeMockTwoGene(conf).getFirstToSecondGene());
 	first.setGenesList(firstGenes);
 
 	PathChromosomeFitnessComparator comparator = new PathChromosomeFitnessComparator();
@@ -224,8 +224,8 @@ public class PathChromosomeFitnessComparatorTest {
 
     @Test
     public void testCompareInvalidEmptyPathToValid() throws InvalidConfigurationException {
-	PathChromosome first = new OneGenePathChromosomeMock(conf).getChromosome();
-	PathChromosome second = new TwoGenePathChromosomeMock(conf).getChromosome();
+	PathChromosome first = new PathChromosomeMockOneGene(conf).getChromosome();
+	PathChromosome second = new PathChromosomeMockTwoGene(conf).getChromosome();
 	first.setGenesList(new ArrayList<EdgeGene>());
 
 	PathChromosomeFitnessComparator comparator = new PathChromosomeFitnessComparator();
@@ -239,7 +239,7 @@ public class PathChromosomeFitnessComparatorTest {
     @Test
     public void testCompareNullToValid() throws InvalidConfigurationException {
 	PathChromosome first = null;
-	PathChromosome second = new TwoGenePathChromosomeMock(conf).getChromosome();
+	PathChromosome second = new PathChromosomeMockTwoGene(conf).getChromosome();
 
 	PathChromosomeFitnessComparator comparator = new PathChromosomeFitnessComparator();
 
@@ -251,7 +251,7 @@ public class PathChromosomeFitnessComparatorTest {
 
     @Test
     public void testCompareObjectToValid() throws InvalidConfigurationException {
-	PathChromosome second = new TwoGenePathChromosomeMock(conf).getChromosome();
+	PathChromosome second = new PathChromosomeMockTwoGene(conf).getChromosome();
 
 	PathChromosomeFitnessComparator comparator = new PathChromosomeFitnessComparator();
 
