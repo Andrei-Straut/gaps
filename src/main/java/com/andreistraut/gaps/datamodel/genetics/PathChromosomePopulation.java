@@ -177,7 +177,7 @@ public class PathChromosomePopulation extends Population {
     @Override
     public PathChromosome determineFittestChromosome(int startIndex, int endIndex) {
 	if(this.chromosomes != null && this.chromosomes.size() > startIndex 
-		&& this.chromosomes.size() < endIndex) {
+		&& this.chromosomes.size() > endIndex) {
 	    
 	    PathChromosome fittest = this.chromosomes.get(startIndex);
 	    for(int i = startIndex; i < endIndex; i++) {
