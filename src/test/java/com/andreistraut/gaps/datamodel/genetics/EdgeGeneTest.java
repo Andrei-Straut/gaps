@@ -193,10 +193,19 @@ public class EdgeGeneTest {
     }
 
     @Test
-    public void testEqualsDifferencey() throws InvalidConfigurationException {
+    public void testEqualsDifference() throws InvalidConfigurationException {
 	EdgeGene firstGene = new EdgeGene(firstToSecondEdge, conf);
 	EdgeGene secondGene = new EdgeGene(secondToFirstEdge, conf);
 	Assert.assertFalse(firstGene.equals(secondGene));
+    }
+
+    @Test
+    public void testClone() throws InvalidConfigurationException {
+	EdgeGene firstGene = new EdgeGene(firstToSecondEdge, conf);
+	EdgeGene secondGene = firstGene.clone();
+	
+	Assert.assertFalse(firstGene == secondGene);
+	Assert.assertTrue(firstGene.equals(secondGene));
     }
 
 }

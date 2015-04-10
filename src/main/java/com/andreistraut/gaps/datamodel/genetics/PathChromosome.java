@@ -702,7 +702,7 @@ public class PathChromosome extends BaseChromosome implements IChromosome {
     @Override
     public int compareTo(Object o) {
 	if (!(o instanceof PathChromosome)) {
-	    return Integer.MIN_VALUE;
+	    return Integer.MAX_VALUE;
 	}
 
 	if (this.equals(o)) {
@@ -714,9 +714,7 @@ public class PathChromosome extends BaseChromosome implements IChromosome {
 	    return Integer.MAX_VALUE;
 	}
 
-	return (this.getFitnessValue() > other.getFitnessValue())
-		? (int) (this.getFitnessValue() - other.getFitnessValue())
-		: ((int) (this.getFitnessValue() - other.getFitnessValue())) * -1;
+	return (int) (this.getFitnessValue() - other.getFitnessValue());
     }
 
     @Override

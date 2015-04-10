@@ -3,6 +3,7 @@ package com.andreistraut.gaps.datamodel.genetics;
 import com.andreistraut.gaps.datamodel.graph.DirectedWeightedEdge;
 import com.andreistraut.gaps.datamodel.graph.DirectedWeightedGraph;
 import com.andreistraut.gaps.datamodel.graph.Node;
+import com.google.gson.JsonObject;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -519,27 +520,200 @@ public class PathChromosomeTest {
     }
 
     @Test
-    public void testCompareTo() {
+    public void testCompareToSmallerThan() throws InvalidConfigurationException {
+	PathChromosome first = new PathChromosome(conf, genes, firstNode, thirdNode);
+
+	DirectedWeightedEdge firstToThird = new DirectedWeightedEdge(firstNode, thirdNode, firstToSecondEdgeCost);
+	graph.addEdge(firstNode, thirdNode, firstToThird);
+	EdgeGene firstToThirdGene = new EdgeGene(firstToThird, conf);
+	ArrayList<EdgeGene> secondGenes = new ArrayList<EdgeGene>();
+	secondGenes.add(firstToThirdGene);
+	PathChromosome second = new PathChromosome(conf, secondGenes, firstNode, thirdNode);
+
+	Assert.assertTrue(first.isLegal());
+	Assert.assertTrue(second.isLegal());
+	Assert.assertTrue(first.compareTo(second) < 0);
+	Assert.assertTrue(first.compareTo(second) == first.getFitnessValue() - second.getFitnessValue());
     }
 
     @Test
-    public void testToJson() {
+    public void testCompareToLargerThan() throws InvalidConfigurationException {
+	PathChromosome first = new PathChromosome(conf, genes, firstNode, thirdNode);
+
+	DirectedWeightedEdge firstToThird = new DirectedWeightedEdge(firstNode, thirdNode, firstToSecondEdgeCost + secondToThirdEdgeCost + 1);
+	graph.addEdge(firstNode, thirdNode, firstToThird);
+	EdgeGene firstToThirdGene = new EdgeGene(firstToThird, conf);
+	ArrayList<EdgeGene> secondGenes = new ArrayList<EdgeGene>();
+	secondGenes.add(firstToThirdGene);
+	PathChromosome second = new PathChromosome(conf, secondGenes, firstNode, thirdNode);
+
+	Assert.assertTrue(first.isLegal());
+	Assert.assertTrue(second.isLegal());
+	Assert.assertTrue(first.compareTo(second) > 0);
+	Assert.assertTrue(first.compareTo(second) == first.getFitnessValue() - second.getFitnessValue());
     }
 
     @Test
-    public void testToString() {
+    public void testCompareToEquals() throws InvalidConfigurationException {
+	PathChromosome first = new PathChromosome(conf, genes, firstNode, thirdNode);
+
+	DirectedWeightedEdge firstToThird = new DirectedWeightedEdge(firstNode, thirdNode, firstToSecondEdgeCost + secondToThirdEdgeCost);
+	graph.addEdge(firstNode, thirdNode, firstToThird);
+	EdgeGene firstToThirdGene = new EdgeGene(firstToThird, conf);
+	ArrayList<EdgeGene> secondGenes = new ArrayList<EdgeGene>();
+	secondGenes.add(firstToThirdGene);
+	PathChromosome second = new PathChromosome(conf, secondGenes, firstNode, thirdNode);
+
+	Assert.assertTrue(first.isLegal());
+	Assert.assertTrue(second.isLegal());
+	Assert.assertTrue(first.compareTo(second) == 0);
+	Assert.assertTrue(first.compareTo(second) == first.getFitnessValue() - second.getFitnessValue());
     }
 
     @Test
-    public void testEquals() {
+    public void testCompareToEmptyChromosome() throws InvalidConfigurationException {
+	PathChromosome first = new PathChromosome(conf, genes, firstNode, thirdNode);
+	PathChromosome second = new PathChromosome(conf, new ArrayList<EdgeGene>(), firstNode, thirdNode);
+
+	Assert.assertTrue(first.isLegal());
+	Assert.assertFalse(second.isLegal());
+	Assert.assertTrue(first.compareTo(second) == Integer.MAX_VALUE);
     }
 
     @Test
-    public void testHashCode() {
+    public void testCompareToObject() throws InvalidConfigurationException {
+	PathChromosome first = new PathChromosome(conf, genes, firstNode, thirdNode);
+	Object second = new Object();
+
+	Assert.assertTrue(first.isLegal());
+	Assert.assertTrue(first.compareTo(second) == Integer.MAX_VALUE);
     }
 
     @Test
-    public void testClone() {
+    public void testCompareToNull() throws InvalidConfigurationException {
+	PathChromosome first = new PathChromosome(conf, genes, firstNode, thirdNode);
+	PathChromosome second = null;
+
+	Assert.assertTrue(first.isLegal());
+	Assert.assertTrue(first.compareTo(second) == Integer.MAX_VALUE);
+    }
+
+    @Test
+    public void testToJson() throws InvalidConfigurationException {
+	PathChromosome first = new PathChromosome(conf, genes, firstNode, thirdNode);
+	JsonObject firstJson = first.toJson();
+
+	Assert.assertTrue(firstJson.has("nodeFrom"));
+	Assert.assertTrue(firstJson.has("nodeTo"));
+	Assert.assertTrue(firstJson.has("fitness"));
+	Assert.assertTrue(firstJson.has("cost"));
+	Assert.assertTrue(firstJson.has("isLegal"));
+	Assert.assertTrue(firstJson.has("isSelectedForNextGeneration"));
+	Assert.assertTrue(firstJson.has("age"));
+	Assert.assertTrue(firstJson.has("path"));
+
+	Assert.assertTrue(first.getGenesList().get(0).getAllele().getSource().toJson().equals(firstJson.get("nodeFrom")));
+	Assert.assertTrue(first.getGenesList().get(first.getGenesList().size() - 1).getAllele().getDestination().toJson().equals(firstJson.get("nodeTo")));
+	Assert.assertTrue(first.getFitnessValue() == firstJson.get("fitness").getAsDouble());
+	Assert.assertTrue(first.getCost() == firstJson.get("cost").getAsDouble());
+	Assert.assertTrue(first.isLegal() == firstJson.get("isLegal").getAsBoolean());
+	Assert.assertTrue(first.isSelectedForNextGeneration() == firstJson.get("isSelectedForNextGeneration").getAsBoolean());
+	Assert.assertTrue(first.getAge() == firstJson.get("age").getAsInt());
+	Assert.assertTrue(first.getGenesList().size() == firstJson.getAsJsonArray("path").size());
+
+	for (int i = 0; i < first.getGenesList().size(); i++) {
+	    Assert.assertTrue(first.getGenesList().get(i).getAllele().toJson()
+		    .equals(firstJson.getAsJsonArray(("path")).get(i)));
+	}
+    }
+
+    @Test
+    public void testToStringEquality() throws InvalidConfigurationException {
+	PathChromosome first = new PathChromosome(conf, genes, firstNode, thirdNode);
+	PathChromosome second = new PathChromosome(conf, genes, firstNode, thirdNode);
+
+	Assert.assertTrue(first.isLegal());
+	Assert.assertTrue(second.isLegal());
+	Assert.assertTrue(first.toString().equals(second.toString()));
+    }
+
+    @Test
+    public void testToStringDifference() throws InvalidConfigurationException {
+	PathChromosome first = new PathChromosome(conf, genes, firstNode, thirdNode);
+
+	DirectedWeightedEdge firstToThird = new DirectedWeightedEdge(firstNode, thirdNode, firstToSecondEdgeCost + secondToThirdEdgeCost);
+	graph.addEdge(firstNode, thirdNode, firstToThird);
+	EdgeGene firstToThirdGene = new EdgeGene(firstToThird, conf);
+	ArrayList<EdgeGene> secondGenes = new ArrayList<EdgeGene>();
+	secondGenes.add(firstToThirdGene);
+	PathChromosome second = new PathChromosome(conf, secondGenes, firstNode, thirdNode);
+
+	Assert.assertTrue(first.isLegal());
+	Assert.assertTrue(second.isLegal());
+	Assert.assertFalse(first.toString().equals(second.toString()));
+    }
+
+    @Test
+    public void testEqualsEquality() throws InvalidConfigurationException {
+	PathChromosome first = new PathChromosome(conf, genes, firstNode, thirdNode);
+	PathChromosome second = new PathChromosome(conf, genes, firstNode, thirdNode);
+
+	Assert.assertTrue(first.isLegal());
+	Assert.assertTrue(second.isLegal());
+	Assert.assertTrue(first.equals(second));
+    }
+
+    @Test
+    public void testEqualsDifference() throws InvalidConfigurationException {
+	PathChromosome first = new PathChromosome(conf, genes, firstNode, thirdNode);
+
+	DirectedWeightedEdge firstToThird = new DirectedWeightedEdge(firstNode, thirdNode, firstToSecondEdgeCost + secondToThirdEdgeCost);
+	graph.addEdge(firstNode, thirdNode, firstToThird);
+	EdgeGene firstToThirdGene = new EdgeGene(firstToThird, conf);
+	ArrayList<EdgeGene> secondGenes = new ArrayList<EdgeGene>();
+	secondGenes.add(firstToThirdGene);
+	PathChromosome second = new PathChromosome(conf, secondGenes, firstNode, thirdNode);
+
+	Assert.assertTrue(first.isLegal());
+	Assert.assertTrue(second.isLegal());
+	Assert.assertFalse(first.equals(second));
+    }
+
+    @Test
+    public void testHashCodeEquality() throws InvalidConfigurationException {
+	PathChromosome first = new PathChromosome(conf, genes, firstNode, thirdNode);
+	PathChromosome second = new PathChromosome(conf, genes, firstNode, thirdNode);
+
+	Assert.assertTrue(first.isLegal());
+	Assert.assertTrue(second.isLegal());
+	Assert.assertTrue(first.hashCode() == second.hashCode());
+    }
+
+    @Test
+    public void testHashCodeDifference() throws InvalidConfigurationException {
+	PathChromosome first = new PathChromosome(conf, genes, firstNode, thirdNode);
+
+	DirectedWeightedEdge firstToThird = new DirectedWeightedEdge(firstNode, thirdNode, firstToSecondEdgeCost + secondToThirdEdgeCost);
+	graph.addEdge(firstNode, thirdNode, firstToThird);
+	EdgeGene firstToThirdGene = new EdgeGene(firstToThird, conf);
+	ArrayList<EdgeGene> secondGenes = new ArrayList<EdgeGene>();
+	secondGenes.add(firstToThirdGene);
+	PathChromosome second = new PathChromosome(conf, secondGenes, firstNode, thirdNode);
+
+	Assert.assertTrue(first.isLegal());
+	Assert.assertTrue(second.isLegal());
+	Assert.assertFalse(first.hashCode() == second.hashCode());
+    }
+
+    @Test
+    public void testClone() throws InvalidConfigurationException {
+	PathChromosome first = new PathChromosome(conf, genes, firstNode, thirdNode);
+	PathChromosome second = first.clone();
+
+	Assert.assertTrue(first.isLegal());
+	Assert.assertTrue(second.isLegal());
+	Assert.assertFalse(first == second);
+	Assert.assertTrue(first.equals(second));
     }
 
 }
