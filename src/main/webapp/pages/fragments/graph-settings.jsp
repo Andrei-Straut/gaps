@@ -133,7 +133,7 @@
                                        ng-model="geneticSettings.sourceNode"
                                        ng-disabled="!(load.graphStatisticsLoaded)"
                                        min="0"
-                                       max="{{graphSettings.numberOfNodes}}"
+                                       max="{{graphSettings.numberOfNodes - 1}}"
                                        disabled>
                                 <label class="control-label" 
                                        for="sourceNode" 
