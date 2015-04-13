@@ -87,7 +87,7 @@ gaps.controller('gapscontroller', ['$scope', 'Socket', 'Notification', function 
             $scope.notifyInfo('Comparing Results...');
 
             var interval = window.setInterval(function () {
-                $scope.geneticResultsCompare = $socket.compare($scope.compareSettings);
+                $scope.geneticResultsCompare = $socket.compare($scope.geneticSettings);
 
                 $scope.geneticResultsCompare.then(function (response) {
 
@@ -280,6 +280,7 @@ gaps.controller('gapscontroller', ['$scope', 'Socket', 'Notification', function 
                 $scope.load.geneticStatisticsLoaded = true;
 
                 window.clearInterval(interval);
+                $scope.$apply();
             }, 1000);
 
             var $geneticStatisticsToggle = $('#genetic-statistics-viewer-toggle').bootstrapToggle({
@@ -324,15 +325,15 @@ gaps.controller('gapscontroller', ['$scope', 'Socket', 'Notification', function 
             $scope.load.evolutionComputed = false;
         };
         $scope.updateGeneticStatisticsData = function (data) {
-            if ($scope.geneticStatistics.bestPath && data.bestChromosome) {
-                if (data.bestChromosome.cost < $scope.geneticStatistics.bestPath.cost) {
+            if (data.bestChromosome) {
+                if (JSON.stringify($scope.geneticStatistics.bestPath) === '{}'
+                        || data.bestChromosome.cost < $scope.geneticStatistics.bestPath.cost) {
+                    $scope.geneticStatistics.bestPath = data.bestChromosome;
                     $scope.geneticStatistics.evolutionStage = data.evolutionStage;
                     $scope.geneticStatistics.bestPathEdgeNumber = data.bestChromosome.path.length;
                     $scope.geneticStatistics.bestPathCost = data.bestChromosome.cost;
                     $scope.geneticStatistics.bestPathFitness = data.bestChromosome.fitness;
                 }
-            } else {
-                $scope.geneticStatistics.bestPath = data.bestChromosome;
             }
             $scope.geneticStatistics.generations.push(data);
             $scope.geneticStatistics.bestPath = data.bestChromosome;
@@ -422,7 +423,8 @@ gaps.controller('gapscontroller', ['$scope', 'Socket', 'Notification', function 
                                 $scope.geneticStatistics.selectedGenerationIndex];
             }
 
-            if (window.fd && window.fd.graph && $scope.geneticStatistics && $scope.geneticStatistics.selectedGeneration) {
+            if (window.fd && window.fd.graph && $scope.geneticStatistics && $scope.geneticStatistics.selectedGeneration
+                    && $scope.geneticStatistics.selectedGeneration.bestChromosome) {
                 var $path = $scope.geneticStatistics.selectedGeneration.bestChromosome.path;
                 $scope.selectPath(window.fd, $path);
             }
@@ -500,7 +502,7 @@ gaps.controller('gapscontroller', ['$scope', 'Socket', 'Notification', function 
                     duration: GraphViewerOptions.selectAnimationDuration
                 });
             }
-            
+
             $scope.geneticStatistics.selectedGeneration = {};
             $scope.geneticStatistics.selectedGenerationIndex = 0;
         };
@@ -559,13 +561,9 @@ gaps.controller('gapscontroller', ['$scope', 'Socket', 'Notification', function 
             destinationNode: 29,
             numberOfPaths: $scope.graphSettings.numberOfEdges,
             numberOfEvolutions: 10000,
-            stopConditionPercent: 100
+            stopConditionPercent: 100,
+            comparePaths: 5
         };
-        $scope.compareSettings = {
-            sourceNode: $scope.geneticSettings.sourceNode,
-            destinationNode: $scope.geneticSettings.destinationNode,
-            numberOfPaths: 5
-        },
         // Graph statistics per edge
         $scope.graphStatistics = {
             numberOfNodes: 1,

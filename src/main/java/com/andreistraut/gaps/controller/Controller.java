@@ -201,7 +201,7 @@ public class Controller {
 		Node target = this.graph.getNodes().get(request.getData().get("destinationNode").getAsInt());
 		List<GraphPath<Node, DirectedWeightedEdge>> kShortestPaths
 			= this.graph.getKShortestPaths(
-				source, target, request.getData().get("numberOfPaths").getAsInt());
+				source, target, request.getData().get("comparePaths").getAsInt());
 		List<DirectedWeightedGraphPath> directedPaths = new ArrayList<DirectedWeightedGraphPath>();
 		
 		for (GraphPath<Node, DirectedWeightedEdge> kshortestPath : kShortestPaths) {
@@ -335,8 +335,8 @@ public class Controller {
 	    return response;
 	}
 
-	if (this.graph.getNodes().size() < sourceNode
-		|| this.graph.getNodes().size() < destinationNode) {
+	if (this.graph.getNodes().size() <= sourceNode
+		|| this.graph.getNodes().size() <= destinationNode) {
 
 	    Logger.getLogger(Controller.class.getName()).log(Level.SEVERE, 
 		    "Request from {0}: Source or destination node not found in graph", 
