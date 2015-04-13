@@ -1,7 +1,7 @@
 package com.andreistraut.gaps.datamodel.genetics;
 
 import com.andreistraut.gaps.datamodel.graph.DirectedWeightedEdge;
-import com.andreistraut.gaps.datamodel.mock.DirectedWeightedGraphMockThreeNodeTwoEdges;
+import com.andreistraut.gaps.datamodel.mock.DirectedWeightedGraphMockThreeNodeThreeEdges;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import junit.framework.Assert;
@@ -11,7 +11,7 @@ import org.junit.Test;
 import org.junit.BeforeClass;
 
 public class EdgeGeneTest {
-    private DirectedWeightedGraphMockThreeNodeTwoEdges graphMock;
+    private DirectedWeightedGraphMockThreeNodeThreeEdges graphMock;
     DirectedWeightedEdge secondToFirstEdge;
     
     private GeneticConfiguration conf;
@@ -28,7 +28,7 @@ public class EdgeGeneTest {
 
     @Before
     public void setUp() throws InvalidConfigurationException {
-	graphMock = new DirectedWeightedGraphMockThreeNodeTwoEdges();
+	graphMock = new DirectedWeightedGraphMockThreeNodeThreeEdges();
 	
 	secondToFirstEdge = new DirectedWeightedEdge(
 		graphMock.getSecondNode(), graphMock.getFirstNode(), 

@@ -705,7 +705,7 @@ public class PathChromosome extends BaseChromosome implements IChromosome {
      */
     @Override
     public int compareTo(Object o) {
-	if (!(o instanceof PathChromosome)) {
+	if (o == null || !(o instanceof PathChromosome)) {
 	    return Integer.MAX_VALUE;
 	}
 
@@ -714,12 +714,12 @@ public class PathChromosome extends BaseChromosome implements IChromosome {
 	}
 
 	PathChromosome other = (PathChromosome) o;
-	
-	if(this.isLegal() && !other.isLegal()) {
+
+	if (this.isLegal() && !other.isLegal()) {
 	    return Integer.MAX_VALUE;
 	}
-	
-	if(!this.isLegal() && other.isLegal()) {
+
+	if (!this.isLegal() && other.isLegal()) {
 	    return Integer.MIN_VALUE;
 	}
 
@@ -770,11 +770,13 @@ public class PathChromosome extends BaseChromosome implements IChromosome {
 		.append(this.hashCode())
 		.append(System.getProperty("line.separator"));
 
-	for (int i = 0; i < this.genes.size(); i++) {
-	    builder.append(this.genes.get(i).toString());
-	    if (i < this.genes.size() - 1) {
-		builder.append(", ")
-			.append(System.getProperty("line.separator"));
+	if (this.genes != null && !this.genes.isEmpty()) {
+	    for (int i = 0; i < this.genes.size(); i++) {
+		builder.append(this.genes.get(i).toString());
+		if (i < this.genes.size() - 1) {
+		    builder.append(", ")
+			    .append(System.getProperty("line.separator"));
+		}
 	    }
 	}
 
@@ -800,6 +802,10 @@ public class PathChromosome extends BaseChromosome implements IChromosome {
 	}
 
 	final PathChromosome other = (PathChromosome) obj;
+	
+	if(this.hashCode() != other.hashCode()) {
+	    return false;
+	}
 
 	if (other.getGenesList() == null || other.getGenesList().size() != this.genes.size()) {
 	    return false;

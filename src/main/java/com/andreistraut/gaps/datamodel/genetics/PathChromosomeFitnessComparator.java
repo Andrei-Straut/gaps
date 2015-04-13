@@ -53,12 +53,19 @@ public class PathChromosomeFitnessComparator extends DefaultFitnessEvaluator
 
     @Override
     public int compare(Object first, Object second) {
-	if(first instanceof PathChromosome && !(second instanceof PathChromosome)) {
+	if(first instanceof PathChromosome 
+		&& (second == null || !(second instanceof PathChromosome))) {
 	    return Integer.MAX_VALUE;
 	}
 	
-	if(!(first instanceof PathChromosome) && (second instanceof PathChromosome)) {
+	if((first == null || !(first instanceof PathChromosome)) 
+		&& (second instanceof PathChromosome)) {
 	    return Integer.MIN_VALUE;
+	}
+	
+	if((first == null || !(first instanceof PathChromosome) ) 
+		&& (second == null || !(second instanceof PathChromosome))) {
+	    return 0;
 	}
 	
 	if (first instanceof PathChromosome && second instanceof PathChromosome) {

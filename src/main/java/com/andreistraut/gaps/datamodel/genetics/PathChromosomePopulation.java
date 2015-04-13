@@ -91,7 +91,8 @@ public class PathChromosomePopulation extends Population {
     }
 
     /**
-     * Sets the given PathChromosome on the given index in the list of chromosomes
+     * Sets the given PathChromosome on the given index in the list of
+     * chromosomes
      *
      * @param index The index to set the PathChromosome in
      * @param chromosome The PathChromosome to be set in
@@ -152,36 +153,45 @@ public class PathChromosomePopulation extends Population {
     }
 
     /**
-     * Determines the fittest PathChromosomes (the one with the highest fitness 
+     * Determines the fittest PathChromosomes (the one with the highest fitness
      * value) and memorizes it
-     * 
+     *
      * @return The fittest PathChromosome of the population
      */
     @Override
     public PathChromosome determineFittestChromosome() {
-	this.fittestChromosome = 
-		this.determineFittestChromosome(0, this.chromosomes.size() - 1);
-	
+	this.fittestChromosome
+		= this.determineFittestChromosome(0, this.chromosomes.size());
+
 	return this.fittestChromosome;
     }
 
     /**
-     * Determines the fittest PathChromosome (the one with the highest fitness 
+     * Determines the fittest PathChromosome (the one with the highest fitness
      * value) within the given indices and memorizes it
-     * 
+     *
      * @param startIndex Index to begin the evaluation with
      * @param endIndex Index to end the evaluation with
-     * @return The fittest PathChromosome of the population within the given 
-     * indices
+     * @return The fittest PathChromosome of the population within the given
+     * indices. If indices are larger than population size, the whole of population
+     * will be searched
      */
     @Override
     public PathChromosome determineFittestChromosome(int startIndex, int endIndex) {
-	if(this.chromosomes != null && this.chromosomes.size() > startIndex 
-		&& this.chromosomes.size() > endIndex) {
+	if (this.chromosomes != null && !this.chromosomes.isEmpty()) {
+	    if (startIndex >= this.chromosomes.size()) {
+		startIndex = 0;
+	    }
+	    
+	    if(endIndex > this.chromosomes.size()) {
+		endIndex = this.chromosomes.size();
+	    }
 	    
 	    PathChromosome fittest = this.chromosomes.get(startIndex);
-	    for(int i = startIndex; i < endIndex; i++) {
-		if(this.chromosomes.get(i).isFitterThan(fittest)) {
+	    for (int i = startIndex; i < endIndex; i++) {
+		if (this.chromosomes.get(i) != null
+			&& this.chromosomes.get(i).isFitterThan(fittest)) {
+
 		    fittest = this.chromosomes.get(i);
 		    this.fittestChromosome = fittest;
 		}
@@ -189,23 +199,24 @@ public class PathChromosomePopulation extends Population {
 	    
 	    return fittest;
 	}
-	
+
 	return null;
     }
 
     /**
-     * Sorts the PathChromosome list and returns the fittest n PathChromosomes 
+     * Sorts the PathChromosome list and returns the fittest n PathChromosomes
      * in the population.
-     * 
-     * @param numberOfChromosomes Number of top performer chromosomes to be returned
-     * @return List of the fittest n Chromosomes of the population, or the 
+     *
+     * @param numberOfChromosomes Number of top performer chromosomes to be
+     * returned
+     * @return List of the fittest n Chromosomes of the population, or the
      * fittest x Chromosomes with x = number of chromosomes in case n > x.
      */
     @Override
     public List determineFittestChromosomes(int numberOfChromosomes) {
 	Collections.sort(this.chromosomes, new PathChromosomeFitnessComparator());
-	
-	return this.chromosomes.subList(0, numberOfChromosomes - 1);
+	Collections.reverse(this.chromosomes);
+	return this.chromosomes.subList(0, numberOfChromosomes);
     }
 
     @Override
