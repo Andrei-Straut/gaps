@@ -39,7 +39,9 @@ class PathChromosomeCrossoverValidator {
 	    return this.canCrossover;
 	}
 	
-	if(!male.isLegal() || !female.isLegal()) {
+	if(male == null || female == null || 
+		!male.isLegal() || !female.isLegal()) {
+	    
 	    this.canCrossover = false;
 	    return this.canCrossover;
 	}

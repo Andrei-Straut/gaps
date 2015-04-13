@@ -42,7 +42,7 @@ class PathChromosomeMutationValidator {
 	    }
 	}
 
-	if (!toMutate.isLegal()) {
+	if (toMutate == null || !toMutate.isLegal()) {
 	    this.canMutate = false;
 	    return this.canMutate;
 	}

@@ -123,6 +123,7 @@
                                 <exclude>**/*.java</exclude>
                                 <exclude>**/DatamodelGraph.java</exclude>
                                 <exclude>**/DatamodelGenetics.java</exclude>
+                                <exclude>**/DatamodelGeneticsMutators.java</exclude>
                             </excludes>
                         </configuration>
                     </execution>
@@ -147,6 +148,18 @@
                         <configuration>
                             <includes>
                                 <include>**/DatamodelGenetics.java</include>
+                            </includes>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <goals>
+                            <goal>test</goal>
+                        </goals>
+                        <id>test-mutators</id>
+                        <phase>test</phase>
+                        <configuration>
+                            <includes>
+                                <include>**/DatamodelGeneticsMutators.java</include>
                             </includes>
                         </configuration>
                     </execution>

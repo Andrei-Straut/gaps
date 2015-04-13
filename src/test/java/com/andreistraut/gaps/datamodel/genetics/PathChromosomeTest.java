@@ -543,7 +543,6 @@ public class PathChromosomeTest {
 
 	Assert.assertTrue(chromosome.isLegal());
 
-	System.out.println(cycle.toString());
 	Assert.assertTrue(cycle.get(0) == firstToSecondGene);
 	Assert.assertTrue(cycle.get(1) == secondToFirstGene);
     }
