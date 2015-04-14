@@ -56,22 +56,27 @@ table.dataTable thead .sorting_desc_disabled {
 
 table.dataTable thead .sorting {
     background: url('../../../images/icons/sort_both.png') no-repeat center right;
+    background-size: 15px;
 }
 
 table.dataTable thead .sorting_asc {
     background: url('../../../images/icons/sort_asc.png') no-repeat center right;
+    background-size: 15px;
 }
 
 table.dataTable thead .sorting_desc {
     background: url('../../../images/icons/sort_desc.png') no-repeat center right;
+    background-size: 15px;
 }
 
 table.dataTable thead .sorting_asc_disabled {
     background: url('../../../images/icons/sort_asc_disabled.png') no-repeat center right;
+    background-size: 15px;
 }
 
 table.dataTable thead .sorting_desc_disabled {
     background: url('../../../images/icons/sort_desc_disabled.png') no-repeat center right;
+    background-size: 15px;
 }
 
 table.dataTable th:active {
