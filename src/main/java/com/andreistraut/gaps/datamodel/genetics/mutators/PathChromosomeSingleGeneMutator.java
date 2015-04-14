@@ -117,25 +117,6 @@ public class PathChromosomeSingleGeneMutator extends PathChromosomeMutator {
 	log.append("==================== results ====================").append(NEW_LINE);
 	log.append(toMutate.toString()).append(NEW_LINE);
 
-	/**
-	 * Check mutation results, and if valid, add the mutated chromosome to
-	 * population
-	 */
-	/*if ((toMutate.isLegal() || this.allowIllegalMutations)
-		&& toMutate.getFitnessValue()
-		>= ((PathChromosome) (candidateChromosomes.get(candidateChromosomes.size() - 1))).getFitnessValue()) {
-	    toMutate.setIsSelectedForNextGeneration(true);
-	    candidateChromosomes.set(candidateChromosomes.size() - 1, toMutate);
-	    log.append("Mutation offspring legal").append(NEW_LINE);
-	} else {
-	    log.append("Mutation offspring not legal. Fitness value check: ")
-		    .append(toMutate.getFitnessValue() <= ((PathChromosome) (candidateChromosomes.get(candidateChromosomes.size() - 1))).getFitnessValue())
-		    .append(", legality check: ").append(toMutate.isLegal())
-		    .append(" allow illegals: ").append(this.allowIllegalMutations)
-		    .append(NEW_LINE);
-	    toMutate.setIsSelectedForNextGeneration(false);
-	}*/
-
 	printStatistics(log);
     }
 

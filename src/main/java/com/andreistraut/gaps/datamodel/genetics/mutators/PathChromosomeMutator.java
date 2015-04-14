@@ -125,6 +125,10 @@ public abstract class PathChromosomeMutator extends MutationOperator {
 	    try {
 		doMutation(toMutate, candidateChromosomes, configuration.getRandomGenerator());
 
+		/**
+		 * Check mutation results, and if valid, add the mutated
+		 * chromosome to candidates
+		 */
 		if ((toMutate.isLegal() || this.allowIllegalMutations)) {
 		    toMutate.setIsSelectedForNextGeneration(true);
 		    candidateChromosomes.add(toMutate);
@@ -138,8 +142,6 @@ public abstract class PathChromosomeMutator extends MutationOperator {
 		Logger.getLogger(PathChromosomeSingleGeneMutator.class.getName()).log(Level.SEVERE, null, ex);
 	    }
 	}
-
-	int len = population.size();
     }
 
     protected double convertMutationRate(int rate) {
@@ -170,6 +172,17 @@ public abstract class PathChromosomeMutator extends MutationOperator {
 
     abstract int getMutationPosition(RandomGenerator generator, PathChromosome chromosome);
 
+    /**
+     * Mutates an individual chromosome, depending on subclass. Only operates on
+     * chromosome level, and does not change size of list of candidate
+     * chromosomes, or population. Recommended passing a clone(), in order to
+     * keep list contents intact
+     *
+     * @param chromosome Chromosome to mutate
+     * @param candidateChromosomes List of candidate chromosomes
+     * @param generator Random generator (used in determining mutation chance)
+     * @throws InvalidConfigurationException
+     */
     abstract void doMutation(PathChromosome chromosome,
 	    List candidateChromosomes, RandomGenerator generator) throws InvalidConfigurationException;
 }
