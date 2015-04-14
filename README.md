@@ -14,7 +14,7 @@ Just like any standard genetic algorithm. Picks a random number of initial paths
 
 How well does it perform?
 --------------
-For small graphs (30 - 100 nodes, 100 - 1000 edges), in ~10% of cases it outperforms [JGraphT's](https://github.com/jgrapht/jgrapht) KShortestPath algorithm when it concerns path costs, and it comes close in terms of runtime performance.
+For small graphs (30 - 100 nodes, 100 - 1000 edges), in ~10% of cases it outperforms [JGraphT's](https://github.com/jgrapht/jgrapht) KShortestPath algorithm when it concerns path costs. In terms of runtime performance, it is slower, however, there's a chance of finding better paths.
 
 In most cases, it loses to JGraphT, but barely, usually either tied up, or coming close behind.
 
