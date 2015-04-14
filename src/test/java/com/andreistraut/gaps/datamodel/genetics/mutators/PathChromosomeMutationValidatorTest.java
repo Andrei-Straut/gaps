@@ -9,11 +9,9 @@ import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.jgap.InvalidConfigurationException;
-import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
-import static org.junit.Assert.*;
 import org.junit.BeforeClass;
 
 public class PathChromosomeMutationValidatorTest {
@@ -37,6 +35,7 @@ public class PathChromosomeMutationValidatorTest {
     public void setUp() throws InvalidConfigurationException {
 	this.graphMock = new DirectedWeightedGraphMockThreeNodeThreeEdges();
 	this.conf = new GeneticConfiguration("PathChromosomeCrossoverValidatorTest", this.graphMock.getGraph());
+	conf.setKeepPopulationSizeConstant(false);
 
 	this.twoGeneChromosome = new PathChromosomeMockTwoGene(this.conf).getChromosome();
     }
