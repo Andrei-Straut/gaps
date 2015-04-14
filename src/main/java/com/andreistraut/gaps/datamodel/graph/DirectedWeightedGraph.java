@@ -17,8 +17,9 @@ import org.jgrapht.alg.KShortestPaths;
 import org.jgrapht.graph.DirectedPseudograph;
 
 /**
- * Class encapsulating a directed weighted jsonNodesWithAdjacencies, exposing some utility methods
- helping with dealing with jsonNodesWithAdjacencies operations
+ * Class encapsulating a directed weighted jsonNodesWithAdjacencies, exposing
+ * some utility methods helping with dealing with jsonNodesWithAdjacencies
+ * operations
  */
 public class DirectedWeightedGraph extends DirectedPseudograph<Node, DirectedWeightedEdge> {
 
@@ -28,11 +29,10 @@ public class DirectedWeightedGraph extends DirectedPseudograph<Node, DirectedWei
     private int maximumEdgeWeight = 1000;
     private int minimumEdgeWeight = 1;
     private ArrayList<DirectedWeightedGraphPath> depthFirstSearchResults = new ArrayList<DirectedWeightedGraphPath>();
-    
+
     /**
-     * Statistics
-     * Initialize actual weights with opposite values, so when computing real 
-     * values we start with opposite comparisons
+     * Statistics Initialize actual weights with opposite values, so when
+     * computing real values we start with opposite comparisons
      */
     private int actualMinimumEdgeCost = maximumEdgeWeight;
     private int actualMaximumEdgeCost = minimumEdgeWeight;
@@ -49,15 +49,15 @@ public class DirectedWeightedGraph extends DirectedPseudograph<Node, DirectedWei
 
 	this.numberOfNodes = numberOfNodes;
 	this.numberOfEdges = numberOfEdges;
-	
+
 	this.factory = new DirectedWeightedEdgeFactory();
     }
-    
+
     public DirectedWeightedGraph(GraphSettings settings) {
 	this(settings.getNumberOfNodes(), settings.getNumberOfEdges());
 	this.minimumEdgeWeight = settings.getMinimumEdgeWeight();
 	this.maximumEdgeWeight = settings.getMaximumEdgeWeight();
-	
+
 	this.factory = new DirectedWeightedEdgeFactory();
     }
 
@@ -118,14 +118,14 @@ public class DirectedWeightedGraph extends DirectedPseudograph<Node, DirectedWei
 
 	    this.addEdge(source, destination, edge);
 	    edgeList.add(edge);
-	    
+
 	    /**
 	     * Statistics
 	     */
-	    if(cost < this.actualMinimumEdgeCost) {
+	    if (cost < this.actualMinimumEdgeCost) {
 		this.actualMinimumEdgeCost = cost;
-	    }	    
-	    if(cost > this.actualMaximumEdgeCost) {
+	    }
+	    if (cost > this.actualMaximumEdgeCost) {
 		this.actualMaximumEdgeCost = cost;
 	    }
 	    this.totalEdgeCost += cost;
@@ -134,25 +134,25 @@ public class DirectedWeightedGraph extends DirectedPseudograph<Node, DirectedWei
 	for (int i = this.numberOfNodes; i <= this.numberOfEdges; i++) {
 	    int sourceIndex = generator.nextInt(nodesList.size() - 1);
 	    int destinationIndex = generator.nextInt(nodesList.size() - 1);
-	    
+
 	    /**
 	     * Do not allow nodes to link to themselves
 	     */
-	    if(sourceIndex == destinationIndex && this.numberOfNodes > 1) {
-		if(destinationIndex == 0) {
+	    if (sourceIndex == destinationIndex && this.numberOfNodes > 1) {
+		if (destinationIndex == 0) {
 		    destinationIndex = 1;
 		} else {
 		    destinationIndex = destinationIndex - 1;
 		}
 	    }
-	    
+
 	    Node source = nodesList.get(sourceIndex);
 	    Node destination = nodesList.get(destinationIndex);
-	    
-	    while(source.equals(destination) && this.numberOfNodes > 1) {
+
+	    while (source.equals(destination) && this.numberOfNodes > 1) {
 		destination = nodesList.get(generator.nextInt(nodesList.size() - 1));
 	    }
-	    
+
 	    int cost = generator.nextInt(this.maximumEdgeWeight);
 	    if (cost < this.minimumEdgeWeight) {
 		cost = this.minimumEdgeWeight;
@@ -162,16 +162,16 @@ public class DirectedWeightedGraph extends DirectedPseudograph<Node, DirectedWei
 
 	    this.addEdge(source, destination, edge);
 	    edgeList.add(edge);
-	    
+
 	    /**
 	     * Statistics
 	     */
-	    if(cost < this.actualMinimumEdgeCost) {
+	    if (cost < this.actualMinimumEdgeCost) {
 		this.actualMinimumEdgeCost = cost;
-	    }	    
-	    if(cost > this.actualMaximumEdgeCost) {
+	    }
+	    if (cost > this.actualMaximumEdgeCost) {
 		this.actualMaximumEdgeCost = cost;
-	    }	    
+	    }
 	    this.totalEdgeCost += cost;
 	}
 
@@ -200,7 +200,8 @@ public class DirectedWeightedGraph extends DirectedPseudograph<Node, DirectedWei
 	visited.add(source);
 
 	/**
-	 * Kinda reeks of bad engineering, side-effects on depthFirstSearchResults :(
+	 * Kinda reeks of bad engineering, side-effects on
+	 * depthFirstSearchResults :(
 	 */
 	depthFirstSearch(visited, destination, numberOfPaths);
 	return depthFirstSearchResults;
@@ -294,7 +295,7 @@ public class DirectedWeightedGraph extends DirectedPseudograph<Node, DirectedWei
 		break;
 	    }
 	}
-	
+
 	/**
 	 * in depth-first, recursion needs to come after visiting adjacent nodes
 	 */
@@ -307,63 +308,65 @@ public class DirectedWeightedGraph extends DirectedPseudograph<Node, DirectedWei
 	    visited.removeLast();
 	}
     }
-    
+
     public JsonObject toJson() {
 	JsonObject graph = new JsonObject();
-	
-	JsonArray jsonNodesWithAdjacencies = this.getJsonNodesWithAdjacencies();	
+
+	JsonArray jsonNodesWithAdjacencies = this.getJsonNodesWithAdjacencies();
 	JsonArray jsonEdges = this.getJsonEdges();
 	JsonObject jsonStatistics = this.getJsonStatistics();
-		
+
 	graph.add("graph", jsonNodesWithAdjacencies);
 	graph.add("edges", jsonEdges);
 	graph.add("statistics", jsonStatistics);
-	
+
 	return graph;
     }
-    
+
     private JsonArray getJsonNodesWithAdjacencies() {
-	JsonArray jsonNodesWithAdjacencies = new JsonArray();	
-	for(Node node : this.getNodes()) {
+	JsonArray jsonNodesWithAdjacencies = new JsonArray();
+	for (Node node : this.getNodes()) {
 	    JsonObject jsonNode = node.toJson();
 	    JsonArray jsonAdjacencies = jsonNode.getAsJsonArray("adjacencies");
-	    
-	    for(DirectedWeightedEdge edge : this.outgoingEdgesOf(node)) {
+
+	    for (DirectedWeightedEdge edge : this.outgoingEdgesOf(node)) {
 		jsonAdjacencies.add(edge.toJson());
 	    }
-	    
+
 	    jsonNodesWithAdjacencies.add(jsonNode);
 	}
-	
+
 	return jsonNodesWithAdjacencies;
     }
-    
+
     private JsonArray getJsonEdges() {
-	JsonArray jsonEdges = new JsonArray();	
-	for(DirectedWeightedEdge edge : this.getEdges()) {
+	JsonArray jsonEdges = new JsonArray();
+	for (DirectedWeightedEdge edge : this.getEdges()) {
 	    JsonObject jsonEdge = edge.toJson();
 	    jsonEdges.add(jsonEdge);
 	}
-	
+
 	return jsonEdges;
     }
-    
+
     private JsonObject getJsonStatistics() {
 	JsonObject statistics = new JsonObject();
-	
-	this.averageEdgeCost = this.totalEdgeCost / this.edgeSet().size();
+
 	try {
 	    this.averageEdgesPerNode = NumberFormat.getInstance()
-		    .parse(
-			    String.format("%.2f", (double) this.edgeSet().size() / this.vertexSet().size()))
+		    .parse(String.format("%.2f", (double) this.edgeSet().size() / this.vertexSet().size()))
+		    .doubleValue();
+	    this.averageEdgeCost = NumberFormat.getInstance()
+		    .parse(String.format("%.2f", (double) this.totalEdgeCost / (double) this.edgeSet().size()))
 		    .doubleValue();
 	} catch (ParseException ex) {
-	    Logger.getLogger(DirectedWeightedGraph.class.getName()).log(Level.WARNING, 
-		    "Failed to convert average edges per node value for value: " 
-			    + (double) this.edgeSet().size() / this.vertexSet().size());
+	    Logger.getLogger(DirectedWeightedGraph.class.getName()).log(Level.WARNING,
+		    "Failed to convert average edges per node value for value: "
+		    + (double) this.edgeSet().size() / this.vertexSet().size());
 	    this.averageEdgesPerNode = (double) this.edgeSet().size() / this.vertexSet().size();
+	    this.averageEdgeCost = this.totalEdgeCost / (double) this.edgeSet().size();
 	}
-	
+
 	statistics.addProperty("numberOfNodes", this.vertexSet().size());
 	statistics.addProperty("numberOfEdges", this.edgeSet().size());
 	statistics.addProperty("minimumEdgeCost", this.actualMinimumEdgeCost);
@@ -371,7 +374,7 @@ public class DirectedWeightedGraph extends DirectedPseudograph<Node, DirectedWei
 	statistics.addProperty("totalEdgeCost", this.totalEdgeCost);
 	statistics.addProperty("averageEdgeCost", this.averageEdgeCost);
 	statistics.addProperty("averageEdgesPerNode", this.averageEdgesPerNode);
-	
+
 	return statistics;
     }
 }

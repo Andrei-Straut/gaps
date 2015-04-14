@@ -189,7 +189,7 @@ function jitInit(json) {
 
             Log.write('Graph Loaded');
             fd.animate({
-                modes: ['linear'],
+                modes: ['linear', 'node-property:dim', 'edge-property:lineWidth:color'],
                 transition: $jit.Trans.Circ.easeIn,
                 duration: GraphViewerOptions.computeAnimationDuration
             });
