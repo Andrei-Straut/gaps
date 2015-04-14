@@ -109,7 +109,7 @@ public class DirectedWeightedGraph extends DirectedPseudograph<Node, DirectedWei
 	for (int i = 0; i < this.numberOfNodes - 1; i++) {
 	    Node source = nodesList.get(i);
 	    Node destination = nodesList.get(i + 1);
-	    int cost = generator.nextInt(this.maximumEdgeWeight);
+	    int cost = generator.nextInt(this.maximumEdgeWeight + 1);
 	    if (cost < this.minimumEdgeWeight) {
 		cost = this.minimumEdgeWeight;
 	    }
