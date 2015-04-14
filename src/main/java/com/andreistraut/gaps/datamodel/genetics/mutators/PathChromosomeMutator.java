@@ -120,19 +120,26 @@ public abstract class PathChromosomeMutator extends MutationOperator {
 	Collections.sort(candidateChromosomes, new PathChromosomeFitnessComparator());
 
 	if (candidateChromosomes.size() > 0) {
-	    PathChromosome toMutate = (PathChromosome) candidateChromosomes.get(0);
+	    PathChromosome toMutate = ((PathChromosome) candidateChromosomes.get(0)).clone();
 
 	    try {
 		doMutation(toMutate, candidateChromosomes, configuration.getRandomGenerator());
+
+		if ((toMutate.isLegal() || this.allowIllegalMutations)) {
+		    toMutate.setIsSelectedForNextGeneration(true);
+		    candidateChromosomes.add(toMutate);
+
+		    if (this.configuration.isKeepPopulationSizeConstant()) {
+			Collections.sort(candidateChromosomes, new PathChromosomeFitnessComparator());
+			candidateChromosomes.remove(0);
+		    }
+		}
 	    } catch (InvalidConfigurationException ex) {
 		Logger.getLogger(PathChromosomeSingleGeneMutator.class.getName()).log(Level.SEVERE, null, ex);
 	    }
 	}
 
 	int len = population.size();
-	for (int i = 0; i < len; i++) {
-	    candidateChromosomes.add(((PathChromosome) population.getChromosome(i)).clone());
-	}
     }
 
     protected double convertMutationRate(int rate) {

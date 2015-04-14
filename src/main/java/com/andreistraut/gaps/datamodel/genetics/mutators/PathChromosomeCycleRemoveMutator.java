@@ -3,8 +3,10 @@ package com.andreistraut.gaps.datamodel.genetics.mutators;
 import com.andreistraut.gaps.datamodel.genetics.EdgeGene;
 import com.andreistraut.gaps.datamodel.genetics.GeneticConfiguration;
 import com.andreistraut.gaps.datamodel.genetics.PathChromosome;
+import com.andreistraut.gaps.datamodel.genetics.PathChromosomeFitnessComparator;
 import com.andreistraut.gaps.datamodel.genetics.PathChromosomeOperationMode;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import org.jgap.InvalidConfigurationException;
 import org.jgap.RandomGenerator;
@@ -48,46 +50,29 @@ public class PathChromosomeCycleRemoveMutator extends PathChromosomeMutator {
 		(PathChromosome) chromosome,
 		this.mutationRatePercentage);
 
-	if (!breeder.canMutate(true)) {
+	if (!breeder.canMutate(false)) {
 	    return;
 	}
 
 	StringBuffer log = new StringBuffer();
 	/**
 	 * Within chromosome, check for cycles. A cycle is detected when a
-	 * source node is found downstream again as a source node. Use
+	 * source node is found downstream again as a destination node. Use
 	 * LinkedHashMap because gene order is important
 	 */
-	PathChromosome toMutate = breeder.getToMutate().clone();
+	PathChromosome toMutate = breeder.getToMutate();
 	ArrayList<EdgeGene> cycle = toMutate.getCyclicGeneSequence();
 	
 	if (!cycle.isEmpty()) {
 	    log.append("==================== [PathChromosomeCycleRemoveMutator] Mutating ====================").append(NEW_LINE);
 	    log.append(toMutate.toString()).append(NEW_LINE);
 
-	    PathChromosome mutated = toMutate.clone();
-
 	    for (EdgeGene gene : cycle) {
-		mutated.getGenesList().remove(gene);
+		toMutate.getGenesList().remove(gene);
 	    }
 
 	    log.append("==================== Results:  ====================").append(NEW_LINE);
-	    log.append(mutated.toString()).append(NEW_LINE);
-
-	    if ((mutated.isLegal() || this.allowIllegalMutations)
-		    && mutated.getFitnessValue()
-		    >= ((PathChromosome) (candidateChromosomes.get(candidateChromosomes.size() - 1))).getFitnessValue()) {
-		mutated.setIsSelectedForNextGeneration(true);
-		candidateChromosomes.set(candidateChromosomes.size() - 1, mutated);
-		log.append("Mutation offspring legal").append(NEW_LINE);
-	    } else {
-		log.append("Mutation offspring not legal. Fitness value check: ")
-			.append(mutated.getFitnessValue() <= ((PathChromosome) (candidateChromosomes.get(candidateChromosomes.size() - 1))).getFitnessValue())
-			.append(", legality check: ").append(mutated.isLegal())
-			.append(" allow illegals: ").append(this.allowIllegalMutations)
-			.append(NEW_LINE);
-		mutated.setIsSelectedForNextGeneration(false);
-	    }
+	    log.append(toMutate.toString()).append(NEW_LINE);
 	}
 	
 	printStatistics(log);

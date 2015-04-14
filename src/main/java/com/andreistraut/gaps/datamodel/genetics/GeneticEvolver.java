@@ -91,26 +91,18 @@ public class GeneticEvolver {
         Date date = new Date(System.currentTimeMillis());
         GenerationStatistic statistic = new GenerationStatistic(this.evolutions, date);
 
-        double startAverageFitness = 0;
-        double startAverageCost = 0;
-        double startBestFitness = 0;
-        double startBestCost = 0;
         int populationSize = genotype.getPopulation().size();
 
         if (genotype.getFittestChromosome() != null) {
             PathChromosome fittest = (PathChromosome) genotype.getFittestChromosome();
-            startAverageFitness = populationSize / fittest.getFitnessValue();
-            startAverageCost = populationSize / fittest.getCost();
-            startBestCost = fittest.getCost();
-            startBestFitness = fittest.getFitnessValue();
-        }
+	    statistic
+                .setStartBestFitness((int) fittest.getFitnessValue())
+                .setStartAverageFitness(populationSize / fittest.getFitnessValue())
+                .setStartBestCost((int) fittest.getCost())
+                .setStartAverageCost(populationSize / fittest.getCost());
+	}
 
-        statistic
-                .setStartPopulationSize(genotype.getPopulation().size())
-                .setStartBestFitness((int) startBestFitness)
-                .setStartAverageFitness(startAverageFitness)
-                .setStartBestCost((int) startBestCost)
-                .setStartAverageCost(startAverageCost);
+        statistic.setStartPopulationSize(populationSize);
 
         genotype.evolve();
         evolutions++;
