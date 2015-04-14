@@ -848,12 +848,12 @@ public class PathChromosome extends BaseChromosome implements IChromosome {
     }
 
     @Override
-    public boolean isHandlerFor(Object a_obj, Class a_class) {
+    public boolean isHandlerFor(Object object, Class type) {
 	throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public Object perform(Object a_obj, Class a_class, Object a_params) throws Exception {
-	throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public Object perform(Object object, Class type, Object params) throws Exception {
+	return this;
     }
 }

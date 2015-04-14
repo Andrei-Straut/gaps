@@ -72,7 +72,7 @@ public class PathChromosomeMultipleGeneMutator extends PathChromosomeMutator {
 	 * If mutation preconditions passed, get the chromosome and gene that
 	 * will be mutated
 	 */
-	PathChromosome toMutate = breeder.getToMutate().clone();
+	PathChromosome toMutate = breeder.getToMutate();
 	int startPosition = this.getMutationPosition(generator, toMutate);
 	int endPosition = this.getMutationEndPosition(generator, toMutate, startPosition);
 

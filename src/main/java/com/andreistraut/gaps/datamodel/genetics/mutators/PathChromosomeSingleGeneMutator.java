@@ -75,7 +75,7 @@ public class PathChromosomeSingleGeneMutator extends PathChromosomeMutator {
 	 * If mutation preconditions passed, get the chromosome and gene that
 	 * will be mutated
 	 */
-	PathChromosome toMutate = breeder.getToMutate().clone();
+	PathChromosome toMutate = breeder.getToMutate();
 	int position = this.getMutationPosition(generator, toMutate);
 	EdgeGene toReplace = toMutate.getGene(position);
 

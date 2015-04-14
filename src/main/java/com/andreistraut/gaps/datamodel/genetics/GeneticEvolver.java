@@ -89,7 +89,7 @@ public class GeneticEvolver {
         }
 
         Date date = new Date(System.currentTimeMillis());
-        GenerationStatistic statistic = new GenerationStatistic(this.evolutions, date);
+        GenerationStatistic statistic = new GenerationStatistic(this.evolutions + 1, date);
 
         int populationSize = genotype.getPopulation().size();
 
@@ -147,6 +147,7 @@ public class GeneticEvolver {
 
         this.configuration.setSampleChromosome(this.population.getChromosome(0));
         this.configuration.setPopulationSize(this.population.size());
+	this.configuration.setMinimumPopSizePercent(50);
         this.configuration.setGenePool(genePool);
 
         ArrayList<GeneticOperator> operators = this.initMutators(this.configuration);
@@ -231,7 +232,7 @@ public class GeneticEvolver {
         multipleMutatorOperator.setMutationMode(PathChromosomeOperationMode.RANDOM);
         multipleMutatorOperator.setPrintMutationStatistics(false);
 
-        PathChromosomeCycleRemoveMutator cycleOperator = new PathChromosomeCycleRemoveMutator(configuration, 0.01);
+        PathChromosomeCycleRemoveMutator cycleOperator = new PathChromosomeCycleRemoveMutator(configuration, 1);
         cycleOperator.setAllowIllegalMutations(false);
         cycleOperator.setMutationMode(PathChromosomeOperationMode.RANDOM);
         cycleOperator.setPrintMutationStatistics(false);
