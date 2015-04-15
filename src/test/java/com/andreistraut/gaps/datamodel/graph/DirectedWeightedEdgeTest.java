@@ -126,6 +126,24 @@ public class DirectedWeightedEdgeTest {
     }
 
     @Test
+    public void testEqualsNull() {
+	DirectedWeightedEdge first = new DirectedWeightedEdge(source, destination);
+	DirectedWeightedEdge second = null;
+
+	first.setIsDirected(true);
+	Assert.assertFalse(first.equals(second));
+    }
+
+    @Test
+    public void testEqualsDifferentObject() {
+	DirectedWeightedEdge first = new DirectedWeightedEdge(source, destination);
+	Object second = new Object();
+
+	first.setIsDirected(true);
+	Assert.assertFalse(first.equals(second));
+    }
+
+    @Test
     public void testHashCodeTwoParamConstructor() {
 	DirectedWeightedEdge first = new DirectedWeightedEdge(source, destination);
 	DirectedWeightedEdge second = new DirectedWeightedEdge(source, destination);
@@ -327,8 +345,8 @@ public class DirectedWeightedEdgeTest {
 	Assert.assertTrue(source.getId().equals(firstJson.get("nodeFrom").getAsString()));
 	Assert.assertTrue(destination.getId().equals(firstJson.get("nodeTo").getAsString()));
 	Assert.assertTrue(first.hashCode() == firstJson.get("data").getAsJsonObject().get("id").getAsInt());
-	Assert.assertTrue(firstJson.get("data").getAsJsonObject().get("cost").getAsInt() == 100);
-	Assert.assertTrue(firstJson.get("data").getAsJsonObject().get("isDirected").getAsBoolean() == true);
+	Assert.assertTrue(first.getCost() == firstJson.get("data").getAsJsonObject().get("cost").getAsInt());
+	Assert.assertTrue(first.isDirected() == firstJson.get("data").getAsJsonObject().get("isDirected").getAsBoolean());
 
 	first = new DirectedWeightedEdge(source, destination);
 	second = new DirectedWeightedEdge(source, destination);

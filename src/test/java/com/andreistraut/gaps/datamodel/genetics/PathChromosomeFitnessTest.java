@@ -60,6 +60,7 @@ public class PathChromosomeFitnessTest {
 
 	Assert.assertTrue(chromosome.isLegal());
 	Assert.assertTrue(fitnessValue == chromosome.getFitnessValue());
+	Assert.assertTrue(fitness.getFitnessValue(chromosome) == chromosome.getFitnessValue());
     }
 
     @Test
@@ -72,6 +73,7 @@ public class PathChromosomeFitnessTest {
 	Assert.assertFalse(chromosome.isLegal());
 	Assert.assertTrue(fitnessValue == chromosome.getFitnessValue());
 	Assert.assertTrue(fitnessValue == chromosome.getMinFitnessValue());
+	Assert.assertTrue(fitness.getFitnessValue(chromosome) == chromosome.getMinFitnessValue());
     }
 
     @Test
@@ -84,6 +86,7 @@ public class PathChromosomeFitnessTest {
 	Assert.assertFalse(chromosome.isLegal());
 	Assert.assertTrue(fitnessValue == chromosome.getFitnessValue());
 	Assert.assertTrue(fitnessValue == chromosome.getMinFitnessValue());
+	Assert.assertTrue(fitness.getFitnessValue(chromosome) == chromosome.getMinFitnessValue());
     }
 
     @Test
@@ -92,6 +95,7 @@ public class PathChromosomeFitnessTest {
 	double fitnessValue = fitness.evaluate(new org.jgap.Chromosome(conf));
 
 	Assert.assertTrue(fitnessValue == Integer.MIN_VALUE);
+	Assert.assertTrue(fitness.getFitnessValue(new org.jgap.Chromosome(conf)) == Integer.MIN_VALUE);
     }
 
     @Test
@@ -100,6 +104,7 @@ public class PathChromosomeFitnessTest {
 	double fitnessValue = fitness.evaluate(null);
 
 	Assert.assertTrue(fitnessValue == Integer.MIN_VALUE);
+	Assert.assertTrue(fitness.getFitnessValue(null) == Integer.MIN_VALUE);
     }
 
 }

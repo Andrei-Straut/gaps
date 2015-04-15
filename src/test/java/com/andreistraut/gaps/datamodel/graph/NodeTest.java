@@ -82,13 +82,56 @@ public class NodeTest {
     }
 
     @Test
-    public void testToStringEquality() {
+    public void testEqualsNull() {
 	first.setId("Node1");
 	first.setName("Node1");
 	second.setId("Node1");
 	second.setName("Node1");
-	assertEquals(second.toString(), first.toString());
-	assertEquals(first.toString(), first.toString());
+	Assert.assertTrue(first.equals(second));
+	Assert.assertTrue(second.equals(first));
+    }
+
+    @Test
+    public void testEqualsNullId() {
+	first.setId("Node1");
+	first.setName("Node1");
+	second.setId(null);
+	second.setName("Node1");
+	Assert.assertFalse(first.equals(second));
+	Assert.assertFalse(second.equals(first));
+	
+	first.setId(null);
+	first.setName("Node1");
+	second.setId("Node1");
+	second.setName("Node1");
+	Assert.assertFalse(first.equals(second));
+	Assert.assertFalse(second.equals(first));
+    }
+
+    @Test
+    public void testEqualsNullName() {
+	first.setId("Node1");
+	first.setName("Node1");
+	second.setId("Node1");
+	second.setName(null);
+	Assert.assertFalse(first.equals(second));
+	Assert.assertFalse(second.equals(first));
+	
+	first.setId("Node1");
+	first.setName(null);
+	second.setId("Node1");
+	second.setName("Node1");
+	Assert.assertFalse(first.equals(second));
+	Assert.assertFalse(second.equals(first));
+    }
+
+    @Test
+    public void testEqualsDifferentClass() {
+	first.setId("Node1");
+	first.setName("Node1");
+	Object obj = new Object();
+	Assert.assertFalse(first.equals(obj));
+	Assert.assertFalse(obj.equals(first));
     }
 
     @Test
@@ -150,9 +193,9 @@ public class NodeTest {
     public void testClone() {
 	Node node = new Node("Node1", "Node1");
 
-	Node second = node.clone();
-	Assert.assertFalse((node == second));
-	Assert.assertTrue((node.equals(second)));
+	Node secondNode = node.clone();
+	Assert.assertFalse((node == secondNode));
+	Assert.assertTrue((node.equals(secondNode)));
     }
 
 }

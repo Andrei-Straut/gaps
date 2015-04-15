@@ -24,8 +24,8 @@ public class PathChromosomeFitnessComparatorTest {
 
     @BeforeClass
     public static void setUpClass() {
-	Logger.getLogger(PathChromosomeFitnessComparatorTest.class.getName()).log(Level.INFO, 
-		"{0} TEST: PathChromosome Fitness", 
+	Logger.getLogger(PathChromosomeFitnessComparatorTest.class.getName()).log(Level.INFO,
+		"{0} TEST: PathChromosome Fitness",
 		PathChromosomeFitnessComparatorTest.class.toString());
     }
 
@@ -101,6 +101,15 @@ public class PathChromosomeFitnessComparatorTest {
 	PathChromosomeFitnessComparator comparator = new PathChromosomeFitnessComparator();
 
 	Assert.assertTrue(comparator.isFitter(first, new Chromosome(conf)));
+    }
+
+    @Test
+    public void testIsObjectFitterThanObject() throws InvalidConfigurationException {
+	Chromosome first = new Chromosome(conf);
+	Chromosome second = new Chromosome(conf);
+	PathChromosomeFitnessComparator comparator = new PathChromosomeFitnessComparator();
+	
+	Assert.assertFalse(comparator.isFitter(first, second));
     }
 
     @Test
@@ -258,5 +267,41 @@ public class PathChromosomeFitnessComparatorTest {
 	Assert.assertTrue(second.isLegal());
 	Assert.assertTrue(comparator.compare(new Object(), second) < 0);
 	Assert.assertTrue(comparator.compare(new Object(), second) == Integer.MIN_VALUE);
+    }
+
+    @Test
+    public void testCompareValidToValidDoubleBetterFitness() throws InvalidConfigurationException {
+	PathChromosome first = new PathChromosomeMockOneGene(conf).getChromosome();
+	PathChromosome second = new PathChromosomeMockTwoGene(conf).getChromosome();
+
+	PathChromosomeFitnessComparator comparator = new PathChromosomeFitnessComparator();
+
+	Assert.assertTrue(first.isLegal());
+	Assert.assertTrue(second.isLegal());
+	Assert.assertTrue(comparator.isFitter(first.getFitnessValue(), second.getFitnessValue()));
+    }
+
+    @Test
+    public void testCompareValidToValidDoubleEqualFitness() throws InvalidConfigurationException {
+	PathChromosome first = new PathChromosomeMockOneGene(conf).getChromosome();
+	PathChromosome second = new PathChromosomeMockOneGene(conf).getChromosome();
+
+	PathChromosomeFitnessComparator comparator = new PathChromosomeFitnessComparator();
+
+	Assert.assertTrue(first.isLegal());
+	Assert.assertTrue(second.isLegal());
+	Assert.assertFalse(comparator.isFitter(first.getFitnessValue(), second.getFitnessValue()));
+    }
+
+    @Test
+    public void testCompareValidToValidDoubleWorseFitness() throws InvalidConfigurationException {
+	PathChromosome first = new PathChromosomeMockTwoGene(conf).getChromosome();
+	PathChromosome second = new PathChromosomeMockOneGene(conf).getChromosome();
+
+	PathChromosomeFitnessComparator comparator = new PathChromosomeFitnessComparator();
+
+	Assert.assertTrue(first.isLegal());
+	Assert.assertTrue(second.isLegal());
+	Assert.assertFalse(comparator.isFitter(first.getFitnessValue(), second.getFitnessValue()));
     }
 }

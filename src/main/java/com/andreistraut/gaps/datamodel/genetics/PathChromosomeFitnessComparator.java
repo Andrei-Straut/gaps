@@ -23,7 +23,7 @@ public class PathChromosomeFitnessComparator extends DefaultFitnessEvaluator
     @Override
     public boolean isFitter(IChromosome first, IChromosome second) {
 	if (!(first instanceof PathChromosome) && !(second instanceof PathChromosome)) {
-	    return true;
+	    return false;
 	}
 
 	if ((first instanceof PathChromosome) && !(second instanceof PathChromosome)) {
