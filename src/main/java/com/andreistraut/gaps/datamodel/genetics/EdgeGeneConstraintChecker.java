@@ -13,32 +13,27 @@ public class EdgeGeneConstraintChecker implements IGeneConstraintChecker {
     /**
      * Check if a given allele (edge) value is valid for the given gene
      * instance. This particular implementation will not check for gene passed
-     * as parameter, but will check the gene (edge) contained at index geneIndex 
+     * as parameter, but will check the allele value (edge) contained at index geneIndex
      * within the chromosome (path) given as parameter
      *
      * @param gene The gene the given allele is to be validated for. Not used
      * @param alleleValue The allele (edge) value to be validated
-     * @param chromosome The chromosome (path) in which the gene (edge) is 
+     * @param chromosome The chromosome (path) in which the gene (edge) is
      * contained
-     * @param geneIndex The index the gene (edge) is contained in the 
-     * at (path), or -1 if unknown
-     * 
+     * @param geneIndex The index the gene (edge) is contained in the at (path),
+     * or -1 if unknown
+     *
      * @return True if allele may be set for gene, false otherwise
      */
     @Override
     public boolean verify(Gene gene, Object alleleValue, IChromosome chromosome, int geneIndex) {
-	if (gene == null
-		|| !(gene instanceof EdgeGene)
-		|| ((EdgeGene) gene).getAllele() == null) {
-	    return false;
-	}
-
 	/* If the chromosome (path) is not null, and requested gene index is a valid position, 
 	 and the chromosome (path) is longer than gene (edge) at requested gene index */
 	if (chromosome == null
+		|| !(chromosome instanceof PathChromosome)
 		|| !(alleleValue instanceof DirectedWeightedEdge)
 		|| chromosome.getGenes().length <= 0
-		|| geneIndex <= 0
+		|| geneIndex < 0
 		|| chromosome.getGenes().length < geneIndex) {
 	    return false;
 	}
@@ -55,7 +50,7 @@ public class EdgeGeneConstraintChecker implements IGeneConstraintChecker {
 	if (previousGeneValidationNeeded) {
 	    previousGene = (EdgeGene) ((chromosome.getGenes())[geneIndex - 1]);
 
-	    if (previousGene == null || previousGene.getAllele().getDestination() != toVerify.getSource()) {
+	    if (previousGene == null || !previousGene.getAllele().getDestination().equals(toVerify.getSource())) {
 		return false;
 	    }
 	}
@@ -63,7 +58,7 @@ public class EdgeGeneConstraintChecker implements IGeneConstraintChecker {
 	if (nextGeneValidationNeeded) {
 	    nextGene = (EdgeGene) ((chromosome.getGenes())[geneIndex + 1]);
 
-	    if (nextGene == null || nextGene.getAllele().getSource() != toVerify.getDestination()) {
+	    if (nextGene == null || !nextGene.getAllele().getSource().equals(toVerify.getDestination())) {
 		return false;
 	    }
 	}
