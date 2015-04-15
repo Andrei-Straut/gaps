@@ -65,5 +65,4 @@ public class EdgeGeneConstraintChecker implements IGeneConstraintChecker {
 
 	return true;
     }
-
 }
