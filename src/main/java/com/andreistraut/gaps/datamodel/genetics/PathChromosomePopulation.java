@@ -12,7 +12,6 @@ public class PathChromosomePopulation extends Population {
 
     private GeneticConfiguration configuration;
     private ArrayList<PathChromosome> chromosomes;
-    private EdgeGenePool genePool;
     private PathChromosome fittestChromosome;
 
     //<editor-fold desc="Constructors" defaultstate="collapsed">
@@ -41,15 +40,6 @@ public class PathChromosomePopulation extends Population {
 	this.chromosomes = chromosomes;
     }
 
-    public PathChromosomePopulation(Configuration configuration,
-	    ArrayList<PathChromosome> chromosomes, EdgeGenePool genePool)
-	    throws InvalidConfigurationException {
-
-	this(configuration);
-	this.chromosomes = chromosomes;
-	this.genePool = genePool;
-    }
-
     private PathChromosomePopulation(Configuration configuration, IChromosome chromosome) throws InvalidConfigurationException {
 	this(configuration, new ArrayList<PathChromosome>());
 	this.chromosomes.add((PathChromosome) chromosome);
@@ -62,14 +52,6 @@ public class PathChromosomePopulation extends Population {
     private PathChromosomePopulation() throws InvalidConfigurationException {
     }
     //</editor-fold>
-
-    public EdgeGenePool getGenePool() {
-	return genePool;
-    }
-
-    public void setGenePool(EdgeGenePool genePool) {
-	this.genePool = genePool;
-    }
 
     /**
      * Returns a PathChromosome at given index in the Population

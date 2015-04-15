@@ -142,13 +142,11 @@ public class GeneticEvolver {
 
         this.configuration = this.initConfiguration(this.paths.size(), this.graph);
         ArrayList<PathChromosome> chromosomes = this.initChromosomes(this.configuration);
-        EdgeGenePool genePool = this.initGenePool(this.configuration);
-        this.population = this.initPopulation(this.configuration, chromosomes, genePool);
+        this.population = this.initPopulation(this.configuration, chromosomes);
 
         this.configuration.setSampleChromosome(this.population.getChromosome(0));
         this.configuration.setPopulationSize(this.population.size());
 	this.configuration.setMinimumPopSizePercent(50);
-        this.configuration.setGenePool(genePool);
 
         ArrayList<GeneticOperator> operators = this.initMutators(this.configuration);
         BestChromosomesSelector selector = new BestChromosomesSelector(this.configuration);
@@ -201,25 +199,13 @@ public class GeneticEvolver {
         return chromosomes;
     }
 
-    private EdgeGenePool initGenePool(GeneticConfiguration config)
-            throws InvalidConfigurationException {
-        EdgeGenePool genePool = new EdgeGenePool();
-        for (DirectedWeightedEdge edge : this.graph.edgeSet()) {
-            EdgeGene gene = new EdgeGene(edge, config);
-            genePool.addGeneToPool(gene);
-        }
-
-        return genePool;
-    }
-
     private PathChromosomePopulation initPopulation(
             GeneticConfiguration config,
-            ArrayList<PathChromosome> chromosomes, EdgeGenePool genePool)
+            ArrayList<PathChromosome> chromosomes)
             throws InvalidConfigurationException {
 
         PathChromosomePopulation pop = new PathChromosomePopulation(config);
         pop.setChromosomes(chromosomes);
-        pop.setGenePool(genePool);
 
         return pop;
     }

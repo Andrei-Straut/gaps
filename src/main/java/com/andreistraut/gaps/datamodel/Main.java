@@ -7,7 +7,6 @@ import com.andreistraut.gaps.datamodel.genetics.EdgeGeneConstraintChecker;
 import com.andreistraut.gaps.datamodel.genetics.mutators.PathChromosomeOnePointCrossover;
 import com.andreistraut.gaps.datamodel.genetics.PathChromosomeOperationMode;
 import com.andreistraut.gaps.datamodel.genetics.PathChromosomeFitness;
-import com.andreistraut.gaps.datamodel.genetics.EdgeGenePool;
 import com.andreistraut.gaps.datamodel.genetics.GenerationStatistic;
 import com.andreistraut.gaps.datamodel.genetics.PathChromosomeFitnessComparator;
 import com.andreistraut.gaps.datamodel.genetics.PathChromosomePopulation;
@@ -108,21 +107,13 @@ public class Main {
 	    chromosomes.add(chromosome);
 	}
 
-	EdgeGenePool genePool = new EdgeGenePool();
-	for (DirectedWeightedEdge edge : edges) {
-	    EdgeGene gene = new EdgeGene(edge, configuration);
-	    genePool.addGeneToPool(gene);
-	}
-
 	PathChromosomePopulation population = new PathChromosomePopulation(configuration);
 	population.setChromosomes(chromosomes);
-	population.setGenePool(genePool);
 	//</editor-fold>
 
 	//<editor-fold desc="Update Configuration">
 	configuration.setSampleChromosome(population.getChromosome(0));
 	configuration.setPopulationSize(population.size());
-	configuration.setGenePool(genePool);
 	//</editor-fold>
 
 	//<editor-fold desc="Create and initialize genetic operators">

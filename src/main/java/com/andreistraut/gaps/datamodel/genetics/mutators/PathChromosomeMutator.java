@@ -1,6 +1,5 @@
 package com.andreistraut.gaps.datamodel.genetics.mutators;
 
-import com.andreistraut.gaps.datamodel.genetics.EdgeGenePool;
 import com.andreistraut.gaps.datamodel.genetics.GeneticConfiguration;
 import com.andreistraut.gaps.datamodel.genetics.PathChromosome;
 import com.andreistraut.gaps.datamodel.genetics.PathChromosomeFitnessComparator;
@@ -39,8 +38,8 @@ public abstract class PathChromosomeMutator extends MutationOperator {
 	this.configuration = configuration;
     }
 
-    public PathChromosomeMutator(GeneticConfiguration configuration,
-	    EdgeGenePool genePool, double desiredMutationRate)
+    public PathChromosomeMutator(GeneticConfiguration configuration, 
+	    double desiredMutationRate)
 	    throws InvalidConfigurationException {
 
 	this(configuration);
