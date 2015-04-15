@@ -138,6 +138,11 @@ public class Controller {
 	    case Evolve: {
 		response = validateGeneticRequest(session, request);
 
+		if (response.getStatus() != HttpServletResponse.SC_OK) {
+		    respond(session, response);
+		    return;
+		}
+
 		try {
 		    int numberOfEvolutions = request.getData().get("numberOfEvolutions").getAsInt();
 		    GeneticEvolver evolver = new GeneticEvolver(
@@ -400,11 +405,11 @@ public class Controller {
 
 	if (this.paths == null || this.paths.isEmpty()) {
 	    Logger.getLogger(Controller.class.getName()).log(Level.SEVERE,
-		    "Request from {0}: could not find computed paths. Cannot continue",
+		    "Request from {0}: could not find a path from source to destination. Cannot continue",
 		    session.getId());
 	    response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR)
 		    .setIsEnded(true)
-		    .setDescription("Could not find computed paths. Cannot continue");
+		    .setDescription("Could not find a path from source to destination. Cannot continue");
 	    return response;
 	}
 
