@@ -47,6 +47,7 @@ public class EvolveMessageDispatcher extends MessageDispatcher {
 	return true;
     }
 
+    @Override
     public void setParameters(ArrayList<Object> parameters) throws Exception {
 	if (!(parameters.get(0) instanceof DirectedWeightedGraph)) {
 	    throw new Exception("Could not find computed graph. Cannot continue");

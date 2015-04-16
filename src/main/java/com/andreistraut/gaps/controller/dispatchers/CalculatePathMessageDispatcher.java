@@ -39,21 +39,13 @@ public class CalculatePathMessageDispatcher extends MessageDispatcher {
 		|| !request.getData().has("destinationNode")
 		|| !request.getData().has("numberOfPaths")) {
 
-	    Logger.getLogger(Controller.class.getName()).log(Level.SEVERE,
-		    "Request from {0} invalid. Path request malformed, missing parameters",
-		    session.getId());
-
 	    throw new Exception("Path request malformed, missing parameters");
 	}
 
 	int sourceNodeId = request.getData().get("sourceNode").getAsInt();
 	int destinationNodeId = request.getData().get("destinationNode").getAsInt();
 
-	if (sourceNodeId == destinationNodeId) {
-	    Logger.getLogger(Controller.class.getName()).log(Level.SEVERE,
-		    "Request from {0} invalid. Source and destination nodes must be different",
-		    session.getId());
-	    
+	if (sourceNodeId == destinationNodeId) {	    
 	    throw new Exception("Source and destination nodes must be different");
 	}
 
