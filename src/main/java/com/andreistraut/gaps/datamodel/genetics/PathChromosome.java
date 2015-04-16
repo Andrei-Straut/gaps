@@ -281,7 +281,8 @@ public class PathChromosome extends BaseChromosome implements IChromosome {
     }
 
     /**
-     * Removes Gene at specified index. Does internal bounds check
+     * Removes Gene at specified index. Does internal bounds check. If index is
+     * larger than chromosome size, is no-op
      *
      * @param index The index of the Gene to remove
      */

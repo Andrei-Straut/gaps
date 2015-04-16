@@ -776,6 +776,26 @@ public class PathChromosomeTest {
     }
 
     @Test
+    public void testEqualsNull() throws InvalidConfigurationException {
+	PathChromosome first = new PathChromosome(conf, genes, 
+		graphMock.getFirstNode(), graphMock.getThirdNode());
+	PathChromosome second = null;
+
+	Assert.assertTrue(first.isLegal());
+	Assert.assertFalse(first.equals(second));
+    }
+
+    @Test
+    public void testEqualsObject() throws InvalidConfigurationException {
+	PathChromosome first = new PathChromosome(conf, genes, 
+		graphMock.getFirstNode(), graphMock.getThirdNode());
+	Object second = new Object();
+
+	Assert.assertTrue(first.isLegal());
+	Assert.assertFalse(first.equals(second));
+    }
+
+    @Test
     public void testHashCodeEquality() throws InvalidConfigurationException {
 	PathChromosome first = new PathChromosome(conf, genes, 
 		graphMock.getFirstNode(), graphMock.getThirdNode());

@@ -179,7 +179,7 @@ public class EdgeGene extends BaseGene {
      * example, for an index 10 and a percentage 50, in 50% of the cases the
      * mutation will set the value to a random number between 0 and 9
      *
-     * @param index The maximum upper cost to set in the eventuality of a
+     * @param index The maximum upper cost (exclusive) to set in the eventuality of a
      * mutation
      * @param percentage The probability of the mutation happening. Can be given
      * as a number between (0 and 1), or [1 and 100]. If 0, method is no-op.

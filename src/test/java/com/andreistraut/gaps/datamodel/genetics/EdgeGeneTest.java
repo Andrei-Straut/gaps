@@ -11,29 +11,31 @@ import org.junit.Test;
 import org.junit.BeforeClass;
 
 public class EdgeGeneTest {
+
     private DirectedWeightedGraphMockThreeNodeThreeEdges graphMock;
     DirectedWeightedEdge secondToFirstEdge;
-    
     private GeneticConfiguration conf;
+    
+    private final int RUN_LIMIT = 10;
 
     public EdgeGeneTest() {
     }
 
     @BeforeClass
     public static void setUpClass() {
-	Logger.getLogger(EdgeGeneTest.class.getName()).log(Level.INFO, 
-		"{0} TEST: Edge Gene", 
+	Logger.getLogger(EdgeGeneTest.class.getName()).log(Level.INFO,
+		"{0} TEST: Edge Gene",
 		EdgeGeneTest.class.toString());
     }
 
     @Before
     public void setUp() throws InvalidConfigurationException {
 	graphMock = new DirectedWeightedGraphMockThreeNodeThreeEdges();
-	
+
 	secondToFirstEdge = new DirectedWeightedEdge(
-		graphMock.getSecondNode(), graphMock.getFirstNode(), 
+		graphMock.getSecondNode(), graphMock.getFirstNode(),
 		graphMock.getFirstToSecondEdgeCost() + graphMock.getSecondToThirdEdgeCost());
-	
+
 	conf = new GeneticConfiguration("EdgeGeneTest", graphMock.getGraph());
     }
 
@@ -53,6 +55,42 @@ public class EdgeGeneTest {
 
 	Assert.assertFalse(first == second);
 	Assert.assertTrue(first.equals(second));
+    }
+
+    @Test
+    public void testSetAlleleValidValue() throws InvalidConfigurationException {
+	EdgeGene first = new EdgeGene(graphMock.getFirstToSecondEdge(), conf);
+	Assert.assertTrue(first.getAllele() == graphMock.getFirstToSecondEdge());
+
+	DirectedWeightedEdge firstToThirdEdge = graphMock.getFirstToThirdEdge();
+	first.setAllele(firstToThirdEdge);
+	Assert.assertTrue(first.getAllele() == firstToThirdEdge);
+    }
+
+    @Test
+    public void testSetAlleleNullValue() throws InvalidConfigurationException {
+	EdgeGene first = new EdgeGene(graphMock.getFirstToSecondEdge(), conf);
+	Assert.assertTrue(first.getAllele() == graphMock.getFirstToSecondEdge());
+
+	DirectedWeightedEdge firstToThirdEdge = null;
+	try {
+	    first.setAllele(firstToThirdEdge);
+	} catch (IllegalArgumentException e) {
+	    Assert.assertTrue(e.getMessage().equals("Allele must be a GenericDirectedEdge"));
+	}
+    }
+
+    @Test
+    public void testSetAlleleInvalidValue() throws InvalidConfigurationException {
+	EdgeGene first = new EdgeGene(graphMock.getFirstToSecondEdge(), conf);
+	Assert.assertTrue(first.getAllele() == graphMock.getFirstToSecondEdge());
+
+	Object firstToThirdEdge = new Object();
+	try {
+	    first.setAllele(firstToThirdEdge);
+	} catch (IllegalArgumentException e) {
+	    Assert.assertTrue(e.getMessage().equals("Allele must be a GenericDirectedEdge"));
+	}
     }
 
     @Test
@@ -84,6 +122,34 @@ public class EdgeGeneTest {
 
 	first.applyMutation(originalCost, 0);
 	Assert.assertTrue(originalCost == first.getAllele().getCost());
+    }
+
+    @Test
+    public void testApplyMutationPercentageSmallerThan0() throws InvalidConfigurationException {
+	EdgeGene first = new EdgeGene(graphMock.getFirstToSecondEdge(), conf);
+	int originalCost = first.getAllele().getCost();
+
+	for (int i = 0; i < this.RUN_LIMIT; i++) {
+	    first.applyMutation(originalCost, -1);
+	    Assert.assertTrue(originalCost == first.getAllele().getCost());
+
+	    first.applyMutation(originalCost, -2);
+	    Assert.assertTrue(originalCost == first.getAllele().getCost());
+	}
+    }
+
+    @Test
+    public void testApplyMutationPercentageLargerThan100() throws InvalidConfigurationException {
+	EdgeGene first = new EdgeGene(graphMock.getFirstToSecondEdge(), conf);
+	int originalCost = first.getAllele().getCost();
+
+	for (int i = 0; i < this.RUN_LIMIT; i++) {
+	    first.applyMutation(originalCost, 101);
+	    Assert.assertTrue(originalCost != first.getAllele().getCost());
+	    
+	    first.applyMutation(originalCost, 1010);
+	    Assert.assertTrue(originalCost != first.getAllele().getCost());
+	}
     }
 
     @Test
@@ -190,10 +256,24 @@ public class EdgeGeneTest {
     }
 
     @Test
+    public void testEqualsNull() throws InvalidConfigurationException {
+	EdgeGene firstGene = new EdgeGene(graphMock.getFirstToSecondEdge(), conf);
+	EdgeGene secondGene = null;
+	Assert.assertFalse(firstGene.equals(secondGene));
+    }
+
+    @Test
+    public void testEqualsDifferentClass() throws InvalidConfigurationException {
+	EdgeGene firstGene = new EdgeGene(graphMock.getFirstToSecondEdge(), conf);
+	Object secondGene = new Object();
+	Assert.assertFalse(firstGene.equals(secondGene));
+    }
+
+    @Test
     public void testClone() throws InvalidConfigurationException {
 	EdgeGene firstGene = new EdgeGene(graphMock.getFirstToSecondEdge(), conf);
 	EdgeGene secondGene = firstGene.clone();
-	
+
 	Assert.assertFalse(firstGene == secondGene);
 	Assert.assertTrue(firstGene.equals(secondGene));
     }
