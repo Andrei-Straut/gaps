@@ -29,7 +29,7 @@ public class GraphSettings {
 	this.maximumEdgeWeight = maximumEdgeWeight;
     }
     
-    public GraphSettings(JsonObject settings) {
+    public GraphSettings(JsonObject settings) throws Exception {
 	this.fromJson(settings);
     }
 
@@ -76,9 +76,9 @@ public class GraphSettings {
 	return settings;
     }
     
-    public GraphSettings fromJson(JsonObject settings) {
+    public GraphSettings fromJson(JsonObject settings) throws Exception {
 	if(!settings.has("numberOfNodes") || !settings.has("numberOfEdges")) {
-	    throw new IllegalArgumentException("Number of nodes and number of edges must always be specified!");
+	    throw new Exception("Number of nodes and number of edges must always be specified!");
 	}
 	
 	this.numberOfNodes = settings.get("numberOfNodes").getAsInt();

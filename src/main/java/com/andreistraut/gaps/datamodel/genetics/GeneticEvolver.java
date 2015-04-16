@@ -52,7 +52,7 @@ public class GeneticEvolver {
     private int evolutions = 0;
     private int lastGenerationBestFitness = 0;
 
-    public GeneticEvolver(int numberOfPaths, int numberOfEvolutions,
+    public GeneticEvolver(int numberOfEvolutions,
             int stopConditionPercent,
             DirectedWeightedGraph graph,
             List<DirectedWeightedGraphPath> paths) {

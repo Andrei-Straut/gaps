@@ -1,16 +1,15 @@
 package com.andreistraut.gaps.controller;
 
+import com.andreistraut.gaps.controller.dispatchers.GetGraphMessageDispatcher;
+import com.andreistraut.gaps.controller.dispatchers.CalculatePathMessageDispatcher;
+import com.andreistraut.gaps.controller.dispatchers.EvolveMessageDispatcher;
 import com.andreistraut.gaps.datamodel.genetics.GenerationStatistic;
 import com.andreistraut.gaps.datamodel.genetics.GeneticEvolver;
 import com.andreistraut.gaps.datamodel.genetics.PathChromosome;
 import com.andreistraut.gaps.datamodel.graph.DirectedWeightedEdge;
 import com.andreistraut.gaps.datamodel.graph.DirectedWeightedGraph;
 import com.andreistraut.gaps.datamodel.graph.DirectedWeightedGraphPath;
-import com.andreistraut.gaps.datamodel.graph.GraphSettings;
 import com.andreistraut.gaps.datamodel.graph.Node;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
 import com.google.gson.JsonSyntaxException;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -35,15 +34,6 @@ import org.jgrapht.GraphPath;
  */
 @ServerEndpoint("/controller")
 public class Controller {
-
-    private enum MessageType {
-
-	GetGraph,
-	ComputePaths,
-	Evolve,
-	Compare,
-	Unknown
-    }
 
     private DirectedWeightedGraph graph;
     private ArrayList<DirectedWeightedGraphPath> paths;
@@ -102,113 +92,85 @@ public class Controller {
 
 	switch (request.getType()) {
 	    case GetGraph: {
-		response = this.getGraph(request);
-		respond(session, response);
+		GetGraphMessageDispatcher dispatcher = new GetGraphMessageDispatcher(this, session, MessageType.GetGraph);
+
+		try {
+		    dispatcher.setRequest(request);
+		} catch (Exception e) {
+		    Logger.getLogger(Controller.class.getName()).log(Level.SEVERE,
+			    "[GetGraph] Request from {0}: {1}",
+			    new Object[]{session.getId(), e.getMessage()});
+
+		    response = new MessageResponse(request.getCallbackId());
+		    response
+			    .setStatus(HttpServletResponse.SC_BAD_REQUEST)
+			    .setIsEnded(true)
+			    .setDescription(e.getMessage());
+		    respond(session, response);
+		}
+
+		dispatcher.process();
+
 		Logger.getLogger(Controller.class.getName()).log(
-			Level.INFO, "Request from {0} with callback ID {1} processed",
+			Level.INFO, "Request from {0} with callback ID {1}. Finished processing graph",
 			new Object[]{session.getId(), request.getCallbackId()});
+
+		this.graph = dispatcher.getGraph();
 		break;
 	    }
 	    case ComputePaths: {
-		response = validatePathRequest(session, request);
-		if (response.getStatus() != HttpServletResponse.SC_OK) {
+		CalculatePathMessageDispatcher dispatcher = new CalculatePathMessageDispatcher(this, session, MessageType.ComputePaths);
+
+		try {
+		    dispatcher.setRequest(request);
+
+		    ArrayList<Object> params = new ArrayList<Object>();
+		    params.add(this.graph);
+		    dispatcher.setParameters(params);
+
+		    dispatcher.process();
+		    this.paths = dispatcher.getPaths();
+
+		} catch (Exception e) {
+		    Logger.getLogger(Controller.class.getName()).log(Level.SEVERE,
+			    "[ComputePaths] Request from {0}: {1}",
+			    new Object[]{session.getId(), e.getMessage()});
+		    
+		    response = new MessageResponse(request.getCallbackId());
+		    response
+			    .setStatus(HttpServletResponse.SC_BAD_REQUEST)
+			    .setIsEnded(true)
+			    .setDescription(e.getMessage());
 		    respond(session, response);
-		    return;
 		}
-
-		this.paths = this.getPaths(
-			request.getData().get("sourceNode").getAsInt(),
-			request.getData().get("destinationNode").getAsInt(),
-			request.getData().get("numberOfPaths").getAsInt());
-		Logger.getLogger(Controller.class.getName()).log(
-			Level.INFO, "Request from {0} with callback ID {1}. Finished processing paths",
-			new Object[]{session.getId(), request.getCallbackId()});
-
-		for (DirectedWeightedGraphPath path : this.paths) {
-		    respond(session, new MessageResponse(request.getCallbackId(), 200, false, "Ok", path.toJson()));
-		}
-
-		respond(session, new MessageResponse(request.getCallbackId(), 200, true, "Ok"));
-		Logger.getLogger(Controller.class.getName()).log(
-			Level.INFO, "Request from {0} with callback ID {1} processed",
-			new Object[]{session.getId(), request.getCallbackId()});
-
 		break;
 	    }
 	    case Evolve: {
-		response = validateGeneticRequest(session, request);
-
-		if (response.getStatus() != HttpServletResponse.SC_OK) {
-		    respond(session, response);
-		    return;
-		}
-
+		EvolveMessageDispatcher dispatcher = new EvolveMessageDispatcher(this, session, MessageType.ComputePaths);
 		try {
-		    int numberOfEvolutions = request.getData().get("numberOfEvolutions").getAsInt();
-		    GeneticEvolver evolver = new GeneticEvolver(
-			    request.getData().get("numberOfPaths").getAsInt(),
-			    numberOfEvolutions,
-			    request.getData().get("stopConditionPercent").getAsInt(),
-			    this.graph, this.paths);
+		    dispatcher.setRequest(request);
+		    
+		    ArrayList<Object> params = new ArrayList<>();
+		    params.add(this.graph);
+		    params.add(this.paths);
+		    dispatcher.setParameters(params);
+		    
+		    dispatcher.process();
 
-		    evolver.init();
-
-		    while (!evolver.hasFinished()) {
-			GenerationStatistic statistic = evolver.evolveAndGetStatistics();
-
-			/*Do not ouput all generations, generates TMI. Only output every 10% of steps,
-			 and when there's an evolution*/
-			if (evolver.hasEvolved()) {
-			    response
-				    .setStatus(HttpServletResponse.SC_OK)
-				    .setIsEnded(false)
-				    .setDescription("Ok").setData(statistic.toJson());
-			    respond(session, response);
-
-			    Logger.getLogger(Controller.class.getName()).log(
-				    Level.INFO, "Evolution update for session {0}: {1} ",
-				    new Object[]{session.getId(), statistic.toJson().toString()});
-			} else {
-			    if (evolver.getCompletedSteps() % (numberOfEvolutions / 10) == 0) {
-				response
-					.setStatus(HttpServletResponse.SC_OK)
-					.setIsEnded(false)
-					.setDescription("Ok").setData(statistic.toJson());
-				respond(session, response);
-
-				Logger.getLogger(Controller.class.getName()).log(
-					Level.INFO, "Evolution update for session {0}: {1} ",
-					new Object[]{session.getId(), statistic.toJson().toString()});
-			    }
-			}
-		    }
-
-		    GenerationStatistic lastStatistic = evolver.getLastStatistic();
-		    response
-			    .setStatus(HttpServletResponse.SC_OK)
-			    .setIsEnded(true)
-			    .setData(lastStatistic.toJson())
-			    .setDescription("Ok");
-		    respond(session, response);
-
-		} catch (InvalidConfigurationException ex) {
-		    Logger.getLogger(Controller.class.getName()).log(Level.SEVERE, ex.getMessage(), ex);
-		    response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR)
-			    .setIsEnded(true)
-			    .setDescription("Error preparing configuration for genetic algorithm. Cannot continue");
-		    return;
 		} catch (Exception e) {
-		    Logger.getLogger(Controller.class.getName()).log(Level.SEVERE, e.getMessage(), e);
-		    response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR)
+		    Logger.getLogger(Controller.class.getName()).log(Level.SEVERE,
+			    "[Evolve] Request from {0}: {1}",
+			    new Object[]{session.getId(), e.getMessage()});
+		    e.printStackTrace();
+		    
+		    response = new MessageResponse(request.getCallbackId());
+		    response
+			    .setStatus(HttpServletResponse.SC_BAD_REQUEST)
 			    .setIsEnded(true)
-			    .setDescription("Error running genetic algorithm " + e.getMessage());
-		    return;
+			    .setDescription(e.getMessage());
+		    respond(session, response);
 		}
-
-		Logger.getLogger(Controller.class.getName()).log(
-			Level.INFO, "Request from {0} with callback ID {1} processed",
-			new Object[]{session.getId(), request.getCallbackId()});
-
+		
 		break;
 	    }
 	    case Compare: {
@@ -231,7 +193,6 @@ public class Controller {
 		}
 
 		GeneticEvolver evolver = new GeneticEvolver(
-			request.getData().get("numberOfPaths").getAsInt(),
 			0,
 			0,
 			this.graph, directedPaths);
@@ -288,35 +249,6 @@ public class Controller {
 	Node target = this.graph.getNodes().get(destinationNodeId);
 
 	return this.graph.getKPathsDepthFirst(source, target, numberOfPaths);
-    }
-
-    private MessageResponse getGraph(MessageRequest request) {
-	MessageResponse response = new MessageResponse(request.getCallbackId());
-
-	try {
-	    GraphSettings settings = new GraphSettings(request.getData());
-	    this.graph = new DirectedWeightedGraph(settings);
-
-	    this.graph.initNodes();
-	    this.graph.initEdges();
-
-	    response
-		    .setStatus(HttpServletResponse.SC_OK)
-		    .setIsEnded(true)
-		    .setDescription("Ok")
-		    .setData(graph.toJson());
-	} catch (IllegalArgumentException e) {
-	    Logger.getLogger(Controller.class.getName()).log(Level.SEVERE,
-		    "There was an error generating the graph: " + e.getMessage(), e);
-
-	    response.setStatus(HttpServletResponse.SC_BAD_REQUEST).setDescription(e.getMessage());
-	}
-
-	Logger.getLogger(Controller.class.getName()).log(Level.INFO,
-		"Returning message: {0}",
-		response.toJson().toString());
-
-	return response;
     }
 
     private MessageResponse validatePathRequest(Session session, MessageRequest request) {
@@ -454,146 +386,14 @@ public class Controller {
 	return response;
     }
 
-    private void respond(Session session, MessageResponse response) {
+    public void respond(Session session, MessageResponse response) {
 	try {
 	    session.getBasicRemote().sendText(response.toJsonString());
 
 	} catch (IOException ex) {
 	    Logger.getLogger(Controller.class
 		    .getName()).log(Level.INFO,
-			    "Error occurred responding to graph request: " + ex.getMessage(), ex);
-	}
-
-    }
-
-    private class MessageRequest {
-
-	private int callbackId;
-	private MessageType type;
-	private JsonObject data;
-
-	public MessageRequest(String request) throws JsonSyntaxException {
-	    JsonObject requestJson = (new JsonParser()).parse(request).getAsJsonObject();
-	    this.fromJson(requestJson);
-	}
-
-	public MessageRequest(JsonObject requestJson) {
-	    this.fromJson(requestJson);
-	}
-
-	private void fromJson(JsonObject json) {
-	    this.callbackId = json.get("callback_id").getAsInt();
-	    this.type = MessageType.valueOf(json.get("type").getAsString());
-	    this.data = json.get("data").getAsJsonObject();
-	}
-
-	public int getCallbackId() {
-	    return callbackId;
-	}
-
-	public MessageType getType() {
-	    return this.type;
-	}
-
-	public JsonObject getData() {
-	    return data;
-	}
-
-	public String toJsonString() {
-	    return this.toJson().toString();
-	}
-
-	public JsonObject toJson() {
-	    JsonObject request = new JsonObject();
-
-	    request.addProperty("callback_id", this.callbackId);
-	    request.addProperty("messageType", this.type.toString());
-	    request.add("data", this.data);
-
-	    return request;
-	}
-    }
-
-    private class MessageResponse {
-
-	private int callbackId;
-	private int status;
-	private String description;
-	private boolean isEnded;
-	private JsonElement data;
-
-	public MessageResponse(int callbackId) {
-	    this.callbackId = callbackId;
-	    this.status = HttpServletResponse.SC_OK;
-	    this.isEnded = true;
-	    this.description = "Ok";
-	}
-
-	public MessageResponse(int callbackId, boolean isEnded, JsonElement data) {
-	    this(callbackId);
-	    this.status = HttpServletResponse.SC_OK;
-	    this.isEnded = isEnded;
-	    this.description = "Ok";
-	    this.data = data;
-	}
-
-	public MessageResponse(int callbackId, int status, boolean isEnded, String description) {
-	    this(callbackId);
-	    this.status = status;
-	    this.isEnded = isEnded;
-	    this.description = description;
-	}
-
-	public MessageResponse(int callbackId, int status, boolean isEnded, String description, JsonElement data) {
-	    this(callbackId);
-	    this.status = status;
-	    this.isEnded = isEnded;
-	    this.description = description;
-	    this.data = data;
-	}
-
-	public int getStatus() {
-	    return this.status;
-	}
-
-	public MessageResponse setStatus(int status) {
-	    this.status = status;
-	    return this;
-	}
-
-	public MessageResponse setDescription(String description) {
-	    this.description = description;
-	    return this;
-	}
-
-	public MessageResponse setData(JsonElement data) {
-	    this.data = data;
-	    return this;
-	}
-
-	public boolean isEnded() {
-	    return isEnded;
-	}
-
-	public MessageResponse setIsEnded(boolean isEnded) {
-	    this.isEnded = isEnded;
-	    return this;
-	}
-
-	public String toJsonString() {
-	    return this.toJson().toString();
-	}
-
-	public JsonObject toJson() {
-	    JsonObject response = new JsonObject();
-
-	    response.addProperty("callback_id", this.callbackId);
-	    response.addProperty("status", this.status);
-	    response.addProperty("isEnded", this.isEnded);
-	    response.addProperty("description", this.description);
-	    response.add("data", this.data);
-
-	    return response;
+			    "Error occurred responding to request: " + ex.getMessage(), ex);
 	}
     }
 }
