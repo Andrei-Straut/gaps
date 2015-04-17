@@ -34,7 +34,7 @@ public class EvolveMessageDispatcher extends MessageDispatcher {
     }
 
     @Override
-    public boolean setRequest(MessageRequest request) throws Exception {
+    boolean setRequest(MessageRequest request) throws Exception {
 	if (!request.getData().has("numberOfEvolutions")
 		|| !request.getData().has("stopConditionPercent")) {
 	    throw new Exception("Genetic request malformed, missing parameters");
@@ -48,7 +48,7 @@ public class EvolveMessageDispatcher extends MessageDispatcher {
     }
 
     @Override
-    public void setParameters(ArrayList<Object> parameters) throws Exception {
+    void setParameters(ArrayList<Object> parameters) throws Exception {
 	if (!(parameters.get(0) instanceof DirectedWeightedGraph)) {
 	    throw new Exception("Could not find computed graph. Cannot continue");
 	}
@@ -65,12 +65,12 @@ public class EvolveMessageDispatcher extends MessageDispatcher {
     }
 
     @Override
-    protected void updateProgress(MessageResponse response) {
+    void updateProgress(MessageResponse response) {
 	this.controller.respond(this.session, response);
     }
 
     @Override
-    public boolean process() throws Exception {
+    boolean process() throws Exception {
 	MessageResponse response = new MessageResponse(request.getCallbackId());
 	GeneticEvolver evolver = new GeneticEvolver(
 		this.numberOfEvolutions, this.stopConditionPercent,
@@ -122,5 +122,4 @@ public class EvolveMessageDispatcher extends MessageDispatcher {
 
 	return true;
     }
-
 }

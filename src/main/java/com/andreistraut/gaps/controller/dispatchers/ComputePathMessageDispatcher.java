@@ -13,7 +13,7 @@ import java.util.logging.Logger;
 import javax.servlet.http.HttpServletResponse;
 import javax.websocket.Session;
 
-public class CalculatePathMessageDispatcher extends MessageDispatcher {
+public class ComputePathMessageDispatcher extends MessageDispatcher {
 
     private final Controller controller;
     private final Session session;
@@ -26,7 +26,7 @@ public class CalculatePathMessageDispatcher extends MessageDispatcher {
 
     private ArrayList<DirectedWeightedGraphPath> paths;
 
-    public CalculatePathMessageDispatcher(Controller controller, Session session, MessageType type) {
+    public ComputePathMessageDispatcher(Controller controller, Session session, MessageType type) {
 	super(controller, session, type);
 	this.controller = controller;
 	this.session = session;
@@ -34,7 +34,7 @@ public class CalculatePathMessageDispatcher extends MessageDispatcher {
     }
 
     @Override
-    public boolean setRequest(MessageRequest request) throws Exception {
+    boolean setRequest(MessageRequest request) throws Exception {
 	if (!request.getData().has("sourceNode")
 		|| !request.getData().has("destinationNode")
 		|| !request.getData().has("numberOfPaths")) {
@@ -55,7 +55,7 @@ public class CalculatePathMessageDispatcher extends MessageDispatcher {
     }
 
     @Override
-    public void setParameters(ArrayList<Object> parameters) throws Exception {
+    void setParameters(ArrayList<Object> parameters) throws Exception {
 	if (!(parameters.get(0) instanceof DirectedWeightedGraph)) {	    
 	    throw new Exception("Could not find computed graph. Cannot continue");
 	}
@@ -77,7 +77,7 @@ public class CalculatePathMessageDispatcher extends MessageDispatcher {
     }
 
     @Override
-    public boolean process() throws Exception {
+    boolean process() throws Exception {
 	this.paths = this.graph.getKPathsDepthFirst(this.sourceNode, this.destinationNode, this.numberOfPaths);
 
 	if (this.paths.isEmpty()) {	    
@@ -101,7 +101,7 @@ public class CalculatePathMessageDispatcher extends MessageDispatcher {
     }
 
     @Override
-    protected void updateProgress(MessageResponse response) {
+    void updateProgress(MessageResponse response) {
 	this.controller.respond(this.session, response);
     }
 

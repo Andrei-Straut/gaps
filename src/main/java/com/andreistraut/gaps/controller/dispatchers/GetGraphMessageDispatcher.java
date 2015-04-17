@@ -28,7 +28,7 @@ public class GetGraphMessageDispatcher extends MessageDispatcher {
     }
 
     @Override
-    public boolean setRequest(MessageRequest request) throws Exception {
+    boolean setRequest(MessageRequest request) throws Exception {
 	this.request = request;
 	this.settings = new GraphSettings(this.request.getData());
 	
@@ -36,12 +36,12 @@ public class GetGraphMessageDispatcher extends MessageDispatcher {
     }
 
     @Override
-    public void setParameters(ArrayList<Object> parameters) {
+    void setParameters(ArrayList<Object> parameters) {
 	this.parameters = parameters;
     }
 
     @Override
-    public boolean process() {
+    boolean process() {
 	MessageResponse response = new MessageResponse(this.request.getCallbackId());
 
 	try {
@@ -69,6 +69,7 @@ public class GetGraphMessageDispatcher extends MessageDispatcher {
 	return true;
     }
 
+    @Override
     protected void updateProgress(MessageResponse response) {
 	this.controller.respond(this.session, response);
     }

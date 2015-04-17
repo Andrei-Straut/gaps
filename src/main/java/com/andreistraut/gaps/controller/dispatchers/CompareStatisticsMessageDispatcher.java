@@ -37,7 +37,7 @@ public class CompareStatisticsMessageDispatcher extends MessageDispatcher {
     }
 
     @Override
-    public boolean setRequest(MessageRequest request) throws Exception {
+    boolean setRequest(MessageRequest request) throws Exception {
         if (!request.getData().has("sourceNode")
                 || !request.getData().has("destinationNode")) {
 
@@ -50,7 +50,7 @@ public class CompareStatisticsMessageDispatcher extends MessageDispatcher {
     }
 
     @Override
-    public void setParameters(ArrayList<Object> parameters) throws Exception {
+    void setParameters(ArrayList<Object> parameters) throws Exception {
         if (!(parameters.get(0) instanceof DirectedWeightedGraph)) {
             throw new Exception("Could not find computed graph. Cannot continue");
         }
@@ -71,7 +71,7 @@ public class CompareStatisticsMessageDispatcher extends MessageDispatcher {
     }
 
     @Override
-    public boolean process() throws Exception {
+    boolean process() throws Exception {
         MessageResponse response = new MessageResponse(request.getCallbackId());
 
         List<GraphPath<Node, DirectedWeightedEdge>> kShortestPaths
