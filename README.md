@@ -1,6 +1,6 @@
 GAPS (*Genetic Algorithm Path Search*)
 ==============
-*(Documentation Work in Progress)*
+For more detailed description, please see [Wiki page](https://github.com/Andrei-Straut/gaps/wiki) 
 
 What is GAPS?
 --------------
