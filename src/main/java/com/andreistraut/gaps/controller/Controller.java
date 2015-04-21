@@ -141,6 +141,13 @@ public class Controller {
     }
     
     public void respond(Session session, MessageResponse response) {
-        session.getAsyncRemote().sendText(response.toJsonString());
+	try {
+	    session.getBasicRemote().sendText(response.toJsonString());
+
+	} catch (IOException e) {
+	    Logger.getLogger(Controller.class.getName()).log(Level.SEVERE,
+		    "{0}: Error occurred responding to request: {1}",
+		    new Object[]{session.getId(), e});
+	}
     }
 }
