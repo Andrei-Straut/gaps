@@ -29,10 +29,16 @@ public class MessageRequestMock {
     
     private void initGetGraphMock() {
 	JsonObject getGraphRequest = new JsonObject();
-	
+        
+        JsonObject getGraphRequestData = new JsonObject();
+        getGraphRequestData.addProperty("numberOfNodes", 30);
+        getGraphRequestData.addProperty("numberOfEdges", 100);
+        getGraphRequestData.addProperty("minimumEdgeWeight", 1);
+        getGraphRequestData.addProperty("maximumEdgeWeight", 100);
+        
 	getGraphRequest.addProperty("callback_id", 1);
 	getGraphRequest.addProperty("type", "GetGraph");
-	getGraphRequest.add("data", this.computeEvolveCompareRequestJsonData);
+	getGraphRequest.add("data", getGraphRequestData);
 	
 	this.getGraphRequestMock = new MessageRequest(getGraphRequest);
     }
@@ -61,7 +67,7 @@ public class MessageRequestMock {
 	JsonObject compareRequest = new JsonObject();	
 	
 	compareRequest.addProperty("callback_id", 4);
-	compareRequest.addProperty("type", "compare");
+	compareRequest.addProperty("type", "Compare");
 	compareRequest.add("data", this.computeEvolveCompareRequestJsonData);
 	
 	this.computePathsRequestMock = new MessageRequest(compareRequest);
