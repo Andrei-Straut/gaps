@@ -137,7 +137,8 @@
                                 <exclude>**/DatamodelGeneticsMutators.java</exclude>
                             </excludes>
                         </configuration>
-                    </execution>                    
+                    </execution>
+                    
                     <execution>
                         <goals>
                             <goal>test</goal>
@@ -185,7 +186,8 @@
                                 <include>**/DatamodelGeneticsMutators.java</include>
                             </includes>
                         </configuration>
-                    </execution>                    
+                    </execution>
+                    
                     <execution>
                         <goals>
                             <goal>test</goal>
