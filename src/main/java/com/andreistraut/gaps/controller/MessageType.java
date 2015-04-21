@@ -1,9 +1,9 @@
 package com.andreistraut.gaps.controller;
 
 public enum MessageType {
-    GetGraph,
-    ComputePaths,
-    Evolve,
-    Compare,
-    Unknown
+    GETGRAPH,
+    COMPUTEPATHS,
+    EVOLVE,
+    COMPARE,
+    UNKNOWN
 }
