@@ -1,6 +1,8 @@
 GAPS (*Genetic Algorithm Path Search*)
 ==============
-For more detailed description, please see [Wiki page](https://github.com/Andrei-Straut/gaps/wiki) 
+For a more detailed description, please see [Wiki page](https://github.com/Andrei-Straut/gaps/wiki) 
+To see [the project in action](http://gaps.azurewebsites.net)
+And because we shouldn't take anyone's word for it, [latest build information](http://gaps.azurewebsites.net/build)
 
 What is GAPS?
 --------------
