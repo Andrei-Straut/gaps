@@ -121,6 +121,8 @@
                         <configuration>
                             <excludes>
                                 <exclude>**/*.java</exclude>
+                                <exclude>**/Controller.java</exclude>
+                                <exclude>**/ControllerDispatchers.java</exclude>
                                 <exclude>**/DatamodelGraph.java</exclude>
                                 <exclude>**/DatamodelGenetics.java</exclude>
                                 <exclude>**/DatamodelGeneticsTranslator.java</exclude>
@@ -128,6 +130,7 @@
                             </excludes>
                         </configuration>
                     </execution>
+                    
                     <execution>
                         <goals>
                             <goal>test</goal>
@@ -173,6 +176,31 @@
                         <configuration>
                             <includes>
                                 <include>**/DatamodelGeneticsMutators.java</include>
+                            </includes>
+                        </configuration>
+                    </execution>
+                    
+                    <execution>
+                        <goals>
+                            <goal>test</goal>
+                        </goals>
+                        <id>test-controller</id>
+                        <phase>test</phase>
+                        <configuration>
+                            <includes>
+                                <include>**/Controller.java</include>
+                            </includes>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <goals>
+                            <goal>test</goal>
+                        </goals>
+                        <id>test-dispatchers</id>
+                        <phase>test</phase>
+                        <configuration>
+                            <includes>
+                                <include>**/ControllerDispatchers.java</include>
                             </includes>
                         </configuration>
                     </execution>
