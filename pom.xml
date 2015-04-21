@@ -9,11 +9,19 @@
     <packaging>war</packaging>
 
     <name>GAPS</name>
+    <description>Genetic Algorithm Path Search</description>
+    <url>http://gaps.azurewebsites.net</url>
 
     <properties>
         <endorsed.dir>${project.build.directory}/endorsed</endorsed.dir>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <netbeans.hint.deploy.server>gfv3ee6</netbeans.hint.deploy.server>
+        
+        <surefire-version>2.6</surefire-version>
+        
+        <jacoco-version>0.7.4.201502262128</jacoco-version>
+        <jacoco-exec-location>${project.build.directory}/jacoco.exec</jacoco-exec-location>
+        <jacoco-output-dir>${project.build.directory}/site/jacoco</jacoco-output-dir>
     </properties>
 
     <dependencies>
@@ -102,7 +110,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-surefire-plugin</artifactId>
-                <version>2.17</version>
+                <version>${surefire-version}</version>
                 <executions>
                     <execution>
                         <goals>
@@ -129,8 +137,7 @@
                                 <exclude>**/DatamodelGeneticsMutators.java</exclude>
                             </excludes>
                         </configuration>
-                    </execution>
-                    
+                    </execution>                    
                     <execution>
                         <goals>
                             <goal>test</goal>
@@ -178,8 +185,7 @@
                                 <include>**/DatamodelGeneticsMutators.java</include>
                             </includes>
                         </configuration>
-                    </execution>
-                    
+                    </execution>                    
                     <execution>
                         <goals>
                             <goal>test</goal>
@@ -209,11 +215,11 @@
             <plugin>
                 <groupId>org.jacoco</groupId>
                 <artifactId>jacoco-maven-plugin</artifactId>
-                <version>0.7.0.201403182114</version>
+                <version>${jacoco-version}</version>
                 <configuration>
                     <excludes>
-                        <exclude>*Test.*</exclude>
-                        <exclude>Main.*</exclude>
+                        <exclude>**/Test.*</exclude>
+                        <exclude>**/Main.*</exclude>
                     </excludes>
                 </configuration>
                 <executions>
@@ -229,8 +235,41 @@
                             <goal>report</goal>
                         </goals>
                     </execution>
+                    <execution>
+                        <id>post-unit-test</id>
+                        <phase>test</phase>
+                        <goals>
+                            <goal>report</goal>
+                        </goals>
+                        <configuration>
+                            <dataFile>${jacoco-exec-location}</dataFile>
+                            <outputDirectory>${jacoco-output-dir}</outputDirectory>
+                        </configuration>
+                    </execution>
                 </executions>
             </plugin>
         </plugins>
     </build>
+    
+    <reporting>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-report-plugin</artifactId>
+                <version>${surefire-version}</version>
+                <reportSets>
+                    <reportSet>
+                        <reports>
+                            <report>report-only</report>
+                        </reports>
+                    </reportSet>
+                </reportSets>
+            </plugin>
+            <plugin>
+                <groupId>org.jacoco</groupId>
+                <artifactId>jacoco-maven-plugin</artifactId>
+                <version>${jacoco-version}</version>
+            </plugin>
+        </plugins>
+    </reporting>
 </project>
