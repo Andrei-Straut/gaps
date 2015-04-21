@@ -8,8 +8,8 @@ import java.util.logging.Logger;
 import junit.framework.Assert;
 import org.jgap.InvalidConfigurationException;
 import org.junit.Before;
-import org.junit.Test;
 import org.junit.BeforeClass;
+import org.junit.Test;
 
 public class PathChromosomeFitnessTest {
 

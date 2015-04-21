@@ -13,8 +13,8 @@ import java.util.logging.Logger;
 import org.jgrapht.GraphPath;
 import org.junit.Assert;
 import org.junit.Before;
-import org.junit.Test;
 import org.junit.BeforeClass;
+import org.junit.Test;
 
 public class GraphGeneticsTranslatorTest {
 

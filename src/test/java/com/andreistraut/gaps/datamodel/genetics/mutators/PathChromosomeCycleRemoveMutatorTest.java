@@ -6,7 +6,6 @@ import com.andreistraut.gaps.datamodel.genetics.PathChromosome;
 import com.andreistraut.gaps.datamodel.genetics.PathChromosomePopulation;
 import com.andreistraut.gaps.datamodel.graph.DirectedWeightedEdge;
 import com.andreistraut.gaps.datamodel.mock.DirectedWeightedGraphMockThreeNodeThreeEdges;
-import com.andreistraut.gaps.datamodel.mock.PathChromosomePopulationMock;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -14,8 +13,8 @@ import org.jgap.InvalidConfigurationException;
 import org.jgap.impl.StockRandomGenerator;
 import org.junit.Assert;
 import org.junit.Before;
-import org.junit.Test;
 import org.junit.BeforeClass;
+import org.junit.Test;
 
 public class PathChromosomeCycleRemoveMutatorTest {
 

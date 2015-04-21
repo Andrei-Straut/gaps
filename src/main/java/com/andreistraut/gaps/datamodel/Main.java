@@ -1,29 +1,26 @@
 package com.andreistraut.gaps.datamodel;
 
-import com.andreistraut.gaps.datamodel.genetics.GeneticConfiguration;
-import com.andreistraut.gaps.datamodel.genetics.PathChromosome;
 import com.andreistraut.gaps.datamodel.genetics.EdgeGene;
 import com.andreistraut.gaps.datamodel.genetics.EdgeGeneConstraintChecker;
-import com.andreistraut.gaps.datamodel.genetics.mutators.PathChromosomeOnePointCrossover;
-import com.andreistraut.gaps.datamodel.genetics.PathChromosomeOperationMode;
-import com.andreistraut.gaps.datamodel.genetics.PathChromosomeFitness;
 import com.andreistraut.gaps.datamodel.genetics.GenerationStatistic;
+import com.andreistraut.gaps.datamodel.genetics.GeneticConfiguration;
+import com.andreistraut.gaps.datamodel.genetics.PathChromosome;
+import com.andreistraut.gaps.datamodel.genetics.PathChromosomeFitness;
 import com.andreistraut.gaps.datamodel.genetics.PathChromosomeFitnessComparator;
+import com.andreistraut.gaps.datamodel.genetics.PathChromosomeOperationMode;
 import com.andreistraut.gaps.datamodel.genetics.PathChromosomePopulation;
 import com.andreistraut.gaps.datamodel.genetics.mutators.PathChromosomeCycleRemoveMutator;
 import com.andreistraut.gaps.datamodel.genetics.mutators.PathChromosomeMultipleGeneMutator;
+import com.andreistraut.gaps.datamodel.genetics.mutators.PathChromosomeOnePointCrossover;
 import com.andreistraut.gaps.datamodel.genetics.mutators.PathChromosomeSingleGeneMutator;
 import com.andreistraut.gaps.datamodel.genetics.mutators.PathChromosomeTwoPointCrossover;
 import com.andreistraut.gaps.datamodel.graph.DirectedWeightedEdge;
-import com.andreistraut.gaps.datamodel.graph.Node;
 import com.andreistraut.gaps.datamodel.graph.DirectedWeightedGraph;
 import com.andreistraut.gaps.datamodel.graph.DirectedWeightedGraphPath;
+import com.andreistraut.gaps.datamodel.graph.Node;
 import com.andreistraut.gaps.datamodel.translator.GraphGeneticsTranslator;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-
-import org.jgrapht.GraphPath;
-
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.Iterator;
@@ -34,6 +31,7 @@ import org.jgap.InvalidConfigurationException;
 import org.jgap.event.EventManager;
 import org.jgap.impl.BestChromosomesSelector;
 import org.jgap.impl.StockRandomGenerator;
+import org.jgrapht.GraphPath;
 
 /**
  * Test class to quickly run stuff without having to deploy and run web

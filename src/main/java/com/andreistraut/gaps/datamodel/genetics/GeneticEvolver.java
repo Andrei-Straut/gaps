@@ -3,7 +3,6 @@ package com.andreistraut.gaps.datamodel.genetics;
 import com.andreistraut.gaps.datamodel.genetics.mutators.PathChromosomeCycleRemoveMutator;
 import com.andreistraut.gaps.datamodel.genetics.mutators.PathChromosomeMultipleGeneMutator;
 import com.andreistraut.gaps.datamodel.genetics.mutators.PathChromosomeTwoPointCrossover;
-import com.andreistraut.gaps.datamodel.graph.DirectedWeightedEdge;
 import com.andreistraut.gaps.datamodel.graph.DirectedWeightedGraph;
 import com.andreistraut.gaps.datamodel.graph.DirectedWeightedGraphPath;
 import com.andreistraut.gaps.datamodel.translator.GraphGeneticsTranslator;

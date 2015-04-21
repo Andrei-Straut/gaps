@@ -7,17 +7,13 @@ import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import junit.framework.Assert;
-import org.jgap.BaseGene;
 import org.jgap.Chromosome;
 import org.jgap.Gene;
-import org.jgap.IChromosome;
 import org.jgap.InvalidConfigurationException;
 import org.jgap.impl.BooleanGene;
-import org.junit.After;
 import org.junit.Before;
-import org.junit.Test;
-import static org.junit.Assert.*;
 import org.junit.BeforeClass;
+import org.junit.Test;
 
 public class EdgeGeneConstraintCheckerTest {
     private GeneticConfiguration conf;

@@ -1,7 +1,7 @@
 package com.andreistraut.gaps.datamodel.genetics;
 
-import com.andreistraut.gaps.datamodel.mock.PathChromosomeMockOneGene;
 import com.andreistraut.gaps.datamodel.mock.DirectedWeightedGraphMockThreeNodeThreeEdges;
+import com.andreistraut.gaps.datamodel.mock.PathChromosomeMockOneGene;
 import com.andreistraut.gaps.datamodel.mock.PathChromosomeMockTwoGene;
 import java.util.ArrayList;
 import java.util.logging.Level;
@@ -10,8 +10,8 @@ import junit.framework.Assert;
 import org.jgap.Chromosome;
 import org.jgap.InvalidConfigurationException;
 import org.junit.Before;
-import org.junit.Test;
 import org.junit.BeforeClass;
+import org.junit.Test;
 
 public class PathChromosomeFitnessComparatorTest {
 
