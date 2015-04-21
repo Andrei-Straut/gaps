@@ -30,7 +30,6 @@ public class Controller {
      * the user know that the handshake was successful.
      */
     @OnOpen
-    @SuppressWarnings("LoggerStringConcat")
     public void onOpen(Session session) {
 	MessageResponse response = new MessageResponse(0, HttpServletResponse.SC_OK, true, "Connection Established", null);
 
