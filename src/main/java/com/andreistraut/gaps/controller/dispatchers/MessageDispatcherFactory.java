@@ -16,76 +16,80 @@ public class MessageDispatcherFactory {
     private final Session session;
 
     public MessageDispatcherFactory(Controller controller, Session session) {
-	this.controller = controller;
-	this.session = session;
+        this.controller = controller;
+        this.session = session;
     }
 
     public MessageDispatcher getDispatcher(MessageType messageType) throws Exception {
-	MessageDispatcher dispatcher;
+        if (messageType == null) {
+            throw new NullPointerException("Message Type cannot be null");
+        }
 
-	switch (messageType) {
-	    case GetGraph: {
-		dispatcher = new GetGraphMessageDispatcher(
-			controller, session, messageType);
-		break;
-	    }
-	    case ComputePaths: {
-		dispatcher = new ComputePathMessageDispatcher(
-			controller, session, messageType);
-		break;
-	    }
-	    case Evolve: {
-		dispatcher = new EvolveMessageDispatcher(
-			controller, session, messageType);
-		break;
-	    }
-	    case Compare: {
-		dispatcher = new CompareStatisticsMessageDispatcher(
-			controller, session, messageType);
-		break;
-	    }
-	    case Unknown:
-	    default: {
-		throw new Exception("Message Type Unknown");
-	    }
-	}
+        MessageDispatcher dispatcher;
 
-	return dispatcher;
+        switch (messageType) {
+            case GETGRAPH: {
+                dispatcher = new GetGraphMessageDispatcher(
+                        controller, session, messageType);
+                break;
+            }
+            case COMPUTEPATHS: {
+                dispatcher = new ComputePathMessageDispatcher(
+                        controller, session, messageType);
+                break;
+            }
+            case EVOLVE: {
+                dispatcher = new EvolveMessageDispatcher(
+                        controller, session, messageType);
+                break;
+            }
+            case COMPARE: {
+                dispatcher = new CompareStatisticsMessageDispatcher(
+                        controller, session, messageType);
+                break;
+            }
+            case UNKNOWN:
+            default: {
+                throw new Exception("Message Type Unknown");
+            }
+        }
+
+        return dispatcher;
     }
 
     public void initDispatcherRequest(MessageDispatcher dispatcher, MessageRequest request) throws Exception {
-	dispatcher.setRequest(request);
+        dispatcher.setRequest(request);
     }
 
     public void initDispatcherParams(MessageDispatcher dispatcher) throws Exception {
-	ArrayList<Object> params = new ArrayList<Object>();
-	
-	if (dispatcher instanceof ComputePathMessageDispatcher) {
-	    params.add(this.graph);
-	    dispatcher.setParameters(params);
-	} else if (dispatcher instanceof EvolveMessageDispatcher) {
-	    params.add(this.graph);
-	    params.add(this.paths);
-	    dispatcher.setParameters(params);
-	} else if (dispatcher instanceof CompareStatisticsMessageDispatcher) {
-	    params.add(this.graph);
-	}
+        ArrayList<Object> params = new ArrayList<Object>();
 
-	dispatcher.setParameters(params);
+        if (dispatcher instanceof ComputePathMessageDispatcher) {
+            params.add(this.graph);
+            dispatcher.setParameters(params);
+        } else if (dispatcher instanceof EvolveMessageDispatcher) {
+            params.add(this.graph);
+            params.add(this.paths);
+            dispatcher.setParameters(params);
+        } else if (dispatcher instanceof CompareStatisticsMessageDispatcher) {
+            params.add(this.graph);
+        }
+
+        dispatcher.setParameters(params);
     }
 
     public void process(MessageDispatcher dispatcher) throws Exception {
-	dispatcher.process();
+        dispatcher.process();
 
-	if (dispatcher instanceof GetGraphMessageDispatcher) {
-	    this.graph = ((GetGraphMessageDispatcher) dispatcher).getGraph();
-	} else if (dispatcher instanceof ComputePathMessageDispatcher) {
-	    this.paths = ((ComputePathMessageDispatcher) dispatcher).getPaths();
-	}
+        if (dispatcher instanceof GetGraphMessageDispatcher) {
+            this.graph = ((GetGraphMessageDispatcher) dispatcher).getGraph();
+        } else if (dispatcher instanceof ComputePathMessageDispatcher) {
+            this.paths = ((ComputePathMessageDispatcher) dispatcher).getPaths();
+        }
     }
 
     public void release() {
-	this.graph = null;
-	this.paths = null;
+        this.graph = null;
+        this.paths = null;
     }
 }

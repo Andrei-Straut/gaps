@@ -36,7 +36,7 @@ public class MessageRequestTest {
 
 	MessageRequest request = new MessageRequest(requestString);
 	Assert.assertTrue(request.getCallbackId() == 0);
-	Assert.assertTrue(request.getType() == MessageType.GetGraph);
+	Assert.assertTrue(request.getType() == MessageType.GETGRAPH);
 	Assert.assertTrue(request.getData().isJsonObject());
     }
 
@@ -49,7 +49,7 @@ public class MessageRequestTest {
 
 	MessageRequest request = new MessageRequest(requestJson);
 	Assert.assertTrue(request.getCallbackId() == 0);
-	Assert.assertTrue(request.getType() == MessageType.GetGraph);
+	Assert.assertTrue(request.getType() == MessageType.GETGRAPH);
 	Assert.assertTrue(request.getData().isJsonObject());
     }
 
@@ -62,7 +62,7 @@ public class MessageRequestTest {
 
 	MessageRequest request = new MessageRequest(requestJson);
 	Assert.assertTrue(request.getCallbackId() == 3);
-	Assert.assertTrue(request.getType() == MessageType.GetGraph);
+	Assert.assertTrue(request.getType() == MessageType.GETGRAPH);
 	Assert.assertTrue(request.getData().isJsonObject());
     }
 
@@ -205,7 +205,7 @@ public class MessageRequestTest {
 	
 	JsonObject toJson = request.toJson();
 	Assert.assertTrue(toJson.get("callback_id").getAsInt() == 0);
-	Assert.assertTrue(toJson.get("type").getAsString().equals("GetGraph"));
+	Assert.assertTrue(toJson.get("type").getAsString().equals(MessageType.GETGRAPH.toString()));
 	Assert.assertTrue(toJson.has("data"));
     }
 }

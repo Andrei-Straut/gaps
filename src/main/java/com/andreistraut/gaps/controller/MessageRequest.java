@@ -40,7 +40,7 @@ public class MessageRequest {
 	}
 	
 	this.callbackId = json.get("callback_id").getAsInt();
-	this.type = MessageType.valueOf(json.get("type").getAsString());
+	this.type = MessageType.valueOf(json.get("type").getAsString().trim().toUpperCase());
 	this.data = json.get("data").getAsJsonObject();
     }
 
