@@ -116,6 +116,8 @@ public class CompareStatisticsMessageDispatcher extends MessageDispatcher {
 
     @Override
     protected void updateProgress(MessageResponse response) {
-        this.controller.respond(this.session, response);
+        if(this.sendUpdates) {
+            this.controller.respond(this.session, response);
+        }
     }
 }

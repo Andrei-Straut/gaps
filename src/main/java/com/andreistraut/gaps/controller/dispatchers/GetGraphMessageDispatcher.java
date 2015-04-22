@@ -42,7 +42,8 @@ public class GetGraphMessageDispatcher extends MessageDispatcher {
     }
 
     @Override
-    boolean process() {
+    boolean process() throws Exception {
+        
         MessageResponse response = new MessageResponse(this.request.getCallbackId());
 
         try {
@@ -72,7 +73,9 @@ public class GetGraphMessageDispatcher extends MessageDispatcher {
 
     @Override
     protected void updateProgress(MessageResponse response) {
-        this.controller.respond(this.session, response);
+        if(this.sendUpdates) {
+            this.controller.respond(this.session, response);
+        }
     }
 
     public DirectedWeightedGraph getGraph() {

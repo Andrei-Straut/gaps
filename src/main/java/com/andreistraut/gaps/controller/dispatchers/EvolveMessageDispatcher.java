@@ -65,11 +65,6 @@ public class EvolveMessageDispatcher extends MessageDispatcher {
     }
 
     @Override
-    void updateProgress(MessageResponse response) {
-	this.controller.respond(this.session, response);
-    }
-
-    @Override
     boolean process() throws Exception {
 	MessageResponse response = new MessageResponse(request.getCallbackId());
 	GeneticEvolver evolver = new GeneticEvolver(
@@ -121,5 +116,12 @@ public class EvolveMessageDispatcher extends MessageDispatcher {
 		new Object[]{session.getId(), request.getCallbackId()});
 
 	return true;
+    }
+
+    @Override
+    void updateProgress(MessageResponse response) {
+        if(this.sendUpdates) {
+            this.controller.respond(this.session, response);
+        }
     }
 }

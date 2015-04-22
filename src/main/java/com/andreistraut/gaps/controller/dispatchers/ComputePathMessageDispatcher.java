@@ -102,7 +102,9 @@ public class ComputePathMessageDispatcher extends MessageDispatcher {
 
     @Override
     void updateProgress(MessageResponse response) {
-	this.controller.respond(this.session, response);
+        if(this.sendUpdates) {
+            this.controller.respond(this.session, response);
+        }
     }
 
     public ArrayList<DirectedWeightedGraphPath> getPaths() {
