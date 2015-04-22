@@ -35,6 +35,10 @@ public class EvolveMessageDispatcher extends MessageDispatcher {
 
     @Override
     boolean setRequest(MessageRequest request) throws Exception {
+        if(request == null || request.getData() == null) {
+            throw new Exception("Request invalid, missing data");
+        }
+        
 	if (!request.getData().has("numberOfEvolutions")
 		|| !request.getData().has("stopConditionPercent")) {
 	    throw new Exception("Genetic request malformed, missing parameters");
@@ -49,15 +53,16 @@ public class EvolveMessageDispatcher extends MessageDispatcher {
 
     @Override
     void setParameters(ArrayList<Object> parameters) throws Exception {
-	if (parameters == null || parameters.isEmpty()) {            
+	if (parameters == null || parameters.isEmpty()) {
 	    throw new Exception("Parameters cannot be empty");
 	}
         
-	if (!(parameters.get(0) instanceof DirectedWeightedGraph)) {
+	if (parameters.get(0) == null || !(parameters.get(0) instanceof DirectedWeightedGraph)) {
 	    throw new Exception("Could not find computed graph. Cannot continue");
 	}
 
-	if (!(parameters.get(1) instanceof ArrayList<?>)) {
+	if (parameters.get(1) == null || !(parameters.get(1) instanceof ArrayList<?>)
+                || ((ArrayList) parameters.get(1)).isEmpty()) {
 	    throw new Exception("Could not find computed paths. Cannot continue");
 	}
 

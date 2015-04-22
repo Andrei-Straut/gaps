@@ -2,18 +2,23 @@ package com.andreistraut.gaps.controller.dispatchers;
 
 import com.andreistraut.gaps.controller.Controller;
 import com.andreistraut.gaps.controller.MessageRequest;
+import com.andreistraut.gaps.controller.MessageResponse;
 import com.andreistraut.gaps.controller.MessageType;
 import com.andreistraut.gaps.datamodel.graph.DirectedWeightedGraph;
+import com.andreistraut.gaps.datamodel.graph.DirectedWeightedGraphPath;
 import com.andreistraut.gaps.datamodel.mock.MessageRequestMock;
 import com.andreistraut.gaps.datamodel.mock.SessionMock;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.websocket.Session;
+import org.junit.After;
+import org.junit.AfterClass;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
+import static org.junit.Assert.*;
 
 public class ComputePathMessageDispatcherTest {
 
@@ -259,14 +264,15 @@ public class ComputePathMessageDispatcherTest {
     }
 
     @Test
-    public void testSetParametersInvalidNull() throws Exception {
+    public void testSetParametersInvalidObject() throws Exception {
         ComputePathMessageDispatcher pathDispatcher = new ComputePathMessageDispatcher(
                 controller, session, MessageType.COMPUTEPATHS);
         pathDispatcher.setSendUpdates(false);
         MessageRequest pathRequest = this.messageRequestMock.getComputePathsRequest();
         pathDispatcher.setRequest(pathRequest);
 
-        ArrayList<Object> parameters = null;
+        ArrayList<Object> parameters = new ArrayList<Object>();
+        parameters.add(new Object());
 
         try {
             pathDispatcher.setParameters(parameters);
@@ -277,15 +283,14 @@ public class ComputePathMessageDispatcherTest {
     }
 
     @Test
-    public void testSetParametersInvalidObject() throws Exception {
+    public void testSetParametersInvalidNull() throws Exception {
         ComputePathMessageDispatcher pathDispatcher = new ComputePathMessageDispatcher(
                 controller, session, MessageType.COMPUTEPATHS);
         pathDispatcher.setSendUpdates(false);
         MessageRequest pathRequest = this.messageRequestMock.getComputePathsRequest();
         pathDispatcher.setRequest(pathRequest);
 
-        ArrayList<Object> parameters = new ArrayList<Object>();
-        parameters.add(new Object());
+        ArrayList<Object> parameters = null;
 
         try {
             pathDispatcher.setParameters(parameters);
