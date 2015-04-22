@@ -107,6 +107,5 @@ public class GetGraphMessageDispatcherTest {
                 == getGraphRequest.getData().get("numberOfNodes").getAsInt());
         Assert.assertTrue(graphDispatcher.getGraph().getNumberOfEdges()
                 == getGraphRequest.getData().get("numberOfEdges").getAsInt());
-    }
-    
+    }    
 }
