@@ -30,6 +30,10 @@ public class GetGraphMessageDispatcher extends MessageDispatcher {
 
     @Override
     boolean setRequest(MessageRequest request) throws Exception {
+        if(request == null || request.getData() == null) {
+            throw new NullPointerException("Request invalid, missing data");
+        }
+        
         this.request = request;
         this.graphSettings = new GraphSettings(this.request.getData());
 
@@ -48,7 +52,6 @@ public class GetGraphMessageDispatcher extends MessageDispatcher {
 
         try {
             this.graph = new DirectedWeightedGraph(this.graphSettings);
-
             this.graph.initNodes();
             this.graph.initEdges();
 
