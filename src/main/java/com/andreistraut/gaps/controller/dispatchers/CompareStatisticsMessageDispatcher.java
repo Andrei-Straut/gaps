@@ -38,11 +38,22 @@ public class CompareStatisticsMessageDispatcher extends MessageDispatcher {
 
     @Override
     boolean setRequest(MessageRequest request) throws Exception {
+        if(request == null || request.getData() == null) {
+            throw new Exception("Request invalid, missing data");
+        }
+        
         if (!request.getData().has("sourceNode")
                 || !request.getData().has("destinationNode")) {
 
             throw new Exception("Compare request malformed, missing parameters");
         }
+
+	int sourceNodeId = request.getData().get("sourceNode").getAsInt();
+	int destinationNodeId = request.getData().get("destinationNode").getAsInt();
+
+	if (sourceNodeId == destinationNodeId) {
+	    throw new Exception("Source and destination nodes must be different");
+	}
 
         this.request = request;
         
@@ -51,9 +62,11 @@ public class CompareStatisticsMessageDispatcher extends MessageDispatcher {
 
     @Override
     void setParameters(ArrayList<Object> parameters) throws Exception {
-        if (!(parameters.get(0) instanceof DirectedWeightedGraph)) {
-            throw new Exception("Could not find computed graph. Cannot continue");
-        }
+	if (parameters == null || parameters.isEmpty() || 
+                !(parameters.get(0) instanceof DirectedWeightedGraph)) {
+            
+	    throw new Exception("First parameter must be a DirectedWeightedGraph");
+	}
 
         this.graph = (DirectedWeightedGraph) parameters.get(0);
 
