@@ -49,18 +49,20 @@ public class EvolveMessageDispatcher extends MessageDispatcher {
 
     @Override
     void setParameters(ArrayList<Object> parameters) throws Exception {
+	if (parameters == null || parameters.isEmpty()) {            
+	    throw new Exception("Parameters cannot be empty");
+	}
+        
 	if (!(parameters.get(0) instanceof DirectedWeightedGraph)) {
 	    throw new Exception("Could not find computed graph. Cannot continue");
 	}
-
-	this.graph = (DirectedWeightedGraph) parameters.get(0);
 
 	if (!(parameters.get(1) instanceof ArrayList<?>)) {
 	    throw new Exception("Could not find computed paths. Cannot continue");
 	}
 
+	this.graph = (DirectedWeightedGraph) parameters.get(0);
 	this.paths = (ArrayList<DirectedWeightedGraphPath>) parameters.get(1);
-
 	this.parameters = parameters;
     }
 
