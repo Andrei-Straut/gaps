@@ -7,6 +7,7 @@ import org.junit.runners.Suite;
     com.andreistraut.gaps.controller.dispatchers.GetGraphMessageDispatcherTest.class,
     com.andreistraut.gaps.controller.dispatchers.ComputePathMessageDispatcherTest.class,
     com.andreistraut.gaps.controller.dispatchers.EvolveMessageDispatcherTest.class,
+    com.andreistraut.gaps.controller.dispatchers.CompareStatisticsMessageDispatcherTest.class,
     com.andreistraut.gaps.controller.dispatchers.MessageDispatcherFactoryTest.class
     })
 public class ControllerDispatchers {
