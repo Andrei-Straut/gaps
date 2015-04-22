@@ -31,7 +31,7 @@ public class GetGraphMessageDispatcher extends MessageDispatcher {
     @Override
     boolean setRequest(MessageRequest request) throws Exception {
         if(request == null || request.getData() == null) {
-            throw new NullPointerException("Request invalid, missing data");
+            throw new Exception("Request invalid, missing data");
         }
         
         this.request = request;

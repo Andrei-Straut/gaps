@@ -165,8 +165,8 @@ public class ComputePathMessageDispatcherTest {
         MessageRequest pathRequest = null;
 
         try {
-            graphDispatcher.setRequest(pathRequest);
-        } catch (NullPointerException e) {
+            pathDispatcher.setRequest(pathRequest);
+        } catch (Exception e) {
             Assert.assertTrue(e.getMessage().contains("Request invalid, missing data"));
         }
     }

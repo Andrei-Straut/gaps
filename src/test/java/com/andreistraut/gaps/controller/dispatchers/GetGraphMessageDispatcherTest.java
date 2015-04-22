@@ -83,7 +83,7 @@ public class GetGraphMessageDispatcherTest {
         
         try {
             graphDispatcher.setRequest(graphRequest);
-        } catch(NullPointerException e) {
+        } catch(Exception e) {
             Assert.assertTrue(e.getMessage().contains("Request invalid, missing data"));
         }
     }
