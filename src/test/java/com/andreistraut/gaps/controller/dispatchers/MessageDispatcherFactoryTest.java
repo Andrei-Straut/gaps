@@ -3,8 +3,11 @@ package com.andreistraut.gaps.controller.dispatchers;
 import com.andreistraut.gaps.controller.Controller;
 import com.andreistraut.gaps.controller.MessageRequest;
 import com.andreistraut.gaps.controller.MessageType;
+import com.andreistraut.gaps.datamodel.graph.DirectedWeightedGraph;
+import com.andreistraut.gaps.datamodel.graph.DirectedWeightedGraphPath;
 import com.andreistraut.gaps.datamodel.mock.MessageRequestMock;
 import com.andreistraut.gaps.datamodel.mock.SessionMock;
+import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.websocket.Session;
@@ -83,7 +86,7 @@ public class MessageDispatcherFactoryTest {
     @Test
     public void testInitGetGraphDispatcherRequest() throws Exception {
         GetGraphMessageDispatcher graphDispatcher = (GetGraphMessageDispatcher) this.factory.getDispatcher(MessageType.GETGRAPH);
-        MessageRequest getGraphRequest = this.messageRequestMock.getGetGraphRequestMock();
+        MessageRequest getGraphRequest = this.messageRequestMock.getGetGraphRequest();
 
         Assert.assertTrue(graphDispatcher.getGraphSettings() == null);
 
@@ -98,5 +101,89 @@ public class MessageDispatcherFactoryTest {
                 == getGraphRequest.getData().get("minimumEdgeWeight").getAsInt());
         Assert.assertTrue(graphDispatcher.getGraphSettings().getMaximumEdgeWeight()
                 == getGraphRequest.getData().get("maximumEdgeWeight").getAsInt());
+    }
+
+    @Test
+    public void testInitComputePathsDispatcherParameters() throws Exception {
+        //Initialize graph
+        GetGraphMessageDispatcher graphDispatcher = (GetGraphMessageDispatcher) this.factory.getDispatcher(MessageType.GETGRAPH);
+        graphDispatcher.setSendUpdates(false);
+        MessageRequest getGraphRequest = this.messageRequestMock.getGetGraphRequest();
+        this.factory.initDispatcherRequest(graphDispatcher, getGraphRequest);
+        this.factory.initDispatcherParams(graphDispatcher);
+        this.factory.process(graphDispatcher);
+        Assert.assertTrue(graphDispatcher.getGraph() != null);
+        
+        //Compute paths
+        ComputePathMessageDispatcher pathDispatcher = (ComputePathMessageDispatcher) this.factory.getDispatcher(MessageType.COMPUTEPATHS);
+        pathDispatcher.setSendUpdates(false);
+        MessageRequest pathRequest = this.messageRequestMock.getComputePathsRequest();
+
+        Assert.assertTrue(pathDispatcher.getPaths() == null || pathDispatcher.getPaths() == null);
+
+        this.factory.initDispatcherRequest(pathDispatcher, pathRequest);
+        this.factory.initDispatcherParams(pathDispatcher);
+        
+        Assert.assertTrue(pathDispatcher.parameters.get(0) != null);
+        DirectedWeightedGraph graph = (DirectedWeightedGraph) pathDispatcher.parameters.get(0);
+        Assert.assertTrue(graph.equals(graphDispatcher.getGraph()));
+    }
+    
+    @Test
+    public void testInitEvolveDispatcherParameters() throws Exception {
+        //Initialize graph
+        GetGraphMessageDispatcher graphDispatcher = (GetGraphMessageDispatcher) this.factory.getDispatcher(MessageType.GETGRAPH);
+        graphDispatcher.setSendUpdates(false);
+        MessageRequest getGraphRequest = this.messageRequestMock.getGetGraphRequest();
+        this.factory.initDispatcherRequest(graphDispatcher, getGraphRequest);
+        this.factory.initDispatcherParams(graphDispatcher);
+        this.factory.process(graphDispatcher);
+        Assert.assertTrue(graphDispatcher.getGraph() != null);
+        
+        //Compute paths
+        ComputePathMessageDispatcher pathDispatcher = (ComputePathMessageDispatcher) this.factory.getDispatcher(MessageType.COMPUTEPATHS);
+        pathDispatcher.setSendUpdates(false);
+        MessageRequest pathRequest = this.messageRequestMock.getComputePathsRequest();
+        Assert.assertTrue(pathDispatcher.getPaths() == null || pathDispatcher.getPaths() == null);
+        this.factory.initDispatcherRequest(pathDispatcher, pathRequest);
+        this.factory.initDispatcherParams(pathDispatcher);
+        this.factory.process(pathDispatcher);
+        
+        //Evolve
+        EvolveMessageDispatcher evolveDispatcher = (EvolveMessageDispatcher) this.factory.getDispatcher(MessageType.EVOLVE);
+        evolveDispatcher.setSendUpdates(false);
+        MessageRequest evolveRequest = this.messageRequestMock.getEvolveRequest();
+        this.factory.initDispatcherRequest(evolveDispatcher, evolveRequest);
+        this.factory.initDispatcherParams(evolveDispatcher);
+        
+        Assert.assertTrue(evolveDispatcher.parameters.get(0) != null);
+        DirectedWeightedGraph graph = (DirectedWeightedGraph) evolveDispatcher.parameters.get(0);
+        Assert.assertTrue(graph.equals(graphDispatcher.getGraph()));
+        
+        Assert.assertTrue(evolveDispatcher.parameters.get(1) != null);
+        ArrayList<DirectedWeightedGraphPath> paths = (ArrayList) evolveDispatcher.parameters.get(1);
+        Assert.assertTrue(paths.equals(pathDispatcher.getPaths()));
+    }
+    @Test
+    public void testInitCompareDispatcherParameters() throws Exception {
+        //Initialize graph
+        GetGraphMessageDispatcher graphDispatcher = (GetGraphMessageDispatcher) this.factory.getDispatcher(MessageType.GETGRAPH);
+        graphDispatcher.setSendUpdates(false);
+        MessageRequest getGraphRequest = this.messageRequestMock.getGetGraphRequest();
+        this.factory.initDispatcherRequest(graphDispatcher, getGraphRequest);
+        this.factory.initDispatcherParams(graphDispatcher);
+        this.factory.process(graphDispatcher);
+        Assert.assertTrue(graphDispatcher.getGraph() != null);
+        
+        //Compare
+        CompareStatisticsMessageDispatcher compareDispatcher = (CompareStatisticsMessageDispatcher) this.factory.getDispatcher(MessageType.COMPARE);
+        compareDispatcher.setSendUpdates(false);
+        MessageRequest compareRequest = this.messageRequestMock.getCompareRequest();
+        this.factory.initDispatcherRequest(compareDispatcher, compareRequest);
+        this.factory.initDispatcherParams(compareDispatcher);
+        
+        Assert.assertTrue(compareDispatcher.parameters.get(0) != null);
+        DirectedWeightedGraph graph = (DirectedWeightedGraph) compareDispatcher.parameters.get(0);
+        Assert.assertTrue(graph.equals(graphDispatcher.getGraph()));
     }
 }

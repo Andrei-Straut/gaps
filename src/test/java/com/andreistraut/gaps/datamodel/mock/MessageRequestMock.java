@@ -60,7 +60,7 @@ public class MessageRequestMock {
 	evolveRequest.addProperty("type", "Evolve");
 	evolveRequest.add("data", this.computeEvolveCompareRequestJsonData);
 	
-	this.computePathsRequestMock = new MessageRequest(evolveRequest);
+	this.evolveRequestMock = new MessageRequest(evolveRequest);
     }
     
     private void initCompareRequestMock() {
@@ -70,22 +70,22 @@ public class MessageRequestMock {
 	compareRequest.addProperty("type", "Compare");
 	compareRequest.add("data", this.computeEvolveCompareRequestJsonData);
 	
-	this.computePathsRequestMock = new MessageRequest(compareRequest);
+	this.compareRequestMock = new MessageRequest(compareRequest);
     }
 
-    public MessageRequest getGetGraphRequestMock() {
+    public MessageRequest getGetGraphRequest() {
 	return getGraphRequestMock;
     }
 
-    public MessageRequest getComputePathsRequestMock() {
+    public MessageRequest getComputePathsRequest() {
 	return computePathsRequestMock;
     }
 
-    public MessageRequest getEvolveRequestMock() {
+    public MessageRequest getEvolveRequest() {
 	return evolveRequestMock;
     }
 
-    public MessageRequest getCompareRequestMock() {
+    public MessageRequest getCompareRequest() {
 	return compareRequestMock;
     }
 }
