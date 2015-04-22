@@ -35,6 +35,10 @@ public class ComputePathMessageDispatcher extends MessageDispatcher {
 
     @Override
     boolean setRequest(MessageRequest request) throws Exception {
+        if(request == null || request.getData() == null) {
+            throw new NullPointerException("Request invalid, missing data");
+        }
+        
 	if (!request.getData().has("sourceNode")
 		|| !request.getData().has("destinationNode")
 		|| !request.getData().has("numberOfPaths")) {
@@ -45,7 +49,7 @@ public class ComputePathMessageDispatcher extends MessageDispatcher {
 	int sourceNodeId = request.getData().get("sourceNode").getAsInt();
 	int destinationNodeId = request.getData().get("destinationNode").getAsInt();
 
-	if (sourceNodeId == destinationNodeId) {	    
+	if (sourceNodeId == destinationNodeId) {
 	    throw new Exception("Source and destination nodes must be different");
 	}
 
@@ -56,14 +60,16 @@ public class ComputePathMessageDispatcher extends MessageDispatcher {
 
     @Override
     void setParameters(ArrayList<Object> parameters) throws Exception {
-	if (!(parameters.get(0) instanceof DirectedWeightedGraph)) {	    
-	    throw new Exception("Could not find computed graph. Cannot continue");
+	if (parameters == null || parameters.isEmpty() || 
+                !(parameters.get(0) instanceof DirectedWeightedGraph)) {
+            
+	    throw new Exception("First parameter must be a DirectedWeightedGraph");
 	}
 
 	this.graph = (DirectedWeightedGraph) parameters.get(0);
 	
-	int sourceNodeId = request.getData().get("sourceNode").getAsInt();
-	int destinationNodeId = request.getData().get("destinationNode").getAsInt();
+	int sourceNodeId = this.request.getData().get("sourceNode").getAsInt();
+	int destinationNodeId = this.request.getData().get("destinationNode").getAsInt();
 
 	if (graph.getNodes().size() <= sourceNodeId
 		|| graph.getNodes().size() <= destinationNodeId) {
@@ -80,7 +86,7 @@ public class ComputePathMessageDispatcher extends MessageDispatcher {
     boolean process() throws Exception {
 	this.paths = this.graph.getKPathsDepthFirst(this.sourceNode, this.destinationNode, this.numberOfPaths);
 
-	if (this.paths.isEmpty()) {	    
+	if (this.paths.isEmpty()) {
 	    throw new Exception("Could not find any valid paths from source to destination");
 	}
 
