@@ -13,10 +13,20 @@
         <div class="spinner"></div>
         <span style="vertical-align: super; color: #428bca">{{load.wipType}}</span>
     </div>
-    
+
     <nav class="navbar-default navbar-side" role="navigation">
         <div class="sidebar-collapse">
             <ul class="nav" id="main-menu">
+                <li>
+                    <a id="nav-menu-left-faq"
+                       class="nav-menu-left" 
+                       href="https://github.com/Andrei-Straut/gaps/wiki"
+                       target="_blank"
+                       data-toggle="tooltip" 
+                       data-placement="right"
+                       data-original-title="Help"><i class="fa fa-info-circle fa-3x"></i>
+                    </a>
+                </li>
                 <li>
                     <a ng-click="setActive('nav-menu-left-top');" 
                        id="nav-menu-left-top" 
