@@ -18,16 +18,6 @@
         <div class="sidebar-collapse">
             <ul class="nav" id="main-menu">
                 <li>
-                    <a id="nav-menu-left-faq"
-                       class="nav-menu-left" 
-                       href="https://github.com/Andrei-Straut/gaps/wiki"
-                       target="_blank"
-                       data-toggle="tooltip" 
-                       data-placement="right"
-                       data-original-title="Help"><i class="fa fa-info-circle fa-3x"></i>
-                    </a>
-                </li>
-                <li>
                     <a ng-click="setActive('nav-menu-left-top');" 
                        id="nav-menu-left-top" 
                        class="nav-menu-left active-menu" 
@@ -43,7 +33,7 @@
                        class="nav-menu-left" href="#graph-settings"
                        data-toggle="tooltip" 
                        data-placement="right" 
-                       data-original-title="Settings"><i class="fa fa-tasks fa-3x"></i>
+                       data-original-title="Settings"><i class="fa fa-cog fa-3x"></i>
                     </a>
                 </li>
                 <li>
@@ -53,7 +43,7 @@
                        href="#graph-viewer"
                        data-toggle="tooltip" 
                        data-placement="right" 
-                       data-original-title="Graph"><i class="fa fa-arrows-alt fa-3x"></i></a>
+                       data-original-title="Graph"><i class="fa fa-connectdevelop fa-3x"></i></a>
                 </li>
                 <li>
                     <a ng-click="setActive('nav-menu-left-genetic-statistics');" 
@@ -65,13 +55,13 @@
                        data-original-title="Genetic Statistics"><i class="fa fa-venus-mars fa-3x"></i></a>
                 </li>
                 <li>
-                    <a ng-click="setActive('nav-menu-left-genetic-statistics');" 
-                       id="nav-menu-left-genetic-statistics" 
+                    <a ng-click="setActive('nav-menu-left-compare-statistics');" 
+                       id="nav-menu-left-compare-statistics" 
                        class="nav-menu-left" 
                        href="#compare-statistics"
                        data-toggle="tooltip" 
                        data-placement="right" 
-                       data-original-title="Results Compare Statistics"><i class="fa fa-pie-chart fa-3x"></i></a>
+                       data-original-title="Results Compare Statistics"><i class="fa fa-columns fa-3x"></i></a>
                 </li>
                 <li>
                     <a ng-click="setActive('nav-menu-left-path-statistics');" 
@@ -90,6 +80,17 @@
                        data-toggle="tooltip" 
                        data-placement="right" 
                        data-original-title="Graph Statistics"><i class="fa fa-bar-chart-o fa-3x"></i></a>
+                </li>
+                <li>
+                    <a id="nav-menu-left-faq"
+                       class="nav-menu-left" 
+                       href="https://github.com/Andrei-Straut/gaps/wiki"
+                       target="_blank"
+                       data-toggle="tooltip" 
+                       data-placement="right"
+                       data-original-title="Help"
+                       style="background:#428bca;"><i class="fa fa-info-circle fa-3x"></i>
+                    </a>
                 </li>
             </ul>
         </div>
