@@ -37,7 +37,7 @@ public class PathChromosomeMultipleGeneMutator extends PathChromosomeMutator {
 	    throws InvalidConfigurationException {
 
 	super(configuration);
-	this.mutationRatePercentage = DEFAULT_MUTATION_RATE;
+	this.mutationRate = DEFAULT_MUTATION_RATE;
 	this.allowIllegalMutations = false;
 	this.mutationMode = PathChromosomeOperationMode.RANDOM;
 	this.printMutationStatistics = false;
@@ -49,7 +49,7 @@ public class PathChromosomeMultipleGeneMutator extends PathChromosomeMutator {
 	    double desiredMutationRate) throws InvalidConfigurationException {
 
 	this(configuration);
-	this.mutationRatePercentage = desiredMutationRate;
+	this.mutationRate = desiredMutationRate;
     }
     //</editor-fold>
 
@@ -62,7 +62,7 @@ public class PathChromosomeMultipleGeneMutator extends PathChromosomeMutator {
 	 */
 	PathChromosomeMutationValidator breeder = new PathChromosomeMutationValidator(
 		(PathChromosome) chromosome,
-		this.mutationRatePercentage);
+		this.mutationRate);
 
 	if (!breeder.canMutate()) {
 	    return;

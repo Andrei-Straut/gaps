@@ -24,7 +24,7 @@ public class PathChromosomeTwoPointCrossover extends PathChromosomeCrossover {
 
 	super(configuration, desiredCrossoverRate);
 	this.configuration = configuration;
-	this.crossoverRatePercentage = desiredCrossoverRate;
+	this.crossoverRatePercent = desiredCrossoverRate;
 
 	this.allowIllegalCrossovers = false;
 	this.allowFullCrossover = false;
@@ -41,7 +41,7 @@ public class PathChromosomeTwoPointCrossover extends PathChromosomeCrossover {
 	PathChromosomeCrossoverValidator breeder = new PathChromosomeCrossoverValidator(
 		(PathChromosome) firstMate,
 		(PathChromosome) secondMate,
-		this.crossoverRatePercentage);
+		this.crossoverRatePercent);
 
 	if (!breeder.canCrossover()) {
 	    return;

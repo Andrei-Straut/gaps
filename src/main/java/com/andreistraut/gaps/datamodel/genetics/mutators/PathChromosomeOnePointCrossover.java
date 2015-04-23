@@ -40,7 +40,7 @@ public class PathChromosomeOnePointCrossover extends PathChromosomeCrossover {
 	this.allowFullCrossover = false;
 	this.allowCrossOverNewAge = false;
 	this.printCrossoverStatistics = false;
-	this.crossoverRatePercentage = DEFAULT_CROSSOVER_RATE;
+	this.crossoverRatePercent = DEFAULT_CROSSOVER_RATE;
 	this.crossoverMode = PathChromosomeOperationMode.RANDOM;
     }
 
@@ -49,7 +49,7 @@ public class PathChromosomeOnePointCrossover extends PathChromosomeCrossover {
 
 	super(configuration, desiredCrossoverRate);
 	this.configuration = configuration;
-	this.crossoverRatePercentage = desiredCrossoverRate;
+	this.crossoverRatePercent = desiredCrossoverRate;
 
 	this.allowIllegalCrossovers = false;
 	this.allowFullCrossover = false;
@@ -66,7 +66,7 @@ public class PathChromosomeOnePointCrossover extends PathChromosomeCrossover {
 	PathChromosomeCrossoverValidator breeder = new PathChromosomeCrossoverValidator(
 		(PathChromosome) firstMate,
 		(PathChromosome) secondMate,
-		this.crossoverRatePercentage);
+		this.crossoverRatePercent);
 
 	if (!breeder.canCrossover()) {
 	    return;
