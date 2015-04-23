@@ -115,7 +115,7 @@ public class PathChromosomePopulation extends Population {
     @Override
     public void addChromosomes(Population population) {
 	if (population != null && population.getChromosomes().size() > 0) {
-	    for (IChromosome chromosome : population.getChromosomes()) {
+	    for (Object chromosome : population.getChromosomes()) {
 		this.chromosomes.add((PathChromosome) chromosome);
 	    }
 	}

@@ -114,11 +114,6 @@ public class PathChromosome extends BaseChromosome implements IChromosome {
     }
     // </editor-fold>
 
-    @Override
-    public String getUniqueID() {
-	return Long.toString(this.serialVersionUID);
-    }
-
     /**
      * Gets the configuration used for this PathChromosome
      *
@@ -729,16 +724,6 @@ public class PathChromosome extends BaseChromosome implements IChromosome {
 
     @Override
     public void cleanup() {
-	throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public void setUniqueIDTemplate(String a_templateID, int a_index) {
-	throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public String getUniqueIDTemplate(int a_index) {
 	throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
