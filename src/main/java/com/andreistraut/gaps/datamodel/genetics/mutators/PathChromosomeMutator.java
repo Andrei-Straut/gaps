@@ -17,7 +17,7 @@ import org.jgap.impl.MutationOperator;
 public abstract class PathChromosomeMutator extends MutationOperator {
 
     protected GeneticConfiguration configuration;
-    protected double mutationRatePercentage;
+    protected double mutationRatePercent;
     protected boolean allowIllegalMutations;
     protected PathChromosomeOperationMode mutationMode;
     protected boolean printMutationStatistics;
@@ -30,7 +30,7 @@ public abstract class PathChromosomeMutator extends MutationOperator {
 	    throws InvalidConfigurationException {
 
 	super(configuration);
-	this.mutationRatePercentage = DEFAULT_MUTATION_RATE;
+	this.mutationRatePercent = DEFAULT_MUTATION_RATE;
 	this.allowIllegalMutations = false;
 	this.mutationMode = PathChromosomeOperationMode.RANDOM;
 	this.printMutationStatistics = false;
@@ -39,20 +39,20 @@ public abstract class PathChromosomeMutator extends MutationOperator {
     }
 
     public PathChromosomeMutator(GeneticConfiguration configuration, 
-	    double desiredMutationRate)
+	    double desiredMutationRatePercentage)
 	    throws InvalidConfigurationException {
 
 	this(configuration);
-	this.mutationRatePercentage = desiredMutationRate;
+	this.mutationRatePercent = desiredMutationRatePercentage;
     }
 
     public PathChromosomeMutator(GeneticConfiguration configuration,
-	    double desiredMutationRate, boolean allowIllegalMutations,
+	    double desiredMutationRatePercentage, boolean allowIllegalMutations,
 	    PathChromosomeOperationMode mutationMode, boolean printStatistics)
 	    throws InvalidConfigurationException {
 
 	this(configuration);
-	this.mutationRatePercentage = desiredMutationRate;
+	this.mutationRatePercent = desiredMutationRatePercentage;
 	this.allowIllegalMutations = allowIllegalMutations;
 	this.mutationMode = mutationMode;
 	this.printMutationStatistics = printStatistics;
@@ -65,29 +65,29 @@ public abstract class PathChromosomeMutator extends MutationOperator {
     }
 
     private PathChromosomeMutator(GeneticConfiguration configuration,
-	    int desiredMutationRate) throws InvalidConfigurationException {
+	    int desiredMutationRatePercentage) throws InvalidConfigurationException {
 
 	this.configuration = configuration;
-	this.mutationRatePercentage = convertMutationRate(desiredMutationRate);
+	this.mutationRatePercent = convertMutationRate(desiredMutationRatePercentage);
     }
     //</editor-fold>
 
     @Override
     public int getMutationRate() {
-	return (int) (this.mutationRatePercentage * 100);
+	return (int) (this.mutationRatePercent * 100);
     }
 
     @Override
-    public void setMutationRate(int mutationRate) {
-	this.mutationRatePercentage = convertMutationRate(mutationRate);
+    public void setMutationRate(int mutationRatePercentage) {
+	this.mutationRatePercent = convertMutationRate(mutationRatePercentage);
     }
 
     public double getMutationRatePercentage() {
-	return mutationRatePercentage;
+	return mutationRatePercent;
     }
 
     public void setMutationRatePercentage(double mutationRatePercentage) {
-	this.mutationRatePercentage = mutationRatePercentage;
+	this.mutationRatePercent = mutationRatePercentage;
     }
 
     public boolean isAllowIllegalMutations() {
@@ -144,19 +144,8 @@ public abstract class PathChromosomeMutator extends MutationOperator {
     }
 
     protected double convertMutationRate(int rate) {
-	if (rate > 10000) {
-	    rate = 10000;
-	    return ((double) rate) / 10000;
-	}
-
-	if (rate > 1000) {
-	    rate = 1000;
-	    return ((double) rate) / 1000;
-	}
-
-	if (rate > 100) {
-	    rate = 100;
-	    return ((double) rate) / 100;
+	if (rate >= 100) {
+	    return 100;
 	}
 
 	return ((double) rate) / 100;

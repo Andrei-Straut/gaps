@@ -18,7 +18,7 @@ public abstract class PathChromosomeCrossover
 	extends CrossoverOperator implements GeneticOperator {
 
     protected GeneticConfiguration configuration;
-    protected double crossoverRatePercentage;
+    protected double crossoverRatePercent;
     protected boolean allowIllegalCrossovers;
     protected boolean allowFullCrossover;
     protected boolean allowCrossOverNewAge;
@@ -36,7 +36,7 @@ public abstract class PathChromosomeCrossover
 	this.allowFullCrossover = false;
 	this.allowCrossOverNewAge = false;
 	this.printCrossoverStatistics = false;
-	this.crossoverRatePercentage = DEFAULT_CROSSOVER_RATE;
+	this.crossoverRatePercent = DEFAULT_CROSSOVER_RATE;
 	this.crossoverMode = PathChromosomeOperationMode.RANDOM;
     }
 
@@ -45,7 +45,7 @@ public abstract class PathChromosomeCrossover
 
 	super(configuration, desiredCrossoverRate);
 	this.configuration = configuration;
-	this.crossoverRatePercentage = desiredCrossoverRate;
+	this.crossoverRatePercent = desiredCrossoverRate;
 
 	this.allowIllegalCrossovers = false;
 	this.allowFullCrossover = false;
@@ -55,41 +55,41 @@ public abstract class PathChromosomeCrossover
     }
 
     public PathChromosomeCrossover(GeneticConfiguration configuration,
-	    double desiredCrossoverRate, boolean allowFullCrossOver)
+	    double desiredCrossoverRatePercent, boolean allowFullCrossOver)
 	    throws InvalidConfigurationException {
 
-	this(configuration, desiredCrossoverRate);
+	this(configuration, desiredCrossoverRatePercent);
 	this.allowFullCrossover = allowFullCrossOver;
     }
 
     public PathChromosomeCrossover(GeneticConfiguration configuration,
-	    double desiredCrossoverRate,
+	    double desiredCrossoverRatePercent,
 	    boolean allowFullCrossOver,
 	    boolean xoverNewAge) throws InvalidConfigurationException {
 
-	this(configuration, desiredCrossoverRate, allowFullCrossOver);
+	this(configuration, desiredCrossoverRatePercent, allowFullCrossOver);
 	this.allowCrossOverNewAge = xoverNewAge;
     }
 
     public PathChromosomeCrossover(GeneticConfiguration configuration,
-	    double crossoverRatePercentage,
+	    double desiredCrossoverRatePercent,
 	    boolean allowFullCrossOver,
 	    boolean xoverNewAge,
 	    boolean allowIllegalCrossovers) throws InvalidConfigurationException {
 
-	this(configuration, crossoverRatePercentage, allowFullCrossOver);
+	this(configuration, desiredCrossoverRatePercent, allowFullCrossOver);
 	this.allowCrossOverNewAge = xoverNewAge;
 	this.allowIllegalCrossovers = allowIllegalCrossovers;
     }
 
     public PathChromosomeCrossover(GeneticConfiguration configuration,
-	    double crossoverRatePercentage,
+	    double desiredCrossoverRatePercent,
 	    boolean allowFullCrossOver,
 	    boolean xoverNewAge,
 	    boolean allowIllegalCrossovers,
 	    boolean printStatistics) throws InvalidConfigurationException {
 
-	this(configuration, crossoverRatePercentage, allowFullCrossOver,
+	this(configuration, desiredCrossoverRatePercent, allowFullCrossOver,
 		xoverNewAge, allowIllegalCrossovers);
 	this.printCrossoverStatistics = printStatistics;
     }
@@ -100,13 +100,13 @@ public abstract class PathChromosomeCrossover
 	this.allowFullCrossover = false;
 	this.allowCrossOverNewAge = false;
 	this.printCrossoverStatistics = false;
-	this.crossoverRatePercentage = DEFAULT_CROSSOVER_RATE;
+	this.crossoverRatePercent = DEFAULT_CROSSOVER_RATE;
 	this.crossoverMode = PathChromosomeOperationMode.RANDOM;
     }
 
-    private PathChromosomeCrossover(double desiredCrossoverRate) throws InvalidConfigurationException {
+    private PathChromosomeCrossover(double desiredCrossoverRatePercent) throws InvalidConfigurationException {
 	super();
-	this.crossoverRatePercentage = desiredCrossoverRate;
+	this.crossoverRatePercent = desiredCrossoverRatePercent;
 	this.allowIllegalCrossovers = false;
 	this.allowFullCrossover = false;
 	this.allowCrossOverNewAge = false;
@@ -127,12 +127,12 @@ public abstract class PathChromosomeCrossover
 
     @Override
     public double getCrossOverRatePercent() {
-	return this.crossoverRatePercentage;
+	return this.crossoverRatePercent;
     }
 
     @Override
     public int getCrossOverRate() {
-	return (int) (this.crossoverRatePercentage * 100);
+	return (int) (this.getCrossOverRatePercent());
     }
 
     @Override
