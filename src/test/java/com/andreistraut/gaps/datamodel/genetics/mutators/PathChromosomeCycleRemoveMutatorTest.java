@@ -31,14 +31,14 @@ public class PathChromosomeCycleRemoveMutatorTest {
     @BeforeClass
     public static void setUpClass() {
 	Logger.getLogger(PathChromosomeCycleRemoveMutatorTest.class.getName()).log(Level.INFO,
-		"{0} TEST: PathChromosomeCycleRemoveMutatorTest",
+		"{0} TEST: PathChromosomeCycleRemoveMutator",
 		PathChromosomeCycleRemoveMutatorTest.class.toString());
     }
 
     @Before
     public void setUp() throws InvalidConfigurationException {
 	this.graphMock = new DirectedWeightedGraphMockThreeNodeThreeEdges();
-	this.conf = new GeneticConfiguration("PathChromosomeCrossoverValidatorTest", this.graphMock.getGraph());
+	this.conf = new GeneticConfiguration("PathChromosomeCycleRemoveMutatorTest", this.graphMock.getGraph());
 	this.conf.setKeepPopulationSizeConstant(false);
 
 	DirectedWeightedEdge firstToSecond = graphMock.getFirstToSecondEdge();
