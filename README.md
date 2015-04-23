@@ -1,4 +1,4 @@
-https://travis-ci.org/Andrei-Straut/gaps.svg?branch=master
+![Travis Status](https://travis-ci.org/Andrei-Straut/gaps.svg?branch=master)
 
 GAPS (*Genetic Algorithm Path Search*)
 ==============
