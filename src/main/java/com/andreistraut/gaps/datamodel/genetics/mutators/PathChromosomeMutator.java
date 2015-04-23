@@ -134,7 +134,7 @@ public abstract class PathChromosomeMutator extends MutationOperator {
 
 		    if (this.configuration.isKeepPopulationSizeConstant()) {
 			Collections.sort(candidateChromosomes, new PathChromosomeFitnessComparator());
-			candidateChromosomes.remove(0);
+			candidateChromosomes.remove(candidateChromosomes.size() - 1);
 		    }
 		}
 	    } catch (InvalidConfigurationException ex) {
