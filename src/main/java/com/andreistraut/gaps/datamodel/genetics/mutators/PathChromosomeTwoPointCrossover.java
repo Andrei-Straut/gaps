@@ -47,8 +47,8 @@ public class PathChromosomeTwoPointCrossover extends PathChromosomeCrossover {
 	    return;
 	}
 
-	PathChromosome first = breeder.getMale().clone();
-	PathChromosome second = breeder.getFemale().clone();
+	PathChromosome first = breeder.getMale();
+	PathChromosome second = breeder.getFemale();
 
 	ImmutablePair<ImmutablePair<Integer, Integer>, ImmutablePair<Integer, Integer>> crossoverPositions =
 		this.getCrossoverPositions(generator, first, second);
@@ -68,43 +68,9 @@ public class PathChromosomeTwoPointCrossover extends PathChromosomeCrossover {
 	if (offspring == null) {
 	    return;
 	}
-
-	StringBuffer log = new StringBuffer();
-	if ((offspring.left.isLegal() || this.allowIllegalCrossovers)
-		&& offspring.left.getFitnessValue()
-		>= ((PathChromosome) (candidateChromosomes.get(candidateChromosomes.size() - 1))).getFitnessValue()
-		&& !offspring.left.equals((PathChromosome) firstMate)) {
-	    first.setIsSelectedForNextGeneration(true);
-	    candidateChromosomes.add(0, first);
-	    log.append("Crossover offspring legal").append(NEW_LINE);
-	} else {
-	    log.append("Crossover offspring not legal. Fitness value check: ")
-		    .append(offspring.left.getFitnessValue() >= ((PathChromosome) (candidateChromosomes.get(candidateChromosomes.size() - 1))).getFitnessValue())
-		    .append(", duplication check: ").append(!offspring.left.equals((PathChromosome) firstMate))
-		    .append(", legality check: ").append(offspring.left.isLegal())
-		    .append(" allow illegals: ").append(this.allowIllegalCrossovers)
-		    .append(NEW_LINE);
-	    first.setIsSelectedForNextGeneration(false);
-	}
-
-	if ((offspring.right.isLegal() || this.allowIllegalCrossovers)
-		&& offspring.right.getFitnessValue()
-		>= ((PathChromosome) (candidateChromosomes.get(candidateChromosomes.size() - 2))).getFitnessValue()
-		&& !offspring.right.equals((PathChromosome) secondMate)) {
-	    second.setIsSelectedForNextGeneration(true);
-	    candidateChromosomes.add(0, second);
-	    log.append("Crossover offspring legal").append(NEW_LINE);
-	} else {
-	    log.append("Crossover offspring not legal. Fitness value check: ")
-		    .append(offspring.right.getFitnessValue() >= ((PathChromosome) (candidateChromosomes.get(candidateChromosomes.size() - 1))).getFitnessValue())
-		    .append(", duplication check: ").append(!offspring.right.equals((PathChromosome) secondMate))
-		    .append(", legality check: ").append(offspring.right.isLegal())
-		    .append(", allow illegals: ").append(this.allowIllegalCrossovers)
-		    .append(NEW_LINE);
-	    second.setIsSelectedForNextGeneration(false);
-	}
-
-	printStatistics(log);
+	
+	firstMate = offspring.getLeft();
+	secondMate = offspring.getRight();
     }
 
     private MutablePair<PathChromosome, PathChromosome> cross(PathChromosome male, PathChromosome female,

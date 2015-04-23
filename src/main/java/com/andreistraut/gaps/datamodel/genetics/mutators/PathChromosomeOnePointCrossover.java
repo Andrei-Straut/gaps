@@ -72,43 +72,22 @@ public class PathChromosomeOnePointCrossover extends PathChromosomeCrossover {
 	    return;
 	}
 
-	PathChromosome first = breeder.getMale().clone();
-	PathChromosome second = breeder.getFemale().clone();
-	ImmutablePair<Integer, Integer> positions = this.getCrossoverPositions(generator, first, second);
-	
-	if(positions == null) {
+	PathChromosome first = breeder.getMale();
+	PathChromosome second = breeder.getFemale();
+	ImmutablePair<Integer, Integer> crossoverPositions = this.getCrossoverPositions(generator, first, second);
+
+	if (crossoverPositions == null) {
 	    return;
 	}
-	
-	MutablePair<PathChromosome, PathChromosome> offspring = cross(first, positions.left, second, positions.right);
+
+	MutablePair<PathChromosome, PathChromosome> offspring = cross(first, crossoverPositions.left, second, crossoverPositions.right);
 
 	if (offspring == null) {
 	    return;
 	}
-	StringBuffer log = new StringBuffer();
-	if ((offspring.left.isLegal() || this.allowIllegalCrossovers)
-		&& offspring.left.getFitnessValue()
-		>= ((PathChromosome) (candidateChromosomes.get(candidateChromosomes.size() - 1))).getFitnessValue()) {
-	    first.setIsSelectedForNextGeneration(true);
-	    candidateChromosomes.add(0, first);
-	    log.append("Crossover offspring legal").append(NEW_LINE);
-	} else {
-	    log.append("Crossover offspring not legal").append(NEW_LINE);
-	    first.setIsSelectedForNextGeneration(false);
-	}
 
-	if ((offspring.right.isLegal() || this.allowIllegalCrossovers)
-		&& offspring.right.getFitnessValue()
-		>= ((PathChromosome) (candidateChromosomes.get(candidateChromosomes.size() - 2))).getFitnessValue()) {
-	    second.setIsSelectedForNextGeneration(true);
-	    candidateChromosomes.add(0, second);
-	    log.append("Crossover offspring legal").append(NEW_LINE);
-	} else {
-	    log.append("Crossover offspring not legal").append(NEW_LINE);
-	    second.setIsSelectedForNextGeneration(false);
-	}
-
-	printStatistics(log);
+	firstMate = offspring.getLeft();
+	secondMate = offspring.getRight();
     }
 
     private MutablePair<PathChromosome, PathChromosome> cross(
@@ -159,7 +138,7 @@ public class PathChromosomeOnePointCrossover extends PathChromosomeCrossover {
 		replacePositionInMale = generator.nextInt(male.size() - 1);
 	    }
 	}
-	
+
 	replacePositionInFemale = getFemaleReplacePosition(male, replacePositionInMale, female);
 
 	if (replacePositionInFemale == -1) {

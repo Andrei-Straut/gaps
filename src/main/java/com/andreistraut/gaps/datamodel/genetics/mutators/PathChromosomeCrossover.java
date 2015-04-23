@@ -2,7 +2,9 @@ package com.andreistraut.gaps.datamodel.genetics.mutators;
 
 import com.andreistraut.gaps.datamodel.genetics.GeneticConfiguration;
 import com.andreistraut.gaps.datamodel.genetics.PathChromosome;
+import com.andreistraut.gaps.datamodel.genetics.PathChromosomeFitnessComparator;
 import com.andreistraut.gaps.datamodel.genetics.PathChromosomeOperationMode;
+import java.util.Collections;
 import java.util.List;
 import java.util.Random;
 import org.jgap.GeneticOperator;
@@ -181,27 +183,42 @@ public abstract class PathChromosomeCrossover
 
     @Override
     public void operate(Population population, List candidateChromosomes) {
-	//Collections.sort(candidateChromosomes, new PathChromosomeFitnessEvaluator());
+	Collections.sort(candidateChromosomes, new PathChromosomeFitnessComparator());
 
 	if (candidateChromosomes.size() > 0) {
-	    PathChromosome first = (PathChromosome) candidateChromosomes.get(0);
+	    PathChromosome first = ((PathChromosome) candidateChromosomes.get(0)).clone();
+	    PathChromosome second = ((PathChromosome) candidateChromosomes.get(1)).clone();
 
-	    /*PathChromosome second = candidateChromosomes.size() > 1
-		    ? (PathChromosome) candidateChromosomes.get(1)
-		    : first.clone();*/
-	    PathChromosome second = (PathChromosome) candidateChromosomes.get(1);
-	    
-	    if(first.equals(second)) {
-		second = (PathChromosome) candidateChromosomes.get(
-			new Random().nextInt(candidateChromosomes.size() - 1));
+	    if (first.equals(second)) {
+		second = ((PathChromosome) candidateChromosomes.get(
+			new Random().nextInt(candidateChromosomes.size() - 1))).clone();
 	    }
 
 	    doCrossover(first, second, candidateChromosomes, configuration.getRandomGenerator());
-	}
 
-	int len = population.size();
-	for (int i = 0; i < len; i++) {
-	    candidateChromosomes.add(((PathChromosome) population.getChromosome(i)).clone());
+	    /**
+	     * Check crossover results, and if valid, add the mutated chromosome
+	     * to candidates
+	     */
+	    if ((first.isLegal())) {
+		first.setIsSelectedForNextGeneration(true);
+		candidateChromosomes.add(first);
+
+		if (this.configuration.isKeepPopulationSizeConstant()) {
+		    Collections.sort(candidateChromosomes, new PathChromosomeFitnessComparator());
+		    candidateChromosomes.remove(candidateChromosomes.size() - 1);
+		}
+	    }
+	    
+	    if ((second.isLegal())) {
+		second.setIsSelectedForNextGeneration(true);
+		candidateChromosomes.add(second);
+
+		if (this.configuration.isKeepPopulationSizeConstant()) {
+		    Collections.sort(candidateChromosomes, new PathChromosomeFitnessComparator());
+		    candidateChromosomes.remove(candidateChromosomes.size() - 1);
+		}
+	    }
 	}
     }
 
