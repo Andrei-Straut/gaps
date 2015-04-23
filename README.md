@@ -1,3 +1,5 @@
+https://travis-ci.org/Andrei-Straut/gaps.svg?branch=master
+
 GAPS (*Genetic Algorithm Path Search*)
 ==============
 For a more detailed description, please see [Wiki page](https://github.com/Andrei-Straut/gaps/wiki)  
