@@ -16,12 +16,7 @@ import org.jgrapht.GraphPath;
 import org.jgrapht.alg.KShortestPaths;
 import org.jgrapht.graph.DirectedPseudograph;
 
-/**
- * Class encapsulating a directed weighted jsonNodesWithAdjacencies, exposing
- * some utility methods helping with dealing with jsonNodesWithAdjacencies
- * operations
- */
-public class DirectedWeightedGraph extends DirectedPseudograph<Node, DirectedWeightedEdge> {
+public class DirectedWeightedGraphSemiRandom extends DirectedPseudograph<Node, DirectedWeightedEdge> {
 
     private int numberOfNodes;
     private int numberOfEdges;
@@ -40,11 +35,11 @@ public class DirectedWeightedGraph extends DirectedPseudograph<Node, DirectedWei
     private double averageEdgeCost = 0.0;
     private double averageEdgesPerNode = 0.0;
 
-    private DirectedWeightedGraph(Class<? extends DirectedWeightedEdge> type) {
+    private DirectedWeightedGraphSemiRandom(Class<? extends DirectedWeightedEdge> type) {
 	super(type);
     }
 
-    public DirectedWeightedGraph(int numberOfNodes, int numberOfEdges) {
+    public DirectedWeightedGraphSemiRandom(int numberOfNodes, int numberOfEdges) {
 	super(DirectedWeightedEdge.class);
 
 	this.numberOfNodes = numberOfNodes;
@@ -53,7 +48,7 @@ public class DirectedWeightedGraph extends DirectedPseudograph<Node, DirectedWei
 	this.factory = new DirectedWeightedEdgeFactory();
     }
 
-    public DirectedWeightedGraph(GraphSettings settings) {
+    public DirectedWeightedGraphSemiRandom(GraphSettings settings) {
 	this(settings.getNumberOfNodes(), settings.getNumberOfEdges());
 	this.minimumEdgeWeight = settings.getMinimumEdgeWeight();
 	this.maximumEdgeWeight = settings.getMaximumEdgeWeight();
@@ -360,7 +355,7 @@ public class DirectedWeightedGraph extends DirectedPseudograph<Node, DirectedWei
 		    .parse(String.format("%.2f", (double) this.totalEdgeCost / (double) this.edgeSet().size()))
 		    .doubleValue();
 	} catch (ParseException ex) {
-	    Logger.getLogger(DirectedWeightedGraph.class.getName()).log(Level.WARNING,
+	    Logger.getLogger(DirectedWeightedGraphSemiRandom.class.getName()).log(Level.WARNING,
 		    "Failed to convert average edges per node value for value: "
 		    + (double) this.edgeSet().size() / this.vertexSet().size());
 	    this.averageEdgesPerNode = (double) this.edgeSet().size() / this.vertexSet().size();

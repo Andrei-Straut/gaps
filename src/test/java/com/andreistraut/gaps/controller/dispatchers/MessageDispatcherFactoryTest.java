@@ -3,7 +3,7 @@ package com.andreistraut.gaps.controller.dispatchers;
 import com.andreistraut.gaps.controller.Controller;
 import com.andreistraut.gaps.controller.MessageRequest;
 import com.andreistraut.gaps.controller.MessageType;
-import com.andreistraut.gaps.datamodel.graph.DirectedWeightedGraph;
+import com.andreistraut.gaps.datamodel.graph.DirectedWeightedGraphSemiRandom;
 import com.andreistraut.gaps.datamodel.graph.DirectedWeightedGraphPath;
 import com.andreistraut.gaps.datamodel.mock.MessageRequestMock;
 import com.andreistraut.gaps.datamodel.mock.SessionMock;
@@ -125,7 +125,7 @@ public class MessageDispatcherFactoryTest {
         this.factory.initDispatcherParams(pathDispatcher);
         
         Assert.assertTrue(pathDispatcher.parameters.get(0) != null);
-        DirectedWeightedGraph graph = (DirectedWeightedGraph) pathDispatcher.parameters.get(0);
+        DirectedWeightedGraphSemiRandom graph = (DirectedWeightedGraphSemiRandom) pathDispatcher.parameters.get(0);
         Assert.assertTrue(graph.equals(graphDispatcher.getGraph()));
     }
     
@@ -157,7 +157,7 @@ public class MessageDispatcherFactoryTest {
         this.factory.initDispatcherParams(evolveDispatcher);
         
         Assert.assertTrue(evolveDispatcher.parameters.get(0) != null);
-        DirectedWeightedGraph graph = (DirectedWeightedGraph) evolveDispatcher.parameters.get(0);
+        DirectedWeightedGraphSemiRandom graph = (DirectedWeightedGraphSemiRandom) evolveDispatcher.parameters.get(0);
         Assert.assertTrue(graph.equals(graphDispatcher.getGraph()));
         
         Assert.assertTrue(evolveDispatcher.parameters.get(1) != null);
@@ -183,7 +183,7 @@ public class MessageDispatcherFactoryTest {
         this.factory.initDispatcherParams(compareDispatcher);
         
         Assert.assertTrue(compareDispatcher.parameters.get(0) != null);
-        DirectedWeightedGraph graph = (DirectedWeightedGraph) compareDispatcher.parameters.get(0);
+        DirectedWeightedGraphSemiRandom graph = (DirectedWeightedGraphSemiRandom) compareDispatcher.parameters.get(0);
         Assert.assertTrue(graph.equals(graphDispatcher.getGraph()));
     }
 }

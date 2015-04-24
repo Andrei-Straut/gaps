@@ -3,7 +3,7 @@ package com.andreistraut.gaps.controller.dispatchers;
 import com.andreistraut.gaps.controller.Controller;
 import com.andreistraut.gaps.controller.MessageRequest;
 import com.andreistraut.gaps.controller.MessageType;
-import com.andreistraut.gaps.datamodel.graph.DirectedWeightedGraph;
+import com.andreistraut.gaps.datamodel.graph.DirectedWeightedGraphSemiRandom;
 import com.andreistraut.gaps.datamodel.mock.MessageRequestMock;
 import com.andreistraut.gaps.datamodel.mock.SessionMock;
 import java.util.ArrayList;
@@ -21,7 +21,7 @@ public class ComputePathMessageDispatcherTest {
     private Session session;
     private MessageRequestMock messageRequestMock;
     private GetGraphMessageDispatcher graphDispatcher;
-    private DirectedWeightedGraph graph;
+    private DirectedWeightedGraphSemiRandom graph;
 
     public ComputePathMessageDispatcherTest() {
     }
@@ -178,7 +178,7 @@ public class ComputePathMessageDispatcherTest {
         parameters.add(this.graph);
 
         pathDispatcher.setParameters(parameters);
-        Assert.assertTrue(((DirectedWeightedGraph) pathDispatcher.parameters.get(0))
+        Assert.assertTrue(((DirectedWeightedGraphSemiRandom) pathDispatcher.parameters.get(0))
                 .equals(this.graph));
     }
 

@@ -4,7 +4,7 @@ import com.andreistraut.gaps.controller.Controller;
 import com.andreistraut.gaps.controller.MessageRequest;
 import com.andreistraut.gaps.controller.MessageResponse;
 import com.andreistraut.gaps.controller.MessageType;
-import com.andreistraut.gaps.datamodel.graph.DirectedWeightedGraph;
+import com.andreistraut.gaps.datamodel.graph.DirectedWeightedGraphSemiRandom;
 import com.andreistraut.gaps.datamodel.graph.GraphSettings;
 import java.util.ArrayList;
 import java.util.logging.Level;
@@ -19,7 +19,7 @@ public class GetGraphMessageDispatcher extends MessageDispatcher {
     private final MessageType type;
 
     private GraphSettings graphSettings;
-    private DirectedWeightedGraph graph;
+    private DirectedWeightedGraphSemiRandom graph;
 
     public GetGraphMessageDispatcher(Controller controller, Session session, MessageType type) {
         super(controller, session, type);
@@ -51,7 +51,7 @@ public class GetGraphMessageDispatcher extends MessageDispatcher {
         MessageResponse response = new MessageResponse(this.request.getCallbackId());
 
         try {
-            this.graph = new DirectedWeightedGraph(this.graphSettings);
+            this.graph = new DirectedWeightedGraphSemiRandom(this.graphSettings);
             this.graph.initNodes();
             this.graph.initEdges();
 
@@ -81,7 +81,7 @@ public class GetGraphMessageDispatcher extends MessageDispatcher {
         }
     }
 
-    public DirectedWeightedGraph getGraph() {
+    public DirectedWeightedGraphSemiRandom getGraph() {
         return this.graph;
     }
 

@@ -15,7 +15,7 @@ import com.andreistraut.gaps.datamodel.genetics.mutators.PathChromosomeOnePointC
 import com.andreistraut.gaps.datamodel.genetics.mutators.PathChromosomeSingleGeneMutator;
 import com.andreistraut.gaps.datamodel.genetics.mutators.PathChromosomeTwoPointCrossover;
 import com.andreistraut.gaps.datamodel.graph.DirectedWeightedEdge;
-import com.andreistraut.gaps.datamodel.graph.DirectedWeightedGraph;
+import com.andreistraut.gaps.datamodel.graph.DirectedWeightedGraphSemiRandom;
 import com.andreistraut.gaps.datamodel.graph.DirectedWeightedGraphPath;
 import com.andreistraut.gaps.datamodel.graph.Node;
 import com.andreistraut.gaps.datamodel.translator.GraphGeneticsTranslator;
@@ -38,7 +38,7 @@ import org.jgrapht.GraphPath;
  */
 public class Main {
 
-    private DirectedWeightedGraph dirGraph;
+    private DirectedWeightedGraphSemiRandom dirGraph;
     private final int numberOfNodes = 200;
     private final int numberOfEdges = 2000;
     private final int numberOfPaths = 1000;
@@ -60,7 +60,7 @@ public class Main {
 	System.out.println("========================= Execution started at " + formatter.format(date) + " =========================");
 
 	//<editor-fold desc="Create and initialize graph">
-	dirGraph = new DirectedWeightedGraph(numberOfNodes, numberOfEdges);
+	dirGraph = new DirectedWeightedGraphSemiRandom(numberOfNodes, numberOfEdges);
 	ArrayList<Node> nodes = dirGraph.initNodes();
 	ArrayList<DirectedWeightedEdge> edges = dirGraph.initEdges();
 

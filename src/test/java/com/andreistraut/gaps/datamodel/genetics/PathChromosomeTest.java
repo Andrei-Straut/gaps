@@ -1,7 +1,7 @@
 package com.andreistraut.gaps.datamodel.genetics;
 
 import com.andreistraut.gaps.datamodel.graph.DirectedWeightedEdge;
-import com.andreistraut.gaps.datamodel.graph.DirectedWeightedGraph;
+import com.andreistraut.gaps.datamodel.graph.DirectedWeightedGraphSemiRandom;
 import com.andreistraut.gaps.datamodel.mock.DirectedWeightedGraphMockThreeNodeThreeEdges;
 import com.google.gson.JsonObject;
 import java.util.ArrayList;
@@ -432,7 +432,7 @@ public class PathChromosomeTest {
 		graphMock.getThirdNode(), 
 		graphMock.getFirstToSecondEdgeCost());
 	
-	DirectedWeightedGraph graph = graphMock.getGraph();
+	DirectedWeightedGraphSemiRandom graph = graphMock.getGraph();
 	graph.addEdge(graphMock.getFirstNode(), graphMock.getThirdNode(), firstToThird);
 	EdgeGene firstToThirdGene = new EdgeGene(firstToThird, conf);
 	ArrayList<EdgeGene> secondGenes = new ArrayList<EdgeGene>();
@@ -453,7 +453,7 @@ public class PathChromosomeTest {
 		graphMock.getFirstNode(), 
 		graphMock.getThirdNode(), 
 		graphMock.getFirstToSecondEdgeCost() + graphMock.getSecondToThirdEdgeCost() + 1);
-	DirectedWeightedGraph graph = graphMock.getGraph();
+	DirectedWeightedGraphSemiRandom graph = graphMock.getGraph();
 	graph.addEdge(graphMock.getFirstNode(), graphMock.getThirdNode(), firstToThird);
 	EdgeGene firstToThirdGene = new EdgeGene(firstToThird, conf);
 	ArrayList<EdgeGene> secondGenes = new ArrayList<EdgeGene>();
@@ -474,7 +474,7 @@ public class PathChromosomeTest {
 		graphMock.getFirstNode(), 
 		graphMock.getThirdNode(), 
 		graphMock.getFirstToSecondEdgeCost() + graphMock.getSecondToThirdEdgeCost());
-	DirectedWeightedGraph graph = graphMock.getGraph();
+	DirectedWeightedGraphSemiRandom graph = graphMock.getGraph();
 	graph.addEdge(graphMock.getFirstNode(), graphMock.getThirdNode(), firstToThird);
 	EdgeGene firstToThirdGene = new EdgeGene(firstToThird, conf);
 	ArrayList<EdgeGene> secondGenes = new ArrayList<EdgeGene>();
@@ -494,7 +494,7 @@ public class PathChromosomeTest {
 		graphMock.getFirstNode(), 
 		graphMock.getThirdNode(), 
 		graphMock.getFirstToSecondEdgeCost() + graphMock.getSecondToThirdEdgeCost());
-	DirectedWeightedGraph graph = graphMock.getGraph();
+	DirectedWeightedGraphSemiRandom graph = graphMock.getGraph();
 	graph.addEdge(graphMock.getFirstNode(), graphMock.getThirdNode(), firstToThird);
 	EdgeGene firstToThirdGene = new EdgeGene(firstToThird, conf);
 	ArrayList<EdgeGene> secondGenes = new ArrayList<EdgeGene>();
@@ -593,7 +593,7 @@ public class PathChromosomeTest {
 		graphMock.getFirstNode(), 
 		graphMock.getThirdNode(), 
 		graphMock.getFirstToSecondEdgeCost());
-	DirectedWeightedGraph graph = graphMock.getGraph();
+	DirectedWeightedGraphSemiRandom graph = graphMock.getGraph();
 	graph.addEdge(graphMock.getFirstNode(), graphMock.getThirdNode(), firstToThird);
 	EdgeGene firstToThirdGene = new EdgeGene(firstToThird, conf);
 	ArrayList<EdgeGene> secondGenes = new ArrayList<EdgeGene>();
@@ -616,7 +616,7 @@ public class PathChromosomeTest {
 		graphMock.getFirstNode(), 
 		graphMock.getThirdNode(), 
 		graphMock.getFirstToSecondEdgeCost() + graphMock.getSecondToThirdEdgeCost() + 1);
-	DirectedWeightedGraph graph = graphMock.getGraph();
+	DirectedWeightedGraphSemiRandom graph = graphMock.getGraph();
 	graph.addEdge(graphMock.getFirstNode(), graphMock.getThirdNode(), firstToThird);
 	EdgeGene firstToThirdGene = new EdgeGene(firstToThird, conf);
 	ArrayList<EdgeGene> secondGenes = new ArrayList<EdgeGene>();
@@ -637,7 +637,7 @@ public class PathChromosomeTest {
 		graphMock.getFirstNode(),
 		graphMock.getThirdNode(),
 		graphMock.getFirstToSecondEdgeCost() + graphMock.getSecondToThirdEdgeCost());
-	DirectedWeightedGraph graph = graphMock.getGraph();
+	DirectedWeightedGraphSemiRandom graph = graphMock.getGraph();
 	graph.addEdge(graphMock.getFirstNode(), graphMock.getThirdNode(), firstToThird);
 	EdgeGene firstToThirdGene = new EdgeGene(firstToThird, conf);
 	ArrayList<EdgeGene> secondGenes = new ArrayList<EdgeGene>();
@@ -729,7 +729,7 @@ public class PathChromosomeTest {
 		graphMock.getFirstNode(), 
 		graphMock.getThirdNode(), 
 		graphMock.getFirstToSecondEdgeCost() + graphMock.getSecondToThirdEdgeCost());
-	DirectedWeightedGraph graph = graphMock.getGraph();
+	DirectedWeightedGraphSemiRandom graph = graphMock.getGraph();
 	graph.addEdge(graphMock.getFirstNode(), graphMock.getThirdNode(), firstToThird);
 	EdgeGene firstToThirdGene = new EdgeGene(firstToThird, conf);
 	ArrayList<EdgeGene> secondGenes = new ArrayList<EdgeGene>();
@@ -762,7 +762,7 @@ public class PathChromosomeTest {
 		graphMock.getFirstNode(), 
 		graphMock.getThirdNode(), 
 		graphMock.getFirstToSecondEdgeCost() + graphMock.getSecondToThirdEdgeCost());
-	DirectedWeightedGraph graph = graphMock.getGraph();
+	DirectedWeightedGraphSemiRandom graph = graphMock.getGraph();
 	graph.addEdge(graphMock.getFirstNode(), graphMock.getThirdNode(), firstToThird);
 	EdgeGene firstToThirdGene = new EdgeGene(firstToThird, conf);
 	ArrayList<EdgeGene> secondGenes = new ArrayList<EdgeGene>();
@@ -815,7 +815,7 @@ public class PathChromosomeTest {
 		graphMock.getFirstNode(), 
 		graphMock.getThirdNode(), 
 		graphMock.getFirstToSecondEdgeCost() + graphMock.getSecondToThirdEdgeCost());
-	DirectedWeightedGraph graph = graphMock.getGraph();
+	DirectedWeightedGraphSemiRandom graph = graphMock.getGraph();
 	graph.addEdge(graphMock.getFirstNode(), graphMock.getThirdNode(), firstToThird);
 	EdgeGene firstToThirdGene = new EdgeGene(firstToThird, conf);
 	ArrayList<EdgeGene> secondGenes = new ArrayList<EdgeGene>();

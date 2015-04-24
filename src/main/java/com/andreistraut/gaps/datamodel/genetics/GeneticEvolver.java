@@ -3,7 +3,7 @@ package com.andreistraut.gaps.datamodel.genetics;
 import com.andreistraut.gaps.datamodel.genetics.mutators.PathChromosomeCycleRemoveMutator;
 import com.andreistraut.gaps.datamodel.genetics.mutators.PathChromosomeMultipleGeneMutator;
 import com.andreistraut.gaps.datamodel.genetics.mutators.PathChromosomeTwoPointCrossover;
-import com.andreistraut.gaps.datamodel.graph.DirectedWeightedGraph;
+import com.andreistraut.gaps.datamodel.graph.DirectedWeightedGraphSemiRandom;
 import com.andreistraut.gaps.datamodel.graph.DirectedWeightedGraphPath;
 import com.andreistraut.gaps.datamodel.translator.GraphGeneticsTranslator;
 import java.util.ArrayList;
@@ -21,7 +21,7 @@ import org.jgrapht.GraphPath;
 public class GeneticEvolver {
 
     private GeneticConfiguration configuration;
-    private final DirectedWeightedGraph graph;
+    private final DirectedWeightedGraphSemiRandom graph;
     private final List<DirectedWeightedGraphPath> paths;
     private boolean hasInited;
     private Genotype genotype;
@@ -53,7 +53,7 @@ public class GeneticEvolver {
 
     public GeneticEvolver(int numberOfEvolutions,
             int stopConditionPercent,
-            DirectedWeightedGraph graph,
+            DirectedWeightedGraphSemiRandom graph,
             List<DirectedWeightedGraphPath> paths) {
 
         this.numberOfEvolutions = numberOfEvolutions;
@@ -163,7 +163,7 @@ public class GeneticEvolver {
     }
 
     private GeneticConfiguration initConfiguration(
-            int populationSize, DirectedWeightedGraph graph)
+            int populationSize, DirectedWeightedGraphSemiRandom graph)
             throws InvalidConfigurationException {
 
         GeneticConfiguration config = new GeneticConfiguration(

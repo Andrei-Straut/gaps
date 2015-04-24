@@ -9,14 +9,14 @@ import org.jgrapht.GraphPath;
 
 public class DirectedWeightedGraphPath implements GraphPath<Node, DirectedWeightedEdge> {
 
-    private final DirectedWeightedGraph graph;
+    private final DirectedWeightedGraphSemiRandom graph;
     private List<DirectedWeightedEdge> edgeList;
 
-    public DirectedWeightedGraphPath(DirectedWeightedGraph graph) {
+    public DirectedWeightedGraphPath(DirectedWeightedGraphSemiRandom graph) {
 	this.graph = graph;
     }
 
-    public DirectedWeightedGraphPath(DirectedWeightedGraph graph, 
+    public DirectedWeightedGraphPath(DirectedWeightedGraphSemiRandom graph, 
 	    List<DirectedWeightedEdge> edgeList) {
 	
 	this(graph);

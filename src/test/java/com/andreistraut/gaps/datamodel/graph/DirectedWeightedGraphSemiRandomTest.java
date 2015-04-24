@@ -13,7 +13,7 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-public class DirectedWeightedGraphTest {
+public class DirectedWeightedGraphSemiRandomTest {
 
     private Node first;
     private Node second;
@@ -22,16 +22,16 @@ public class DirectedWeightedGraphTest {
     private DirectedWeightedEdge secondToThird;
     private final int firstToSecondCost = 1;
     private final int secondToThirdCost = 2;
-    private DirectedWeightedGraph graph;
+    private DirectedWeightedGraphSemiRandom graph;
 
-    public DirectedWeightedGraphTest() {
+    public DirectedWeightedGraphSemiRandomTest() {
     }
 
     @BeforeClass
     public static void setUpClass() {
-	Logger.getLogger(DirectedWeightedGraphTest.class.getName()).log(Level.INFO,
+	Logger.getLogger(DirectedWeightedGraphSemiRandomTest.class.getName()).log(Level.INFO,
 		"{0} TEST: Graph",
-		DirectedWeightedGraphTest.class.toString());
+		DirectedWeightedGraphSemiRandomTest.class.toString());
     }
 
     @Before
@@ -43,7 +43,7 @@ public class DirectedWeightedGraphTest {
 	firstToSecond = new DirectedWeightedEdge(first, second, firstToSecondCost, true);
 	secondToThird = new DirectedWeightedEdge(second, third, secondToThirdCost, true);
 
-	graph = new DirectedWeightedGraph(3, 2);
+	graph = new DirectedWeightedGraphSemiRandom(3, 2);
 	graph.addVertex(first);
 	graph.addVertex(second);
 	graph.addVertex(third);
@@ -88,7 +88,7 @@ public class DirectedWeightedGraphTest {
 
     @Test
     public void testInitNodes() {
-	graph = new DirectedWeightedGraph(10, 30);
+	graph = new DirectedWeightedGraphSemiRandom(10, 30);
 	ArrayList<Node> nodes = graph.initNodes();
 
 	Assert.assertTrue(nodes.size() == 10);
@@ -98,7 +98,7 @@ public class DirectedWeightedGraphTest {
 
     @Test
     public void testInitEdges() {
-	graph = new DirectedWeightedGraph(10, 30);
+	graph = new DirectedWeightedGraphSemiRandom(10, 30);
 	graph.initNodes();
 
 	ArrayList<DirectedWeightedEdge> edges = graph.initEdges();
@@ -178,7 +178,7 @@ public class DirectedWeightedGraphTest {
 
     @Test
     public void testGetLowestCostEdgeOneEdgedGraph() {
-	DirectedWeightedGraph gr = new DirectedWeightedGraph(2, 1);
+	DirectedWeightedGraphSemiRandom gr = new DirectedWeightedGraphSemiRandom(2, 1);
 
 	Node firstNode = new Node("1", "1");
 	Node secondNode = new Node("2", "2");
@@ -193,7 +193,7 @@ public class DirectedWeightedGraphTest {
 
     @Test
     public void testGetLowestCostEdgeEmptyGraph() {
-	DirectedWeightedGraph gr = new DirectedWeightedGraph(3, 2);
+	DirectedWeightedGraphSemiRandom gr = new DirectedWeightedGraphSemiRandom(3, 2);
 
 	try {
 	    DirectedWeightedEdge lowest = gr.getLowestCostEdge();
@@ -222,7 +222,7 @@ public class DirectedWeightedGraphTest {
 
     @Test
     public void testGetHighestCostEdgeOneEdgedGraph() {
-	DirectedWeightedGraph gr = new DirectedWeightedGraph(2, 1);
+	DirectedWeightedGraphSemiRandom gr = new DirectedWeightedGraphSemiRandom(2, 1);
 
 	Node firstNode = new Node("1", "1");
 	Node secondNode = new Node("2", "2");
@@ -237,7 +237,7 @@ public class DirectedWeightedGraphTest {
 
     @Test
     public void testGetHighestCostEdgeEmptyGraph() {
-	DirectedWeightedGraph gr = new DirectedWeightedGraph(3, 2);
+	DirectedWeightedGraphSemiRandom gr = new DirectedWeightedGraphSemiRandom(3, 2);
 
 	try {
 	    DirectedWeightedEdge highest = gr.getHighestCostEdge();

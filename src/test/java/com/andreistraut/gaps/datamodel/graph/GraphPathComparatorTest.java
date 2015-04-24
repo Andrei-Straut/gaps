@@ -22,7 +22,7 @@ public class GraphPathComparatorTest {
     private final int secondToThirdCost = 2;
     private final int firstToFourthCost = 2;
     private final int fourthToThirdCost = 2;
-    private DirectedWeightedGraph graph;
+    private DirectedWeightedGraphSemiRandom graph;
 
     public GraphPathComparatorTest() {
     }
@@ -46,7 +46,7 @@ public class GraphPathComparatorTest {
 	firstToFourth = new DirectedWeightedEdge(first, fourth, firstToFourthCost, true);
 	fourthToThird = new DirectedWeightedEdge(fourth, third, fourthToThirdCost, true);
 
-	graph = new DirectedWeightedGraph(3, 2);
+	graph = new DirectedWeightedGraphSemiRandom(3, 2);
 	graph.addVertex(first);
 	graph.addVertex(second);
 	graph.addVertex(third);

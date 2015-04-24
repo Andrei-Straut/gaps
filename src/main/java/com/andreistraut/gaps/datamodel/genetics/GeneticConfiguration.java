@@ -1,25 +1,25 @@
 package com.andreistraut.gaps.datamodel.genetics;
 
-import com.andreistraut.gaps.datamodel.graph.DirectedWeightedGraph;
+import com.andreistraut.gaps.datamodel.graph.DirectedWeightedGraphSemiRandom;
 
 public class GeneticConfiguration extends org.jgap.Configuration {
 
-    private DirectedWeightedGraph graph;
+    private DirectedWeightedGraphSemiRandom graph;
 
     public GeneticConfiguration(String name) {
 	super(name);
     }
 
-    public GeneticConfiguration(String name, DirectedWeightedGraph graph) {
+    public GeneticConfiguration(String name, DirectedWeightedGraphSemiRandom graph) {
 	this(name);
 	this.graph = graph;
     }
 
-    public DirectedWeightedGraph getGraph() {
+    public DirectedWeightedGraphSemiRandom getGraph() {
 	return graph;
     }
 
-    public void setGraph(DirectedWeightedGraph graph) {
+    public void setGraph(DirectedWeightedGraphSemiRandom graph) {
 	this.graph = graph;
     }
 }

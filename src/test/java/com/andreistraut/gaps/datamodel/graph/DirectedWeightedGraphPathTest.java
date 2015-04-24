@@ -18,7 +18,7 @@ public class DirectedWeightedGraphPathTest {
     private DirectedWeightedEdge secondToThird;
     private final int firstToSecondCost = 1;
     private final int secondToThirdCost = 2;
-    private DirectedWeightedGraph graph;
+    private DirectedWeightedGraphSemiRandom graph;
     private DirectedWeightedGraphPath path;
 
     public DirectedWeightedGraphPathTest() {
@@ -40,7 +40,7 @@ public class DirectedWeightedGraphPathTest {
 	firstToSecond = new DirectedWeightedEdge(first, second, firstToSecondCost, true);
 	secondToThird = new DirectedWeightedEdge(second, third, secondToThirdCost, true);
 
-	graph = new DirectedWeightedGraph(3, 2);	
+	graph = new DirectedWeightedGraphSemiRandom(3, 2);	
 	graph.addVertex(first);
 	graph.addVertex(second);
 	graph.addVertex(third);

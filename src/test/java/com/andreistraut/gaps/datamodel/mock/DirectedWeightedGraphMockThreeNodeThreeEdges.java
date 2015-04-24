@@ -1,7 +1,7 @@
 package com.andreistraut.gaps.datamodel.mock;
 
 import com.andreistraut.gaps.datamodel.graph.DirectedWeightedEdge;
-import com.andreistraut.gaps.datamodel.graph.DirectedWeightedGraph;
+import com.andreistraut.gaps.datamodel.graph.DirectedWeightedGraphSemiRandom;
 import com.andreistraut.gaps.datamodel.graph.Node;
 
 /**
@@ -21,7 +21,7 @@ public class DirectedWeightedGraphMockThreeNodeThreeEdges {
     private DirectedWeightedEdge firstToSecondEdge;
     private DirectedWeightedEdge secondToThirdEdge;
     private DirectedWeightedEdge firstToThirdEdge;
-    private DirectedWeightedGraph graph;
+    private DirectedWeightedGraphSemiRandom graph;
 
     public DirectedWeightedGraphMockThreeNodeThreeEdges() {
 	this.reset();
@@ -36,7 +36,7 @@ public class DirectedWeightedGraphMockThreeNodeThreeEdges {
 	this.secondToThirdEdge = new DirectedWeightedEdge(this.secondNode, this.thirdNode, this.secondToThirdEdgeCost, true);
 	this.firstToThirdEdge = new DirectedWeightedEdge(this.firstNode, this.thirdNode, this.firstToThirdEdgeCost, true);
 
-	this.graph = new DirectedWeightedGraph(3, 2);
+	this.graph = new DirectedWeightedGraphSemiRandom(3, 2);
 	this.graph.addVertex(this.firstNode);
 	this.graph.addVertex(this.secondNode);
 	this.graph.addVertex(this.thirdNode);
@@ -77,7 +77,7 @@ public class DirectedWeightedGraphMockThreeNodeThreeEdges {
 	return this.firstToThirdEdge;
     }
 
-    public DirectedWeightedGraph getGraph() {
+    public DirectedWeightedGraphSemiRandom getGraph() {
 	return this.graph;
     }
 }

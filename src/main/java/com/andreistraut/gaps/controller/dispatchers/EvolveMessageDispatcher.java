@@ -6,7 +6,7 @@ import com.andreistraut.gaps.controller.MessageResponse;
 import com.andreistraut.gaps.controller.MessageType;
 import com.andreistraut.gaps.datamodel.genetics.GenerationStatistic;
 import com.andreistraut.gaps.datamodel.genetics.GeneticEvolver;
-import com.andreistraut.gaps.datamodel.graph.DirectedWeightedGraph;
+import com.andreistraut.gaps.datamodel.graph.DirectedWeightedGraphSemiRandom;
 import com.andreistraut.gaps.datamodel.graph.DirectedWeightedGraphPath;
 import java.util.ArrayList;
 import java.util.logging.Level;
@@ -23,7 +23,7 @@ public class EvolveMessageDispatcher extends MessageDispatcher {
     private int numberOfEvolutions;
     private int stopConditionPercent;
 
-    private DirectedWeightedGraph graph;
+    private DirectedWeightedGraphSemiRandom graph;
     private ArrayList<DirectedWeightedGraphPath> paths;
 
     public EvolveMessageDispatcher(Controller controller, Session session, MessageType type) {
@@ -57,7 +57,7 @@ public class EvolveMessageDispatcher extends MessageDispatcher {
 	    throw new Exception("Parameters cannot be empty");
 	}
         
-	if (parameters.get(0) == null || !(parameters.get(0) instanceof DirectedWeightedGraph)) {
+	if (parameters.get(0) == null || !(parameters.get(0) instanceof DirectedWeightedGraphSemiRandom)) {
 	    throw new Exception("Could not find computed graph. Cannot continue");
 	}
 
@@ -66,7 +66,7 @@ public class EvolveMessageDispatcher extends MessageDispatcher {
 	    throw new Exception("Could not find computed paths. Cannot continue");
 	}
 
-	this.graph = (DirectedWeightedGraph) parameters.get(0);
+	this.graph = (DirectedWeightedGraphSemiRandom) parameters.get(0);
 	this.paths = (ArrayList<DirectedWeightedGraphPath>) parameters.get(1);
 	this.parameters = parameters;
     }

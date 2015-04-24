@@ -7,7 +7,7 @@ import com.andreistraut.gaps.controller.MessageType;
 import com.andreistraut.gaps.datamodel.genetics.GeneticEvolver;
 import com.andreistraut.gaps.datamodel.genetics.PathChromosome;
 import com.andreistraut.gaps.datamodel.graph.DirectedWeightedEdge;
-import com.andreistraut.gaps.datamodel.graph.DirectedWeightedGraph;
+import com.andreistraut.gaps.datamodel.graph.DirectedWeightedGraphSemiRandom;
 import com.andreistraut.gaps.datamodel.graph.DirectedWeightedGraphPath;
 import com.andreistraut.gaps.datamodel.graph.Node;
 import java.util.ArrayList;
@@ -25,7 +25,7 @@ public class CompareStatisticsMessageDispatcher extends MessageDispatcher {
     private final Session session;
     private final MessageType type;
 
-    private DirectedWeightedGraph graph;
+    private DirectedWeightedGraphSemiRandom graph;
     private Node sourceNode;
     private Node destinationNode;
 
@@ -63,12 +63,12 @@ public class CompareStatisticsMessageDispatcher extends MessageDispatcher {
     @Override
     void setParameters(ArrayList<Object> parameters) throws Exception {
 	if (parameters == null || parameters.isEmpty() || 
-                !(parameters.get(0) instanceof DirectedWeightedGraph)) {
+                !(parameters.get(0) instanceof DirectedWeightedGraphSemiRandom)) {
             
 	    throw new Exception("First parameter must be a DirectedWeightedGraph");
 	}
 
-        this.graph = (DirectedWeightedGraph) parameters.get(0);
+        this.graph = (DirectedWeightedGraphSemiRandom) parameters.get(0);
 
         int sourceNodeId = request.getData().get("sourceNode").getAsInt();
         int destinationNodeId = request.getData().get("destinationNode").getAsInt();
