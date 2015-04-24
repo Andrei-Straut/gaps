@@ -6,6 +6,7 @@ import com.andreistraut.gaps.datamodel.genetics.mutators.PathChromosomeTwoPointC
 import com.andreistraut.gaps.datamodel.graph.DirectedWeightedGraphSemiRandom;
 import com.andreistraut.gaps.datamodel.graph.DirectedWeightedGraphPath;
 import com.andreistraut.gaps.datamodel.translator.GraphGeneticsTranslator;
+import com.google.gson.JsonArray;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -51,19 +52,21 @@ public class GeneticEvolver {
     private int evolutions = 0;
     private int lastGenerationBestFitness = 0;
 
-    public GeneticEvolver(int numberOfEvolutions,
-            int stopConditionPercent,
-            DirectedWeightedGraphSemiRandom graph,
-            List<DirectedWeightedGraphPath> paths) {
+    private int bestChromosomesLimit = 5;
 
-        this.numberOfEvolutions = numberOfEvolutions;
-        this.stopConditionPercent = stopConditionPercent;
-        this.graph = graph;
-        this.paths = paths;
+    public GeneticEvolver(int numberOfEvolutions,
+	    int stopConditionPercent,
+	    DirectedWeightedGraphSemiRandom graph,
+	    List<DirectedWeightedGraphPath> paths) {
+
+	this.numberOfEvolutions = numberOfEvolutions;
+	this.stopConditionPercent = stopConditionPercent;
+	this.graph = graph;
+	this.paths = paths;
     }
 
     public boolean hasFinished() {
-        return hasFinished;
+	return hasFinished;
     }
 
     public boolean hasEvolved() {
@@ -71,168 +74,173 @@ public class GeneticEvolver {
     }
 
     public int getCompletedSteps() {
-        return this.evolutions;
+	return this.evolutions;
     }
 
     public GenerationStatistic getLastStatistic() {
-        return this.lastStatistic;
+	return this.lastStatistic;
     }
 
     public GenerationStatistic evolveAndGetStatistics() throws InvalidConfigurationException {
-        if (!hasInited) {
-            throw new InvalidConfigurationException("Please init genetic evolver first");
-        }
-
-        if (this.hasFinished) {
-            return null;
-        }
-
-        Date date = new Date(System.currentTimeMillis());
-        GenerationStatistic statistic = new GenerationStatistic(this.evolutions + 1, date);
-
-        int populationSize = genotype.getPopulation().size();
-
-        if (genotype.getFittestChromosome() != null) {
-            PathChromosome fittest = (PathChromosome) genotype.getFittestChromosome();
-	    statistic
-                .setStartBestFitness((int) fittest.getFitnessValue())
-                .setStartAverageFitness(populationSize / fittest.getFitnessValue())
-                .setStartBestCost((int) fittest.getCost())
-                .setStartAverageCost(populationSize / fittest.getCost());
+	if (!hasInited) {
+	    throw new InvalidConfigurationException("Please init genetic evolver first");
 	}
 
-        statistic.setStartPopulationSize(populationSize);
+	if (this.hasFinished) {
+	    return null;
+	}
 
-        genotype.evolve();
-        evolutions++;
+	Date date = new Date(System.currentTimeMillis());
+	GenerationStatistic statistic = new GenerationStatistic(this.evolutions + 1, date);
 
-        double endAverageFitness = genotype.getFittestChromosome().getFitnessValue() / genotype.getPopulation().size();
-        double endAverageCost = ((PathChromosome) genotype.getFittestChromosome()).getCost() / genotype.getPopulation().size();
-        int endBestFitness = (int) ((PathChromosome) genotype.getFittestChromosome()).getFitnessValue();
-        int endBestCost = ((PathChromosome) genotype.getFittestChromosome()).getCost();
+	int populationSize = genotype.getPopulation().size();
 
-        statistic
-                .setEndPopulationSize(genotype.getPopulation().size())
-                .setEndBestFitness(endBestFitness)
-                .setEndAverageFitness(endAverageFitness)
-                .setEndBestCost(endBestCost)
-                .setEndAverageCost(endAverageCost);
-        statistic.setEndBestChromosome(((PathChromosome) genotype.getFittestChromosome()).toJson());
+	if (genotype.getFittestChromosome() != null) {
+	    PathChromosome fittest = (PathChromosome) genotype.getFittestChromosome();
+	    statistic
+		    .setStartBestFitness((int) fittest.getFitnessValue())
+		    .setStartAverageFitness(populationSize / fittest.getFitnessValue())
+		    .setStartBestCost((int) fittest.getCost())
+		    .setStartAverageCost(populationSize / fittest.getCost());
+	}
 
-        if (endBestFitness == this.lastGenerationBestFitness) {
-            numberOfEvolutionsWithoutChange++;
+	statistic.setStartPopulationSize(populationSize);
+
+	genotype.evolve();
+	genotype.getPopulation().sortByFitness();
+	evolutions++;
+
+	PathChromosome bestChromosome = (PathChromosome) genotype.getFittestChromosome();
+	PathChromosome worstChromosome = (PathChromosome) genotype.getFittestChromosome(
+		genotype.getPopulation().size() - 1, genotype.getPopulation().size() - 1);
+
+	double endAverageFitness = bestChromosome.getFitnessValue() / genotype.getPopulation().size();
+	double endAverageCost = bestChromosome.getCost() / genotype.getPopulation().size();
+	int endBestFitness = (int) bestChromosome.getFitnessValue();
+	int endBestCost = bestChromosome.getCost();
+
+	statistic
+		.setEndPopulationSize(genotype.getPopulation().size())
+		.setEndBestFitness(endBestFitness)
+		.setEndAverageFitness(endAverageFitness)
+		.setEndBestCost(endBestCost)
+		.setEndAverageCost(endAverageCost);
+	statistic.setEndBestChromosome(bestChromosome.toJson());
+	statistic.setEndWorstChromosome(worstChromosome.toJson());
+
+	if (endBestFitness == this.lastGenerationBestFitness) {
+	    numberOfEvolutionsWithoutChange++;
 	    this.hasEvolved = false;
-        } else {
-            numberOfEvolutionsWithoutChange = 0;
+	} else {
+	    numberOfEvolutionsWithoutChange = 0;
 	    this.hasEvolved = true;
-            this.lastGenerationBestFitness = endBestFitness;
-        }
+	    this.lastGenerationBestFitness = endBestFitness;
+	}
 
-        if (this.evolutions == this.numberOfEvolutions
-                || this.numberOfEvolutionsWithoutChange >= ((this.numberOfEvolutions * this.stopConditionPercent) / 100)) {
-            this.hasFinished = true;
-        }
+	if (this.evolutions == this.numberOfEvolutions
+		|| this.numberOfEvolutionsWithoutChange >= ((this.numberOfEvolutions * this.stopConditionPercent) / 100)) {
+	    this.hasFinished = true;
+	}
 
 	this.lastStatistic = statistic;
-        return statistic;
+	return statistic;
     }
 
     public PathChromosomePopulation init() throws InvalidConfigurationException {
 
-        this.configuration = this.initConfiguration(this.paths.size(), this.graph);
-        ArrayList<PathChromosome> chromosomes = this.initChromosomes(this.configuration);
-        this.population = this.initPopulation(this.configuration, chromosomes);
+	this.configuration = this.initConfiguration(this.paths.size(), this.graph);
+	ArrayList<PathChromosome> chromosomes = this.initChromosomes(this.configuration);
+	this.population = this.initPopulation(this.configuration, chromosomes);
 
-        this.configuration.setSampleChromosome(this.population.getChromosome(0));
-        this.configuration.setPopulationSize(this.population.size());
-	this.configuration.setMinimumPopSizePercent(50);
+	this.configuration.setSampleChromosome(this.population.getChromosome(0));
 
-        ArrayList<GeneticOperator> operators = this.initMutators(this.configuration);
-        BestChromosomesSelector selector = new BestChromosomesSelector(this.configuration);
-        selector.setDoubletteChromosomesAllowed(false);
-        selector.setOriginalRate(0.1);
+	ArrayList<GeneticOperator> operators = this.initMutators(this.configuration);
+	BestChromosomesSelector selector = new BestChromosomesSelector(this.configuration);
+	selector.setDoubletteChromosomesAllowed(false);
+	selector.setOriginalRate(0.1);
 
-        this.configuration.addNaturalSelector(selector, true);
-        for (GeneticOperator operator : operators) {
-            this.configuration.addGeneticOperator(operator);
-        }
+	this.configuration.addNaturalSelector(selector, true);
+	for (GeneticOperator operator : operators) {
+	    this.configuration.addGeneticOperator(operator);
+	}
 
-        this.genotype = new Genotype(this.configuration, this.population);
-        this.hasInited = true;
-        return population;
+	this.genotype = new Genotype(this.configuration, this.population);
+	this.hasInited = true;
+	return population;
     }
 
     private GeneticConfiguration initConfiguration(
-            int populationSize, DirectedWeightedGraphSemiRandom graph)
-            throws InvalidConfigurationException {
+	    int populationSize, DirectedWeightedGraphSemiRandom graph)
+	    throws InvalidConfigurationException {
 
-        GeneticConfiguration config = new GeneticConfiguration(
-                new Date(System.currentTimeMillis()).toString());
+	GeneticConfiguration config = new GeneticConfiguration(
+		new Date(System.currentTimeMillis()).toString());
 
-        Configuration.reset();
-        config.setAlwaysCaculateFitness(true);
-        config.setFitnessFunction(new PathChromosomeFitness());
-        config.setFitnessEvaluator(new PathChromosomeFitnessComparator());
-        config.setKeepPopulationSizeConstant(false);
-        config.setPopulationSize(populationSize);
-        config.setPreservFittestIndividual(true);
-        config.setRandomGenerator(new StockRandomGenerator());
-        config.setEventManager(new EventManager());
-        config.setGraph(graph);
+	Configuration.reset();
+	config.setAlwaysCaculateFitness(true);
+	config.setFitnessFunction(new PathChromosomeFitness());
+	config.setFitnessEvaluator(new PathChromosomeFitnessComparator());
+	config.setKeepPopulationSizeConstant(false);
+	config.setPopulationSize(populationSize);
+	config.setMinimumPopSizePercent(50);
+	config.setPreservFittestIndividual(true);
+	config.setRandomGenerator(new StockRandomGenerator());
+	config.setEventManager(new EventManager());
+	config.setGraph(graph);
 
-        return config;
+	return config;
     }
 
     private ArrayList<PathChromosome> initChromosomes(
-            GeneticConfiguration config)
-            throws InvalidConfigurationException {
+	    GeneticConfiguration config)
+	    throws InvalidConfigurationException {
 
-        ArrayList<PathChromosome> chromosomes = new ArrayList<PathChromosome>();
-        for (GraphPath path : this.paths) {
-            PathChromosome chromosome = GraphGeneticsTranslator.toPathChromosome(path, config);
-            chromosome.setConstraintChecker(new EdgeGeneConstraintChecker());
+	ArrayList<PathChromosome> chromosomes = new ArrayList<PathChromosome>();
+	for (GraphPath path : this.paths) {
+	    PathChromosome chromosome = GraphGeneticsTranslator.toPathChromosome(path, config);
+	    chromosome.setConstraintChecker(new EdgeGeneConstraintChecker());
 
-            chromosomes.add(chromosome);
-        }
+	    chromosomes.add(chromosome);
+	}
 
-        return chromosomes;
+	return chromosomes;
     }
 
     private PathChromosomePopulation initPopulation(
-            GeneticConfiguration config,
-            ArrayList<PathChromosome> chromosomes)
-            throws InvalidConfigurationException {
+	    GeneticConfiguration config,
+	    ArrayList<PathChromosome> chromosomes)
+	    throws InvalidConfigurationException {
 
-        PathChromosomePopulation pop = new PathChromosomePopulation(config);
-        pop.setChromosomes(chromosomes);
+	PathChromosomePopulation pop = new PathChromosomePopulation(config);
+	pop.setChromosomes(chromosomes);
 
-        return pop;
+	return pop;
     }
 
     private ArrayList<GeneticOperator> initMutators(GeneticConfiguration configuration) throws InvalidConfigurationException {
-        ArrayList<GeneticOperator> mutators = new ArrayList<GeneticOperator>();
+	ArrayList<GeneticOperator> mutators = new ArrayList<GeneticOperator>();
 
-        PathChromosomeMultipleGeneMutator multipleMutatorOperator = new PathChromosomeMultipleGeneMutator(configuration, 0.01);
-        multipleMutatorOperator.setAllowIllegalMutations(false);
-        multipleMutatorOperator.setMutationMode(PathChromosomeOperationMode.RANDOM);
-        multipleMutatorOperator.setPrintMutationStatistics(false);
+	PathChromosomeMultipleGeneMutator multipleMutatorOperator = new PathChromosomeMultipleGeneMutator(configuration, 0.01);
+	multipleMutatorOperator.setAllowIllegalMutations(false);
+	multipleMutatorOperator.setMutationMode(PathChromosomeOperationMode.RANDOM);
+	multipleMutatorOperator.setPrintMutationStatistics(false);
 
-        PathChromosomeCycleRemoveMutator cycleOperator = new PathChromosomeCycleRemoveMutator(configuration, 1);
-        cycleOperator.setAllowIllegalMutations(false);
-        cycleOperator.setMutationMode(PathChromosomeOperationMode.RANDOM);
-        cycleOperator.setPrintMutationStatistics(false);
+	PathChromosomeCycleRemoveMutator cycleOperator = new PathChromosomeCycleRemoveMutator(configuration, 1);
+	cycleOperator.setAllowIllegalMutations(false);
+	cycleOperator.setMutationMode(PathChromosomeOperationMode.RANDOM);
+	cycleOperator.setPrintMutationStatistics(false);
 
-        PathChromosomeTwoPointCrossover crossoverOperator2P = new PathChromosomeTwoPointCrossover(configuration, 0.01);
-        crossoverOperator2P.setAllowIllegalCrossovers(false);
-        crossoverOperator2P.setAllowFullCrossOver(false);
-        crossoverOperator2P.setXoverNewAge(true);
-        crossoverOperator2P.setCrossoverMode(PathChromosomeOperationMode.RANDOM);
-        crossoverOperator2P.setPrintCrossoverStatistics(false);
+	PathChromosomeTwoPointCrossover crossoverOperator2P = new PathChromosomeTwoPointCrossover(configuration, 0.01);
+	crossoverOperator2P.setAllowIllegalCrossovers(false);
+	crossoverOperator2P.setAllowFullCrossOver(false);
+	crossoverOperator2P.setXoverNewAge(true);
+	crossoverOperator2P.setCrossoverMode(PathChromosomeOperationMode.RANDOM);
+	crossoverOperator2P.setPrintCrossoverStatistics(false);
 
-        mutators.add(multipleMutatorOperator);
-        mutators.add(cycleOperator);
-        mutators.add(crossoverOperator2P);
+	mutators.add(multipleMutatorOperator);
+	mutators.add(cycleOperator);
+	mutators.add(crossoverOperator2P);
 
-        return mutators;
+	return mutators;
     }
 }
