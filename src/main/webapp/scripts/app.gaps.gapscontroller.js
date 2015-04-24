@@ -242,6 +242,8 @@ gaps.controller('gapscontroller', ['$scope', 'Socket', 'Notification', function 
             table.row.add([$scope.pathStatistics.counter, path.length, totalCost]);
             $scope.pathStatistics.counter += 1;
             table.draw();
+            
+            $scope.notifyInfo('Computing paths (' + $scope.pathStatistics.counter + ' / ' + $scope.geneticSettings.numberOfPaths + ')...');
         };
         $scope.resetPathStatisticsAndTable = function () {
             $scope.pathStatistics.counter = $scope.geneticSettings.sourceNode;
@@ -342,6 +344,8 @@ gaps.controller('gapscontroller', ['$scope', 'Socket', 'Notification', function 
             generationDataChart.y = 'Gen ' + data.evolutionStage;
             generationDataChart.a = data.endBestCost;
             $scope.geneticStatistics.generationChart.push(generationDataChart);
+            
+            $scope.notifyInfo('Evolving (' + data.evolutionStage + ' / ' + $scope.geneticSettings.numberOfEvolutions + ')...');
         };
         $scope.initCompareStatistics = function () {
             $scope.compareStatisticsKShortest.endTimestamp = new Date();
