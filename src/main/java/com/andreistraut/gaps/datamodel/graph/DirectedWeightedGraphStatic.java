@@ -33,7 +33,7 @@ public class DirectedWeightedGraphStatic extends DirectedWeightedGraph {
 	for (int i = 0; i < this.numberOfNodes - 1; i++) {
 	    Node source = nodesList.get(i);
 	    Node destination = nodesList.get(i + 1);
-	    int cost = i;
+	    int cost = this.maximumEdgeWeight - i;
 	    if (cost < this.minimumEdgeWeight) {
 		cost = this.minimumEdgeWeight;
 	    }
@@ -80,7 +80,7 @@ public class DirectedWeightedGraphStatic extends DirectedWeightedGraph {
 	    Node source = nodesList.get(sourceIndex);
 	    Node destination = nodesList.get(destinationIndex);
 
-	    int cost = i;
+	    int cost = this.minimumEdgeWeight + i;
 	    if (cost < this.minimumEdgeWeight) {
 		cost = this.minimumEdgeWeight;
 	    }

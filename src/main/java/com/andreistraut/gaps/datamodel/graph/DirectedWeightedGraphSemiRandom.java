@@ -13,6 +13,7 @@ public class DirectedWeightedGraphSemiRandom extends DirectedWeightedGraph {
 	super(settings);
     }
     
+    @Override
     public ArrayList<Node> initNodes() {
 	for (int i = 0; i < this.numberOfNodes; i++) {
 	    Node node = new Node(Integer.toString(i), Integer.toString(i));
@@ -25,6 +26,7 @@ public class DirectedWeightedGraphSemiRandom extends DirectedWeightedGraph {
 	return nodesList;
     }
 
+    @Override
     public ArrayList<DirectedWeightedEdge> initEdges() {
 	ArrayList<Node> nodesList = this.getNodes();
 
