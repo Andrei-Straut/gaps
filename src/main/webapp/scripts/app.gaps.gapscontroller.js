@@ -409,8 +409,8 @@ gaps.controller('gapscontroller', ['$scope', 'Socket', 'Notification', function 
             $('#' + id).addClass('active-menu');
         };
         $scope.getEdgeClass = function (edgeCost) {
-            var averageCostLowThreshold = $scope.graphStatistics.averageEdgeCost - ($scope.graphStatistics.averageEdgeCost / 2);
-            var averageCostHighThreshold = $scope.graphStatistics.averageEdgeCost + ($scope.graphStatistics.averageEdgeCost / 2);
+            var averageCostLowThreshold = $scope.graphStatistics.averageEdgeCost - ($scope.graphStatistics.averageEdgeCost / 4);
+            var averageCostHighThreshold = $scope.graphStatistics.averageEdgeCost + ($scope.graphStatistics.averageEdgeCost / 4);
             if (edgeCost < averageCostLowThreshold) {
                 return 'label-success';
             } else if (edgeCost >= averageCostLowThreshold && edgeCost <= averageCostHighThreshold) {
