@@ -64,7 +64,7 @@
             <div id="page-wrapper" >
                 <div id="page-inner">
 
-                    <%@include file="/pages/fragments/graph-settings.jsp" %>
+                    <%@include file="/pages/fragments/settings.jsp" %>
 
                     <%@include file="/pages/fragments/graph-viewer.jsp" %>
                     
