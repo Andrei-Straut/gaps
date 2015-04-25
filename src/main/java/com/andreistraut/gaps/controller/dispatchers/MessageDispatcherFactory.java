@@ -3,6 +3,7 @@ package com.andreistraut.gaps.controller.dispatchers;
 import com.andreistraut.gaps.controller.Controller;
 import com.andreistraut.gaps.controller.MessageRequest;
 import com.andreistraut.gaps.controller.MessageType;
+import com.andreistraut.gaps.datamodel.graph.DirectedWeightedGraph;
 import com.andreistraut.gaps.datamodel.graph.DirectedWeightedGraphSemiRandom;
 import com.andreistraut.gaps.datamodel.graph.DirectedWeightedGraphPath;
 import java.util.ArrayList;
@@ -10,7 +11,7 @@ import javax.websocket.Session;
 
 public class MessageDispatcherFactory {
 
-    private DirectedWeightedGraphSemiRandom graph;
+    private DirectedWeightedGraph graph;
     private ArrayList<DirectedWeightedGraphPath> paths;
     private final Controller controller;
     private final Session session;

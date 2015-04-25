@@ -4,6 +4,7 @@ import com.andreistraut.gaps.controller.Controller;
 import com.andreistraut.gaps.controller.MessageRequest;
 import com.andreistraut.gaps.controller.MessageResponse;
 import com.andreistraut.gaps.controller.MessageType;
+import com.andreistraut.gaps.datamodel.graph.DirectedWeightedGraph;
 import com.andreistraut.gaps.datamodel.graph.DirectedWeightedGraphSemiRandom;
 import com.andreistraut.gaps.datamodel.graph.DirectedWeightedGraphPath;
 import com.andreistraut.gaps.datamodel.graph.Node;
@@ -19,7 +20,7 @@ public class ComputePathMessageDispatcher extends MessageDispatcher {
     private final Session session;
     private final MessageType type;
 
-    private DirectedWeightedGraphSemiRandom graph;
+    private DirectedWeightedGraph graph;
     private Node sourceNode;
     private Node destinationNode;
     private int numberOfPaths;
@@ -61,12 +62,12 @@ public class ComputePathMessageDispatcher extends MessageDispatcher {
     @Override
     void setParameters(ArrayList<Object> parameters) throws Exception {
 	if (parameters == null || parameters.isEmpty() || 
-                !(parameters.get(0) instanceof DirectedWeightedGraphSemiRandom)) {
+                !(parameters.get(0) instanceof DirectedWeightedGraph)) {
             
 	    throw new Exception("First parameter must be a DirectedWeightedGraph");
 	}
 
-	this.graph = (DirectedWeightedGraphSemiRandom) parameters.get(0);
+	this.graph = (DirectedWeightedGraph) parameters.get(0);
 	
 	int sourceNodeId = this.request.getData().get("sourceNode").getAsInt();
 	int destinationNodeId = this.request.getData().get("destinationNode").getAsInt();

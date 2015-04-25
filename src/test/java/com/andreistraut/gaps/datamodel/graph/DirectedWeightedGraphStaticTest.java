@@ -3,15 +3,19 @@ package com.andreistraut.gaps.datamodel.graph;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import org.junit.After;
+import org.junit.AfterClass;
 import org.junit.Assert;
+import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
+import static org.junit.Assert.*;
 
-public class DirectedWeightedGraphSemiRandomTest {
+public class DirectedWeightedGraphStaticTest {
 
     private final int RUN_LIMIT_SMALL = 10000;
     private final int NUMBER_OF_NODES_SMALL = 5;
-    private final int NUMBER_OF_EDGES_SMALL = 7;
+    private final int NUMBER_OF_EDGES_SMALL = 10;
     
     private final int RUN_LIMIT_MEDIUM = 500;
     private final int NUMBER_OF_NODES_MEDIUM = 100;
@@ -21,19 +25,19 @@ public class DirectedWeightedGraphSemiRandomTest {
     private final int NUMBER_OF_NODES_LARGE = 1000;
     private final int NUMBER_OF_EDGES_LARGE = 3000;
 
-    public DirectedWeightedGraphSemiRandomTest() {
+    public DirectedWeightedGraphStaticTest() {
     }
 
     @BeforeClass
     public static void setUpClass() {
-        Logger.getLogger(DirectedWeightedGraphSemiRandomTest.class.getName()).log(Level.INFO,
-                "{0} TEST: Graph",
-                DirectedWeightedGraphSemiRandomTest.class.toString());
+        Logger.getLogger(DirectedWeightedGraphStaticTest.class.getName()).log(Level.INFO,
+                "{0} TEST: Graph Static Generation",
+                DirectedWeightedGraphStaticTest.class.toString());
     }
 
     @Test
     public void testInitNodes() {
-        DirectedWeightedGraphSemiRandom graph = new DirectedWeightedGraphSemiRandom(10, 30);
+        DirectedWeightedGraphStatic graph = new DirectedWeightedGraphStatic(10, 30);
         ArrayList<Node> nodes = graph.initNodes();
 
         Assert.assertTrue(nodes.size() == 10);
@@ -43,12 +47,10 @@ public class DirectedWeightedGraphSemiRandomTest {
 
     @Test
     public void testGraphGenerationSmallGraph() {
-        boolean allEqual = true;
-        
         for (int i = 0; i < RUN_LIMIT_SMALL; i++) {
-            DirectedWeightedGraphSemiRandom first = new DirectedWeightedGraphSemiRandom(
+            DirectedWeightedGraphStatic first = new DirectedWeightedGraphStatic(
                     this.NUMBER_OF_NODES_SMALL, this.NUMBER_OF_EDGES_SMALL);
-            DirectedWeightedGraphSemiRandom second = new DirectedWeightedGraphSemiRandom(
+            DirectedWeightedGraphStatic second = new DirectedWeightedGraphStatic(
                     this.NUMBER_OF_NODES_SMALL, this.NUMBER_OF_EDGES_SMALL);
 
             first.initNodes();
@@ -56,24 +58,18 @@ public class DirectedWeightedGraphSemiRandomTest {
 
             ArrayList<DirectedWeightedEdge> firstEdges = first.initEdges();
             ArrayList<DirectedWeightedEdge> secondEdges = second.initEdges();
-            
-            allEqual = firstEdges.equals(secondEdges);
-            if(!allEqual) {
-                break;
-            }
+
+            Assert.assertTrue(first.equals(second));
+            Assert.assertTrue(firstEdges.equals(secondEdges));
         }
-        
-        Assert.assertFalse(allEqual);
     }
 
     @Test
     public void testGraphGenerationMediumGraph() {
-        boolean allEqual = true;
-        
         for (int i = 0; i < RUN_LIMIT_MEDIUM; i++) {
-            DirectedWeightedGraphSemiRandom first = new DirectedWeightedGraphSemiRandom(
+            DirectedWeightedGraphStatic first = new DirectedWeightedGraphStatic(
                     this.NUMBER_OF_NODES_MEDIUM, this.NUMBER_OF_EDGES_MEDIUM);
-            DirectedWeightedGraphSemiRandom second = new DirectedWeightedGraphSemiRandom(
+            DirectedWeightedGraphStatic second = new DirectedWeightedGraphStatic(
                     this.NUMBER_OF_NODES_MEDIUM, this.NUMBER_OF_EDGES_MEDIUM);
 
             first.initNodes();
@@ -81,38 +77,28 @@ public class DirectedWeightedGraphSemiRandomTest {
 
             ArrayList<DirectedWeightedEdge> firstEdges = first.initEdges();
             ArrayList<DirectedWeightedEdge> secondEdges = second.initEdges();
-            
-            allEqual = firstEdges.equals(secondEdges);
-            if(!allEqual) {
-                break;
-            }
+
+            Assert.assertTrue(first.equals(second));
+            Assert.assertTrue(firstEdges.equals(secondEdges));
         }
-        
-        Assert.assertFalse(allEqual);
     }
 
     @Test
     public void testGraphGenerationLargeGraph() {
-        boolean allEqual = true;
-        
         for (int i = 0; i < RUN_LIMIT_LARGE; i++) {
-            DirectedWeightedGraphSemiRandom first = new DirectedWeightedGraphSemiRandom(
-                    this.RUN_LIMIT_LARGE, this.RUN_LIMIT_LARGE);
-            DirectedWeightedGraphSemiRandom second = new DirectedWeightedGraphSemiRandom(
-                    this.RUN_LIMIT_LARGE, this.RUN_LIMIT_LARGE);
+            DirectedWeightedGraphStatic first = new DirectedWeightedGraphStatic(
+                    this.NUMBER_OF_NODES_LARGE, this.NUMBER_OF_EDGES_LARGE);
+            DirectedWeightedGraphStatic second = new DirectedWeightedGraphStatic(
+                    this.NUMBER_OF_NODES_LARGE, this.NUMBER_OF_EDGES_LARGE);
 
             first.initNodes();
             second.initNodes();
 
             ArrayList<DirectedWeightedEdge> firstEdges = first.initEdges();
             ArrayList<DirectedWeightedEdge> secondEdges = second.initEdges();
-            
-            allEqual = firstEdges.equals(secondEdges);
-            if(!allEqual) {
-                break;
-            }
+
+            Assert.assertTrue(first.equals(second));
+            Assert.assertTrue(firstEdges.equals(secondEdges));
         }
-        
-        Assert.assertFalse(allEqual);
     }
 }

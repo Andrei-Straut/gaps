@@ -4,6 +4,7 @@ package com.andreistraut.gaps.controller.dispatchers;
 import com.andreistraut.gaps.controller.Controller;
 import com.andreistraut.gaps.controller.MessageRequest;
 import com.andreistraut.gaps.controller.MessageType;
+import com.andreistraut.gaps.datamodel.graph.DirectedWeightedGraph;
 import com.andreistraut.gaps.datamodel.graph.DirectedWeightedGraphSemiRandom;
 import com.andreistraut.gaps.datamodel.mock.MessageRequestMock;
 import com.andreistraut.gaps.datamodel.mock.SessionMock;
@@ -22,7 +23,7 @@ public class CompareStatisticsMessageDispatcherTest {
     private Session session;
     private MessageRequestMock messageRequestMock;
     private GetGraphMessageDispatcher graphDispatcher;
-    private DirectedWeightedGraphSemiRandom graph;
+    private DirectedWeightedGraph graph;
     
     public CompareStatisticsMessageDispatcherTest() {
     }
@@ -163,7 +164,7 @@ public class CompareStatisticsMessageDispatcherTest {
         parameters.add(this.graph);
 
         compareDispatcher.setParameters(parameters);
-        Assert.assertTrue(((DirectedWeightedGraphSemiRandom) compareDispatcher.parameters.get(0))
+        Assert.assertTrue(((DirectedWeightedGraph) compareDispatcher.parameters.get(0))
                 .equals(this.graph));
     }
 

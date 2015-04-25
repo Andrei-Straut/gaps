@@ -3,6 +3,7 @@ package com.andreistraut.gaps.controller.dispatchers;
 import com.andreistraut.gaps.controller.Controller;
 import com.andreistraut.gaps.controller.MessageRequest;
 import com.andreistraut.gaps.controller.MessageType;
+import com.andreistraut.gaps.datamodel.graph.DirectedWeightedGraph;
 import com.andreistraut.gaps.datamodel.graph.DirectedWeightedGraphSemiRandom;
 import com.andreistraut.gaps.datamodel.graph.DirectedWeightedGraphPath;
 import com.andreistraut.gaps.datamodel.mock.MessageRequestMock;
@@ -23,7 +24,7 @@ public class EvolveMessageDispatcherTest {
     private MessageRequestMock messageRequestMock;
     private GetGraphMessageDispatcher graphDispatcher;
     private ComputePathMessageDispatcher pathDispatcher;
-    private DirectedWeightedGraphSemiRandom graph;
+    private DirectedWeightedGraph graph;
     private ArrayList<DirectedWeightedGraphPath> paths;
 
     public EvolveMessageDispatcherTest() {
@@ -161,7 +162,7 @@ public class EvolveMessageDispatcherTest {
         parameters.add(this.paths);
 
         evolveDispatcher.setParameters(parameters);
-        Assert.assertTrue(((DirectedWeightedGraphSemiRandom) evolveDispatcher.parameters.get(0))
+        Assert.assertTrue(((DirectedWeightedGraph) evolveDispatcher.parameters.get(0))
                 .equals(this.graph));
         Assert.assertTrue(((ArrayList) evolveDispatcher.parameters.get(1))
                 .equals(this.paths));
