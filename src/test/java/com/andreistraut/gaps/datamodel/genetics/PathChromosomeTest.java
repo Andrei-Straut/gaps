@@ -60,6 +60,41 @@ public class PathChromosomeTest {
     }
 
     @Test
+    public void testGetGeneValidPosition() throws InvalidConfigurationException {
+	PathChromosome chromosome = new PathChromosome(conf, genes, 
+		graphMock.getFirstNode(), graphMock.getThirdNode());
+        
+        EdgeGene gene = chromosome.getGene(0);
+	Assert.assertTrue(gene.equals(firstToSecondGene));
+    }
+
+    @Test
+    public void testGetGeneInvalidPositionLargerThanSize() throws InvalidConfigurationException {
+	PathChromosome chromosome = new PathChromosome(conf, genes, 
+		graphMock.getFirstNode(), graphMock.getThirdNode());
+        
+        try {
+            EdgeGene gene = chromosome.getGene(100); 
+        } catch(ArrayIndexOutOfBoundsException e) {
+            Assert.assertTrue(e.getMessage().contains("is bigger than this "
+                    + "chromosome's number of genes"));
+        }        
+    }
+
+    @Test
+    public void testGetGeneInvalidPositionNegative() throws InvalidConfigurationException {
+	PathChromosome chromosome = new PathChromosome(conf, genes, 
+		graphMock.getFirstNode(), graphMock.getThirdNode());
+        
+        try {
+            EdgeGene gene = chromosome.getGene(-1);
+        } catch(ArrayIndexOutOfBoundsException e) {
+            Assert.assertTrue(e.getMessage().contains("is bigger than this "
+                    + "chromosome's number of genes"));
+        }        
+    }
+
+    @Test
     public void testGetLowestCostGene() throws InvalidConfigurationException {
 	PathChromosome chromosome = new PathChromosome(conf, genes, 
 		graphMock.getFirstNode(), graphMock.getThirdNode());
@@ -160,6 +195,22 @@ public class PathChromosomeTest {
     }
 
     @Test
+    public void testSetGene_2argsInvalidPosition() throws InvalidConfigurationException {
+	PathChromosome chromosome = new PathChromosome(conf, genes, 
+		graphMock.getFirstNode(), graphMock.getThirdNode());
+
+	DirectedWeightedEdge edge = new DirectedWeightedEdge(
+		graphMock.getSecondNode(), graphMock.getThirdNode());
+	EdgeGene gene = new EdgeGene(edge, conf);
+        try {
+            chromosome.setGene(10, gene);
+        } catch(ArrayIndexOutOfBoundsException e) {
+            Assert.assertTrue(e.getMessage().contains("is bigger than this "
+                    + "chromosome's number of genes"));
+        }
+    }
+
+    @Test
     public void testSetGene_3argsFirstGeneValidGeneCheckValidity() throws InvalidConfigurationException {
 	// Set a valid secondToFirstGene, and check validity. Expected: secondToFirstGene is set
 	PathChromosome chromosome = new PathChromosome(conf, genes, 
@@ -246,6 +297,57 @@ public class PathChromosomeTest {
 	Assert.assertTrue(chromosome.isLegal());
 	Assert.assertFalse(chromosome.getGene(originalNoOfGenes - 1) == gene);
 	Assert.assertTrue(genes.equals(chromosome.getGenesList()));
+    }
+
+    @Test
+    public void testSetGene_3argsInvalidPosition() throws InvalidConfigurationException {
+	PathChromosome chromosome = new PathChromosome(conf, genes, 
+		graphMock.getFirstNode(), graphMock.getThirdNode());
+
+	DirectedWeightedEdge edge = new DirectedWeightedEdge(
+		graphMock.getSecondNode(), graphMock.getThirdNode());
+	EdgeGene gene = new EdgeGene(edge, conf);
+        try {
+            chromosome.setGene(10, gene, true);
+        } catch(ArrayIndexOutOfBoundsException e) {
+            Assert.assertTrue(e.getMessage().contains("is bigger than this "
+                    + "chromosome's number of genes"));
+        }
+    }
+
+    @Test
+    public void testRemoveGeneValidPosition() throws InvalidConfigurationException {
+	PathChromosome chromosome = new PathChromosome(conf, genes, 
+		graphMock.getFirstNode(), graphMock.getThirdNode());
+
+        Assert.assertTrue(chromosome.size() == 2);
+        chromosome.removeGene(0);
+        Assert.assertTrue(chromosome.size() == 1);
+        Assert.assertTrue(chromosome.getGene(0).equals(secondToThirdGene));
+    }
+
+    @Test
+    public void testRemoveGeneInvalidPositionLargerThanIndex() throws InvalidConfigurationException {
+	PathChromosome chromosome = new PathChromosome(conf, genes, 
+		graphMock.getFirstNode(), graphMock.getThirdNode());
+
+        Assert.assertTrue(chromosome.size() == 2);
+        chromosome.removeGene(3);
+        Assert.assertTrue(chromosome.size() == 2);
+        Assert.assertTrue(chromosome.getGene(0).equals(firstToSecondGene));
+        Assert.assertTrue(chromosome.getGene(1).equals(secondToThirdGene));
+    }
+
+    @Test
+    public void testRemoveGeneInvalidPositionSmallerThan0() throws InvalidConfigurationException {
+	PathChromosome chromosome = new PathChromosome(conf, genes, 
+		graphMock.getFirstNode(), graphMock.getThirdNode());
+
+        Assert.assertTrue(chromosome.size() == 2);
+        chromosome.removeGene(-1);
+        Assert.assertTrue(chromosome.size() == 2);
+        Assert.assertTrue(chromosome.getGene(0).equals(firstToSecondGene));
+        Assert.assertTrue(chromosome.getGene(1).equals(secondToThirdGene));
     }
 
     @Test
@@ -838,5 +940,4 @@ public class PathChromosomeTest {
 	Assert.assertFalse(first == second);
 	Assert.assertTrue(first.equals(second));
     }
-
 }

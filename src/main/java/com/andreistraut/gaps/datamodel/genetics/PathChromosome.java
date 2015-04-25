@@ -195,7 +195,7 @@ public class PathChromosome extends BaseChromosome implements IChromosome {
      */
     @Override
     public EdgeGene getGene(int desiredLocus) {
-	if (this.genes.size() > desiredLocus) {
+	if (this.genes.size() > desiredLocus && desiredLocus >= 0) {
 	    return this.genes.get(desiredLocus);
 	}
 
@@ -282,7 +282,7 @@ public class PathChromosome extends BaseChromosome implements IChromosome {
      * @param index The index of the Gene to remove
      */
     public void removeGene(int index) {
-	if (this.genes.size() > index) {
+	if (this.genes.size() > index && index >= 0) {
 	    this.genes.remove(index);
 	}
     }

@@ -16,37 +16,39 @@ public class PathChromosomePopulation extends Population {
 
     //<editor-fold desc="Constructors" defaultstate="collapsed">
     public PathChromosomePopulation(Configuration configuration) throws InvalidConfigurationException {
-	super(configuration);
-	this.configuration = (GeneticConfiguration) configuration;
+        super(configuration);
+        this.configuration = (GeneticConfiguration) configuration;
     }
 
     public PathChromosomePopulation(Configuration configuration,
-	    IChromosome[] chromosomes) throws InvalidConfigurationException {
+            IChromosome[] chromosomes) throws InvalidConfigurationException {
 
-	this(configuration);
-	if (chromosomes.length > 0) {
-	    this.chromosomes = new ArrayList<PathChromosome>();
+        this(configuration);
+        if (chromosomes.length > 0) {
+            this.chromosomes = new ArrayList<PathChromosome>();
 
-	    for (IChromosome chromosome : chromosomes) {
-		this.chromosomes.add((PathChromosome) chromosome);
-	    }
-	}
+            for (IChromosome chromosome : chromosomes) {
+                this.chromosomes.add((PathChromosome) chromosome);
+            }
+        }
     }
 
     public PathChromosomePopulation(Configuration configuration,
-	    ArrayList<PathChromosome> chromosomes) throws InvalidConfigurationException {
+            ArrayList<PathChromosome> chromosomes) throws InvalidConfigurationException {
 
-	this(configuration);
-	this.chromosomes = chromosomes;
+        this(configuration);
+        if (chromosomes != null && !chromosomes.isEmpty()) {
+            this.chromosomes = new ArrayList<>(chromosomes);
+        }
     }
 
     private PathChromosomePopulation(Configuration configuration, IChromosome chromosome) throws InvalidConfigurationException {
-	this(configuration, new ArrayList<PathChromosome>());
-	this.chromosomes.add((PathChromosome) chromosome);
+        this(configuration, new ArrayList<PathChromosome>());
+        this.chromosomes.add((PathChromosome) chromosome);
     }
 
     private PathChromosomePopulation(Configuration configuration, int size) throws InvalidConfigurationException {
-	super(configuration, size);
+        super(configuration, size);
     }
 
     private PathChromosomePopulation() throws InvalidConfigurationException {
@@ -61,7 +63,7 @@ public class PathChromosomePopulation extends Population {
      */
     @Override
     public PathChromosome getChromosome(int index) {
-	return this.chromosomes.get(index);
+        return this.chromosomes.get(index);
     }
 
     /**
@@ -69,7 +71,9 @@ public class PathChromosomePopulation extends Population {
      */
     @Override
     public List<IChromosome> getChromosomes() {
-	return new ArrayList<IChromosome>(this.chromosomes);
+        return this.chromosomes != null
+                ? new ArrayList<IChromosome>(this.chromosomes)
+                : new ArrayList<IChromosome>();
     }
 
     /**
@@ -81,11 +85,11 @@ public class PathChromosomePopulation extends Population {
      */
     @Override
     public void setChromosome(int index, IChromosome chromosome) {
-	if (this.chromosomes == null) {
-	    this.chromosomes = new ArrayList<PathChromosome>();
-	}
+        if (this.chromosomes == null) {
+            this.chromosomes = new ArrayList<PathChromosome>();
+        }
 
-	this.chromosomes.add(index, (PathChromosome) chromosome);
+        this.chromosomes.add(index, (PathChromosome) chromosome);
     }
 
     /**
@@ -95,16 +99,16 @@ public class PathChromosomePopulation extends Population {
      */
     @Override
     public void setChromosomes(List chromosomes) {
-	this.chromosomes = new ArrayList<PathChromosome>(chromosomes);
+        this.chromosomes = new ArrayList<PathChromosome>(chromosomes);
     }
 
     @Override
     public void addChromosome(IChromosome toAdd) {
-	if (this.chromosomes == null) {
-	    this.chromosomes = new ArrayList<PathChromosome>();
-	}
+        if (this.chromosomes == null) {
+            this.chromosomes = new ArrayList<PathChromosome>();
+        }
 
-	this.chromosomes.add((PathChromosome) toAdd);
+        this.chromosomes.add((PathChromosome) toAdd);
     }
 
     /**
@@ -114,11 +118,13 @@ public class PathChromosomePopulation extends Population {
      */
     @Override
     public void addChromosomes(Population population) {
-	if (population != null && population.getChromosomes().size() > 0) {
-	    for (Object chromosome : population.getChromosomes()) {
-		this.chromosomes.add((PathChromosome) chromosome);
-	    }
-	}
+        if (population != null && population.getChromosomes().size() > 0) {
+            for (Object chromosome : population.getChromosomes()) {
+                if (chromosome instanceof PathChromosome) {
+                    this.chromosomes.add((PathChromosome) chromosome);
+                }
+            }
+        }
     }
 
     /**
@@ -127,11 +133,13 @@ public class PathChromosomePopulation extends Population {
      * @param chromosomes The Chromosomes to add
      */
     public void addChromosomes(ArrayList<PathChromosome> chromosomes) {
-	if (this.chromosomes == null) {
-	    this.chromosomes = new ArrayList<PathChromosome>();
-	}
+        if (this.chromosomes == null) {
+            this.chromosomes = new ArrayList<PathChromosome>();
+        }
 
-	this.chromosomes.addAll(chromosomes);
+        if (chromosomes != null && !chromosomes.isEmpty()) {
+            this.chromosomes.addAll(chromosomes);
+        }
     }
 
     /**
@@ -142,10 +150,13 @@ public class PathChromosomePopulation extends Population {
      */
     @Override
     public PathChromosome determineFittestChromosome() {
-	this.fittestChromosome
-		= this.determineFittestChromosome(0, this.chromosomes.size());
-
-	return this.fittestChromosome;
+        if (this.chromosomes != null && this.chromosomes.size() > 0) {
+            this.fittestChromosome
+                    = this.determineFittestChromosome(0, this.chromosomes.size());
+            return this.fittestChromosome;
+        }
+        
+        return null;
     }
 
     /**
@@ -155,34 +166,34 @@ public class PathChromosomePopulation extends Population {
      * @param startIndex Index to begin the evaluation with
      * @param endIndex Index to end the evaluation with
      * @return The fittest PathChromosome of the population within the given
-     * indices. If indices are larger than population size, the whole of population
-     * will be searched
+     * indices. If indices are larger than population size, the whole of
+     * population will be searched
      */
     @Override
     public PathChromosome determineFittestChromosome(int startIndex, int endIndex) {
-	if (this.chromosomes != null && !this.chromosomes.isEmpty()) {
-	    if (startIndex >= this.chromosomes.size()) {
-		startIndex = 0;
-	    }
-	    
-	    if(endIndex > this.chromosomes.size()) {
-		endIndex = this.chromosomes.size();
-	    }
-	    
-	    PathChromosome fittest = this.chromosomes.get(startIndex);
-	    for (int i = startIndex; i < endIndex; i++) {
-		if (this.chromosomes.get(i) != null
-			&& this.chromosomes.get(i).isFitterThan(fittest)) {
+        if (this.chromosomes != null && !this.chromosomes.isEmpty()) {
+            if (startIndex >= this.chromosomes.size()) {
+                startIndex = 0;
+            }
 
-		    fittest = this.chromosomes.get(i);
-		    this.fittestChromosome = fittest;
-		}
-	    }
-	    
-	    return fittest;
-	}
+            if (endIndex > this.chromosomes.size()) {
+                endIndex = this.chromosomes.size();
+            }
 
-	return null;
+            PathChromosome fittest = this.chromosomes.get(startIndex);
+            for (int i = startIndex; i < endIndex; i++) {
+                if (this.chromosomes.get(i) != null
+                        && this.chromosomes.get(i).isFitterThan(fittest)) {
+
+                    fittest = this.chromosomes.get(i);
+                    this.fittestChromosome = fittest;
+                }
+            }
+
+            return fittest;
+        }
+
+        return null;
     }
 
     /**
@@ -196,13 +207,13 @@ public class PathChromosomePopulation extends Population {
      */
     @Override
     public List determineFittestChromosomes(int numberOfChromosomes) {
-	Collections.sort(this.chromosomes, new PathChromosomeFitnessComparator());
-	Collections.reverse(this.chromosomes);
-	return this.chromosomes.subList(0, numberOfChromosomes);
+        Collections.sort(this.chromosomes, new PathChromosomeFitnessComparator());
+        Collections.reverse(this.chromosomes);
+        return this.chromosomes.subList(0, numberOfChromosomes);
     }
 
     @Override
     public int size() {
-	return this.chromosomes.size();
+        return this.chromosomes.size();
     }
 }

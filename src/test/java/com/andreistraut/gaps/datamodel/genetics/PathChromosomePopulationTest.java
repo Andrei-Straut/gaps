@@ -44,6 +44,188 @@ public class PathChromosomePopulationTest {
     }
 
     @Test
+    public void testAddChromosome() throws InvalidConfigurationException {
+	PathChromosomePopulation pop = new PathChromosomePopulation(this.conf, this.chromosomes);
+        
+        pop.addChromosome(oneGeneChromosome);
+        
+	Assert.assertTrue(
+                pop.getChromosomes().get(pop.getChromosomes().size() - 1)
+                        .equals(oneGeneChromosome));
+    }
+
+    @Test
+    public void testAddChromosomeEmptyPopulation() throws InvalidConfigurationException {
+	PathChromosomePopulation pop = new PathChromosomePopulation(this.conf, new ArrayList<PathChromosome>());     
+        
+        Assert.assertTrue(pop.getChromosomes().isEmpty());
+        
+        pop.addChromosome(oneGeneChromosome);
+        
+	Assert.assertTrue(pop.getChromosomes().size() == 1);
+	Assert.assertTrue(pop.getChromosomes().get(0).equals(oneGeneChromosome));
+    }
+
+    @Test
+    public void testAddChromosomeNullPopulation() throws InvalidConfigurationException {
+	PathChromosomePopulation pop = new PathChromosomePopulation(this.conf);     
+        
+        Assert.assertTrue(pop.getChromosomes().isEmpty());
+        
+        pop.addChromosome(oneGeneChromosome);
+        
+	Assert.assertTrue(pop.getChromosomes().size() == 1);
+	Assert.assertTrue(pop.getChromosomes().get(0).equals(oneGeneChromosome));
+    }
+
+    @Test
+    public void testAddChromosomesPopulation() throws InvalidConfigurationException {
+	PathChromosomePopulation first = new PathChromosomePopulation(this.conf, this.chromosomes);        
+        PathChromosomePopulation second = new PathChromosomePopulation(this.conf, this.chromosomes);
+        
+	Assert.assertTrue(first.getChromosomes().size() == this.chromosomes.size());
+        
+        first.addChromosomes(second);
+        Assert.assertTrue(first.getChromosomes().size() == (this.chromosomes.size() * 2));
+    }
+    
+    @Test
+    public void testAddChromosomesPopulationEmptyChromosomePopulation() throws InvalidConfigurationException {
+	PathChromosomePopulation first = new PathChromosomePopulation(this.conf, this.chromosomes);        
+        PathChromosomePopulation second = new PathChromosomePopulation(this.conf, new ArrayList<PathChromosome>());
+        
+	Assert.assertTrue(first.getChromosomes().size() == this.chromosomes.size());
+        
+        first.addChromosomes(second);
+        Assert.assertTrue(first.getChromosomes().size() == (this.chromosomes.size()));
+    }
+
+    @Test
+    public void testAddChromosomesPopulationNullChromosomePopulation() throws InvalidConfigurationException {
+	PathChromosomePopulation first = new PathChromosomePopulation(this.conf, this.chromosomes);        
+        PathChromosomePopulation second = new PathChromosomePopulation(this.conf);
+        
+	Assert.assertTrue(first.getChromosomes().size() == this.chromosomes.size());
+        
+        first.addChromosomes(second);
+        Assert.assertTrue(first.getChromosomes().size() == (this.chromosomes.size()));
+    }
+
+    @Test
+    public void testAddChromosomesPopulationNullPopulation() throws InvalidConfigurationException {
+	PathChromosomePopulation first = new PathChromosomePopulation(this.conf, this.chromosomes);        
+        PathChromosomePopulation second = null;
+        
+	Assert.assertTrue(first.getChromosomes().size() == this.chromosomes.size());
+        
+        first.addChromosomes(second);
+        Assert.assertTrue(first.getChromosomes().size() == (this.chromosomes.size()));
+    }
+
+    @Test
+    public void testAddChromosomesArrayList() throws InvalidConfigurationException {
+	PathChromosomePopulation first = new PathChromosomePopulation(this.conf, this.chromosomes);     
+        
+	Assert.assertTrue(first.getChromosomes().size() == this.chromosomes.size());
+        
+        first.addChromosomes(this.chromosomes);
+        Assert.assertTrue(first.getChromosomes().size() == (this.chromosomes.size() * 2));
+    }
+
+    @Test
+    public void testAddChromosomesArrayListToNullPopulation() throws InvalidConfigurationException {
+	PathChromosomePopulation first = new PathChromosomePopulation(this.conf);     
+        
+	Assert.assertTrue(first.getChromosomes().size() == 0);
+        
+        first.addChromosomes(this.chromosomes);
+        Assert.assertTrue(first.getChromosomes().size() == (this.chromosomes.size()));
+    }
+
+    @Test
+    public void testAddChromosomesArrayListToEmptyPopulation() throws InvalidConfigurationException {
+	PathChromosomePopulation first = new PathChromosomePopulation(this.conf, new ArrayList<PathChromosome>());     
+        
+	Assert.assertTrue(first.getChromosomes().isEmpty());
+        
+        first.addChromosomes(this.chromosomes);
+        Assert.assertTrue(first.getChromosomes().size() == (this.chromosomes.size()));
+    }
+    
+    @Test
+    public void testAddChromosomesArrayListEmpty() throws InvalidConfigurationException {
+	PathChromosomePopulation first = new PathChromosomePopulation(this.conf, this.chromosomes);        
+        
+	Assert.assertTrue(first.getChromosomes().size() == this.chromosomes.size());
+        
+        first.addChromosomes(new ArrayList<PathChromosome>());
+        Assert.assertTrue(first.getChromosomes().size() == (this.chromosomes.size()));
+    }
+
+    @Test
+    public void testAddChromosomesArrayListNull() throws InvalidConfigurationException {
+	PathChromosomePopulation first = new PathChromosomePopulation(this.conf, this.chromosomes);    
+        
+	Assert.assertTrue(first.getChromosomes().size() == this.chromosomes.size());
+        
+        ArrayList<PathChromosome> toAdd = null;
+        first.addChromosomes(toAdd);
+        Assert.assertTrue(first.getChromosomes().size() == (this.chromosomes.size()));
+    }    
+
+    @Test
+    public void testSetChromosomeIndex0EmptyPopulation() throws InvalidConfigurationException {
+	PathChromosomePopulation pop = new PathChromosomePopulation(this.conf, new ArrayList<PathChromosome>());
+        
+        Assert.assertTrue(pop.getChromosomes().isEmpty());
+        
+        pop.setChromosome(0, oneGeneChromosome);
+        
+	Assert.assertTrue(pop.getChromosomes().size() == 1);
+	Assert.assertTrue(pop.getChromosomes().get(0).equals(oneGeneChromosome));
+    }
+
+    @Test
+    public void testSetChromosomeIndexLargerThan0EmptyPopulation() throws InvalidConfigurationException {
+	PathChromosomePopulation pop = new PathChromosomePopulation(this.conf, new ArrayList<PathChromosome>());
+        
+        Assert.assertTrue(pop.getChromosomes().isEmpty());
+        
+        try {
+            pop.setChromosome(1, oneGeneChromosome);
+            Assert.assertTrue(false);
+        } catch(IndexOutOfBoundsException e) {
+            Assert.assertTrue(true);
+        }
+    }
+
+    @Test
+    public void testSetChromosomeIndex0NullPopulation() throws InvalidConfigurationException {
+	PathChromosomePopulation pop = new PathChromosomePopulation(this.conf);
+        
+        Assert.assertTrue(pop.getChromosomes().isEmpty());
+        
+        pop.setChromosome(0, oneGeneChromosome);
+        
+	Assert.assertTrue(pop.getChromosomes().size() == 1);
+	Assert.assertTrue(pop.getChromosomes().get(0).equals(oneGeneChromosome));
+    }
+
+    @Test
+    public void testSetChromosomeIndexLargerThan0NullPopulation() throws InvalidConfigurationException {
+	PathChromosomePopulation pop = new PathChromosomePopulation(this.conf);
+        
+        Assert.assertTrue(pop.getChromosomes().isEmpty());
+        
+        try {
+            pop.setChromosome(1, oneGeneChromosome);
+            Assert.assertTrue(false);
+        } catch(IndexOutOfBoundsException e) {
+            Assert.assertTrue(true);
+        }
+    }
+
+    @Test
     public void testDetermineFittestChromosomeTwoValidChromosomes() throws InvalidConfigurationException {
 	PathChromosomePopulation pop = new PathChromosomePopulation(this.conf, this.chromosomes);
 	Assert.assertTrue(pop.determineFittestChromosome() == this.oneGeneChromosome);
@@ -75,6 +257,18 @@ public class PathChromosomePopulationTest {
 
 	PathChromosomePopulation pop = new PathChromosomePopulation(this.conf, chromos);
 	Assert.assertTrue(pop.determineFittestChromosome() == notNullChromosome);
+    }
+
+    @Test
+    public void testDetermineFittestChromosomeNullChromosomes() throws InvalidConfigurationException {
+	PathChromosomePopulation pop = new PathChromosomePopulation(this.conf);
+	Assert.assertTrue(pop.determineFittestChromosome() == null);
+    }
+
+    @Test
+    public void testDetermineFittestChromosomeIndexNullChromosomes() throws InvalidConfigurationException {
+	PathChromosomePopulation pop = new PathChromosomePopulation(this.conf);
+	Assert.assertTrue(pop.determineFittestChromosome(0, 5) == null);
     }
 
     @Test
