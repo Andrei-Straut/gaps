@@ -33,13 +33,14 @@
                 <button id="keepPopSizeConstant"
                         name="keepPopSizeConstant"
                         class="btn btn-default"
-                        aria-expanded="true">Keep Population Size Constant</button>
+                        aria-expanded="false">Keep Population Size Constant</button>
                 <button data-toggle="dropdown" class="btn btn-primary dropdown-toggle"><span class="caret"></span></button>
                 <ul class="dropdown-menu">
                     <li><a href="#">Yes</a></li>
                     <li><a href="#">No</a></li>
                 </ul>
             </div>
+            <label class="control-label" for="minPopSizePercent">Selected: {{geneticSettings.keepPopSizeConstant}}</label>
         </div>
 
         <div class="form-group">
@@ -54,6 +55,7 @@
                     <li><a href="#">No</a></li>
                 </ul>
             </div>
+            <label class="control-label" for="minPopSizePercent">(Selected: {{geneticSettings.preserveFittestIndividual}})</label>
         </div>
     </div>
 </div>
@@ -70,7 +72,7 @@
                         <div ng-repeat="(listName, list) in models.lists" class="col-md-6">
                             <div class="panel panel-info">
                                 <div class="panel-heading">
-                                    <h3 class="panel-title">List {{listName}}</h3>
+                                    <h3 class="panel-title">{{listName}} Mutators</h3>
                                 </div>
                                 <ul dnd-list="list">
                                     <li ng-repeat="item in list"
