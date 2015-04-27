@@ -10,11 +10,9 @@ gaps.controller('gapscontroller', ['$scope', 'Socket', 'Notification', function 
         $scope.processGraph = function () {
             $scope.clearNotifs(3000);
             $scope.notifyInfo('Loading graph...');
-
             // Little hack to give notification time to pop-up
             var interval = window.setInterval(function () {
                 $scope.graphGeneration = $socket.getGraph($scope.graphSettings);
-
                 $scope.graphGeneration.then(function (response) {
                     if (response.status === 200) {
                         $scope.load.dataLoaded = true;
@@ -28,11 +26,9 @@ gaps.controller('gapscontroller', ['$scope', 'Socket', 'Notification', function 
                 });
                 window.clearInterval(interval);
             }, 1000);
-
         };
         $scope.computePaths = function () {
             $scope.notifyInfo('Computing paths...');
-
             var interval = window.setInterval(function () {
 
                 $scope.resetPathStatisticsAndTable();
@@ -60,16 +56,13 @@ gaps.controller('gapscontroller', ['$scope', 'Socket', 'Notification', function 
         $scope.evolve = function () {
             $scope.geneticStatistics.startTimestamp = new Date();
             $scope.notifyInfo('Evolving...');
-
             var interval = window.setInterval(function () {
                 $scope.geneticEvolution = $socket.evolve($scope.geneticSettings);
-
                 $scope.geneticEvolution.then(function (response) {
 
                     if (response.status === 200) {
                         $scope.initGeneticStatistics();
                         $scope.load.evolutionComputed = true;
-
                         $scope.compare();
                     } else {
                         $scope.notifyError(response.description, $('#modalLoadingError'));
@@ -85,10 +78,8 @@ gaps.controller('gapscontroller', ['$scope', 'Socket', 'Notification', function 
         $scope.compare = function () {
             $scope.compareStatisticsKShortest.startTimestamp = new Date();
             $scope.notifyInfo('Comparing Results...');
-
             var interval = window.setInterval(function () {
                 $scope.geneticResultsCompare = $socket.compare($scope.geneticSettings);
-
                 $scope.geneticResultsCompare.then(function (response) {
 
                     if (response.status === 200) {
@@ -126,7 +117,6 @@ gaps.controller('gapscontroller', ['$scope', 'Socket', 'Notification', function 
             $(window).scrollTop($(window).scrollTop() + 1);
             $(window).scrollTop($(window).scrollTop() - 1);
             $scope.load.graphViewerLoaded = true;
-
             var $graphViewerToggle = $('#graph-viewer-toggle').bootstrapToggle({
                 on: 'Hide',
                 off: 'Show'
@@ -166,11 +156,9 @@ gaps.controller('gapscontroller', ['$scope', 'Socket', 'Notification', function 
                 table.row.add([edgeValue.data.id, edgeValue.nodeFrom, edgeValue.nodeTo, edgeValue.data.cost]);
             });
             table.draw();
-
             $scope.graphStatistics = $data.statistics;
             $scope.load.graphStatisticsLoaded = true;
             $scope.notifySuccess('Loaded');
-
             var $graphStatisticsToggle = $('#graph-statistics-viewer-toggle').bootstrapToggle({
                 on: 'Hide',
                 off: 'Show'
@@ -200,7 +188,6 @@ gaps.controller('gapscontroller', ['$scope', 'Socket', 'Notification', function 
                     $scope.pathStatistics.totalPathCost / $scope.pathStatistics.paths.length;
             $scope.load.pathStatisticsLoaded = true;
             $scope.notifySuccess('Paths Computed');
-
             var $pathStatisticsToggle = $('#path-statistics-viewer-toggle').bootstrapToggle({
                 on: 'Hide',
                 off: 'Show'
@@ -246,7 +233,6 @@ gaps.controller('gapscontroller', ['$scope', 'Socket', 'Notification', function 
             table.row.add([$scope.pathStatistics.counter, path.length, totalCost]);
             $scope.pathStatistics.counter += 1;
             table.draw();
-
             $scope.notifyInfo('Computing paths (' + $scope.pathStatistics.counter + ' / ' + $scope.geneticSettings.numberOfPaths + ')...');
         };
         $scope.resetPathStatisticsAndTable = function () {
@@ -271,7 +257,6 @@ gaps.controller('gapscontroller', ['$scope', 'Socket', 'Notification', function 
             $scope.geneticStatistics.endTimestamp = new Date();
             $scope.geneticStatistics.evolutionDiffTimestamp = $scope.geneticStatistics.endTimestamp - $scope.geneticStatistics.startTimestamp;
             $scope.notifyInfo('Computing Statistics...');
-
             var interval = window.setInterval(function () {
 
                 var $slider = $('#generation-slider').slider();
@@ -279,16 +264,13 @@ gaps.controller('gapscontroller', ['$scope', 'Socket', 'Notification', function 
                     $scope.sliderEvent(ev);
                 });
                 $slider.slider('setValue', 0);
-
                 $('div.slider.slider-horizontal').css('width', '100%');
                 $scope.evolutionChart.initialize('morris-bar-cost-chart',
                         $scope.geneticStatistics.generationChart);
                 $scope.load.geneticStatisticsLoaded = true;
-
                 window.clearInterval(interval);
                 $scope.$apply();
             }, 1000);
-
             var $geneticStatisticsToggle = $('#genetic-statistics-viewer-toggle').bootstrapToggle({
                 on: 'Hide',
                 off: 'Show'
@@ -315,9 +297,7 @@ gaps.controller('gapscontroller', ['$scope', 'Socket', 'Notification', function 
             $scope.geneticStatistics.generationChart = [];
             $scope.geneticStatistics.generations = [];
             $scope.geneticStatistics.bestPath = {};
-
             $scope.evolutionChart.clear('morris-bar-cost-chart');
-
             var $slider = $('div.slider.slider-horizontal');
             if ($slider && $slider.parentElement) {
                 var parent = $slider.parentElement;
@@ -326,7 +306,6 @@ gaps.controller('gapscontroller', ['$scope', 'Socket', 'Notification', function 
                 }
             }
             $('div.slider.slider-horizontal').css('width', 'auto');
-
             $scope.load.geneticStatisticsLoaded = false;
             $scope.load.evolutionComputed = false;
         };
@@ -343,27 +322,22 @@ gaps.controller('gapscontroller', ['$scope', 'Socket', 'Notification', function 
             }
             $scope.geneticStatistics.generations.push(data);
             $scope.geneticStatistics.bestPath = data.bestChromosome;
-
             var generationDataChart = {};
             generationDataChart.y = 'Gen ' + data.evolutionStage;
             generationDataChart.a = data.endBestCost;
             $scope.geneticStatistics.generationChart.push(generationDataChart);
-
             $scope.notifyInfo('Evolving (' + data.evolutionStage + ' / ' + $scope.geneticSettings.numberOfEvolutions + ')...');
         };
         $scope.initCompareStatistics = function () {
             $scope.compareStatisticsKShortest.endTimestamp = new Date();
             $scope.compareStatisticsKShortest.compareDiffTimestamp =
                     $scope.compareStatisticsKShortest.endTimestamp - $scope.compareStatisticsKShortest.startTimestamp;
-
             var interval = window.setInterval(function () {
 
                 $scope.compareChart.initialize('morris-bar-compare-chart', $scope.compareStatisticsKShortest.compareChart);
                 $scope.load.compareStatisticsLoaded = true;
-
                 window.clearInterval(interval);
             }, 1000);
-
             var $compareStatisticsToggle = $('#compare-statistics-viewer-toggle').bootstrapToggle({
                 on: 'Hide',
                 off: 'Show'
@@ -382,25 +356,19 @@ gaps.controller('gapscontroller', ['$scope', 'Socket', 'Notification', function 
             $scope.compareStatisticsKShortest.compareDiffTimestamp = {};
             $scope.compareStatisticsKShortest.compareChart = [];
             $scope.compareStatisticsKShortest.chromosomes = [];
-
             $scope.compareChart.clear('morris-bar-compare-chart');
-
             $scope.load.compareStatisticsLoaded = false;
         };
         $scope.updateCompareStatistics = function (data, geneticStatistics) {
             if (data) {
                 $scope.compareStatisticsKShortest.chromosomes.push(data);
-
                 var resultsCompareChart = {};
                 resultsCompareChart.y = 'GAPS Best, KShortest #' + $scope.compareStatisticsKShortest.compareChart.length;
                 resultsCompareChart.GAPS = geneticStatistics.bestPathCost;
                 resultsCompareChart.KShortest = data.cost;
-
                 $scope.compareStatisticsKShortest.compareChart.push(resultsCompareChart);
             }
         };
-
-
         /*
          * =====================================================================
          * Data and utility functions
@@ -457,7 +425,6 @@ gaps.controller('gapscontroller', ['$scope', 'Socket', 'Notification', function 
         $scope.clearNotifs = function (delay) {
             var interval = window.setInterval(function () {
                 var notifys = angular.element(document.getElementsByClassName('killed'));
-
                 if (notifys) {
                     angular.forEach(notifys, function (notify) {
                         notify.remove();
@@ -470,13 +437,11 @@ gaps.controller('gapscontroller', ['$scope', 'Socket', 'Notification', function 
                 n.unselect(GraphViewerOptions);
                 n.unselectpath(GraphViewerOptions);
             });
-
             angular.forEach(path, function (edgeValue, edgeKey) {
                 var nodeFrom = jitGraph.graph.getNode(edgeValue.nodeFrom);
                 var nodeTo = jitGraph.graph.getNode(edgeValue.nodeTo);
                 var edge = jitGraph.graph.getAdjacence(edgeValue.nodeFrom, edgeValue.nodeTo);
                 jitGraph.canvas.getElement().style.cursor = 'move';
-
                 if (nodeFrom) {
                     nodeFrom.selectpath(GraphViewerOptions);
                 }
@@ -489,7 +454,6 @@ gaps.controller('gapscontroller', ['$scope', 'Socket', 'Notification', function 
                     edge.selectpath(GraphViewerOptions);
                 }
             });
-
             //trigger animation to final styles
             jitGraph.fx.animate({
                 modes: ['node-property:dim',
@@ -503,7 +467,6 @@ gaps.controller('gapscontroller', ['$scope', 'Socket', 'Notification', function 
                     n.unselect(GraphViewerOptions);
                     n.unselectpath(GraphViewerOptions);
                 });
-
                 window.fd.fx.animate({
                     modes: ['node-property:dim',
                         'edge-property:lineWidth:color'],
@@ -569,11 +532,25 @@ gaps.controller('gapscontroller', ['$scope', 'Socket', 'Notification', function 
             destinationNode: 29,
             numberOfPaths: $scope.graphSettings.numberOfEdges,
             numberOfEvolutions: 10000,
+            minPopSizePercent: 100,
             stopConditionPercent: 100,
-            minPopSizePercent: 50,
             keepPopSizeConstant: true,
             preserveFittestIndividual: true,
-            comparePaths: 5
+            comparePaths: 5,
+            mutators: {
+                selected: null,
+                lists: {
+                    "Available": [
+                        {label: "SingleGeneMutator"},
+                        {label: "OnePointCrossover"}
+                    ],
+                    "Used": [
+                        {label: "MultipleGeneMutator"},
+                        {label: "CycleRemoveMutator"},
+                        {label: "TwoPointCrossover"},
+                        {label: "BestChromosomeSelector"}
+                    ]}
+            }
         };
         // Graph statistics per edge
         $scope.graphStatistics = {
@@ -662,7 +639,6 @@ gaps.controller('gapscontroller', ['$scope', 'Socket', 'Notification', function 
                     }
                 }
                 $(chartWrapper).css('height', 'auto');
-
             }
         };
         $scope.compareChart = {
@@ -696,32 +672,10 @@ gaps.controller('gapscontroller', ['$scope', 'Socket', 'Notification', function 
                     }
                 }
                 $(chartWrapper).css('height', 'auto');
-
             }
         };
-        
-        $scope.updateKeepPopSizeConstant = function(open) {
-            console.log(open);
-        };
-
-        $scope.models = {
-            selected: null,
-            lists: {
-                "Available": [
-                    {label: "SingleGeneMutator"},
-                    {label: "OnePointCrossover"}
-                ], 
-                "Used": [
-                    {label: "MultipleGeneMutator"},
-                    {label: "CycleRemoveMutator"},
-                    {label: "TwoPointCrossover"},
-                    {label: "BestChromosomeSelector"}                    
-                ]}
-        };
-
         // Model to JSON for demo purpose
-        $scope.$watch('models', function (model) {
+        $scope.$watch('geneticSettings.mutators', function (model) {
             $scope.modelAsJson = angular.toJson(model, true);
         }, true);
-
     }]);
