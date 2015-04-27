@@ -112,6 +112,10 @@ gaps.controller('gapscontroller', ['$scope', 'Socket', 'Notification', function 
          * View and statistics functions
          * =====================================================================
          */
+
+        $scope.showGeneticSettingsAdvanced = function () {
+            $('#geneticSettingsAdvancedModal').modal('show');
+        };
         $scope.initGraphView = function ($data) {
             $scope.resetGraphView();
             $scope.resetGraphStatistics();
@@ -242,7 +246,7 @@ gaps.controller('gapscontroller', ['$scope', 'Socket', 'Notification', function 
             table.row.add([$scope.pathStatistics.counter, path.length, totalCost]);
             $scope.pathStatistics.counter += 1;
             table.draw();
-            
+
             $scope.notifyInfo('Computing paths (' + $scope.pathStatistics.counter + ' / ' + $scope.geneticSettings.numberOfPaths + ')...');
         };
         $scope.resetPathStatisticsAndTable = function () {
@@ -344,7 +348,7 @@ gaps.controller('gapscontroller', ['$scope', 'Socket', 'Notification', function 
             generationDataChart.y = 'Gen ' + data.evolutionStage;
             generationDataChart.a = data.endBestCost;
             $scope.geneticStatistics.generationChart.push(generationDataChart);
-            
+
             $scope.notifyInfo('Evolving (' + data.evolutionStage + ' / ' + $scope.geneticSettings.numberOfEvolutions + ')...');
         };
         $scope.initCompareStatistics = function () {
@@ -566,6 +570,9 @@ gaps.controller('gapscontroller', ['$scope', 'Socket', 'Notification', function 
             numberOfPaths: $scope.graphSettings.numberOfEdges,
             numberOfEvolutions: 10000,
             stopConditionPercent: 100,
+            minPopSizePercent: 50,
+            keepPopSizeConstant: true,
+            preserveFittestIndividual: true,
             comparePaths: 5
         };
         // Graph statistics per edge
@@ -692,4 +699,21 @@ gaps.controller('gapscontroller', ['$scope', 'Socket', 'Notification', function 
 
             }
         };
+
+        $scope.models = {
+            selected: null,
+            lists: {"A": [], "B": []}
+        };
+
+        // Generate initial model
+        for (var i = 1; i <= 3; ++i) {
+            $scope.models.lists.A.push({label: "Item A" + i});
+            $scope.models.lists.B.push({label: "Item B" + i});
+        }
+
+        // Model to JSON for demo purpose
+        $scope.$watch('models', function (model) {
+            $scope.modelAsJson = angular.toJson(model, true);
+        }, true);
+
     }]);

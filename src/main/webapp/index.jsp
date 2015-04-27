@@ -10,6 +10,7 @@
 
         <!-- ANGULAR STYLES-->
         <link href="styles/lib/angular/angular.ui-notification.css" rel="stylesheet" />
+        <link href="styles/lib/angular/angular.draganddrop.css" rel="stylesheet" />
         <!-- BOOTSTRAP STYLES-->
         <link href="styles/lib/bootstrap/bootstrap.css" rel="stylesheet" />
         <link href="styles/lib/bootstrap/bootstrap.toggle.css" rel="stylesheet" />
@@ -38,6 +39,7 @@
         <script src="scripts/lib/angular/angular.min.js"></script>
         <script src="scripts/lib/angular/angular.ui.notification.min.js"></script>
         <script src="scripts/lib/angular/angular.ui.bootstrap.slider.js"></script>
+        <script src="scripts/lib/angular/angular.draganddrop.js"></script>
         <!-- JIT SCRIPTS -->
         <script src="scripts/lib/jit/jit-prefuse-fd.js"></script>
         <script src="scripts/lib/jit/jit.js"></script>
