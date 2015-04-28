@@ -75,7 +75,7 @@ public class EvolveMessageDispatcher extends MessageDispatcher {
     boolean process() throws Exception {
 	MessageResponse response = new MessageResponse(request.getCallbackId());
 	GeneticEvolver evolver = new GeneticEvolver(
-		this.numberOfEvolutions, this.stopConditionPercent,
+		this.request.getData(),
 		this.graph, this.paths);
 
 	evolver.init();

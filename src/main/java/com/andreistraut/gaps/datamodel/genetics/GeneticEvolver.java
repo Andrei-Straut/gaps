@@ -8,6 +8,7 @@ import com.andreistraut.gaps.datamodel.graph.DirectedWeightedGraphSemiRandom;
 import com.andreistraut.gaps.datamodel.graph.DirectedWeightedGraphPath;
 import com.andreistraut.gaps.datamodel.translator.GraphGeneticsTranslator;
 import com.google.gson.JsonArray;
+import com.google.gson.JsonObject;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -22,6 +23,9 @@ import org.jgrapht.GraphPath;
 
 public class GeneticEvolver {
 
+    private final int DEFAULT_NUMBER_OF_EVOLUTIONS = 10000;
+    private final int DEFAULT_STOP_CONDITION_PERCENT = 30;
+
     private GeneticConfiguration configuration;
     private final DirectedWeightedGraph graph;
     private final List<DirectedWeightedGraphPath> paths;
@@ -30,6 +34,10 @@ public class GeneticEvolver {
     private PathChromosomePopulation population;
     private GenerationStatistic lastStatistic;
 
+    private boolean alwaysCalculateFitness = true;
+    private boolean keepPopulationSizeConstant = true;
+    private boolean preserveFittestIndividual = true;
+    private int minimumPopulationSizePercent = 50;
     private final int numberOfEvolutions;
     /**
      * Use this to stop when no improvement is made during X generations, where
@@ -53,8 +61,6 @@ public class GeneticEvolver {
     private int evolutions = 0;
     private int lastGenerationBestFitness = 0;
 
-    private int bestChromosomesLimit = 5;
-
     public GeneticEvolver(int numberOfEvolutions,
 	    int stopConditionPercent,
 	    DirectedWeightedGraph graph,
@@ -62,6 +68,38 @@ public class GeneticEvolver {
 
 	this.numberOfEvolutions = numberOfEvolutions;
 	this.stopConditionPercent = stopConditionPercent;
+	this.graph = graph;
+	this.paths = paths;
+    }
+
+    public GeneticEvolver(JsonObject evolverSettings,
+	    DirectedWeightedGraph graph,
+	    List<DirectedWeightedGraphPath> paths) {
+
+	if (evolverSettings.has("numberOfEvolutions")) {
+	    this.numberOfEvolutions = evolverSettings.get("numberOfEvolutions").getAsInt();
+	} else {
+	    this.numberOfEvolutions = DEFAULT_NUMBER_OF_EVOLUTIONS;
+	}
+
+	if (evolverSettings.has("stopConditionPercent")) {
+	    this.stopConditionPercent = evolverSettings.get("stopConditionPercent").getAsInt();
+	} else {
+	    this.stopConditionPercent = DEFAULT_STOP_CONDITION_PERCENT;
+	}
+
+	if (evolverSettings.has("minPopSizePercent")) {
+	    this.minimumPopulationSizePercent = evolverSettings.get("minPopSizePercent").getAsInt();
+	}
+
+	if (evolverSettings.has("keepPopSizeConstant")) {
+	    this.keepPopulationSizeConstant = evolverSettings.get("keepPopSizeConstant").getAsBoolean();
+	}
+
+	if (evolverSettings.has("preserveFittestIndividual")) {
+	    this.preserveFittestIndividual = evolverSettings.get("preserveFittestIndividual").getAsBoolean();
+	}
+
 	this.graph = graph;
 	this.paths = paths;
     }
@@ -178,13 +216,13 @@ public class GeneticEvolver {
 		new Date(System.currentTimeMillis()).toString());
 
 	Configuration.reset();
-	config.setAlwaysCaculateFitness(true);
+	config.setAlwaysCaculateFitness(this.alwaysCalculateFitness);
 	config.setFitnessFunction(new PathChromosomeFitness());
 	config.setFitnessEvaluator(new PathChromosomeFitnessComparator());
-	config.setKeepPopulationSizeConstant(false);
+	config.setKeepPopulationSizeConstant(this.keepPopulationSizeConstant);
 	config.setPopulationSize(populationSize);
-	config.setMinimumPopSizePercent(50);
-	config.setPreservFittestIndividual(true);
+	config.setMinimumPopSizePercent(this.minimumPopulationSizePercent);
+	config.setPreservFittestIndividual(this.preserveFittestIndividual);
 	config.setRandomGenerator(new StockRandomGenerator());
 	config.setEventManager(new EventManager());
 	config.setGraph(graph);
