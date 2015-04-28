@@ -4,10 +4,8 @@ import com.andreistraut.gaps.datamodel.genetics.mutators.PathChromosomeCycleRemo
 import com.andreistraut.gaps.datamodel.genetics.mutators.PathChromosomeMultipleGeneMutator;
 import com.andreistraut.gaps.datamodel.genetics.mutators.PathChromosomeTwoPointCrossover;
 import com.andreistraut.gaps.datamodel.graph.DirectedWeightedGraph;
-import com.andreistraut.gaps.datamodel.graph.DirectedWeightedGraphSemiRandom;
 import com.andreistraut.gaps.datamodel.graph.DirectedWeightedGraphPath;
 import com.andreistraut.gaps.datamodel.translator.GraphGeneticsTranslator;
-import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import java.util.ArrayList;
 import java.util.Date;
@@ -140,7 +138,7 @@ public class GeneticEvolver {
 		    .setStartBestFitness((int) fittest.getFitnessValue())
 		    .setStartAverageFitness(populationSize / fittest.getFitnessValue())
 		    .setStartBestCost((int) fittest.getCost())
-		    .setStartAverageCost(populationSize / fittest.getCost());
+		    .setStartAverageCost(populationSize / (double) ((fittest.getCost() != 0) ? fittest.getCost() : 1 ));
 	}
 
 	statistic.setStartPopulationSize(populationSize);

@@ -5,7 +5,6 @@ import com.andreistraut.gaps.controller.MessageRequest;
 import com.andreistraut.gaps.controller.MessageResponse;
 import com.andreistraut.gaps.controller.MessageType;
 import com.andreistraut.gaps.datamodel.graph.DirectedWeightedGraph;
-import com.andreistraut.gaps.datamodel.graph.DirectedWeightedGraphSemiRandom;
 import com.andreistraut.gaps.datamodel.graph.DirectedWeightedGraphStatic;
 import com.andreistraut.gaps.datamodel.graph.GraphSettings;
 import java.util.ArrayList;

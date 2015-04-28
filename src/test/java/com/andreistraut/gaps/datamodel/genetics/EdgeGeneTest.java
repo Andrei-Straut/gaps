@@ -7,7 +7,6 @@ import java.util.logging.Logger;
 import junit.framework.Assert;
 import org.jgap.InvalidConfigurationException;
 import org.jgap.RandomGenerator;
-import org.jgap.impl.RandomGeneratorForTesting;
 import org.jgap.impl.StockRandomGenerator;
 import org.junit.Before;
 import org.junit.BeforeClass;
@@ -304,7 +303,7 @@ public class EdgeGeneTest {
     }
 
     @Test
-    public void testClone() throws InvalidConfigurationException {
+    public void testClone() throws InvalidConfigurationException, CloneNotSupportedException {
 	EdgeGene firstGene = new EdgeGene(graphMock.getFirstToSecondEdge(), conf);
 	EdgeGene secondGene = firstGene.clone();
 
