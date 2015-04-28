@@ -7,7 +7,6 @@ import com.andreistraut.gaps.controller.MessageType;
 import com.andreistraut.gaps.datamodel.genetics.GenerationStatistic;
 import com.andreistraut.gaps.datamodel.genetics.GeneticEvolver;
 import com.andreistraut.gaps.datamodel.graph.DirectedWeightedGraph;
-import com.andreistraut.gaps.datamodel.graph.DirectedWeightedGraphSemiRandom;
 import com.andreistraut.gaps.datamodel.graph.DirectedWeightedGraphPath;
 import java.util.ArrayList;
 import java.util.logging.Level;

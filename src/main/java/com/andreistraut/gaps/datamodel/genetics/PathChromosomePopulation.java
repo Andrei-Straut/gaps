@@ -21,34 +21,12 @@ public class PathChromosomePopulation extends Population {
     }
 
     public PathChromosomePopulation(Configuration configuration,
-            IChromosome[] chromosomes) throws InvalidConfigurationException {
-
-        this(configuration);
-        if (chromosomes.length > 0) {
-            this.chromosomes = new ArrayList<PathChromosome>();
-
-            for (IChromosome chromosome : chromosomes) {
-                this.chromosomes.add((PathChromosome) chromosome);
-            }
-        }
-    }
-
-    public PathChromosomePopulation(Configuration configuration,
             ArrayList<PathChromosome> chromosomes) throws InvalidConfigurationException {
 
         this(configuration);
         if (chromosomes != null && !chromosomes.isEmpty()) {
             this.chromosomes = new ArrayList<>(chromosomes);
         }
-    }
-
-    private PathChromosomePopulation(Configuration configuration, IChromosome chromosome) throws InvalidConfigurationException {
-        this(configuration, new ArrayList<PathChromosome>());
-        this.chromosomes.add((PathChromosome) chromosome);
-    }
-
-    private PathChromosomePopulation(Configuration configuration, int size) throws InvalidConfigurationException {
-        super(configuration, size);
     }
 
     private PathChromosomePopulation() throws InvalidConfigurationException {

@@ -304,23 +304,6 @@ public class PathChromosome extends BaseChromosome implements IChromosome {
     }
 
     /**
-     * Sets this PathChromosome's genes
-     * ({@link com.andreistraut.gaps.datamodel.graph.DirectedWeightedEdge})
-     *
-     * @param genes The genes (edges) to set to this PathChromosome
-     * @throws org.jgap.InvalidConfigurationException Exception is never thrown
-     * in corresponding method body
-     */
-    @Override
-    public void setGenes(Gene[] genes) throws InvalidConfigurationException {
-	this.genes.clear();
-
-	for (int i = 0; i < genes.length; i++) {
-	    this.genes.set(i, (EdgeGene) genes[i]);
-	}
-    }
-
-    /**
      * Return A list containing all the genes
      * ({@link com.andreistraut.gaps.datamodel.graph.DirectedWeightedEdge}) in
      * the PathChromosome
@@ -352,7 +335,7 @@ public class PathChromosome extends BaseChromosome implements IChromosome {
      */
     @Override
     public Object getApplicationData() {
-	return this.getGenesList();
+	return this.toJson();
     }
 
     /**
@@ -363,9 +346,7 @@ public class PathChromosome extends BaseChromosome implements IChromosome {
      */
     @Override
     public void setApplicationData(Object newData) {
-	if (newData instanceof ArrayList) {
-	    this.genes = (ArrayList<EdgeGene>) newData;
-	}
+	//TODO: Implement fromJson
     }
 
     /**
