@@ -127,93 +127,16 @@
                         </goals>
                         <id>test</id>
                         <configuration>
-                            <excludes>
-                                <exclude>**/*.java</exclude>
-                                <exclude>**/Controller.java</exclude>
-                                <exclude>**/ControllerDispatchers.java</exclude>
-                                <exclude>**/DatamodelGraph.java</exclude>
-                                <exclude>**/DatamodelGenetics.java</exclude>
-                                <exclude>**/DatamodelGeneticsTranslator.java</exclude>
-                                <exclude>**/DatamodelGeneticsMutators.java</exclude>
-                            </excludes>
-                        </configuration>
-                    </execution>                    
-                    
-                    <execution>
-                        <goals>
-                            <goal>test</goal>
-                        </goals>
-                        <id>test-graph</id>
-                        <phase>test</phase>
-                        <configuration>
                             <includes>
                                 <include>**/DatamodelGraph.java</include>
-                            </includes>
-                        </configuration>
-                    </execution>
-                                        
-                    <execution>
-                        <goals>
-                            <goal>test</goal>
-                        </goals>
-                        <id>test-genetics</id>
-                        <phase>test</phase>
-                        <configuration>
-                            <includes>
                                 <include>**/DatamodelGenetics.java</include>
-                            </includes>
-                        </configuration>
-                    </execution>                    
-                    <execution>
-                        <goals>
-                            <goal>test</goal>
-                        </goals>
-                        <id>test-mutators</id>
-                        <phase>test</phase>
-                        <configuration>
-                            <includes>
-                                <include>**/DatamodelGeneticsMutators.java</include>
-                            </includes>
-                        </configuration>
-                    </execution>                    
-                    
-                    <execution>
-                        <goals>
-                            <goal>test</goal>
-                        </goals>
-                        <id>test-translators</id>
-                        <phase>test</phase>
-                        <configuration>
-                            <includes>
                                 <include>**/DatamodelTranslator.java</include>
-                            </includes>
-                        </configuration>
-                    </execution>                    
-                    <execution>
-                        <goals>
-                            <goal>test</goal>
-                        </goals>
-                        <id>test-controller</id>
-                        <phase>test</phase>
-                        <configuration>
-                            <includes>
+                                <include>**/DatamodelGeneticsMutators.java</include>
                                 <include>**/Controller.java</include>
-                            </includes>
-                        </configuration>
-                    </execution>
-                    <execution>
-                        <goals>
-                            <goal>test</goal>
-                        </goals>
-                        <id>test-dispatchers</id>
-                        <phase>test</phase>
-                        <configuration>
-                            <includes>
                                 <include>**/ControllerDispatchers.java</include>
                             </includes>
                         </configuration>
                     </execution>
-                    
                 </executions>
             </plugin>
             <plugin>
