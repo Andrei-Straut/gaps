@@ -16,19 +16,6 @@ public class GraphSettings {
 	this.maximumEdgeWeight = 1;
     }
     
-    public GraphSettings(int numberOfNodes, int numberOfEdges, int maximumEdgeWeight) {
-	this(numberOfNodes, numberOfEdges);
-	this.maximumEdgeWeight = maximumEdgeWeight;
-    }
-    
-    public GraphSettings(int numberOfNodes, int numberOfEdges, 
-	    int minimumEdgeWeight, int maximumEdgeWeight) {
-	
-	this(numberOfNodes, numberOfEdges);
-	this.minimumEdgeWeight = minimumEdgeWeight;
-	this.maximumEdgeWeight = maximumEdgeWeight;
-    }
-    
     public GraphSettings(JsonObject settings) throws Exception {
 	this.fromJson(settings);
     }
