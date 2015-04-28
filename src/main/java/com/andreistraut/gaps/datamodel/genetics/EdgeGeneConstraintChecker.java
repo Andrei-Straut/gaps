@@ -6,6 +6,7 @@ import org.jgap.IChromosome;
 import org.jgap.IGeneConstraintChecker;
 
 public class EdgeGeneConstraintChecker implements IGeneConstraintChecker {
+    private static final long serialVersionUID = 1L;
 
     public EdgeGeneConstraintChecker() {
     }

@@ -19,7 +19,8 @@ import org.jgap.UnsupportedRepresentationException;
  * directed via this class
  */
 public class EdgeGene extends BaseGene {
-
+    private static final long serialVersionUID = 1L;
+    
     private DirectedWeightedEdge allele;
     private final GeneticConfiguration configuration;
 
@@ -252,14 +253,14 @@ public class EdgeGene extends BaseGene {
     }
 
     @Override
-    protected EdgeGene clone() {
+    protected EdgeGene clone() throws CloneNotSupportedException {
 	EdgeGene gene;
 	try {
 	    gene = new EdgeGene(this);
 	    return gene;
 	} catch (InvalidConfigurationException ex) {
 	    Logger.getLogger(EdgeGene.class.getName()).log(Level.SEVERE, null, ex);
-	    return null;
+	    throw new CloneNotSupportedException(ex.getMessage());
 	}
     }
 

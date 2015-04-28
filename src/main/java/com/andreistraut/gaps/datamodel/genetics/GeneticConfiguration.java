@@ -3,6 +3,7 @@ package com.andreistraut.gaps.datamodel.genetics;
 import com.andreistraut.gaps.datamodel.graph.DirectedWeightedGraph;
 
 public class GeneticConfiguration extends org.jgap.Configuration {
+    private static final long serialVersionUID = 1L;
 
     private DirectedWeightedGraph graph;
 
