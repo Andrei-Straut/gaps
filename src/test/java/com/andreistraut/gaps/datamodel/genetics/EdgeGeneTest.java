@@ -6,6 +6,9 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import junit.framework.Assert;
 import org.jgap.InvalidConfigurationException;
+import org.jgap.RandomGenerator;
+import org.jgap.impl.RandomGeneratorForTesting;
+import org.jgap.impl.StockRandomGenerator;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -15,8 +18,8 @@ public class EdgeGeneTest {
     private DirectedWeightedGraphMockThreeNodeThreeEdges graphMock;
     DirectedWeightedEdge secondToFirstEdge;
     private GeneticConfiguration conf;
-    
-    private final int RUN_LIMIT = 10;
+
+    private final int RUN_LIMIT = 100;
 
     public EdgeGeneTest() {
     }
@@ -49,7 +52,7 @@ public class EdgeGeneTest {
     }
 
     @Test
-    public void testNewGene() throws InvalidConfigurationException {
+    public void testNewGeneValid() throws InvalidConfigurationException {
 	EdgeGene first = new EdgeGene(graphMock.getFirstToSecondEdge(), conf);
 	EdgeGene second = (EdgeGene) first.newGene();
 
@@ -103,6 +106,22 @@ public class EdgeGeneTest {
     }
 
     @Test
+    public void testSetToRandomValue() throws InvalidConfigurationException {
+	EdgeGene first = new EdgeGene(graphMock.getFirstToSecondEdge(), conf);
+	int originalCost = first.getAllele().getCost();
+
+	boolean changed = false;
+	for (int i = 0; i < this.RUN_LIMIT; i++) {
+	    RandomGenerator generator = new StockRandomGenerator();
+	    first.setToRandomValue(generator);
+	    if (first.getAllele().getCost() != originalCost) {
+		changed = true;
+	    }
+	}
+	Assert.assertTrue(changed);
+    }
+
+    @Test
     public void testApplyMutationGuaranteed() throws InvalidConfigurationException {
 	EdgeGene first = new EdgeGene(graphMock.getFirstToSecondEdge(), conf);
 	int originalCost = first.getAllele().getCost();
@@ -139,6 +158,21 @@ public class EdgeGeneTest {
     }
 
     @Test
+    public void testApplyMutationBetween0And1Guaranteed() throws InvalidConfigurationException {
+	EdgeGene first = new EdgeGene(graphMock.getFirstToSecondEdge(), conf);
+	int originalCost = first.getAllele().getCost();
+
+	boolean changed = false;
+	for (int i = 0; i < this.RUN_LIMIT; i++) {
+	    first.applyMutation(originalCost, 0.99999);
+	    if (first.getAllele().getCost() != originalCost) {
+		changed = true;
+	    }
+	}
+	Assert.assertTrue(changed);
+    }
+
+    @Test
     public void testApplyMutationPercentageLargerThan100() throws InvalidConfigurationException {
 	EdgeGene first = new EdgeGene(graphMock.getFirstToSecondEdge(), conf);
 	int originalCost = first.getAllele().getCost();
@@ -146,7 +180,7 @@ public class EdgeGeneTest {
 	for (int i = 0; i < this.RUN_LIMIT; i++) {
 	    first.applyMutation(originalCost, 101);
 	    Assert.assertTrue(originalCost != first.getAllele().getCost());
-	    
+
 	    first.applyMutation(originalCost, 1010);
 	    Assert.assertTrue(originalCost != first.getAllele().getCost());
 	}

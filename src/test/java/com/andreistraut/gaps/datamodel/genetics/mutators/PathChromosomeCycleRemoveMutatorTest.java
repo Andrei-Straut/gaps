@@ -103,6 +103,42 @@ public class PathChromosomeCycleRemoveMutatorTest {
     }
 
     @Test
+    public void testOperateOneCandidateValidCircular100PercentKeepPopulationSizeConstant() throws Exception {
+	for (int i = 0; i < this.RUN_LIMIT; i++) {
+	    ArrayList<PathChromosome> candidates = new ArrayList<PathChromosome>();
+	    candidates.add(this.circularChromosome);
+
+	    PathChromosomePopulation population = new PathChromosomePopulation(conf, candidates);
+	    conf.setKeepPopulationSizeConstant(true);
+	    PathChromosomeCycleRemoveMutator mutator = new PathChromosomeCycleRemoveMutator(conf, 100);
+	    mutator.operate(population, candidates);
+	    
+	    Assert.assertTrue(candidates.size() == 1);
+	    Assert.assertFalse(this.circularChromosome.equals(expected));
+	    Assert.assertTrue(candidates.contains(this.circularChromosome));
+	    Assert.assertTrue(!candidates.contains(expected));
+	}
+    }
+
+    @Test
+    public void testOperateOneCandidateValidCircular0PercentKeepPopulationSizeConstant() throws Exception {
+	for (int i = 0; i < this.RUN_LIMIT; i++) {
+	    ArrayList<PathChromosome> candidates = new ArrayList<PathChromosome>();
+	    candidates.add(this.circularChromosome);
+
+	    PathChromosomePopulation population = new PathChromosomePopulation(conf, candidates);
+	    conf.setKeepPopulationSizeConstant(true);
+	    PathChromosomeCycleRemoveMutator mutator = new PathChromosomeCycleRemoveMutator(conf, 0);
+	    mutator.operate(population, candidates);
+	    
+	    Assert.assertTrue(candidates.size() == 1);
+	    Assert.assertFalse(this.circularChromosome.equals(expected));
+	    Assert.assertTrue(candidates.contains(this.circularChromosome));
+	    Assert.assertTrue(!candidates.contains(expected));
+	}
+    }
+
+    @Test
     public void testOperateOneCandidateValidCircular100Percent() throws Exception {
 	for (int i = 0; i < this.RUN_LIMIT; i++) {
 	    ArrayList<PathChromosome> candidates = new ArrayList<PathChromosome>();
