@@ -534,7 +534,7 @@ gaps.controller('gapscontroller', ['$scope', 'Socket', 'Notification', function 
             numberOfEvolutions: 10000,
             minPopSizePercent: 100,
             stopConditionPercent: 100,
-            keepPopSizeConstant: true,
+            keepPopSizeConstant: false,
             preserveFittestIndividual: true,
             comparePaths: 5,
             mutators: {
