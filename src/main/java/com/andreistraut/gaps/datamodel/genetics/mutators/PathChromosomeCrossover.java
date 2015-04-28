@@ -185,7 +185,7 @@ public abstract class PathChromosomeCrossover
     public void operate(Population population, List candidateChromosomes) {
 	Collections.sort(candidateChromosomes, new PathChromosomeFitnessComparator());
 
-	if (candidateChromosomes.size() > 0) {
+	if (candidateChromosomes.size() > 1) {
 	    PathChromosome first = ((PathChromosome) candidateChromosomes.get(0)).clone();
 	    PathChromosome second = ((PathChromosome) candidateChromosomes.get(1)).clone();
 
@@ -209,7 +209,7 @@ public abstract class PathChromosomeCrossover
 		    candidateChromosomes.remove(candidateChromosomes.size() - 1);
 		}
 	    }
-	    
+
 	    if ((second.isLegal())) {
 		second.setIsSelectedForNextGeneration(true);
 		candidateChromosomes.add(second);
@@ -219,6 +219,8 @@ public abstract class PathChromosomeCrossover
 		    candidateChromosomes.remove(candidateChromosomes.size() - 1);
 		}
 	    }
+	} else {
+	    return;
 	}
     }
 
