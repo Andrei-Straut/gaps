@@ -33,7 +33,7 @@ public class GeneticEvolver {
     private GenerationStatistic lastStatistic;
 
     private boolean alwaysCalculateFitness = true;
-    private boolean keepPopulationSizeConstant = true;
+    private boolean keepPopulationSizeConstant = false;
     private boolean preserveFittestIndividual = true;
     private int minimumPopulationSizePercent = 50;
     private final int numberOfEvolutions;
