@@ -99,7 +99,7 @@
      ng-class="{'has-error' :
         geneticsettings.stopConditionPercent.$error.required
                  || !geneticsettings.stopConditionPercent.$valid}">
-    <label class="control-label" for="stopConditionPercent">Stop Condition Percent (%)</label>
+    <label class="control-label" for="stopConditionPercent">Stop Condition (%)</label>
     <input required
            id="stopConditionPercent" 
            name="stopConditionPercent"

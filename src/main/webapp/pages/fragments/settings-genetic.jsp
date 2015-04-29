@@ -19,7 +19,7 @@
                 <form name="geneticsettings" novalidate>
                     <div class="col-md-6">
                         <%@include file="settings-genetic-form.jsp" %>
-                        
+
                         <button id="graph-viewer-start-evolution"
                                 type="submit"
                                 class="btn btn-primary btn-lg"
@@ -41,15 +41,14 @@
                             <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
                             <h4 class="modal-title" id="geneticSettingsAdvancedModalTitle">Advanced Settings</h4>
                         </div>
-                        <form name="geneticsettingsadvanced" novalidate>
-                            <div class="modal-body">
+                        <div class="modal-body">
+                            <form name="geneticsettings" novalidate>
                                 <%@include file="settings-genetic-form-advanced.jsp" %>
-                            </div>
-                            <div class="modal-footer">
-                                <button type="button" class="btn btn-primary" data-dismiss="modal">Save Changes</button>
-                                <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
-                            </div>
-                        </form>
+                            </form>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-primary" data-dismiss="modal">Ok</button>
+                        </div>
                     </div>
                 </div>
             </div>
