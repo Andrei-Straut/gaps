@@ -120,7 +120,7 @@ public class PathChromosomeTwoPointCrossover extends PathChromosomeCrossover {
 
 	switch (this.crossoverMode) {
 	    case RANDOM: {
-		startPositionInMale = generator.nextInt(male.size() - 1);
+		startPositionInMale = generator.nextInt((male.size() - 1 > 0) ? male.size() - 1 : 1);
 		break;
 	    }
 	    case MINIMIZE_COST: {
@@ -128,7 +128,7 @@ public class PathChromosomeTwoPointCrossover extends PathChromosomeCrossover {
 		break;
 	    }
 	    default: {
-		startPositionInMale = generator.nextInt(male.size() - 1);
+		startPositionInMale = generator.nextInt((male.size() - 1 > 0) ? male.size() - 1 : 1);
 	    }
 	}
 
