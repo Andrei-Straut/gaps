@@ -127,7 +127,7 @@ public class PathChromosomeOnePointCrossover extends PathChromosomeCrossover {
 
 	switch (this.crossoverMode) {
 	    case RANDOM: {
-		replacePositionInMale = generator.nextInt((male.size() > 0) ? male.size() - 1 : 0);
+		replacePositionInMale = generator.nextInt((male.size() - 1 > 0) ? male.size() - 1 : 1);
 		break;
 	    }
 	    case MINIMIZE_COST: {
@@ -135,7 +135,7 @@ public class PathChromosomeOnePointCrossover extends PathChromosomeCrossover {
 		break;
 	    }
 	    default: {
-		replacePositionInMale = generator.nextInt((male.size() > 0) ? male.size() - 1 : 0);
+		replacePositionInMale = generator.nextInt((male.size() - 1 > 0) ? male.size() - 1 : 1);
 	    }
 	}
 

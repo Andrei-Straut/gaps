@@ -127,13 +127,13 @@ public class PathChromosomeSingleGeneMutator extends PathChromosomeMutator {
 
 	switch (this.mutationMode) {
 	    case RANDOM: {
-		return generator.nextInt((chromosome.size() > 0) ? chromosome.size() - 1 : 0);
+		return generator.nextInt((chromosome.size() - 1 > 0) ? chromosome.size() - 1 : 1);
 	    }
 	    case MINIMIZE_COST: {
 		return chromosome.getHighestCostGeneIndex();
 	    }
 	    default: {
-		return generator.nextInt((chromosome.size() > 0) ? chromosome.size() - 1 : 0);
+		return generator.nextInt((chromosome.size() - 1 > 0) ? chromosome.size() - 1 : 1);
 	    }
 	}
     }
