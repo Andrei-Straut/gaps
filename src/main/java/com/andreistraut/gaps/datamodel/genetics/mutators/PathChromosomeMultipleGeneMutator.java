@@ -12,13 +12,15 @@ import org.jgap.InvalidConfigurationException;
 import org.jgap.RandomGenerator;
 
 /**
- * <p>Mutates a section of genes in the chromosome, replacing it with a gene or
+ * <p>
+ * Mutates a section of genes in the chromosome, replacing it with a gene or
  * sequence of gene that have overall lower cost, increasing overall fitness</p>
  *
- * <p>Mode of operation is as follows:<br/>
+ * <p>
+ * Mode of operation is as follows:<br/>
  * - A random array of genes is chosen<br/>
- * - For the chosen array, a path search is performed, searching for a lower cost
- * alternative between the array's source and destination<br/>
+ * - For the chosen array, a path search is performed, searching for a lower
+ * cost alternative between the array's source and destination<br/>
  * - If a cheaper alternative is found (be it single gene or an array of genes),
  * the gene is replaced with the alternative</p>
  */
@@ -137,13 +139,13 @@ public class PathChromosomeMultipleGeneMutator extends PathChromosomeMutator {
 
 	switch (this.mutationMode) {
 	    case RANDOM: {
-		return generator.nextInt((chromosome.size() - 1 > 0) ? chromosome.size() - 1 : 1);
+		return (chromosome.size() > 1) ? generator.nextInt(chromosome.size()) : 0;
 	    }
 	    case MINIMIZE_COST: {
 		return chromosome.getHighestCostGeneIndex();
 	    }
 	    default: {
-		return generator.nextInt((chromosome.size() - 1 > 0) ? chromosome.size() - 1 : 1);
+		return (chromosome.size() > 1) ? generator.nextInt(chromosome.size()) : 0;
 	    }
 	}
     }
@@ -164,7 +166,7 @@ public class PathChromosomeMultipleGeneMutator extends PathChromosomeMutator {
     private int getMutationEndPosition(RandomGenerator generator, PathChromosome chromosome,
 	    int startPosition) {
 
-	int endPosition = (this.useRandomOffset) 
+	int endPosition = (this.useRandomOffset)
 		? generator.nextInt(chromosome.size() - startPosition)
 		: startPosition + this.MUTATION_OFFSET;
 
