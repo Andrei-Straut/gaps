@@ -3,6 +3,7 @@ package com.andreistraut.gaps.datamodel.genetics.mutators;
 import com.andreistraut.gaps.datamodel.genetics.EdgeGene;
 import com.andreistraut.gaps.datamodel.genetics.GeneticConfiguration;
 import com.andreistraut.gaps.datamodel.genetics.PathChromosome;
+import com.andreistraut.gaps.datamodel.genetics.PathChromosomePopulation;
 import com.andreistraut.gaps.datamodel.graph.DirectedWeightedEdge;
 import com.andreistraut.gaps.datamodel.mock.DirectedWeightedGraphMockThreeNodeThreeEdges;
 import java.util.ArrayList;
@@ -24,7 +25,7 @@ public class PathChromosomeSingleGeneMutatorTest {
     private DirectedWeightedGraphMockThreeNodeThreeEdges graphMock;
     private GeneticConfiguration conf;
     private ArrayList<EdgeGene> genes;
-    private PathChromosome chromosome;
+    private PathChromosome singleGeneChromosome;
     private PathChromosome expected;
     private final int RUN_LIMIT = 10;
     
@@ -53,7 +54,7 @@ public class PathChromosomeSingleGeneMutatorTest {
 	EdgeGene firstToThirdGeneMoreExpensive = new EdgeGene(firstToThirdMoreExpensive, conf);
 	this.genes = new ArrayList<EdgeGene>();
 	this.genes.add(firstToThirdGeneMoreExpensive);
-	this.chromosome = new PathChromosome(conf, genes, graphMock.getFirstNode(), graphMock.getThirdNode());
+	this.singleGeneChromosome = new PathChromosome(conf, genes, graphMock.getFirstNode(), graphMock.getThirdNode());
 
 	ArrayList<EdgeGene> expectedGenes = new ArrayList<EdgeGene>();
 	expectedGenes.add(new EdgeGene(graphMock.getFirstToThirdEdge(), conf));
@@ -62,40 +63,110 @@ public class PathChromosomeSingleGeneMutatorTest {
     }
 
     @Test
-    public void testDoMutation100PercentBetterSection() throws Exception {
+    public void testDoMutation100PercentValid() throws Exception {
 	for (int i = 0; i < this.RUN_LIMIT; i++) {
 	    this.setUp();
 	    
 	    ArrayList<PathChromosome> candidates = new ArrayList<PathChromosome>();
-	    candidates.add(this.chromosome);
+	    candidates.add(this.singleGeneChromosome);
 
 	    PathChromosomeSingleGeneMutator mutator = new PathChromosomeSingleGeneMutator(conf, 100);
-	    Assert.assertFalse(this.chromosome.equals(expected));
+	    Assert.assertFalse(this.singleGeneChromosome.equals(expected));
 	    
-	    mutator.doMutation(this.chromosome, candidates, new StockRandomGenerator());
+	    mutator.doMutation(this.singleGeneChromosome, candidates, new StockRandomGenerator());
 
 	    Assert.assertTrue(candidates.size() == 1);
-	    Assert.assertTrue(this.chromosome.equals(expected));
-	    Assert.assertTrue(candidates.contains(this.chromosome));
+	    Assert.assertTrue(this.singleGeneChromosome.equals(expected));
+	    Assert.assertTrue(candidates.contains(this.singleGeneChromosome));
 	}
     }
 
     @Test
-    public void testDoMutation0PercentBetterSection() throws Exception {
+    public void testDoMutation0PercentValid() throws Exception {
 	for (int i = 0; i < this.RUN_LIMIT; i++) {
 	    this.setUp();
 	    
 	    ArrayList<PathChromosome> candidates = new ArrayList<PathChromosome>();
-	    candidates.add(this.chromosome);
+	    candidates.add(this.singleGeneChromosome);
 
 	    PathChromosomeSingleGeneMutator mutator = new PathChromosomeSingleGeneMutator(conf, 0);
-	    Assert.assertFalse(this.chromosome.equals(expected));
+	    Assert.assertFalse(this.singleGeneChromosome.equals(expected));
 	    
-	    mutator.doMutation(this.chromosome, candidates, new StockRandomGenerator());
+	    mutator.doMutation(this.singleGeneChromosome, candidates, new StockRandomGenerator());
 
 	    Assert.assertTrue(candidates.size() == 1);
-	    Assert.assertFalse(this.chromosome.equals(expected));
-	    Assert.assertTrue(candidates.contains(this.chromosome));
+	    Assert.assertFalse(this.singleGeneChromosome.equals(expected));
+	    Assert.assertTrue(candidates.contains(this.singleGeneChromosome));
 	}
     }    
+
+    @Test
+    public void testOperateOneCandidateValid100PercentKeepPopulationSizeConstant() throws Exception {
+	for (int i = 0; i < this.RUN_LIMIT; i++) {
+	    ArrayList<PathChromosome> candidates = new ArrayList<PathChromosome>();
+	    candidates.add(this.singleGeneChromosome);
+
+	    PathChromosomePopulation population = new PathChromosomePopulation(conf, candidates);
+	    conf.setKeepPopulationSizeConstant(true);
+	    PathChromosomeSingleGeneMutator mutator = new PathChromosomeSingleGeneMutator(conf, 100);
+	    mutator.operate(population, candidates);
+	    
+	    Assert.assertTrue(candidates.size() == 1);
+	    Assert.assertFalse(this.singleGeneChromosome.equals(expected));
+	    Assert.assertTrue(candidates.contains(this.singleGeneChromosome));
+	    Assert.assertTrue(!candidates.contains(expected));
+	}
+    }
+
+    @Test
+    public void testOperateOneCandidateValid0PercentKeepPopulationSizeConstant() throws Exception {
+	for (int i = 0; i < this.RUN_LIMIT; i++) {
+	    ArrayList<PathChromosome> candidates = new ArrayList<PathChromosome>();
+	    candidates.add(this.singleGeneChromosome);
+
+	    PathChromosomePopulation population = new PathChromosomePopulation(conf, candidates);
+	    conf.setKeepPopulationSizeConstant(true);
+	    PathChromosomeSingleGeneMutator mutator = new PathChromosomeSingleGeneMutator(conf, 0);
+	    mutator.operate(population, candidates);
+	    
+	    Assert.assertTrue(candidates.size() == 1);
+	    Assert.assertFalse(this.singleGeneChromosome.equals(expected));
+	    Assert.assertTrue(candidates.contains(this.singleGeneChromosome));
+	    Assert.assertTrue(!candidates.contains(expected));
+	}
+    }
+
+    @Test
+    public void testOperateOneCandidateValidCircular100Percent() throws Exception {
+	for (int i = 0; i < this.RUN_LIMIT; i++) {
+	    ArrayList<PathChromosome> candidates = new ArrayList<PathChromosome>();
+	    candidates.add(this.singleGeneChromosome);
+
+	    PathChromosomePopulation population = new PathChromosomePopulation(conf, candidates);
+	    PathChromosomeSingleGeneMutator mutator = new PathChromosomeSingleGeneMutator(conf, 100);
+	    mutator.operate(population, candidates);
+	    
+	    Assert.assertTrue(candidates.size() == 2);
+	    Assert.assertFalse(this.singleGeneChromosome.equals(expected));
+	    Assert.assertTrue(candidates.contains(this.singleGeneChromosome));
+	    Assert.assertTrue(candidates.contains(expected));
+	}
+    }
+
+    @Test
+    public void testOperateOneCandidateValidCircular0Percent() throws Exception {
+	for (int i = 0; i < this.RUN_LIMIT; i++) {
+	    ArrayList<PathChromosome> candidates = new ArrayList<PathChromosome>();
+	    candidates.add(this.singleGeneChromosome);
+
+	    PathChromosomePopulation population = new PathChromosomePopulation(conf, candidates);
+	    PathChromosomeSingleGeneMutator mutator = new PathChromosomeSingleGeneMutator(conf, 0);
+	    mutator.operate(population, candidates);
+	    
+	    Assert.assertTrue(candidates.size() == 2);
+	    Assert.assertFalse(this.singleGeneChromosome.equals(expected));
+	    Assert.assertTrue(candidates.contains(this.singleGeneChromosome));
+	    Assert.assertFalse(candidates.contains(expected));
+	}
+    }
 }
