@@ -5,7 +5,7 @@
             <div class="panel panel-default">
                 <div class="panel-heading">
                     <label class="checkbox-inline">
-                        <input id="graph-statistics-viewer-toggle" type="checkbox" checked data-toggle="toggle" data-on="Hide" data-off="Show">
+                        <input id="graph-statistics-viewer-toggle" type="checkbox" checked data-toggle="toggle" data-on="Visible" data-off="Hidden">
                     </label>
                     Graph Statistics: Direct Edges
                 </div>

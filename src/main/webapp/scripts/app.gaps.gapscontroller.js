@@ -118,8 +118,8 @@ gaps.controller('gapscontroller', ['$scope', 'Socket', 'Notification', function 
             $(window).scrollTop($(window).scrollTop() - 1);
             $scope.load.graphViewerLoaded = true;
             var $graphViewerToggle = $('#graph-viewer-toggle').bootstrapToggle({
-                on: 'Hide',
-                off: 'Show'
+                on: 'Visible',
+                off: 'Hidden'
             });
             $graphViewerToggle.change(function () {
                 $scope.hideGraphView();
@@ -160,8 +160,8 @@ gaps.controller('gapscontroller', ['$scope', 'Socket', 'Notification', function 
             $scope.load.graphStatisticsLoaded = true;
             $scope.notifySuccess('Loaded');
             var $graphStatisticsToggle = $('#graph-statistics-viewer-toggle').bootstrapToggle({
-                on: 'Hide',
-                off: 'Show'
+                on: 'Visible',
+                off: 'Hidden'
             });
             $graphStatisticsToggle.change(function () {
                 $scope.hideGraphStatisticsView();
@@ -189,8 +189,8 @@ gaps.controller('gapscontroller', ['$scope', 'Socket', 'Notification', function 
             $scope.load.pathStatisticsLoaded = true;
             $scope.notifySuccess('Paths Computed');
             var $pathStatisticsToggle = $('#path-statistics-viewer-toggle').bootstrapToggle({
-                on: 'Hide',
-                off: 'Show'
+                on: 'Visible',
+                off: 'Hidden'
             });
             $pathStatisticsToggle.change(function () {
                 $scope.hidePathStatisticsView();
@@ -272,8 +272,8 @@ gaps.controller('gapscontroller', ['$scope', 'Socket', 'Notification', function 
                 $scope.$apply();
             }, 1000);
             var $geneticStatisticsToggle = $('#genetic-statistics-viewer-toggle').bootstrapToggle({
-                on: 'Hide',
-                off: 'Show'
+                on: 'Visible',
+                off: 'Hidden'
             });
             $geneticStatisticsToggle.change(function () {
                 $scope.hideGeneticStatisticsView();
@@ -339,8 +339,8 @@ gaps.controller('gapscontroller', ['$scope', 'Socket', 'Notification', function 
                 window.clearInterval(interval);
             }, 1000);
             var $compareStatisticsToggle = $('#compare-statistics-viewer-toggle').bootstrapToggle({
-                on: 'Hide',
-                off: 'Show'
+                on: 'Visible',
+                off: 'Hidden'
             });
             $compareStatisticsToggle.change(function () {
                 $scope.hideCompareStatisticsView();
