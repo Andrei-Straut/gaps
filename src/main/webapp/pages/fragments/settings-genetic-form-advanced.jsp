@@ -36,7 +36,7 @@
                        data-on="Yes"
                        data-off="No">
             </label>
-            <label class="control-label" for="keepPopSizeConstant">Keep Population Size</label>
+            <label class="control-label" for="keepPopSizeConstant">Keep Population Constant</label>
         </div>
 
         <div class="form-group">       
@@ -60,7 +60,7 @@
                        data-on="Yes"
                        data-off="No">
             </label>
-            <label class="control-label" for="preserveFittestIndividual">Preserve fittest</label>    
+            <label class="control-label" for="preserveFittestIndividual">Preserve Fittest</label>    
         </div>
     </div>
 </div>

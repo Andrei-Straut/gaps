@@ -16,6 +16,7 @@ gaps.controller('gapscontroller', ['$scope', 'Socket', 'Notification', function 
                 $scope.graphGeneration.then(function (response) {
                     if (response.status === 200) {
                         $scope.load.dataLoaded = true;
+
                         $scope.initGraphView(response.data.graph);
                         $scope.initGraphStatistics(response.data);
                     } else {
@@ -104,8 +105,37 @@ gaps.controller('gapscontroller', ['$scope', 'Socket', 'Notification', function 
          * =====================================================================
          */
 
-        $scope.showGeneticSettingsAdvanced = function () {
-            $('#geneticSettingsAdvancedModal').modal('show');
+        $scope.initGeneticSettingsAdvanced = function () {
+            var $keepPopSizeConstantToggle = $('#keepPopSizeConstant').bootstrapToggle({
+                on: 'Yes',
+                off: 'No'
+            });
+            $('#keepPopSizeConstant').prop('checked', $scope.geneticSettings.keepPopSizeConstant).change();
+            $keepPopSizeConstantToggle.change(function () {
+                $scope.geneticSettings.keepPopSizeConstant = $('#keepPopSizeConstant').prop('checked');
+                console.log($scope.geneticSettings.keepPopSizeConstant);
+            });
+
+            var $alwaysCalculateFitnessToggle = $('#alwaysCalculateFitness').bootstrapToggle({
+                on: 'Yes',
+                off: 'No'
+            });
+            $('#alwaysCalculateFitness').prop('checked', $scope.geneticSettings.alwaysCalculateFitness).change();
+            $alwaysCalculateFitnessToggle.change(function () {
+                $scope.geneticSettings.alwaysCalculateFitness = $('#alwaysCalculateFitness').prop('checked');
+                console.log($scope.geneticSettings.alwaysCalculateFitness);
+            });
+
+            var $preserveFittestIndividualToggle = $('#preserveFittestIndividual').bootstrapToggle({
+                on: 'Yes',
+                off: 'No'
+            });
+            $('#preserveFittestIndividual').prop('checked', $scope.geneticSettings.preserveFittestIndividual).change();
+            $preserveFittestIndividualToggle.change(function () {
+                $scope.geneticSettings.preserveFittestIndividual = $('#preserveFittestIndividual').prop('checked');
+                console.log($scope.geneticSettings.preserveFittestIndividual);
+            });
+
         };
         $scope.initGraphView = function ($data) {
             $scope.resetGraphView();

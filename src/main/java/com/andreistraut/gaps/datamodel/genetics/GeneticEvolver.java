@@ -90,6 +90,10 @@ public class GeneticEvolver {
 	    this.minimumPopulationSizePercent = evolverSettings.get("minPopSizePercent").getAsInt();
 	}
 
+	if (evolverSettings.has("alwaysCalculateFitness")) {
+	    this.alwaysCalculateFitness = evolverSettings.get("alwaysCalculateFitness").getAsBoolean();
+	}
+
 	if (evolverSettings.has("keepPopSizeConstant")) {
 	    this.keepPopulationSizeConstant = evolverSettings.get("keepPopSizeConstant").getAsBoolean();
 	}
@@ -279,5 +283,26 @@ public class GeneticEvolver {
 	mutators.add(crossoverOperator2P);
 
 	return mutators;
+    }
+
+    @Override
+    public String toString() {
+	StringBuilder builder = new StringBuilder();
+	builder
+		.append("GeneticEvolver ")
+		.append(this.hashCode())
+		.append(" [").append(System.getProperty("line.separator"))
+		.append("hasInited: ").append(hasInited).append(System.getProperty("line.separator"))
+		.append("alwaysCalculateFitness: ").append(alwaysCalculateFitness).append(System.getProperty("line.separator"))
+		.append("keepPopulationSizeConstant: ").append(keepPopulationSizeConstant).append(System.getProperty("line.separator"))
+		.append("preserveFittestIndividual: ").append(preserveFittestIndividual).append(System.getProperty("line.separator"))
+		.append("minimumPopulationSizePercent: ").append(minimumPopulationSizePercent).append(System.getProperty("line.separator"))
+		.append("numberOfEvolutions: ").append(numberOfEvolutions).append(System.getProperty("line.separator"))
+		.append("stopConditionPercent: ").append(stopConditionPercent).append(System.getProperty("line.separator"))
+		.append("numberOfEvolutionsWithoutChange: ").append(numberOfEvolutionsWithoutChange).append(System.getProperty("line.separator"))
+		.append("hasFinished: ").append(hasFinished).append(System.getProperty("line.separator"))
+		.append("]");
+	
+	return builder.toString();
     }
 }

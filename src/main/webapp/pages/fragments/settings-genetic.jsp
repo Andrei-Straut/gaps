@@ -12,7 +12,7 @@
                         href="#"
                         data-toggle="modal"
                         data-target="#geneticSettingsAdvancedModal"
-                        >
+                        ng-click="initGeneticSettingsAdvanced();">
                     Advanced</button>
             </div>
             <div class="panel-body">
