@@ -43,70 +43,10 @@ public abstract class PathChromosomeCrossover
     public PathChromosomeCrossover(GeneticConfiguration configuration, double desiredCrossoverRate)
 	    throws InvalidConfigurationException {
 
-	super(configuration, desiredCrossoverRate);
+	super(configuration);
 	this.configuration = configuration;
 	this.crossoverRatePercent = desiredCrossoverRate;
 
-	this.allowIllegalCrossovers = false;
-	this.allowFullCrossover = false;
-	this.allowCrossOverNewAge = false;
-	this.printCrossoverStatistics = false;
-	this.crossoverMode = PathChromosomeOperationMode.RANDOM;
-    }
-
-    public PathChromosomeCrossover(GeneticConfiguration configuration,
-	    double desiredCrossoverRatePercent, boolean allowFullCrossOver)
-	    throws InvalidConfigurationException {
-
-	this(configuration, desiredCrossoverRatePercent);
-	this.allowFullCrossover = allowFullCrossOver;
-    }
-
-    public PathChromosomeCrossover(GeneticConfiguration configuration,
-	    double desiredCrossoverRatePercent,
-	    boolean allowFullCrossOver,
-	    boolean xoverNewAge) throws InvalidConfigurationException {
-
-	this(configuration, desiredCrossoverRatePercent, allowFullCrossOver);
-	this.allowCrossOverNewAge = xoverNewAge;
-    }
-
-    public PathChromosomeCrossover(GeneticConfiguration configuration,
-	    double desiredCrossoverRatePercent,
-	    boolean allowFullCrossOver,
-	    boolean xoverNewAge,
-	    boolean allowIllegalCrossovers) throws InvalidConfigurationException {
-
-	this(configuration, desiredCrossoverRatePercent, allowFullCrossOver);
-	this.allowCrossOverNewAge = xoverNewAge;
-	this.allowIllegalCrossovers = allowIllegalCrossovers;
-    }
-
-    public PathChromosomeCrossover(GeneticConfiguration configuration,
-	    double desiredCrossoverRatePercent,
-	    boolean allowFullCrossOver,
-	    boolean xoverNewAge,
-	    boolean allowIllegalCrossovers,
-	    boolean printStatistics) throws InvalidConfigurationException {
-
-	this(configuration, desiredCrossoverRatePercent, allowFullCrossOver,
-		xoverNewAge, allowIllegalCrossovers);
-	this.printCrossoverStatistics = printStatistics;
-    }
-
-    private PathChromosomeCrossover() throws InvalidConfigurationException {
-	super();
-	this.allowIllegalCrossovers = false;
-	this.allowFullCrossover = false;
-	this.allowCrossOverNewAge = false;
-	this.printCrossoverStatistics = false;
-	this.crossoverRatePercent = DEFAULT_CROSSOVER_RATE;
-	this.crossoverMode = PathChromosomeOperationMode.RANDOM;
-    }
-
-    private PathChromosomeCrossover(double desiredCrossoverRatePercent) throws InvalidConfigurationException {
-	super();
-	this.crossoverRatePercent = desiredCrossoverRatePercent;
 	this.allowIllegalCrossovers = false;
 	this.allowFullCrossover = false;
 	this.allowCrossOverNewAge = false;
