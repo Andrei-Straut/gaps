@@ -9,7 +9,8 @@ import org.junit.runners.Suite;
     com.andreistraut.gaps.datamodel.genetics.mutators.PathChromosomeMutationValidatorTest.class,
     com.andreistraut.gaps.datamodel.genetics.mutators.PathChromosomeMutatorTest.class,
     com.andreistraut.gaps.datamodel.genetics.mutators.PathChromosomeCycleRemoveMutatorTest.class,
-    com.andreistraut.gaps.datamodel.genetics.mutators.PathChromosomeSingleGeneMutatorTest.class
+    com.andreistraut.gaps.datamodel.genetics.mutators.PathChromosomeSingleGeneMutatorTest.class,
+    com.andreistraut.gaps.datamodel.genetics.mutators.PathChromosomeOnePointCrossoverTest.class
     })
 
 public class DatamodelGeneticsMutators {
