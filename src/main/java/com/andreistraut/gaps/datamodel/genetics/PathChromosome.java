@@ -662,7 +662,7 @@ public class PathChromosome extends BaseChromosome implements IChromosome {
 		Node nextSource = this.genes.get(i).getAllele().getDestination();
 		Node currentDestination = this.genes.get(i + 1).getAllele().getSource();
 
-		if (currentDestination != nextSource) {
+		if (!currentDestination.equals(nextSource)) {
 		    return false;
 		}
 	    }
@@ -769,8 +769,8 @@ public class PathChromosome extends BaseChromosome implements IChromosome {
 	}
 
 	final PathChromosome other = (PathChromosome) obj;
-	
-	if(this.hashCode() != other.hashCode()) {
+
+	if (this.hashCode() != other.hashCode()) {
 	    return false;
 	}
 
