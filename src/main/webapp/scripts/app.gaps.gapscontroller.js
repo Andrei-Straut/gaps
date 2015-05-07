@@ -1,7 +1,7 @@
 /**
  * Main GAPS controller
  */
-gaps.controller('gapscontroller', ['$scope', 'Socket', 'Notification', function ($scope, $socket, Notification) {
+gaps.controller('gapscontroller', ['$scope', 'Socket', 'Notification', 'Statistics', function ($scope, $socket, Notification, Statistics) {
         /*
          * =====================================================================
          * Main functions
@@ -55,7 +55,8 @@ gaps.controller('gapscontroller', ['$scope', 'Socket', 'Notification', function 
             }, 1000);
         };
         $scope.evolve = function () {
-            $scope.geneticStatistics.startTimestamp = new Date();
+            Statistics.markEvolutionStart();
+
             $scope.notifyInfo('Evolving...');
             var interval = window.setInterval(function () {
                 $scope.geneticEvolution = $socket.evolve($scope.geneticSettings);
@@ -77,7 +78,8 @@ gaps.controller('gapscontroller', ['$scope', 'Socket', 'Notification', function 
             }, 1000);
         };
         $scope.compare = function () {
-            $scope.compareStatisticsKShortest.startTimestamp = new Date();
+            Statistics.markCompareStart();
+            
             $scope.notifyInfo('Comparing Results...');
             var interval = window.setInterval(function () {
                 $scope.geneticResultsCompare = $socket.compare($scope.geneticSettings);
@@ -93,7 +95,7 @@ gaps.controller('gapscontroller', ['$scope', 'Socket', 'Notification', function 
                 }, function (error) {
                     $scope.notifyError(error.description, $('#modalLoadingError'));
                 }, function (update) {
-                    $scope.updateCompareStatistics(update.data, $scope.geneticStatistics);
+                    $scope.updateCompareStatistics(update.data, Statistics.getGeneticStatistics());
                 });
                 window.clearInterval(interval);
             }, 1000);
@@ -113,7 +115,6 @@ gaps.controller('gapscontroller', ['$scope', 'Socket', 'Notification', function 
             $('#keepPopSizeConstant').prop('checked', $scope.geneticSettings.keepPopSizeConstant).change();
             $keepPopSizeConstantToggle.change(function () {
                 $scope.geneticSettings.keepPopSizeConstant = $('#keepPopSizeConstant').prop('checked');
-                console.log($scope.geneticSettings.keepPopSizeConstant);
             });
 
             var $alwaysCalculateFitnessToggle = $('#alwaysCalculateFitness').bootstrapToggle({
@@ -123,7 +124,6 @@ gaps.controller('gapscontroller', ['$scope', 'Socket', 'Notification', function 
             $('#alwaysCalculateFitness').prop('checked', $scope.geneticSettings.alwaysCalculateFitness).change();
             $alwaysCalculateFitnessToggle.change(function () {
                 $scope.geneticSettings.alwaysCalculateFitness = $('#alwaysCalculateFitness').prop('checked');
-                console.log($scope.geneticSettings.alwaysCalculateFitness);
             });
 
             var $preserveFittestIndividualToggle = $('#preserveFittestIndividual').bootstrapToggle({
@@ -133,7 +133,6 @@ gaps.controller('gapscontroller', ['$scope', 'Socket', 'Notification', function 
             $('#preserveFittestIndividual').prop('checked', $scope.geneticSettings.preserveFittestIndividual).change();
             $preserveFittestIndividualToggle.change(function () {
                 $scope.geneticSettings.preserveFittestIndividual = $('#preserveFittestIndividual').prop('checked');
-                console.log($scope.geneticSettings.preserveFittestIndividual);
             });
 
         };
@@ -181,12 +180,13 @@ gaps.controller('gapscontroller', ['$scope', 'Socket', 'Notification', function 
             $scope.load.graphViewerLoaded = false;
         };
         $scope.initGraphStatistics = function ($data) {
+            Statistics.setGraphStatistics($data.statistics);
+
             var table = $('#graph-direct-edges').DataTable();
             angular.forEach($data.edges, function (edgeValue, edgeKey) {
                 table.row.add([edgeValue.data.id, edgeValue.nodeFrom, edgeValue.nodeTo, edgeValue.data.cost]);
             });
             table.draw();
-            $scope.graphStatistics = $data.statistics;
             $scope.load.graphStatisticsLoaded = true;
             $scope.notifySuccess('Loaded');
             var $graphStatisticsToggle = $('#graph-statistics-viewer-toggle').bootstrapToggle({
@@ -202,20 +202,12 @@ gaps.controller('gapscontroller', ['$scope', 'Socket', 'Notification', function 
             $scope.$apply();
         };
         $scope.resetGraphStatistics = function () {
-            $scope.graphStatistics.numberOfNodes = 1;
-            $scope.graphStatistics.numberOfEdges = 1;
-            $scope.graphStatistics.minimumEdgeCost = 1;
-            $scope.graphStatistics.maximumEdgeCost = 1;
-            $scope.graphStatistics.totalEdgeCost = 1;
-            $scope.graphStatistics.averageEdgeCost = 1;
-            $scope.graphStatistics.averageEdgesPerNode = 1;
+            Statistics.resetGraphStatistics();
             var table = $('#graph-direct-edges').DataTable();
             table.clear();
             $scope.load.graphStatisticsLoaded = false;
         };
         $scope.initPathStatistics = function () {
-            $scope.pathStatistics.averagePathCost =
-                    $scope.pathStatistics.totalPathCost / $scope.pathStatistics.paths.length;
             $scope.load.pathStatisticsLoaded = true;
             $scope.notifySuccess('Paths Computed');
             var $pathStatisticsToggle = $('#path-statistics-viewer-toggle').bootstrapToggle({
@@ -231,64 +223,31 @@ gaps.controller('gapscontroller', ['$scope', 'Socket', 'Notification', function 
             $scope.$apply();
         };
         $scope.updatePathStatisticsData = function (path) {
-            var table = $('graph-paths').DataTable();
-            var numberOfEdges = path.length;
-            var totalCost = 0;
-            angular.forEach(path, function (edge) {
-                if (edge.data && edge.data.cost) {
-                    totalCost += parseInt(edge.data.cost);
-                }
-            });
-            if (totalCost > $scope.pathStatistics.mostExpensivePathCost) {
-                $scope.pathStatistics.mostExpensivePathCost = totalCost;
-                $scope.pathStatistics.mostExpensivePath = path;
-            }
+            Statistics.addPathStatistic(path);
+            var pathStatistics = Statistics.getPathStatistics();
 
-            if (totalCost < $scope.pathStatistics.cheapestPathCost) {
-                $scope.pathStatistics.cheapestPathCost = totalCost;
-                $scope.pathStatistics.cheapestPath = path;
-            }
-
-            if (numberOfEdges > $scope.pathStatistics.longestPathEdgeNumber) {
-                $scope.pathStatistics.longestPathEdgeNumber = numberOfEdges;
-            }
-
-            if (numberOfEdges < $scope.pathStatistics.shortestPathEdgeNumber) {
-                $scope.pathStatistics.shortestPathEdgeNumber = numberOfEdges;
-            }
-
-            $scope.pathStatistics.totalPathCost += totalCost;
-            $scope.pathStatistics.paths.push(path);
             var table = $('#graph-paths').DataTable();
-            table.row.add([$scope.pathStatistics.counter, path.length, totalCost]);
-            $scope.pathStatistics.counter += 1;
+            table.row.add([pathStatistics.counter, path.length, Statistics.getPathCost(path)]);
+
             table.draw();
-            $scope.notifyInfo('Computing paths (' + $scope.pathStatistics.counter + ' / ' + $scope.geneticSettings.numberOfPaths + ')...');
+            $scope.notifyInfo('Computing paths (' + pathStatistics.counter + ' / ' + $scope.geneticSettings.numberOfPaths + ')...');
         };
         $scope.resetPathStatisticsAndTable = function () {
-            $scope.pathStatistics.counter = $scope.geneticSettings.sourceNode;
-            $scope.pathStatistics.sourceNodeId = $scope.geneticSettings.destinationNode;
-            $scope.pathStatistics.destinationNodeId = 0;
-            $scope.pathStatistics.longestPathEdgeNumber = 10000000;
-            $scope.pathStatistics.shortestPathEdgeNumber = 0;
-            $scope.pathStatistics.totalPathCost = 0;
-            $scope.pathStatistics.cheapestPathCost = 10000000;
-            $scope.pathStatistics.mostExpensivePathCost = 0;
-            $scope.pathStatistics.averagePathCost = 1;
-            $scope.pathStatistics.paths = [];
-            $scope.pathStatistics.cheapestPath = [];
-            $scope.pathStatistics.mostExpensivePath = [];
+            Statistics.resetPathStatistics();
+
             var table = $('#graph-paths').DataTable();
             table.clear();
             $scope.load.pathStatisticsLoaded = false;
         };
         $scope.initGeneticStatistics = function () {
             $scope.notifySuccess('Evolved');
-            $scope.geneticStatistics.endTimestamp = new Date();
-            $scope.geneticStatistics.evolutionDiffTimestamp = $scope.geneticStatistics.endTimestamp - $scope.geneticStatistics.startTimestamp;
+
+            Statistics.markEvolutionEnd();
+
             $scope.notifyInfo('Computing Statistics...');
             var interval = window.setInterval(function () {
-
+                var geneticStatistics = Statistics.getGeneticStatistics();
+                
                 var $slider = $('#generation-slider').slider();
                 $slider.on('slide', function (ev) {
                     $scope.sliderEvent(ev);
@@ -296,7 +255,7 @@ gaps.controller('gapscontroller', ['$scope', 'Socket', 'Notification', function 
                 $slider.slider('setValue', 0);
                 $('div.slider.slider-horizontal').css('width', '100%');
                 $scope.evolutionChart.initialize('morris-bar-cost-chart',
-                        $scope.geneticStatistics.generationChart);
+                        geneticStatistics.generationChart);
                 $scope.load.geneticStatisticsLoaded = true;
                 window.clearInterval(interval);
                 $scope.$apply();
@@ -314,19 +273,8 @@ gaps.controller('gapscontroller', ['$scope', 'Socket', 'Notification', function 
             $scope.$apply();
         };
         $scope.resetGeneticStatisticsAndView = function () {
-            $scope.geneticStatistics.counter = 1;
-            $scope.geneticStatistics.evolutionStage = 1;
-            $scope.geneticStatistics.selectedGenerationIndex = 0;
-            $scope.geneticStatistics.selectedGeneration = {};
-            $scope.geneticStatistics.bestPathEdgeNumber = 0;
-            $scope.geneticStatistics.bestPathFitness = 10000000;
-            $scope.geneticStatistics.bestPathCost = 10000000;
-            $scope.geneticStatistics.startTimestamp = {};
-            $scope.geneticStatistics.endTimestamp = {};
-            $scope.geneticStatistics.evolutionDiffTimestamp = {};
-            $scope.geneticStatistics.generationChart = [];
-            $scope.geneticStatistics.generations = [];
-            $scope.geneticStatistics.bestPath = {};
+            Statistics.resetGeneticStatistics();
+
             $scope.evolutionChart.clear('morris-bar-cost-chart');
             var $slider = $('div.slider.slider-horizontal');
             if ($slider && $slider.parentElement) {
@@ -340,31 +288,15 @@ gaps.controller('gapscontroller', ['$scope', 'Socket', 'Notification', function 
             $scope.load.evolutionComputed = false;
         };
         $scope.updateGeneticStatisticsData = function (data) {
-            if (data.bestChromosome) {
-                if (JSON.stringify($scope.geneticStatistics.bestPath) === '{}'
-                        || data.bestChromosome.cost < $scope.geneticStatistics.bestPath.cost) {
-                    $scope.geneticStatistics.bestPath = data.bestChromosome;
-                    $scope.geneticStatistics.evolutionStage = data.evolutionStage;
-                    $scope.geneticStatistics.bestPathEdgeNumber = data.bestChromosome.path.length;
-                    $scope.geneticStatistics.bestPathCost = data.bestChromosome.cost;
-                    $scope.geneticStatistics.bestPathFitness = data.bestChromosome.fitness;
-                }
-            }
-            $scope.geneticStatistics.generations.push(data);
-            $scope.geneticStatistics.bestPath = data.bestChromosome;
-            var generationDataChart = {};
-            generationDataChart.y = 'Gen ' + data.evolutionStage;
-            generationDataChart.a = data.endBestCost;
-            $scope.geneticStatistics.generationChart.push(generationDataChart);
+            Statistics.addGeneticStatistic(data);
             $scope.notifyInfo('Evolving (' + data.evolutionStage + ' / ' + $scope.geneticSettings.numberOfEvolutions + ')...');
         };
         $scope.initCompareStatistics = function () {
-            $scope.compareStatisticsKShortest.endTimestamp = new Date();
-            $scope.compareStatisticsKShortest.compareDiffTimestamp =
-                    $scope.compareStatisticsKShortest.endTimestamp - $scope.compareStatisticsKShortest.startTimestamp;
+            Statistics.markCompareEnd();
+            
             var interval = window.setInterval(function () {
-
-                $scope.compareChart.initialize('morris-bar-compare-chart', $scope.compareStatisticsKShortest.compareChart);
+                var compareStatistics = Statistics.getCompareStatistics();
+                $scope.compareChart.initialize('morris-bar-compare-chart', compareStatistics.compareChart);                
                 $scope.load.compareStatisticsLoaded = true;
                 window.clearInterval(interval);
             }, 1000);
@@ -381,23 +313,12 @@ gaps.controller('gapscontroller', ['$scope', 'Socket', 'Notification', function 
             $scope.$apply();
         };
         $scope.resetCompareStatisticsAndView = function () {
-            $scope.compareStatisticsKShortest.startTimestamp = {};
-            $scope.compareStatisticsKShortest.endTimestamp = {};
-            $scope.compareStatisticsKShortest.compareDiffTimestamp = {};
-            $scope.compareStatisticsKShortest.compareChart = [];
-            $scope.compareStatisticsKShortest.chromosomes = [];
+            Statistics.resetCompareStatistics();
             $scope.compareChart.clear('morris-bar-compare-chart');
             $scope.load.compareStatisticsLoaded = false;
         };
-        $scope.updateCompareStatistics = function (data, geneticStatistics) {
-            if (data) {
-                $scope.compareStatisticsKShortest.chromosomes.push(data);
-                var resultsCompareChart = {};
-                resultsCompareChart.y = 'GAPS Best, KShortest #' + $scope.compareStatisticsKShortest.compareChart.length;
-                resultsCompareChart.GAPS = geneticStatistics.bestPathCost;
-                resultsCompareChart.KShortest = data.cost;
-                $scope.compareStatisticsKShortest.compareChart.push(resultsCompareChart);
-            }
+        $scope.updateCompareStatistics = function (data) {
+            Statistics.addCompareStatistic(data);
         };
         /*
          * =====================================================================
@@ -411,8 +332,9 @@ gaps.controller('gapscontroller', ['$scope', 'Socket', 'Notification', function 
             $('#' + id).addClass('active-menu');
         };
         $scope.getEdgeClass = function (edgeCost) {
-            var averageCostLowThreshold = $scope.graphStatistics.averageEdgeCost - ($scope.graphStatistics.averageEdgeCost / 4);
-            var averageCostHighThreshold = $scope.graphStatistics.averageEdgeCost + ($scope.graphStatistics.averageEdgeCost / 4);
+            var graphStatistics = Statistics.getGraphStatistics();
+            var averageCostLowThreshold = graphStatistics.averageEdgeCost - (graphStatistics.averageEdgeCost / 4);
+            var averageCostHighThreshold = graphStatistics.averageEdgeCost + (graphStatistics.averageEdgeCost / 4);
             if (edgeCost < averageCostLowThreshold) {
                 return 'label-success';
             } else if (edgeCost >= averageCostLowThreshold && edgeCost <= averageCostHighThreshold) {
@@ -422,16 +344,18 @@ gaps.controller('gapscontroller', ['$scope', 'Socket', 'Notification', function 
             }
         };
         $scope.sliderEvent = function (event) {
-            $scope.geneticStatistics.selectedGenerationIndex = event.value;
-            if ($scope.geneticStatistics.generations[event.value]) {
-                $scope.geneticStatistics.selectedGeneration =
-                        $scope.geneticStatistics.generations[
-                                $scope.geneticStatistics.selectedGenerationIndex];
+            var geneticStatistics = Statistics.getGeneticStatistics();
+
+            geneticStatistics.selectedGenerationIndex = event.value;
+            if (geneticStatistics.generations[event.value]) {
+                geneticStatistics.selectedGeneration =
+                        geneticStatistics.generations[
+                                geneticStatistics.selectedGenerationIndex];
             }
 
-            if (window.fd && window.fd.graph && $scope.geneticStatistics && $scope.geneticStatistics.selectedGeneration
-                    && $scope.geneticStatistics.selectedGeneration.bestChromosome) {
-                var $path = $scope.geneticStatistics.selectedGeneration.bestChromosome.path;
+            if (window.fd && window.fd.graph && geneticStatistics && geneticStatistics.selectedGeneration
+                    && geneticStatistics.selectedGeneration.bestChromosome) {
+                var $path = geneticStatistics.selectedGeneration.bestChromosome.path;
                 $scope.selectPath(window.fd, $path);
             }
 
@@ -504,8 +428,9 @@ gaps.controller('gapscontroller', ['$scope', 'Socket', 'Notification', function 
                 });
             }
 
-            $scope.geneticStatistics.selectedGeneration = {};
-            $scope.geneticStatistics.selectedGenerationIndex = 0;
+            var geneticStatistics = Statistics.getGeneticStatistics();
+            geneticStatistics.selectedGeneration = {};
+            geneticStatistics.selectedGenerationIndex = 0;
         };
         $scope.convertTime = function (timestamp) {
             if (timestamp !== undefined && timestamp !== null && timestamp != 'null') {
@@ -582,57 +507,6 @@ gaps.controller('gapscontroller', ['$scope', 'Socket', 'Notification', function 
                         {label: "BestChromosomeSelector"}
                     ]}
             }
-        };
-        // Graph statistics per edge
-        $scope.graphStatistics = {
-            numberOfNodes: 1,
-            numberOfEdges: 1,
-            minimumEdgeCost: 1,
-            maximumEdgeCost: 1,
-            totalEdgeCost: 0,
-            averageEdgeCost: 0.0,
-            averageEdgesPerNode: 0.0
-        };
-        // Graph statistics per path
-        $scope.pathStatistics = {
-            counter: 1,
-            sourceNodeId: $scope.geneticSettings.sourceNode,
-            destinationNodeId: $scope.geneticSettings.destinationNode,
-            longestPathEdgeNumber: 0,
-            shortestPathEdgeNumber: 10000000,
-            totalPathCost: 0,
-            cheapestPathCost: 10000000,
-            mostExpensivePathCost: 0,
-            averagePathCost: 0,
-            paths: [],
-            cheapestPath: [],
-            mostExpensivePath: []
-        };
-        // Genetic algorithm run statistics
-        $scope.geneticStatistics = {
-            counter: 1,
-            evolutionStage: 1,
-            selectedGenerationIndex: 0,
-            selectedGeneration: {},
-            sourceNodeId: $scope.geneticSettings.sourceNode,
-            destinationNodeId: $scope.geneticSettings.destinationNode,
-            bestPathEdgeNumber: 0,
-            bestPathFitness: 10000000,
-            bestPathCost: 10000000,
-            startTimestamp: {},
-            endTimestamp: {},
-            evolutionDiffTimestamp: {},
-            bestPath: {},
-            generationChart: [],
-            generations: []
-        };
-        // JGraphT KShortestPath comparison
-        $scope.compareStatisticsKShortest = {
-            startTimestamp: {},
-            endTimestamp: {},
-            compareDiffTimestamp: {},
-            compareChart: [],
-            chromosomes: []
         };
         // Websocket error messages
         $scope.errorText = '';

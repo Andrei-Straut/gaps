@@ -50,8 +50,9 @@
         <script src="scripts/lib/morris/morris.js"></script>
         <!-- CUSTOM SCRIPTS -->
         <script src="scripts/app.gaps.js"></script>
-        <script src="scripts/app.gaps.gapscontroller.js"></script>
         <script src="scripts/app.gaps.websocketfactory.js"></script>
+        <script src="scripts/app.gaps.statisticsservice.js"></script>
+        <script src="scripts/app.gaps.gapscontroller.js"></script>
         <script src="scripts/main.js"></script>
 
     </head>
