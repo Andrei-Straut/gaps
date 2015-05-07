@@ -27,18 +27,18 @@
                 </div>
                 <div class="panel-body">
                     <i class="fa fa-bar-chart-o fa-5x"></i>
-                    <h3>Best Path Cost: {{compareStatisticsKShortest.chromosomes[0].cost}}</h3>
-                    <h3>Best Path Fitness: {{compareStatisticsKShortest.chromosomes[0].fitness}}</h3>
+                    <h3>Best Path Cost: {{(getStatistics().getCompareStatistics()).chromosomes[0].cost}}</h3>
+                    <h3>Best Path Fitness: {{(getStatistics().getCompareStatistics()).chromosomes[0].fitness}}</h3>
                     <h3 
-                        ng-if="compareStatisticsKShortest.chromosomes[0].cost < geneticStatistics.bestPathCost">
+                        ng-if="(getStatistics().getCompareStatistics()).chromosomes[0].cost < (getStatistics().getGeneticStatistics()).bestPathCost">
                         Winner: KShortest</h3>
                     <h3 
-                        ng-if="compareStatisticsKShortest.chromosomes[0].cost >= geneticStatistics.bestPathCost">
+                        ng-if="(getStatistics().getCompareStatistics()).chromosomes[0].cost >= (getStatistics().getGeneticStatistics()).bestPathCost">
                         Winner: GAPS</h3>
                     
-                    <h3>Search Started: {{convertTime(compareStatisticsKShortest.startTimestamp)}}</h3>
-                    <h3>Search Finished: {{convertTime(compareStatisticsKShortest.endTimestamp)}}</h3>
-                    <h3>Total Time: {{convertTime(compareStatisticsKShortest.compareDiffTimestamp)}}</h3>
+                    <h3>Search Started: {{convertTime((statistics.getCompareStatistics()).startTimestamp)}}</h3>
+                    <h3>Search Finished: {{convertTime((statistics.getCompareStatistics()).endTimestamp)}}</h3>
+                    <h3>Total Time: {{convertTime((statistics.getCompareStatistics()).compareDiffTimestamp)}}</h3>
                 </div>
             </div>                      
         </div>

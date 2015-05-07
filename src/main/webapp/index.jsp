@@ -5,7 +5,7 @@
         <meta charset="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <link rel="shortcut icon" href="favicon.ico" type="image/x-icon" />
-        
+
         <title>Genetic Algorithm Path Search</title>
 
         <!-- ANGULAR STYLES-->
@@ -51,8 +51,9 @@
         <!-- CUSTOM SCRIPTS -->
         <script src="scripts/app.gaps.js"></script>
         <script src="scripts/app.gaps.websocketfactory.js"></script>
-        <script src="scripts/app.gaps.statisticsservice.js"></script>
+        <script src="scripts/app.gaps.statisticsfactory.js"></script>
         <script src="scripts/app.gaps.gapscontroller.js"></script>
+        <script src="scripts/app.gaps.statisticscontroller.js"></script>
         <script src="scripts/main.js"></script>
 
     </head>
@@ -70,14 +71,16 @@
                     <%@include file="/pages/fragments/settings.jsp" %>
 
                     <%@include file="/pages/fragments/graph-viewer.jsp" %>
-                    
-                    <%@include file="/pages/fragments/genetic-statistics.jsp" %>
-                    
-                    <%@include file="/pages/fragments/compare-statistics.jsp" %>
-                    
-                    <%@include file="/pages/fragments/path-statistics.jsp" %>
 
-                    <%@include file="/pages/fragments/graph-statistics.jsp" %>
+                    <div ng-controller="statisticscontroller">
+                        <%@include file="/pages/fragments/genetic-statistics.jsp" %>
+
+                        <%@include file="/pages/fragments/compare-statistics.jsp" %>
+
+                        <%@include file="/pages/fragments/path-statistics.jsp" %>
+
+                        <%@include file="/pages/fragments/graph-statistics.jsp" %>
+                    </div>
 
                     <div class="modal fade" id="modalLoadingError" tabindex="-1" role="dialog" aria-labelledby="loadingError" aria-hidden="true" style="display: none;">
                         <div class="modal-dialog">

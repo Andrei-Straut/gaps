@@ -1,7 +1,13 @@
 /**
  * Main GAPS controller
  */
-gaps.controller('gapscontroller', ['$scope', 'Socket', 'Notification', 'Statistics', function ($scope, $socket, Notification, Statistics) {
+gaps.controller('gapscontroller', ['$rootScope', '$scope', 'Socket', 'Notification', 'Statistics',
+    function ($rootScope, $scope, $socket, Notification, Statistics) {
+
+        $scope.getStatistics = function () {
+            return Statistics;
+        };
+
         /*
          * =====================================================================
          * Main functions
@@ -15,10 +21,12 @@ gaps.controller('gapscontroller', ['$scope', 'Socket', 'Notification', 'Statisti
                 $scope.graphGeneration = $socket.getGraph($scope.graphSettings);
                 $scope.graphGeneration.then(function (response) {
                     if (response.status === 200) {
-                        $scope.load.dataLoaded = true;
-
                         $scope.initGraphView(response.data.graph);
-                        $scope.initGraphStatistics(response.data);
+                        Statistics.setGraphStatistics(response.data.statistics);
+
+                        $scope.load.wip = false;
+                        $scope.load.wipType = '';
+                        $rootScope.$broadcast('graphDataLoaded', response.data);
                     } else {
                         $scope.notifyError(response.description, $('#modalLoadingError'));
                     }
@@ -32,14 +40,14 @@ gaps.controller('gapscontroller', ['$scope', 'Socket', 'Notification', 'Statisti
             $scope.notifyInfo('Computing paths...');
             var interval = window.setInterval(function () {
 
-                $scope.resetPathStatisticsAndTable();
-                $scope.resetGeneticStatisticsAndView();
                 $scope.resetCompareStatisticsAndView();
                 $scope.geneticEvolution = $socket.computePaths($scope.geneticSettings);
                 $scope.geneticEvolution.then(function (response) {
 
                     if (response.status === 200) {
-                        $scope.initPathStatistics();
+                        $scope.load.wip = false;
+                        $scope.load.wipType = '';
+                        $rootScope.$broadcast('pathDataLoaded', {});
                         $scope.evolve();
                     } else {
                         $scope.notifyError(response.description, $('#modalLoadingError'));
@@ -48,7 +56,10 @@ gaps.controller('gapscontroller', ['$scope', 'Socket', 'Notification', 'Statisti
                     $scope.notifyError(error.description, $('#modalLoadingError'));
                 }, function (update) {
                     if (update.data && update.data.path) {
-                        $scope.updatePathStatisticsData(update.data.path);
+                        Statistics.addPathStatistic(update.data.path);
+                        $rootScope.$broadcast('pathDataUpdated', update.data.path);
+                        $scope.notifyInfo('Computing paths (' + (Statistics.getPathStatistics()).counter + ' / '
+                                + $scope.geneticSettings.numberOfPaths + ')...');
                     }
                 });
                 window.clearInterval(interval);
@@ -63,7 +74,8 @@ gaps.controller('gapscontroller', ['$scope', 'Socket', 'Notification', 'Statisti
                 $scope.geneticEvolution.then(function (response) {
 
                     if (response.status === 200) {
-                        $scope.initGeneticStatistics();
+                        $scope.notifySuccess('Evolved');
+                        $rootScope.$broadcast('geneticDataLoaded', response.data);
                         $scope.load.evolutionComputed = true;
                         $scope.compare();
                     } else {
@@ -72,14 +84,16 @@ gaps.controller('gapscontroller', ['$scope', 'Socket', 'Notification', 'Statisti
                 }, function (error) {
                     $scope.notifyError(error.description, $('#modalLoadingError'));
                 }, function (update) {
-                    $scope.updateGeneticStatisticsData(update.data);
+                    Statistics.addGeneticStatistic(update.data);
+                    $rootScope.$broadcast('geneticDataUpdated', update.data);
+                    $scope.notifyInfo('Evolving (' + update.data.evolutionStage + ' / ' + $scope.geneticSettings.numberOfEvolutions + ')...');
                 });
                 window.clearInterval(interval);
             }, 1000);
         };
         $scope.compare = function () {
             Statistics.markCompareStart();
-            
+
             $scope.notifyInfo('Comparing Results...');
             var interval = window.setInterval(function () {
                 $scope.geneticResultsCompare = $socket.compare($scope.geneticSettings);
@@ -99,7 +113,7 @@ gaps.controller('gapscontroller', ['$scope', 'Socket', 'Notification', 'Statisti
                 });
                 window.clearInterval(interval);
             }, 1000);
-        }
+        };
 
         /*
          * =====================================================================
@@ -134,13 +148,9 @@ gaps.controller('gapscontroller', ['$scope', 'Socket', 'Notification', 'Statisti
             $preserveFittestIndividualToggle.change(function () {
                 $scope.geneticSettings.preserveFittestIndividual = $('#preserveFittestIndividual').prop('checked');
             });
-
         };
         $scope.initGraphView = function ($data) {
             $scope.resetGraphView();
-            $scope.resetGraphStatistics();
-            $scope.resetPathStatisticsAndTable();
-            $scope.resetGeneticStatisticsAndView();
             $scope.resetCompareStatisticsAndView();
             $scope.graph = jitInit($data);
             $(window).scrollTop($(window).scrollTop() + 1);
@@ -159,19 +169,19 @@ gaps.controller('gapscontroller', ['$scope', 'Socket', 'Notification', 'Statisti
             $scope.$apply();
         };
         $scope.resetGraphView = function () {
-            var graphWrapper = document.getElementById("infovis");
+            var graphWrapper = $("#infovis");
             if (graphWrapper && graphWrapper.firstChild) {
                 while (graphWrapper.firstChild) {
                     graphWrapper.removeChild(graphWrapper.firstChild);
                 }
             }
-            var logWrapper = document.getElementById("log");
+            var logWrapper = $("#log");
             if (logWrapper && logWrapper.firstChild) {
                 while (logWrapper.firstChild) {
                     logWrapper.removeChild(logWrapper.firstChild);
                 }
             }
-            var labelWrapper = document.getElementById("inner-details");
+            var labelWrapper = $("#inner-details");
             if (labelWrapper && labelWrapper.firstChild) {
                 while (labelWrapper.firstChild) {
                     labelWrapper.removeChild(labelWrapper.firstChild);
@@ -179,124 +189,12 @@ gaps.controller('gapscontroller', ['$scope', 'Socket', 'Notification', 'Statisti
             }
             $scope.load.graphViewerLoaded = false;
         };
-        $scope.initGraphStatistics = function ($data) {
-            Statistics.setGraphStatistics($data.statistics);
-
-            var table = $('#graph-direct-edges').DataTable();
-            angular.forEach($data.edges, function (edgeValue, edgeKey) {
-                table.row.add([edgeValue.data.id, edgeValue.nodeFrom, edgeValue.nodeTo, edgeValue.data.cost]);
-            });
-            table.draw();
-            $scope.load.graphStatisticsLoaded = true;
-            $scope.notifySuccess('Loaded');
-            var $graphStatisticsToggle = $('#graph-statistics-viewer-toggle').bootstrapToggle({
-                on: 'Visible',
-                off: 'Hidden'
-            });
-            $graphStatisticsToggle.change(function () {
-                $scope.hideGraphStatisticsView();
-            });
-        };
-        $scope.hideGraphStatisticsView = function () {
-            $scope.load.graphStatisticsDisplayed = $('#graph-statistics-viewer-toggle').prop('checked');
-            $scope.$apply();
-        };
-        $scope.resetGraphStatistics = function () {
-            Statistics.resetGraphStatistics();
-            var table = $('#graph-direct-edges').DataTable();
-            table.clear();
-            $scope.load.graphStatisticsLoaded = false;
-        };
-        $scope.initPathStatistics = function () {
-            $scope.load.pathStatisticsLoaded = true;
-            $scope.notifySuccess('Paths Computed');
-            var $pathStatisticsToggle = $('#path-statistics-viewer-toggle').bootstrapToggle({
-                on: 'Visible',
-                off: 'Hidden'
-            });
-            $pathStatisticsToggle.change(function () {
-                $scope.hidePathStatisticsView();
-            });
-        };
-        $scope.hidePathStatisticsView = function () {
-            $scope.load.pathStatisticsDisplayed = $('#path-statistics-viewer-toggle').prop('checked');
-            $scope.$apply();
-        };
-        $scope.updatePathStatisticsData = function (path) {
-            Statistics.addPathStatistic(path);
-            var pathStatistics = Statistics.getPathStatistics();
-
-            var table = $('#graph-paths').DataTable();
-            table.row.add([pathStatistics.counter, path.length, Statistics.getPathCost(path)]);
-
-            table.draw();
-            $scope.notifyInfo('Computing paths (' + pathStatistics.counter + ' / ' + $scope.geneticSettings.numberOfPaths + ')...');
-        };
-        $scope.resetPathStatisticsAndTable = function () {
-            Statistics.resetPathStatistics();
-
-            var table = $('#graph-paths').DataTable();
-            table.clear();
-            $scope.load.pathStatisticsLoaded = false;
-        };
-        $scope.initGeneticStatistics = function () {
-            $scope.notifySuccess('Evolved');
-
-            Statistics.markEvolutionEnd();
-
-            $scope.notifyInfo('Computing Statistics...');
-            var interval = window.setInterval(function () {
-                var geneticStatistics = Statistics.getGeneticStatistics();
-                
-                var $slider = $('#generation-slider').slider();
-                $slider.on('slide', function (ev) {
-                    $scope.sliderEvent(ev);
-                });
-                $slider.slider('setValue', 0);
-                $('div.slider.slider-horizontal').css('width', '100%');
-                $scope.evolutionChart.initialize('morris-bar-cost-chart',
-                        geneticStatistics.generationChart);
-                $scope.load.geneticStatisticsLoaded = true;
-                window.clearInterval(interval);
-                $scope.$apply();
-            }, 1000);
-            var $geneticStatisticsToggle = $('#genetic-statistics-viewer-toggle').bootstrapToggle({
-                on: 'Visible',
-                off: 'Hidden'
-            });
-            $geneticStatisticsToggle.change(function () {
-                $scope.hideGeneticStatisticsView();
-            });
-        };
-        $scope.hideGeneticStatisticsView = function () {
-            $scope.load.geneticStatisticsDisplayed = $('#genetic-statistics-viewer-toggle').prop('checked');
-            $scope.$apply();
-        };
-        $scope.resetGeneticStatisticsAndView = function () {
-            Statistics.resetGeneticStatistics();
-
-            $scope.evolutionChart.clear('morris-bar-cost-chart');
-            var $slider = $('div.slider.slider-horizontal');
-            if ($slider && $slider.parentElement) {
-                var parent = $slider.parentElement;
-                while (parent.firstChild) {
-                    parent.removeChild(parent.firstChild);
-                }
-            }
-            $('div.slider.slider-horizontal').css('width', 'auto');
-            $scope.load.geneticStatisticsLoaded = false;
-            $scope.load.evolutionComputed = false;
-        };
-        $scope.updateGeneticStatisticsData = function (data) {
-            Statistics.addGeneticStatistic(data);
-            $scope.notifyInfo('Evolving (' + data.evolutionStage + ' / ' + $scope.geneticSettings.numberOfEvolutions + ')...');
-        };
         $scope.initCompareStatistics = function () {
             Statistics.markCompareEnd();
-            
+
             var interval = window.setInterval(function () {
                 var compareStatistics = Statistics.getCompareStatistics();
-                $scope.compareChart.initialize('morris-bar-compare-chart', compareStatistics.compareChart);                
+                $scope.compareChart.initialize('morris-bar-compare-chart', compareStatistics.compareChart);
                 $scope.load.compareStatisticsLoaded = true;
                 window.clearInterval(interval);
             }, 1000);
@@ -378,7 +276,7 @@ gaps.controller('gapscontroller', ['$scope', 'Socket', 'Notification', 'Statisti
         // Due to problems with webkit transition detection, clear notifications manually
         $scope.clearNotifs = function (delay) {
             var interval = window.setInterval(function () {
-                var notifys = angular.element(document.getElementsByClassName('killed'));
+                var notifys = angular.element($('.killed'));
                 if (notifys) {
                     angular.forEach(notifys, function (notify) {
                         notify.remove();
@@ -459,16 +357,9 @@ gaps.controller('gapscontroller', ['$scope', 'Socket', 'Notification', 'Statisti
         $scope.load = {
             wip: false,
             wipType: '',
-            dataLoaded: false,
             graphViewerLoaded: false,
             graphDisplayed: true,
-            graphStatisticsLoaded: false,
-            graphStatisticsDisplayed: true,
-            pathStatisticsLoaded: false,
-            pathStatisticsDisplayed: true,
             evolutionComputed: false,
-            geneticStatisticsLoaded: false,
-            geneticStatisticsDisplayed: true,
             compareStatisticsLoaded: false,
             compareStatisticsDisplayed: true
         };
@@ -537,7 +428,7 @@ gaps.controller('gapscontroller', ['$scope', 'Socket', 'Notification', 'Statisti
                 $scope.evolutionChart.chart(element, data);
             },
             clear: function (elementId) {
-                var chartWrapper = document.getElementById(elementId);
+                var chartWrapper = $('#' + elementId);
                 if (chartWrapper && chartWrapper.firstChild) {
                     while (chartWrapper.firstChild) {
                         chartWrapper.removeChild(chartWrapper.firstChild);
@@ -570,7 +461,7 @@ gaps.controller('gapscontroller', ['$scope', 'Socket', 'Notification', 'Statisti
                 $scope.compareChart.chart(element, data);
             },
             clear: function (elementId) {
-                var chartWrapper = document.getElementById(elementId);
+                var chartWrapper = $('#' + elementId);
                 if (chartWrapper && chartWrapper.firstChild) {
                     while (chartWrapper.firstChild) {
                         chartWrapper.removeChild(chartWrapper.firstChild);

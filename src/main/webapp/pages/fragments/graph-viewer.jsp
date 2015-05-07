@@ -1,4 +1,4 @@
-<div id="graph-viewer" ng-show="load.dataLoaded">
+<div id="graph-viewer" ng-show="load.graphViewerLoaded">
     <div class="row">
         <a name="graph-viewer"></a>
         <div class="col-md-12 col-sm-12 col-xs-12">
