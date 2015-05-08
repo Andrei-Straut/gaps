@@ -8,6 +8,7 @@ gaps.factory('Statistics', ['$rootScope', function ($rootScope) {
         var _graphStatisticsLoaded = false;
         var _pathStatisticsLoaded = false;
         var _geneticStatisticsLoaded = false;
+        var _compareStatisticsLoaded = false;
 
         // Graph statistics per edge
         var _graphStatistics = {
@@ -82,6 +83,14 @@ gaps.factory('Statistics', ['$rootScope', function ($rootScope) {
 
         Service.setGeneticStatisticsLoaded = function(statisticsLoaded) {
             _geneticStatisticsLoaded = statisticsLoaded;
+        };
+        
+        Service.getCompareStatisticsLoaded = function() {
+            return _compareStatisticsLoaded;
+        };
+
+        Service.setCompareStatisticsLoaded = function(statisticsLoaded) {
+            _compareStatisticsLoaded = statisticsLoaded;
         };
 
         Service.getSourceNodeId = function () {

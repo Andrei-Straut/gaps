@@ -1,4 +1,4 @@
-<div id="genetic-statistics" ng-show="load.evolutionComputed">
+<div id="genetic-statistics" ng-show="getStatistics().getGeneticStatisticsLoaded();">
     <div class="row">
         <a name="genetic-statistics"></a>
         <div class="col-md-9 col-sm-12 col-xs-12">
@@ -12,7 +12,7 @@
                             Genetic Statistics
                         </div>
 
-                        <div class="panel-body" ng-model="geneticStatistics" ng-show="(getStatistics().getGeneticStatisticsLoaded()) && geneticStatisticsDisplayed">
+                        <div class="panel-body" ng-show="geneticStatisticsDisplayed">
                             (Move slider to select generation or 
                             <button id="genetic-statistics-path-reset" type="reset" class="btn btn-primary btn-sm"
                                     ng-click="resetPathSelection();">Reset Selection</button>)
@@ -49,7 +49,7 @@
                 </div>
             </div>
 
-            <div class="row" ng-show="load.evolutionComputed && geneticStatisticsDisplayed">
+            <div class="row" ng-show="geneticStatisticsDisplayed">
                 <div class="col-md-12 col-sm-12 col-xs-12">
                     <div class="panel panel-default">
                         <div class="panel-heading">
@@ -63,7 +63,7 @@
             </div>
         </div>
 
-        <div class="col-md-3 col-sm-12 col-xs-12" ng-show="(getStatistics().getGeneticStatisticsLoaded()) && geneticStatisticsDisplayed">
+        <div class="col-md-3 col-sm-12 col-xs-12" ng-show="geneticStatisticsDisplayed">
             <div class="panel panel-primary text-center no-boder bg-color-green">
                 <div class="panel-footer back-footer-green">
                     Genetic Statistics: Best Path Values

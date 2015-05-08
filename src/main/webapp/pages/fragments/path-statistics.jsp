@@ -67,7 +67,7 @@
             </div>
         </div>
 
-        <div class="col-md-3 col-sm-12 col-xs-12" ng-show="pathStatisticsLoaded && pathStatisticsDisplayed">
+        <div class="col-md-3 col-sm-12 col-xs-12" ng-show="pathStatisticsDisplayed">
             <div class="panel panel-primary text-center no-boder bg-color-green">
                 <div class="panel-footer back-footer-green">
                     Path Statistics: Path Values

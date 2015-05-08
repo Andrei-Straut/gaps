@@ -27,7 +27,7 @@
                 </div>
             </div>
         </div>
-        <div class="col-md-3 col-sm-12 col-xs-12" ng-show="graphStatisticsLoaded && graphStatisticsDisplayed">
+        <div class="col-md-3 col-sm-12 col-xs-12" ng-show="graphStatisticsDisplayed">
             <div class="panel panel-primary text-center no-boder bg-color-green">
                 <div class="panel-footer back-footer-green">
                     Graph Statistics: Edge Values
