@@ -35,6 +35,7 @@ public class MessageRequestMock {
         getGraphRequestData.addProperty("numberOfEdges", 100);
         getGraphRequestData.addProperty("minimumEdgeWeight", 1);
         getGraphRequestData.addProperty("maximumEdgeWeight", 100);
+        getGraphRequestData.addProperty("isStatic", true);
         
 	getGraphRequest.addProperty("callback_id", 1);
 	getGraphRequest.addProperty("type", "GetGraph");
