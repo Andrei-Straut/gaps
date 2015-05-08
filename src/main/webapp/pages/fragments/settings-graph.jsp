@@ -96,6 +96,18 @@
                             </label>
                         </div>
 
+                        <div class="form-group">        
+                            <label class="control-label" for="graphGenerationType">Graph Generation</label><br/>
+                            <label class="checkbox-inline">
+                                <input id="graphGenerationType"
+                                       type="checkbox"
+                                       checked
+                                       data-toggle="toggle"
+                                       data-on="Static"
+                                       data-off="Random">
+                            </label>
+                        </div>
+
                         <button 
                             id="graph-viewer-generate-graph" 
                             class="btn btn-primary btn-lg"

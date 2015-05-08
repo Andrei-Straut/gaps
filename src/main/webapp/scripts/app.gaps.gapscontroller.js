@@ -3,6 +3,17 @@
  */
 gaps.controller('gapscontroller', ['$rootScope', '$scope', 'Socket', 'Notification', 'Statistics',
     function ($rootScope, $scope, $socket, Notification, Statistics) {
+        
+        $scope.init = function () {
+            var $graphGenerationType = $('#graphGenerationType').bootstrapToggle({
+                on: 'Static',
+                off: 'Random'
+            });
+            $('#graphGenerationType').prop('checked', $scope.graphSettings.isStatic).change();
+            $graphGenerationType.change(function () {
+                $scope.graphSettings.isStatic = $('#graphGenerationType').prop('checked');
+            });
+        };
 
         $scope.getStatistics = function () {
             return Statistics;
@@ -120,7 +131,6 @@ gaps.controller('gapscontroller', ['$rootScope', '$scope', 'Socket', 'Notificati
          * View and statistics functions
          * =====================================================================
          */
-
         $scope.initGeneticSettingsAdvanced = function () {
             var $keepPopSizeConstantToggle = $('#keepPopSizeConstant').bootstrapToggle({
                 on: 'Yes',
@@ -259,7 +269,7 @@ gaps.controller('gapscontroller', ['$rootScope', '$scope', 'Socket', 'Notificati
             wip: false,
             wipType: '',
             graphViewerLoaded: false,
-            graphDisplayed: true,
+            graphDisplayed: true
         };
         // Settings for graph generation
         $scope.graphSettings = {
@@ -268,7 +278,8 @@ gaps.controller('gapscontroller', ['$rootScope', '$scope', 'Socket', 'Notificati
             numberOfEdges: 100,
             numberOfEdgesMax: 1000,
             minimumEdgeWeight: 1,
-            maximumEdgeWeight: 100
+            maximumEdgeWeight: 100,
+            isStatic: true
         };
         // Settings for genetic algorithm
         $scope.geneticSettings = {

@@ -8,12 +8,14 @@ public class GraphSettings {
     private int numberOfEdges;
     private int minimumEdgeWeight;
     private int maximumEdgeWeight;
+    private boolean isStatic;
     
     public GraphSettings(int numberOfNodes, int numberOfEdges) {
 	this.numberOfNodes = numberOfNodes;
 	this.numberOfEdges = numberOfEdges;
 	this.minimumEdgeWeight = 1;
 	this.maximumEdgeWeight = 1;
+	this.isStatic = true;
     }
     
     public GraphSettings(JsonObject settings) throws Exception {
@@ -51,6 +53,14 @@ public class GraphSettings {
     public void setMaximumEdgeWeight(int maximumEdgeWeight) {
 	this.maximumEdgeWeight = maximumEdgeWeight;
     }
+
+    public boolean isStatic() {
+	return isStatic;
+    }
+
+    public void setIsStatic(boolean isStatic) {
+	this.isStatic = isStatic;
+    }
     
     public JsonObject toJson() {
 	JsonObject settings = new JsonObject();
@@ -59,6 +69,7 @@ public class GraphSettings {
 	settings.addProperty("numberOfEdges", this.numberOfEdges);
 	settings.addProperty("minimumEdgeWeight", this.minimumEdgeWeight);
 	settings.addProperty("maximumEdgeWeight", this.maximumEdgeWeight);
+	settings.addProperty("isStatic", this.isStatic);
 	
 	return settings;
     }
@@ -77,6 +88,10 @@ public class GraphSettings {
 	
 	if(settings.has("maximumEdgeWeight")) {
 	    this.maximumEdgeWeight = settings.get("maximumEdgeWeight").getAsInt();
+	}
+	
+	if(settings.has("isStatic")) {
+	    this.isStatic = settings.get("isStatic").getAsBoolean();
 	}
 	
 	return this;

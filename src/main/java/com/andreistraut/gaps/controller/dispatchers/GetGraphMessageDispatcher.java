@@ -5,6 +5,7 @@ import com.andreistraut.gaps.controller.MessageRequest;
 import com.andreistraut.gaps.controller.MessageResponse;
 import com.andreistraut.gaps.controller.MessageType;
 import com.andreistraut.gaps.datamodel.graph.DirectedWeightedGraph;
+import com.andreistraut.gaps.datamodel.graph.DirectedWeightedGraphSemiRandom;
 import com.andreistraut.gaps.datamodel.graph.DirectedWeightedGraphStatic;
 import com.andreistraut.gaps.datamodel.graph.GraphSettings;
 import java.util.ArrayList;
@@ -52,7 +53,12 @@ public class GetGraphMessageDispatcher extends MessageDispatcher {
         MessageResponse response = new MessageResponse(this.request.getCallbackId());
 
         try {
-            this.graph = new DirectedWeightedGraphStatic(this.graphSettings);
+	    if(this.graphSettings.isStatic()) {
+		this.graph = new DirectedWeightedGraphStatic(this.graphSettings);
+	    } else {
+		this.graph = new DirectedWeightedGraphSemiRandom(this.graphSettings);
+	    }
+	    
             this.graph.initNodes();
             this.graph.initEdges();
 

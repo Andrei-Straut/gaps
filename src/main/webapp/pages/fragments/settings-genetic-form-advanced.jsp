@@ -51,7 +51,7 @@
             <label class="control-label" for="alwaysCalculateFitness">Always Calculate Fitness</label>     
         </div>
 
-        <div class="form-group">        
+        <div class="form-group">
             <label class="checkbox-inline">
                 <input id="preserveFittestIndividual"
                        type="checkbox"
