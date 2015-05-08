@@ -18,7 +18,7 @@
                    min="0"
                    max="100"
                    ng-model="geneticSettings.minPopSizePercent" 
-                   ng-disabled="!(load.graphStatisticsLoaded)"
+                   ng-disabled="!(getStatistics().getGraphStatisticsLoaded())"
                    disabled>
             <label class="control-label" 
                    for="minPopSizePercent" 
@@ -34,7 +34,8 @@
                        checked
                        data-toggle="toggle"
                        data-on="Yes"
-                       data-off="No">
+                       data-off="No"
+                       ng-disabled="!(getStatistics().getGraphStatisticsLoaded())">
             </label>
             <label class="control-label" for="keepPopSizeConstant">Keep Population Constant</label>
         </div>
@@ -46,7 +47,8 @@
                        checked
                        data-toggle="toggle"
                        data-on="Yes"
-                       data-off="No">
+                       data-off="No"
+                       ng-disabled="!(getStatistics().getGraphStatisticsLoaded())">
             </label>
             <label class="control-label" for="alwaysCalculateFitness">Always Calculate Fitness</label>     
         </div>
@@ -58,7 +60,8 @@
                        checked
                        data-toggle="toggle"
                        data-on="Yes"
-                       data-off="No">
+                       data-off="No"
+                       ng-disabled="!(getStatistics().getGraphStatisticsLoaded())">
             </label>
             <label class="control-label" for="preserveFittestIndividual">Preserve Fittest</label>    
         </div>

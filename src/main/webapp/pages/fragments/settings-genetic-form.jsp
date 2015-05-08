@@ -10,7 +10,7 @@
            class="form-control"
            type="number"
            ng-model="geneticSettings.sourceNode"
-           ng-disabled="!(load.graphStatisticsLoaded)"
+           ng-disabled="!(getStatistics().getGraphStatisticsLoaded())"
            min="0"
            max="{{graphSettings.numberOfNodes - 1}}"
            disabled>
@@ -37,7 +37,7 @@
            class="form-control"
            type="number"
            ng-model="geneticSettings.destinationNode"
-           ng-disabled="!(load.graphStatisticsLoaded)"
+           ng-disabled="!(getStatistics().getGraphStatisticsLoaded())"
            min="0"
            max="{{graphSettings.numberOfNodes - 1}}"
            disabled>
@@ -64,7 +64,7 @@
            class="form-control"
            type="number"
            ng-model="geneticSettings.numberOfPaths"
-           ng-disabled="!(load.graphStatisticsLoaded)"
+           ng-disabled="!(getStatistics().getGraphStatisticsLoaded())"
            min="1"
            disabled>
     <label class="control-label" 
@@ -85,7 +85,7 @@
            class="form-control" 
            type="number"
            ng-model="geneticSettings.numberOfEvolutions"
-           ng-disabled="!(load.graphStatisticsLoaded)"
+           ng-disabled="!(getStatistics().getGraphStatisticsLoaded())"
            min="100"
            disabled>
     <label class="control-label" 
@@ -106,7 +106,7 @@
            class="form-control" 
            type="number"
            ng-model="geneticSettings.stopConditionPercent" 
-           ng-disabled="!(load.graphStatisticsLoaded)"
+           ng-disabled="!(getStatistics().getGraphStatisticsLoaded())"
            min="0"
            max="100"
            disabled>
