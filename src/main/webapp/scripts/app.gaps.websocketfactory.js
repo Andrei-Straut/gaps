@@ -10,6 +10,7 @@ gaps.factory('Socket', ['$q', '$rootScope', function ($q, $rootScope) {
         var currentCallbackId = 0;
         // Create our websocket object with the address to the websocket
         var ws = new WebSocket(wsURL);
+
         ws.onopen = function (event) {
             console.log("Socket opened!");
         };
@@ -59,8 +60,23 @@ gaps.factory('Socket', ['$q', '$rootScope', function ($q, $rootScope) {
                 cb: defer
             };
             request.callback_id = callbackId;
-            console.log('Sending request', request);
-            ws.send(JSON.stringify(request));
+
+            if (ws.readyState == 0 || ws.readyState == 2 || ws.readyState == 3) {
+                var interval = window.setInterval(function () {
+                    var response = {};
+                    response.callback_id = callbackId;
+                    response.status = 410;
+                    response.isEnded = true;
+                    response.description = 'Connection was closed in the meantime, please try and refresh the page';
+                    listener(response);
+
+                    window.clearInterval(interval);
+                }, 1000);
+            } else {
+                console.log('Sending request', request);
+                ws.send(JSON.stringify(request));
+            }
+
             return defer.promise;
         }
 
