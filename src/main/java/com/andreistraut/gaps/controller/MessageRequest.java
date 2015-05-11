@@ -12,7 +12,7 @@ public class MessageRequest {
     private JsonObject data;
 
     public MessageRequest(String request) throws JsonSyntaxException {
-	JsonObject requestJson = (new JsonParser()).parse(request).getAsJsonObject();	
+	JsonObject requestJson = (new JsonParser()).parse(request).getAsJsonObject();
 	this.fromJson(requestJson);
     }
 
@@ -40,7 +40,13 @@ public class MessageRequest {
 	}
 	
 	this.callbackId = json.get("callback_id").getAsInt();
-	this.type = MessageType.valueOf(json.get("type").getAsString().trim().toUpperCase());
+	
+	try {
+	    this.type = MessageType.valueOf(json.get("type").getAsString().trim().toUpperCase());
+	} catch(IllegalArgumentException e) {
+	    this.type = MessageType.UNKNOWN;
+	}
+	
 	this.data = json.get("data").getAsJsonObject();
     }
 

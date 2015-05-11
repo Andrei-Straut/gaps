@@ -11,7 +11,7 @@ public class DirectedWeightedGraphImported extends DirectedWeightedGraph {
 	super(1, 1);
 	this.fromJson(graph);
     }
-    
+
     private DirectedWeightedGraphImported(int numberOfNodes, int numberOfEdges) {
 	super(numberOfNodes, numberOfEdges);
     }
@@ -50,8 +50,8 @@ public class DirectedWeightedGraphImported extends DirectedWeightedGraph {
 	    }
 
 	    JsonArray edgesJson = nodeJson.get("adjacencies").getAsJsonArray();
-	    for (int j = 0; j < edgesJson.size(); i++) {
-		JsonObject edgeJson = edgesJson.get(i).getAsJsonObject();
+	    for (int j = 0; j < edgesJson.size(); j++) {
+		JsonObject edgeJson = edgesJson.get(j).getAsJsonObject();
 
 		if (edgeJson.has("nodeFrom") && edgeJson.has("nodeTo")) {
 		    Node source = this.hasNode(edgeJson.get("nodeFrom").getAsString())
@@ -61,28 +61,28 @@ public class DirectedWeightedGraphImported extends DirectedWeightedGraph {
 		    Node destination = this.hasNode(edgeJson.get("nodeTo").getAsString())
 			    ? this.getNodeById(edgeJson.get("nodeTo").getAsString())
 			    : new Node(edgeJson.get("nodeTo").getAsString());
-		    
+
 		    int cost = 1;
 		    boolean isDirected = true;
-		    if(edgeJson.has("data")) {
+		    if (edgeJson.has("data")) {
 			JsonObject data = edgeJson.get("data").getAsJsonObject();
-			
-			if(data.has("cost")) {
+
+			if (data.has("cost")) {
 			    cost = data.get("cost").getAsInt();
-			}			
-			
-			if(data.has("isDirected")) {
+			}
+
+			if (data.has("isDirected")) {
 			    isDirected = data.get("isDirected").getAsBoolean();
 			}
 		    }
-		    
+
 		    DirectedWeightedEdge edge = new DirectedWeightedEdge(source, destination, cost, isDirected);
-		    
+
 		    this.addEdge(source, destination, edge);
 		}
 	    }
 	}
-	
+
 	this.numberOfNodes = this.vertexSet().size();
 	this.numberOfEdges = this.vertexSet().size();
 

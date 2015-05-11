@@ -107,7 +107,7 @@ public abstract class DirectedWeightedGraph extends DirectedPseudograph<Node, Di
 
     @Override
     public boolean addVertex(Node v) {
-	this.vertexSet().add(v);
+	super.addVertex(v);
 
 	if (this.nodeIdMap == null) {
 	    this.nodeIdMap = new HashMap<String, Node>();

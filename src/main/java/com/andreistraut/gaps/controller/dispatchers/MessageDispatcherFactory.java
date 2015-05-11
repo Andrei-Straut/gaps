@@ -33,6 +33,11 @@ public class MessageDispatcherFactory {
                         controller, session, messageType);
                 break;
             }
+            case UPLOADGRAPH: {
+                dispatcher = new UploadGraphMessageDispatcher(
+                        controller, session, messageType);
+                break;
+            }
             case COMPUTEPATHS: {
                 dispatcher = new ComputePathMessageDispatcher(
                         controller, session, messageType);
@@ -83,6 +88,8 @@ public class MessageDispatcherFactory {
 
         if (dispatcher instanceof GetGraphMessageDispatcher) {
             this.graph = ((GetGraphMessageDispatcher) dispatcher).getGraph();
+        } else if (dispatcher instanceof UploadGraphMessageDispatcher) {
+            this.graph = ((UploadGraphMessageDispatcher) dispatcher).getGraph();
         } else if (dispatcher instanceof ComputePathMessageDispatcher) {
             this.paths = ((ComputePathMessageDispatcher) dispatcher).getPaths();
         }

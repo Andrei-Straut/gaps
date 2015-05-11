@@ -28,10 +28,27 @@ gaps.controller('gapscontroller', ['$rootScope', '$scope', 'Socket', 'Notificati
             $scope.clearNotifs(3000);
             $scope.notifyInfo('Uploading graph...');
             var interval = window.setInterval(function () {
-                $scope.graphGeneration = $socket.getGraph($scope.graphSettings);
+                $('#graphSettingsAdvancedModal').modal('hide');
+
+                $scope.graphUpload = $socket.uploadGraph($scope.graphJson);
+                $scope.graphUpload.then(function (response) {
+                    if (response.status === 200) {
+                        $scope.initGraphView(response.data.graph);
+                        Statistics.setGraphStatistics(response.data.statistics);
+
+                        $scope.load.wip = false;
+                        $scope.load.wipType = '';
+                        $rootScope.$broadcast('graphDataLoaded', response.data);
+                    } else {
+                        $scope.notifyError(response.description, $('#modalLoadingError'));
+                    }
+                }).catch(function (e) {
+                    $scope.notifyError(e.description, $('#modalLoadingError'));
+                });
 
                 window.clearInterval(interval);
             }, 1000);
+
         };
         $scope.processGraph = function () {
             $scope.clearNotifs(3000);
@@ -168,31 +185,33 @@ gaps.controller('gapscontroller', ['$rootScope', '$scope', 'Socket', 'Notificati
                 $scope.geneticSettings.preserveFittestIndividual = $('#preserveFittestIndividual').prop('checked');
             });
         };
-        $scope.previewGraph = function () {            
-            var $graphPreviewWrapper = $('div#infovis-preview');
+        $scope.previewGraph = function () {
+            var graphPreviewWrapper = $('div#infovis-preview');
 
-            if ($graphPreviewWrapper && $graphPreviewWrapper[0]) {
-                $graphPreviewWrapper = $graphPreviewWrapper[0];
+            if (graphPreviewWrapper && graphPreviewWrapper[0]) {
+                graphPreviewWrapper = graphPreviewWrapper[0];
             }
 
-            if ($graphPreviewWrapper && $graphPreviewWrapper.firstChild) {
-                while ($graphPreviewWrapper.firstChild) {
-                    $graphPreviewWrapper.removeChild($graphPreviewWrapper.firstChild);
+            if (graphPreviewWrapper && graphPreviewWrapper.firstChild) {
+                while (graphPreviewWrapper.firstChild) {
+                    graphPreviewWrapper.removeChild(graphPreviewWrapper.firstChild);
                 }
             }
 
             try {
-                $scope.graphJson = JSON.parse($('#graphJson').val());
+                var parsedJson = JSON.parse($('#graphJson').val());
+                $scope.graphJson.graph = parsedJson;
                 $scope.uploadJsonValid = true;
 
-                jitPreview($scope.graphJson);
+                jitPreview($scope.graphJson.graph);
             } catch (e) {
                 $scope.uploadJsonValid = false;
             }
         };
         $scope.checkGraph = function () {
             try {
-                $scope.graphJson = JSON.parse($('#graphJson').val());
+                var parsedJson = JSON.parse($('#graphJson').val());
+                $scope.graphJson.graph = parsedJson;
                 $scope.uploadJsonValid = true;
 
                 return true;
@@ -208,7 +227,7 @@ gaps.controller('gapscontroller', ['$rootScope', '$scope', 'Socket', 'Notificati
             $rootScope.$broadcast('resetViews', {});
             $scope.resetGraphView();
             jitInit($data);
-            $scope.graphJson = $data;
+            
             $(window).scrollTop($(window).scrollTop() + 1);
             $(window).scrollTop($(window).scrollTop() - 1);
             $scope.load.graphViewerLoaded = true;
@@ -226,6 +245,11 @@ gaps.controller('gapscontroller', ['$rootScope', '$scope', 'Socket', 'Notificati
         };
         $scope.resetGraphView = function () {
             var graphWrapper = $("#infovis");
+
+            if (graphWrapper && graphWrapper[0]) {
+                graphWrapper = graphWrapper[0];
+            }
+            
             if (graphWrapper && graphWrapper.firstChild) {
                 while (graphWrapper.firstChild) {
                     graphWrapper.removeChild(graphWrapper.firstChild);
@@ -243,7 +267,7 @@ gaps.controller('gapscontroller', ['$rootScope', '$scope', 'Socket', 'Notificati
                     labelWrapper.removeChild(labelWrapper.firstChild);
                 }
             }
-            $scope.graphJson = {};
+            
             $scope.load.graphViewerLoaded = false;
         };
         /*
@@ -312,47 +336,49 @@ gaps.controller('gapscontroller', ['$rootScope', '$scope', 'Socket', 'Notificati
          * =====================================================================
          */
         // Keep a copy of the graph in JSON format
-        $scope.graphJson = [
-            {
-                id: '0',
-                name: '0',
-                data: {},
-                adjacencies: [
-                    {
-                        nodeFrom: '0',
-                        nodeTo: '1',
-                        data: {
-                            id: 97316068,
-                            cost: 100,
-                            isDirected: true
+        $scope.graphJson = {
+            graph:
+                    [
+                        {
+                            id: '0',
+                            name: '0',
+                            data: {},
+                            adjacencies: [
+                                {
+                                    nodeFrom: '0',
+                                    nodeTo: '1',
+                                    data: {
+                                        id: 97316068,
+                                        cost: 100,
+                                        isDirected: true
+                                    }
+                                }
+                            ]
+                        },
+                        {
+                            id: '1',
+                            name: '1',
+                            data: {},
+                            adjacencies: [
+                                {
+                                    nodeFrom: '1',
+                                    nodeTo: '2',
+                                    data: {
+                                        id: 97316063,
+                                        cost: 100,
+                                        isDirected: true
+                                    }
+                                }
+                            ]
+                        },
+                        {
+                            id: '2',
+                            name: '2',
+                            data: {},
+                            adjacencies: []
                         }
-                    }
-                ]
-            },
-            {
-                id: '1',
-                name: '1',
-                data: {},
-                adjacencies: [
-                    {
-                        nodeFrom: '1',
-                        nodeTo: '2',
-                        data: {
-                            id: 97316063,
-                            cost: 100,
-                            isDirected: true
-                        }
-                    }
-                ]
-            },
-            {
-                id: '2',
-                name: '2',
-                data: {},
-                adjacencies: []
-            }
-        ];
-        $scope.graphJsonString = JSON.stringify($scope.graphJson, null, 2);
+                    ]};
+        $scope.graphJsonString = JSON.stringify($scope.graphJson.graph, null, 2);
         $scope.uploadJsonValid = true;
 
         // Keep track of what's been loaded

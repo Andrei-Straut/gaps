@@ -5,5 +5,6 @@ public enum MessageType {
     COMPUTEPATHS,
     EVOLVE,
     COMPARE,
+    UPLOADGRAPH,
     UNKNOWN
 }

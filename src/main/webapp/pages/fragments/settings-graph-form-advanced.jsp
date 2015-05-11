@@ -17,7 +17,7 @@
 
 <div class="row">
     <div class="col-md-12 col-sm-12 col-xs-12">
-        <div class="form-group"> 
+        <div class="form-group">
             <button 
                 id="graph-viewer-preview-graph" 
                 class="btn btn-primary btn-sm"

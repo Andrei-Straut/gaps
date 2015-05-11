@@ -153,7 +153,7 @@
                                 class="btn btn-primary" 
                                 type="button" 
                                 ng-disabled="!uploadJsonValid"
-                                data-dismiss="modal">Upload</button>
+                                ng-click="uploadGraph();">Upload</button>
                             <button id="graphUploadCancelButton" type="button" class="btn btn-warning" data-dismiss="modal">Cancel</button>
                         </div>
                     </div>

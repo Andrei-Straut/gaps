@@ -75,7 +75,6 @@ public class Controller {
         } catch (JsonSyntaxException e) {
             Logger.getLogger(Controller.class.getName()).log(Level.SEVERE,
                     "{0}: Could not parse JSON request: {1}", new Object[]{session.getId(), e});
-            e.printStackTrace();
 
             response = new MessageResponse(0);
             response
@@ -85,6 +84,19 @@ public class Controller {
             respond(session, response);
             return;
         }
+	
+	if(request.getType() == MessageType.UNKNOWN) {
+            Logger.getLogger(Controller.class.getName()).log(Level.WARNING,
+                    "{0}: Message type unknown: {1}", new Object[]{session.getId(), message});
+
+            response = new MessageResponse(request.getCallbackId());
+            response
+                    .setStatus(HttpServletResponse.SC_BAD_REQUEST)
+                    .setIsEnded(true)
+                    .setDescription("Message type unknown");
+            respond(session, response);
+            return;
+	}
 
         MessageDispatcher messageDispatcher;
         try {

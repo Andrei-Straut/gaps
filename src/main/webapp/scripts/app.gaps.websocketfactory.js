@@ -20,6 +20,14 @@ gaps.factory('Socket', ['$q', '$rootScope', function ($q, $rootScope) {
         ws.onclose = function (event) {
             console.log("Connection closed");
         };
+        Service.uploadGraph = function (graphJson) {
+            var request = {
+                type: "UploadGraph",
+                data: graphJson
+            };
+            var promise = sendRequest(request);
+            return promise;
+        };
         Service.getGraph = function (graphSettings) {
             var request = {
                 type: "GetGraph",
