@@ -6,7 +6,7 @@ import com.andreistraut.gaps.datamodel.genetics.PathChromosome;
 import com.andreistraut.gaps.datamodel.graph.DirectedWeightedEdge;
 import com.andreistraut.gaps.datamodel.graph.DirectedWeightedGraphPath;
 import com.andreistraut.gaps.datamodel.graph.Node;
-import com.andreistraut.gaps.datamodel.mock.DirectedWeightedGraphMockThreeNodeThreeEdges;
+import com.andreistraut.gaps.datamodel.mock.DirectedWeightedGraphMockSemiRandomThreeNodeThreeEdges;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -18,7 +18,7 @@ import org.junit.Test;
 
 public class GraphGeneticsTranslatorTest {
 
-    private DirectedWeightedGraphMockThreeNodeThreeEdges graphMock;
+    private DirectedWeightedGraphMockSemiRandomThreeNodeThreeEdges graphMock;
     private GeneticConfiguration conf;
     private GraphPath<Node, DirectedWeightedEdge> path;
 
@@ -34,7 +34,7 @@ public class GraphGeneticsTranslatorTest {
 
     @Before
     public void setUp() {
-	this.graphMock = new DirectedWeightedGraphMockThreeNodeThreeEdges();
+	this.graphMock = new DirectedWeightedGraphMockSemiRandomThreeNodeThreeEdges();
 	this.conf = new GeneticConfiguration("PathChromosomePopulationTest", this.graphMock.getGraph());
 	this.path = graphMock.getGraph().getKShortestPaths(graphMock.getFirstNode(), graphMock.getThirdNode(), 2).get(1);
     }

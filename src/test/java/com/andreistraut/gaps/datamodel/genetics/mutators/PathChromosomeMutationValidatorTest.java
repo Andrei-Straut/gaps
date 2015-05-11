@@ -3,7 +3,7 @@ package com.andreistraut.gaps.datamodel.genetics.mutators;
 import com.andreistraut.gaps.datamodel.genetics.EdgeGene;
 import com.andreistraut.gaps.datamodel.genetics.GeneticConfiguration;
 import com.andreistraut.gaps.datamodel.genetics.PathChromosome;
-import com.andreistraut.gaps.datamodel.mock.DirectedWeightedGraphMockThreeNodeThreeEdges;
+import com.andreistraut.gaps.datamodel.mock.DirectedWeightedGraphMockSemiRandomThreeNodeThreeEdges;
 import com.andreistraut.gaps.datamodel.mock.PathChromosomeMockTwoGene;
 import java.util.ArrayList;
 import java.util.logging.Level;
@@ -16,7 +16,7 @@ import org.junit.Test;
 
 public class PathChromosomeMutationValidatorTest {
 
-    private DirectedWeightedGraphMockThreeNodeThreeEdges graphMock;
+    private DirectedWeightedGraphMockSemiRandomThreeNodeThreeEdges graphMock;
     private GeneticConfiguration conf;
     private PathChromosome twoGeneChromosome;
     private final int RUN_LIMIT = 10;
@@ -33,7 +33,7 @@ public class PathChromosomeMutationValidatorTest {
 
     @Before
     public void setUp() throws InvalidConfigurationException {
-	this.graphMock = new DirectedWeightedGraphMockThreeNodeThreeEdges();
+	this.graphMock = new DirectedWeightedGraphMockSemiRandomThreeNodeThreeEdges();
 	this.conf = new GeneticConfiguration("PathChromosomeCrossoverValidatorTest", this.graphMock.getGraph());
 	conf.setKeepPopulationSizeConstant(false);
 

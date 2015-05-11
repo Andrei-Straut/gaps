@@ -10,7 +10,7 @@ import com.andreistraut.gaps.datamodel.graph.Node;
  * Nodes are 1, 2, 3
  * Edges are 1-2 (cost 1), 2-3 (cost 2), 1-3 (cost 1)
  */
-public class DirectedWeightedGraphMockThreeNodeThreeEdges {
+public class DirectedWeightedGraphMockSemiRandomThreeNodeThreeEdges {
 
     private Node firstNode;
     private Node secondNode;
@@ -23,7 +23,7 @@ public class DirectedWeightedGraphMockThreeNodeThreeEdges {
     private DirectedWeightedEdge firstToThirdEdge;
     private DirectedWeightedGraphSemiRandom graph;
 
-    public DirectedWeightedGraphMockThreeNodeThreeEdges() {
+    public DirectedWeightedGraphMockSemiRandomThreeNodeThreeEdges() {
 	this.reset();
     }
 

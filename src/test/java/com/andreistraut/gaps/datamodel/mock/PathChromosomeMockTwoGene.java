@@ -23,7 +23,7 @@ public class PathChromosomeMockTwoGene {
     private EdgeGene secondToThirdGene;
     private final GeneticConfiguration conf;
     
-    private DirectedWeightedGraphMockThreeNodeThreeEdges graphMock;
+    private DirectedWeightedGraphMockSemiRandomThreeNodeThreeEdges graphMock;
     
     public PathChromosomeMockTwoGene(GeneticConfiguration conf) throws InvalidConfigurationException {
 	this.conf = conf;
@@ -31,7 +31,7 @@ public class PathChromosomeMockTwoGene {
     }
 
     public final void reset() throws InvalidConfigurationException {
-	this.graphMock = new DirectedWeightedGraphMockThreeNodeThreeEdges();
+	this.graphMock = new DirectedWeightedGraphMockSemiRandomThreeNodeThreeEdges();
 	
 	this.firstToSecondGene = new EdgeGene(this.graphMock.getFirstToSecondEdge(), this.conf);
 	this.secondToThirdGene = new EdgeGene(this.graphMock.getSecondToThirdEdge(), this.conf);

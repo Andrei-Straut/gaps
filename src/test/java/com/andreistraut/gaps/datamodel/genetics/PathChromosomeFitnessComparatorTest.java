@@ -1,6 +1,6 @@
 package com.andreistraut.gaps.datamodel.genetics;
 
-import com.andreistraut.gaps.datamodel.mock.DirectedWeightedGraphMockThreeNodeThreeEdges;
+import com.andreistraut.gaps.datamodel.mock.DirectedWeightedGraphMockSemiRandomThreeNodeThreeEdges;
 import com.andreistraut.gaps.datamodel.mock.PathChromosomeMockOneGene;
 import com.andreistraut.gaps.datamodel.mock.PathChromosomeMockTwoGene;
 import java.util.ArrayList;
@@ -15,7 +15,7 @@ import org.junit.Test;
 
 public class PathChromosomeFitnessComparatorTest {
 
-    private DirectedWeightedGraphMockThreeNodeThreeEdges graphMock;
+    private DirectedWeightedGraphMockSemiRandomThreeNodeThreeEdges graphMock;
     private GeneticConfiguration conf;
     private ArrayList<EdgeGene> genes;
 
@@ -31,7 +31,7 @@ public class PathChromosomeFitnessComparatorTest {
 
     @Before
     public void setUp() throws InvalidConfigurationException {
-	graphMock = new DirectedWeightedGraphMockThreeNodeThreeEdges();
+	graphMock = new DirectedWeightedGraphMockSemiRandomThreeNodeThreeEdges();
 	conf = new GeneticConfiguration("PathChromosomeFitnessEvaluatorTest", graphMock.getGraph());
 	EdgeGene firstToSecondGene = new EdgeGene(graphMock.getFirstToSecondEdge(), conf);
 	EdgeGene secondToThirdGene = new EdgeGene(graphMock.getSecondToThirdEdge(), conf);

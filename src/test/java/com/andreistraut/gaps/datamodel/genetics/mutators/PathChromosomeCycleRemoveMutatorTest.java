@@ -5,7 +5,7 @@ import com.andreistraut.gaps.datamodel.genetics.GeneticConfiguration;
 import com.andreistraut.gaps.datamodel.genetics.PathChromosome;
 import com.andreistraut.gaps.datamodel.genetics.PathChromosomePopulation;
 import com.andreistraut.gaps.datamodel.graph.DirectedWeightedEdge;
-import com.andreistraut.gaps.datamodel.mock.DirectedWeightedGraphMockThreeNodeThreeEdges;
+import com.andreistraut.gaps.datamodel.mock.DirectedWeightedGraphMockSemiRandomThreeNodeThreeEdges;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -18,7 +18,7 @@ import org.junit.Test;
 
 public class PathChromosomeCycleRemoveMutatorTest {
 
-    private DirectedWeightedGraphMockThreeNodeThreeEdges graphMock;
+    private DirectedWeightedGraphMockSemiRandomThreeNodeThreeEdges graphMock;
     private GeneticConfiguration conf;
     private ArrayList<EdgeGene> genes;
     private PathChromosome circularChromosome;
@@ -37,7 +37,7 @@ public class PathChromosomeCycleRemoveMutatorTest {
 
     @Before
     public void setUp() throws InvalidConfigurationException {
-	this.graphMock = new DirectedWeightedGraphMockThreeNodeThreeEdges();
+	this.graphMock = new DirectedWeightedGraphMockSemiRandomThreeNodeThreeEdges();
 	this.conf = new GeneticConfiguration("PathChromosomeCycleRemoveMutatorTest", this.graphMock.getGraph());
 	this.conf.setKeepPopulationSizeConstant(false);
 
