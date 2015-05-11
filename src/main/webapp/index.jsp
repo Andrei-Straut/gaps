@@ -58,7 +58,7 @@
 
     </head>
     <body>
-        <div id="wrapper" ng-controller="gapscontroller" ng-init="init()">
+        <div id="wrapper" ng-controller="gapscontroller" ng-init="init();">
             <a name="top"></a>
 
             <!-- /. NAV TOP  -->

@@ -38,13 +38,30 @@ div#infovis {
     height: 350px;
 }
 
+div#infovis-preview {
+    margin: auto;
+    overflow: hidden;
+    height: 200px;
+}
+
 div#infovis-canvaswidget {
-    display: block;
+    display: inline-block;
     overflow: hidden;
     height: 350px;
 }
 
+div#infovis-preview-canvaswidget {
+    display: block;
+    overflow: hidden;
+    height: 200px;
+}
+
 div#infovis-canvas {
+    width: 100%;
+    height: 100%;
+}
+
+div#infovis-preview-canvas {
     width: 100%;
     height: 100%;
 }

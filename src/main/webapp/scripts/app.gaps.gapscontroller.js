@@ -3,7 +3,7 @@
  */
 gaps.controller('gapscontroller', ['$rootScope', '$scope', 'Socket', 'Notification', 'Statistics',
     function ($rootScope, $scope, $socket, Notification, Statistics) {
-        
+
         $scope.init = function () {
             var $graphGenerationType = $('#graphGenerationType').bootstrapToggle({
                 on: 'Static',
@@ -24,6 +24,15 @@ gaps.controller('gapscontroller', ['$rootScope', '$scope', 'Socket', 'Notificati
          * Main functions
          * =====================================================================
          */
+        $scope.uploadGraph = function () {
+            $scope.clearNotifs(3000);
+            $scope.notifyInfo('Uploading graph...');
+            var interval = window.setInterval(function () {
+                $scope.graphGeneration = $socket.getGraph($scope.graphSettings);
+
+                window.clearInterval(interval);
+            }, 1000);
+        };
         $scope.processGraph = function () {
             $scope.clearNotifs(3000);
             $scope.notifyInfo('Loading graph...');
@@ -159,10 +168,47 @@ gaps.controller('gapscontroller', ['$rootScope', '$scope', 'Socket', 'Notificati
                 $scope.geneticSettings.preserveFittestIndividual = $('#preserveFittestIndividual').prop('checked');
             });
         };
+        $scope.previewGraph = function () {            
+            var $graphPreviewWrapper = $('div#infovis-preview');
+
+            if ($graphPreviewWrapper && $graphPreviewWrapper[0]) {
+                $graphPreviewWrapper = $graphPreviewWrapper[0];
+            }
+
+            if ($graphPreviewWrapper && $graphPreviewWrapper.firstChild) {
+                while ($graphPreviewWrapper.firstChild) {
+                    $graphPreviewWrapper.removeChild($graphPreviewWrapper.firstChild);
+                }
+            }
+
+            try {
+                $scope.graphJson = JSON.parse($('#graphJson').val());
+                $scope.uploadJsonValid = true;
+
+                jitPreview($scope.graphJson);
+            } catch (e) {
+                $scope.uploadJsonValid = false;
+            }
+        };
+        $scope.checkGraph = function () {
+            try {
+                $scope.graphJson = JSON.parse($('#graphJson').val());
+                $scope.uploadJsonValid = true;
+
+                return true;
+            } catch (e) {
+                $scope.uploadJsonValid = false;
+
+                return false;
+            }
+
+            return false;
+        };
         $scope.initGraphView = function ($data) {
             $rootScope.$broadcast('resetViews', {});
             $scope.resetGraphView();
             jitInit($data);
+            $scope.graphJson = $data;
             $(window).scrollTop($(window).scrollTop() + 1);
             $(window).scrollTop($(window).scrollTop() - 1);
             $scope.load.graphViewerLoaded = true;
@@ -197,6 +243,7 @@ gaps.controller('gapscontroller', ['$rootScope', '$scope', 'Socket', 'Notificati
                     labelWrapper.removeChild(labelWrapper.firstChild);
                 }
             }
+            $scope.graphJson = {};
             $scope.load.graphViewerLoaded = false;
         };
         /*
@@ -264,6 +311,50 @@ gaps.controller('gapscontroller', ['$rootScope', '$scope', 'Socket', 'Notificati
          * Variables
          * =====================================================================
          */
+        // Keep a copy of the graph in JSON format
+        $scope.graphJson = [
+            {
+                id: '0',
+                name: '0',
+                data: {},
+                adjacencies: [
+                    {
+                        nodeFrom: '0',
+                        nodeTo: '1',
+                        data: {
+                            id: 97316068,
+                            cost: 100,
+                            isDirected: true
+                        }
+                    }
+                ]
+            },
+            {
+                id: '1',
+                name: '1',
+                data: {},
+                adjacencies: [
+                    {
+                        nodeFrom: '1',
+                        nodeTo: '2',
+                        data: {
+                            id: 97316063,
+                            cost: 100,
+                            isDirected: true
+                        }
+                    }
+                ]
+            },
+            {
+                id: '2',
+                name: '2',
+                data: {},
+                adjacencies: []
+            }
+        ];
+        $scope.graphJsonString = JSON.stringify($scope.graphJson, null, 2);
+        $scope.uploadJsonValid = true;
+
         // Keep track of what's been loaded
         $scope.load = {
             wip: false,

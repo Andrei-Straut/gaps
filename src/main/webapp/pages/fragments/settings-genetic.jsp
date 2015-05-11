@@ -18,7 +18,7 @@
             </div>
             <div class="panel-body">
                 <form name="geneticsettings" novalidate>
-                    <div class="col-md-6">
+                    <div class="col-md-8">
                         <%@include file="settings-genetic-form.jsp" %>
 
                         <button id="graph-viewer-start-evolution"

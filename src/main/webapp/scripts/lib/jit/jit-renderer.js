@@ -37,6 +37,10 @@ function resizeend() {
         }
     }
 }
+function resizePreviewEnd(fdPreview) {
+    var distanceToRight = $('#infovis-preview').width() - $('#infovis-preview').offset().left;
+    fdPreview.canvas.resize(distanceToRight - 20, $('#infovis-preview').height(), true);
+}
 
 function jitInit(json) {
 
@@ -198,4 +202,46 @@ function jitInit(json) {
     // end
     window.fd = fd;
     return fd;
+}
+
+function jitPreview(json) {
+
+    var fdPreview = new $jit.ForceDirected({
+        injectInto: "infovis-preview",
+        Node: GraphViewerOptions.NodeOptions.get(),
+        Edge: GraphViewerOptions.EdgeOptions.get(),
+        Navigation: {
+            enable: false
+        },
+        iterations: GraphViewerOptions.iterations,
+        levelDistance: GraphViewerOptions.levelDistance,
+        Tips: {
+            enable: false
+        },
+        // Add node events
+        Events: {
+            enable: false
+        }
+    });
+    fdPreview.canvas.clear();
+    // load JSON data.
+    fdPreview.loadJSON(json);
+    // compute positions incrementally and animate.
+    fdPreview.computeIncremental({
+        iter: GraphViewerOptions.iterations,
+        property: 'end',
+        onStep: function (perc) {
+        },
+        onComplete: function () {
+            var distanceToRight = $(window).width() - $('#infovis-preview').offset().left - 60;
+            //fdPreview.canvas.resize(distanceToRight, $('#infovis-preview').height());
+            //resizePreviewEnd(fdPreview);
+
+            fdPreview.animate({
+                modes: ['linear', 'node-property:dim', 'edge-property:lineWidth:color'],
+                transition: $jit.Trans.Circ.easeIn,
+                duration: GraphViewerOptions.computeAnimationDuration
+            });
+        }
+    });
 }
