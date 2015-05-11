@@ -52,7 +52,6 @@ public class UploadGraphMessageDispatcher extends MessageDispatcher {
 
 	try {
 	    this.graph = new DirectedWeightedGraphImported(graphJson);
-	    System.out.println(this.graph.toJson());
 
 	    response
 		    .setStatus(HttpServletResponse.SC_OK)

@@ -32,7 +32,7 @@ public class DirectedWeightedGraphImported extends DirectedWeightedGraph {
     }
 
     public DirectedWeightedGraphImported fromJson(JsonArray graph) throws Exception {
-	if(graph.size() == 0) {
+	if(graph == null || graph.size() == 0) {
 	    throw new Exception("Cannot import empty graph");
 	}
 	
@@ -58,15 +58,27 @@ public class DirectedWeightedGraphImported extends DirectedWeightedGraph {
 		JsonObject edgeJson = edgesJson.get(j).getAsJsonObject();
 
 		if (edgeJson.has("nodeFrom") && edgeJson.has("nodeTo")) {
-		    Node source = this.hasNode(edgeJson.get("nodeFrom").getAsString())
-			    ? this.getNodeById(edgeJson.get("nodeFrom").getAsString())
-			    : new Node(edgeJson.get("nodeFrom").getAsString());
+		    Node source = null;		    
+		    if(this.hasNode(edgeJson.get("nodeFrom").getAsString())) {
+			source = this.getNodeById(edgeJson.get("nodeFrom").getAsString());
+		    } else {
+			source = new Node(edgeJson.get("nodeFrom").getAsString());
+			this.addVertex(source);
+		    }
+		    
+		    Node destination = null;
+		    if(this.hasNode(edgeJson.get("nodeTo").getAsString())) {
+			destination = this.getNodeById(edgeJson.get("nodeTo").getAsString());
+		    } else {
+			destination = new Node(edgeJson.get("nodeTo").getAsString());
+			this.addVertex(destination);
+		    }
 
-		    Node destination = this.hasNode(edgeJson.get("nodeTo").getAsString())
-			    ? this.getNodeById(edgeJson.get("nodeTo").getAsString())
-			    : new Node(edgeJson.get("nodeTo").getAsString());
+		    if(source == null || destination == null) {
+			continue;
+		    }
 
-		    int cost = 1;
+		    int cost = 0;
 		    boolean isDirected = true;
 		    if (edgeJson.has("data")) {
 			JsonObject data = edgeJson.get("data").getAsJsonObject();
@@ -80,8 +92,7 @@ public class DirectedWeightedGraphImported extends DirectedWeightedGraph {
 			}
 		    }
 
-		    DirectedWeightedEdge edge = new DirectedWeightedEdge(source, destination, cost, isDirected);
-
+		    DirectedWeightedEdge edge = new DirectedWeightedEdge(source, destination, cost, isDirected);		    
 		    this.addEdge(source, destination, edge);
 		}
 	    }
