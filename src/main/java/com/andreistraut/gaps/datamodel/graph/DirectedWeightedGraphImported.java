@@ -58,7 +58,7 @@ public class DirectedWeightedGraphImported extends DirectedWeightedGraph {
 		JsonObject edgeJson = edgesJson.get(j).getAsJsonObject();
 
 		if (edgeJson.has("nodeFrom") && edgeJson.has("nodeTo")) {
-		    Node source = null;		    
+		    Node source = null;
 		    if(this.hasNode(edgeJson.get("nodeFrom").getAsString())) {
 			source = this.getNodeById(edgeJson.get("nodeFrom").getAsString());
 		    } else {
