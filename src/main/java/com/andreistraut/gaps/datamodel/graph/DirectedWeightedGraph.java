@@ -1,4 +1,3 @@
-
 package com.andreistraut.gaps.datamodel.graph;
 
 import com.google.gson.JsonArray;
@@ -7,6 +6,7 @@ import java.text.NumberFormat;
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
@@ -21,6 +21,8 @@ public abstract class DirectedWeightedGraph extends DirectedPseudograph<Node, Di
     protected int numberOfNodes;
     protected int numberOfEdges;
     protected DirectedWeightedEdgeFactory factory;
+    protected HashMap<String, Node> nodeIdMap;
+    protected HashMap<String, Node> nodeNameMap;
     protected int maximumEdgeWeight = 1000;
     protected int minimumEdgeWeight = 1;
     protected ArrayList<DirectedWeightedGraphPath> depthFirstSearchResults = new ArrayList<DirectedWeightedGraphPath>();
@@ -35,6 +37,7 @@ public abstract class DirectedWeightedGraph extends DirectedPseudograph<Node, Di
     protected double averageEdgeCost = 0.0;
     protected double averageEdgesPerNode = 0.0;
 
+    //<editor-fold desc="Constructors" defaultstate="collapsed">
     private DirectedWeightedGraph(Class<? extends DirectedWeightedEdge> type) {
 	super(type);
     }
@@ -55,6 +58,7 @@ public abstract class DirectedWeightedGraph extends DirectedPseudograph<Node, Di
 
 	this.factory = new DirectedWeightedEdgeFactory();
     }
+    //</editor-fold>
 
     public int getNumberOfNodes() {
 	return numberOfNodes;
@@ -64,11 +68,59 @@ public abstract class DirectedWeightedGraph extends DirectedPseudograph<Node, Di
 	return numberOfEdges;
     }
 
+    public Node getNodeById(String id) {
+	if (this.nodeIdMap != null && !this.nodeIdMap.isEmpty() && this.nodeIdMap.containsKey(id)) {
+	    return nodeIdMap.get(id);
+	}
+
+	return null;
+    }
+
+    public Node getNodeByName(String name) {
+	if (this.nodeNameMap != null && !this.nodeNameMap.isEmpty() && this.nodeNameMap.containsKey(name)) {
+	    return nodeNameMap.get(name);
+	}
+
+	return null;
+    }
+
+    public Boolean hasNode(String id) {
+	Node node = null;
+	
+	if (this.nodeIdMap != null && !this.nodeIdMap.isEmpty()) {
+	    node = nodeIdMap.get(id);
+	    
+	    if (node != null) {
+		return true;
+	    }
+	}
+
+	return false;
+    }
+
     public ArrayList<Node> getNodes() {
 	ArrayList<Node> nodesList = new ArrayList<Node>();
 	nodesList.addAll(this.vertexSet());
 
 	return nodesList;
+    }
+
+    @Override
+    public boolean addVertex(Node v) {
+	this.vertexSet().add(v);
+
+	if (this.nodeIdMap == null) {
+	    this.nodeIdMap = new HashMap<String, Node>();
+	}
+
+	if (this.nodeNameMap == null) {
+	    this.nodeNameMap = new HashMap<String, Node>();
+	}
+
+	this.nodeIdMap.put(v.getId(), v);
+	this.nodeNameMap.put(v.getName(), v);
+
+	return true;
     }
 
     public ArrayList<DirectedWeightedEdge> getEdges() {
@@ -282,7 +334,8 @@ public abstract class DirectedWeightedGraph extends DirectedPseudograph<Node, Di
 
 	return statistics;
     }
-    
+
     public abstract ArrayList<Node> initNodes();
+
     public abstract ArrayList<DirectedWeightedEdge> initEdges();
 }

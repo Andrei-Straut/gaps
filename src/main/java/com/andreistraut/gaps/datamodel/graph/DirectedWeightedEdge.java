@@ -10,6 +10,7 @@ public class DirectedWeightedEdge extends DefaultWeightedEdge {
     private int cost;
     private boolean isDirected;
     
+    //<editor-fold desc="Constructors" defaultstate="collapsed">
     public DirectedWeightedEdge(Node source, Node destination) {
 	this.source = source;
 	this.destination = destination;
@@ -25,6 +26,7 @@ public class DirectedWeightedEdge extends DefaultWeightedEdge {
 	this(source, destination, cost);
 	this.isDirected = isDirected;
     }
+    //</editor-fold>
     
     public Node getSource() {
 	return source;

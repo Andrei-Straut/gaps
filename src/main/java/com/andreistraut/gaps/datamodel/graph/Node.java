@@ -1,17 +1,10 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
+
 package com.andreistraut.gaps.datamodel.graph;
 
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import org.jgap.util.ICloneable;
 
-/**
- *
- * @author Andrei
- */
 public class Node implements ICloneable {
 
     private String id;
@@ -28,6 +21,10 @@ public class Node implements ICloneable {
     public Node(String id, String name) {
 	this.id = id;
 	this.name = name;
+    }
+    
+    public Node(JsonObject nodeJson) throws Exception {
+	this.fromJson(nodeJson);
     }
 
     public String getId() {
@@ -71,6 +68,17 @@ public class Node implements ICloneable {
 	node.add("adjacencies", adjacencies);
 	
 	return node;
+    }
+    
+    public Node fromJson(JsonObject nodeJson) throws Exception {
+	if(!nodeJson.has("id") || !nodeJson.has("name")) {
+	    throw new Exception("Node object must have at least an id and a name");
+	}
+	
+	this.id = nodeJson.get("id").getAsString();
+	this.name = nodeJson.get("name").getAsString();
+	
+	return this;
     }
 
     @Override

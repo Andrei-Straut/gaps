@@ -18,6 +18,8 @@ public class DirectedWeightedGraphSemiRandom extends DirectedWeightedGraph {
 	for (int i = 0; i < this.numberOfNodes; i++) {
 	    Node node = new Node(Integer.toString(i), Integer.toString(i));
 	    this.addVertex(node);
+	    this.nodeIdMap.put(node.getId(), node);
+	    this.nodeNameMap.put(node.getName(), node);
 	}
 
 	ArrayList<Node> nodesList = new ArrayList<Node>();
