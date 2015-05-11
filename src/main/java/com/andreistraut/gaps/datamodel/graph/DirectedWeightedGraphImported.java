@@ -32,6 +32,10 @@ public class DirectedWeightedGraphImported extends DirectedWeightedGraph {
     }
 
     public DirectedWeightedGraphImported fromJson(JsonArray graph) throws Exception {
+	if(graph.size() == 0) {
+	    throw new Exception("Cannot import empty graph");
+	}
+	
 	//first, import all nodes
 	for (int i = 0; i < graph.size(); i++) {
 	    JsonObject nodeJson = graph.get(i).getAsJsonObject();
