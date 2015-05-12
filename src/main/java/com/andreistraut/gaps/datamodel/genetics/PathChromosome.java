@@ -84,34 +84,6 @@ public class PathChromosome extends BaseChromosome implements IChromosome {
 	this(configuration, initialGenes, source, destination);
 	this.checker = (EdgeGeneConstraintChecker) constraintChecker;
     }
-
-    private PathChromosome(GeneticConfiguration configuration,
-	    String persistentRepresentatuion)
-	    throws InvalidConfigurationException, UnsupportedRepresentationException {
-
-	this(configuration);
-    }
-
-    private PathChromosome(GeneticConfiguration configuration, int desiredSize)
-	    throws InvalidConfigurationException {
-
-	this(configuration);
-    }
-
-    private PathChromosome(GeneticConfiguration configuration,
-	    Gene sampleGene, int desiredSize)
-	    throws InvalidConfigurationException {
-
-	this(configuration);
-    }
-
-    private PathChromosome(GeneticConfiguration configuration, Gene sampleGene,
-	    int desiredSize, IGeneConstraintChecker constraintChecker)
-	    throws InvalidConfigurationException {
-
-	this(configuration);
-	this.checker = (EdgeGeneConstraintChecker) constraintChecker;
-    }
     // </editor-fold>
 
     /**
