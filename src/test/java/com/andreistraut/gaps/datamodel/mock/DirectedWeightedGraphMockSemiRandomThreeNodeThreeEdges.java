@@ -36,7 +36,7 @@ public class DirectedWeightedGraphMockSemiRandomThreeNodeThreeEdges {
 	this.secondToThirdEdge = new DirectedWeightedEdge(this.secondNode, this.thirdNode, this.secondToThirdEdgeCost, true);
 	this.firstToThirdEdge = new DirectedWeightedEdge(this.firstNode, this.thirdNode, this.firstToThirdEdgeCost, true);
 
-	this.graph = new DirectedWeightedGraphSemiRandom(3, 2);
+	this.graph = new DirectedWeightedGraphSemiRandom(3, 3);
 	this.graph.addVertex(this.firstNode);
 	this.graph.addVertex(this.secondNode);
 	this.graph.addVertex(this.thirdNode);

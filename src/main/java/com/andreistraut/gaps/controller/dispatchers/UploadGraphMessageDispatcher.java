@@ -31,7 +31,11 @@ public class UploadGraphMessageDispatcher extends MessageDispatcher {
 
     @Override
     boolean setRequest(MessageRequest request) throws Exception {
-	if (request == null || request.getData() == null) {
+	if (request == null 
+		|| request.getData() == null 
+		|| request.getData().isJsonNull()
+		|| !request.getData().has("graph")
+		|| request.getData().get("graph").isJsonNull()) {
 	    throw new Exception("Request invalid, missing data");
 	}
 

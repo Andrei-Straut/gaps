@@ -2,10 +2,12 @@
 package com.andreistraut.gaps.datamodel.mock;
 
 import com.andreistraut.gaps.controller.MessageRequest;
+import com.andreistraut.gaps.datamodel.graph.DirectedWeightedGraph;
 import com.google.gson.JsonObject;
 
 public class MessageRequestMock {
     private MessageRequest getGraphRequestMock;
+    private MessageRequest uploadGraphRequestMock;
     private MessageRequest computePathsRequestMock;
     private MessageRequest evolveRequestMock;
     private MessageRequest compareRequestMock;
@@ -22,6 +24,7 @@ public class MessageRequestMock {
 	this.computeEvolveCompareRequestJsonData.addProperty("stopConditionPercent", 100);
 	
 	this.initGetGraphMock();
+	this.initUploadGraphRequestMock();
 	this.initComputePathsRequestMock();
 	this.initEvolveRequestMock();
 	this.initCompareRequestMock();
@@ -42,6 +45,19 @@ public class MessageRequestMock {
 	getGraphRequest.add("data", getGraphRequestData);
 	
 	this.getGraphRequestMock = new MessageRequest(getGraphRequest);
+    }
+    
+    private void initUploadGraphRequestMock() {
+	JsonObject uploadGraphRequest = new JsonObject();
+	JsonObject graphJson = new JsonObject();
+        
+	DirectedWeightedGraph graph = new DirectedWeightedGraphMockSemiRandomThreeNodeThreeEdges().getGraph();
+	graphJson.add("graph", graph.toJson().get("graph").getAsJsonArray());
+	
+	uploadGraphRequest.addProperty("callback_id", 1);
+	uploadGraphRequest.addProperty("type", "UploadGraph");
+	uploadGraphRequest.add("data", graphJson);
+	this.uploadGraphRequestMock = new MessageRequest(uploadGraphRequest);
     }
     
     private void initComputePathsRequestMock() {
@@ -76,6 +92,10 @@ public class MessageRequestMock {
 
     public MessageRequest getGetGraphRequest() {
 	return getGraphRequestMock;
+    }
+
+    public MessageRequest getUploadGraphRequest() {
+	return uploadGraphRequestMock;
     }
 
     public MessageRequest getComputePathsRequest() {
