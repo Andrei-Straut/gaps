@@ -57,19 +57,6 @@ public abstract class PathChromosomeMutator extends MutationOperator {
 	this.mutationMode = mutationMode;
 	this.printMutationStatistics = printStatistics;
     }
-
-    private PathChromosomeMutator(GeneticConfiguration configuration,
-	    IUniversalRateCalculator mutationRateCalculator) throws InvalidConfigurationException {
-
-	this.configuration = configuration;
-    }
-
-    private PathChromosomeMutator(GeneticConfiguration configuration,
-	    int desiredMutationRatePercentage) throws InvalidConfigurationException {
-
-	this.configuration = configuration;
-	this.mutationRate = convertMutationRate(desiredMutationRatePercentage);
-    }
     //</editor-fold>
 
     @Override
