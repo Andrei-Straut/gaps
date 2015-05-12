@@ -5,6 +5,7 @@ import org.junit.runners.Suite;
 @RunWith(Suite.class)
 @Suite.SuiteClasses({
     com.andreistraut.gaps.controller.dispatchers.GetGraphMessageDispatcherTest.class,
+    com.andreistraut.gaps.controller.dispatchers.UploadGraphMessageDispatcherTest.class,
     com.andreistraut.gaps.controller.dispatchers.ComputePathMessageDispatcherTest.class,
     com.andreistraut.gaps.controller.dispatchers.EvolveMessageDispatcherTest.class,
     com.andreistraut.gaps.controller.dispatchers.CompareStatisticsMessageDispatcherTest.class,
