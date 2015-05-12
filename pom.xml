@@ -147,6 +147,7 @@
                     <excludes>
                         <exclude>**/Test.*</exclude>
                         <exclude>**/Main.*</exclude>
+                        <exclude>**/Controller.*</exclude>
                     </excludes>
                 </configuration>
                 <executions>
