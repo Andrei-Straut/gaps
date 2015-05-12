@@ -58,6 +58,13 @@ public class DirectedWeightedGraphImported extends DirectedWeightedGraph {
 		JsonObject edgeJson = edgesJson.get(j).getAsJsonObject();
 
 		if (edgeJson.has("nodeFrom") && edgeJson.has("nodeTo")) {
+		    /*
+		    TODO: 
+		    Probably refactor this a bit, as it's a pretty paranoic case to check again for
+		    a source node after having created it, unless we have a node that is storing edges to completely
+		    unrelated nodes. 
+		    In any case however, it has already been covered in unit tests
+		    */
 		    Node source = null;
 		    if(this.hasNode(edgeJson.get("nodeFrom").getAsString())) {
 			source = this.getNodeById(edgeJson.get("nodeFrom").getAsString());

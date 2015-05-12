@@ -7,10 +7,8 @@ import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import junit.framework.Assert;
-import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
-import static org.junit.Assert.*;
 import org.junit.BeforeClass;
 
 public class DirectedWeightedGraphImportedTest {
@@ -97,7 +95,6 @@ public class DirectedWeightedGraphImportedTest {
 	JsonObject secondNodeJson = second.toJson();
 	secondNodeJson.get("adjacencies").getAsJsonArray().add(secondToThirdEdge.toJson());
 	JsonObject thirdNodeJson = third.toJson();
-	secondNodeJson.get("adjacencies").getAsJsonArray().add(secondToThirdEdge.toJson());
 	
 	JsonArray graphJsonArray = new JsonArray();
 	graphJsonArray.add(firstNodeJson);
@@ -136,6 +133,29 @@ public class DirectedWeightedGraphImportedTest {
 	JsonObject invalidEdge = new JsonObject();
 	invalidEdge.addProperty("nodeFrom", "First");
 	invalidEdge.addProperty("nodeTo", "Fourth");
+	
+	JsonObject firstNodeJson = first.toJson();
+	firstNodeJson.get("adjacencies").getAsJsonArray().add(invalidEdge);
+	JsonObject secondNodeJson = second.toJson();
+	
+	JsonArray graphJsonArray = new JsonArray();
+	graphJsonArray.add(firstNodeJson);
+	graphJsonArray.add(secondNodeJson);
+
+	DirectedWeightedGraphImported graph = new DirectedWeightedGraphImported(graphJsonArray);
+	
+	Assert.assertTrue(graph.getNodes().size() == 3);
+	Assert.assertTrue(graph.getEdges().size() == 1);
+    }
+
+    @Test
+    public void testFromJsonValidGraphTwoNodesEdgeFromInexistentNode() throws Exception {
+	Node first = new Node("First", "First");
+	Node second = new Node("Second", "Second");
+	
+	JsonObject invalidEdge = new JsonObject();
+	invalidEdge.addProperty("nodeFrom", "Fourth");
+	invalidEdge.addProperty("nodeTo", "Second");
 	
 	JsonObject firstNodeJson = first.toJson();
 	firstNodeJson.get("adjacencies").getAsJsonArray().add(invalidEdge);
