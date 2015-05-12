@@ -7,6 +7,7 @@ import com.andreistraut.gaps.datamodel.graph.DirectedWeightedGraph;
 import com.andreistraut.gaps.datamodel.graph.DirectedWeightedGraphPath;
 import com.andreistraut.gaps.datamodel.mock.MessageRequestMock;
 import com.andreistraut.gaps.datamodel.mock.SessionMock;
+import com.google.gson.JsonArray;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -45,6 +46,12 @@ public class MessageDispatcherFactoryTest {
     public void testGetDispatcherGetGraph() throws Exception {
         MessageDispatcher graphDispatcher = this.factory.getDispatcher(MessageType.GETGRAPH);
         Assert.assertTrue(graphDispatcher instanceof GetGraphMessageDispatcher);
+    }
+
+    @Test
+    public void testGetDispatcherUploadGraph() throws Exception {
+        MessageDispatcher graphDispatcher = this.factory.getDispatcher(MessageType.UPLOADGRAPH);
+        Assert.assertTrue(graphDispatcher instanceof UploadGraphMessageDispatcher);
     }
 
     @Test
@@ -101,6 +108,21 @@ public class MessageDispatcherFactoryTest {
                 == getGraphRequest.getData().get("minimumEdgeWeight").getAsInt());
         Assert.assertTrue(graphDispatcher.getGraphSettings().getMaximumEdgeWeight()
                 == getGraphRequest.getData().get("maximumEdgeWeight").getAsInt());
+    }
+
+    @Test
+    public void testInitUploadGraphDispatcherRequest() throws Exception {
+        UploadGraphMessageDispatcher graphDispatcher = (UploadGraphMessageDispatcher) this.factory.getDispatcher(MessageType.UPLOADGRAPH);
+        MessageRequest getGraphRequest = this.messageRequestMock.getUploadGraphRequest();
+
+        Assert.assertTrue(graphDispatcher.getGraph() == null);
+        Assert.assertTrue(graphDispatcher.request == null);
+
+        this.factory.initDispatcherRequest(graphDispatcher, getGraphRequest);
+
+        Assert.assertTrue(graphDispatcher.request != null);
+        Assert.assertTrue(graphDispatcher.request.getData().has("graph"));
+        Assert.assertTrue(graphDispatcher.request.getData().get("graph") instanceof JsonArray);
     }
 
     @Test
@@ -164,6 +186,7 @@ public class MessageDispatcherFactoryTest {
         ArrayList<DirectedWeightedGraphPath> paths = (ArrayList) evolveDispatcher.parameters.get(1);
         Assert.assertTrue(paths.equals(pathDispatcher.getPaths()));
     }
+    
     @Test
     public void testInitCompareDispatcherParameters() throws Exception {
         //Initialize graph

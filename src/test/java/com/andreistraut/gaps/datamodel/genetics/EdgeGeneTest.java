@@ -7,6 +7,7 @@ import java.util.logging.Logger;
 import junit.framework.Assert;
 import org.jgap.InvalidConfigurationException;
 import org.jgap.RandomGenerator;
+import org.jgap.UnsupportedRepresentationException;
 import org.jgap.impl.StockRandomGenerator;
 import org.junit.Before;
 import org.junit.BeforeClass;
@@ -96,12 +97,27 @@ public class EdgeGeneTest {
     }
 
     @Test
-    public void testNewGeneInternal() throws InvalidConfigurationException {
+    public void testNewGene() throws InvalidConfigurationException {
 	EdgeGene first = new EdgeGene(graphMock.getFirstToSecondEdge(), conf);
 	EdgeGene second = (EdgeGene) first.newGene();
 
 	Assert.assertFalse(first == second);
 	Assert.assertTrue(first.equals(second));
+    }
+
+    @Test
+    public void testNewGeneInternal() throws InvalidConfigurationException {
+	EdgeGene first = new EdgeGene(graphMock.getFirstToSecondEdge(), conf);
+	EdgeGene second = (EdgeGene) first.newGeneInternal();
+
+	Assert.assertFalse(first == second);
+	Assert.assertTrue(first.equals(second));
+    }
+
+    @Test
+    public void testGetInternalValue() throws InvalidConfigurationException {
+	EdgeGene first = new EdgeGene(graphMock.getFirstToSecondEdge(), conf);
+	Assert.assertTrue(first.getAllele() == first.getInternalValue());
     }
 
     @Test
@@ -118,6 +134,19 @@ public class EdgeGeneTest {
 	    }
 	}
 	Assert.assertTrue(changed);
+    }
+
+    @Test
+    public void testSetValueFromPersistentRepresentation() throws InvalidConfigurationException {
+	EdgeGene first = new EdgeGene(graphMock.getFirstToSecondEdge(), conf);
+	String value = "asdf";
+	
+	try {
+	    first.setValueFromPersistentRepresentation(value);
+	} catch(UnsupportedOperationException e) {
+	    Assert.assertTrue(e.getMessage().contains("Not supported yet"));
+	} catch (UnsupportedRepresentationException ex) {
+	}
     }
 
     @Test

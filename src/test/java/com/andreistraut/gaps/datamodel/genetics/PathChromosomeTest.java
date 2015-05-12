@@ -351,6 +351,14 @@ public class PathChromosomeTest {
     }
 
     @Test
+    public void testToJsonGetApplicationData() throws InvalidConfigurationException {
+	PathChromosome first = new PathChromosome(conf, genes, graphMock.getFirstNode(), graphMock.getThirdNode());
+
+	Assert.assertTrue(first.isLegal());
+	Assert.assertTrue(first.toJson().equals((JsonObject) first.getApplicationData()));
+    }
+
+    @Test
     public void testGetCost_0argsValidChromosome() throws InvalidConfigurationException {
 	PathChromosome chromosome = new PathChromosome(conf, genes, 
 		graphMock.getFirstNode(), graphMock.getThirdNode());
@@ -466,6 +474,19 @@ public class PathChromosomeTest {
 		graphMock.getFirstToSecondEdgeCost() + graphMock.getSecondToThirdEdgeCost());
 	Assert.assertTrue(chromosome.getCost(5, 0) == 
 		graphMock.getFirstToSecondEdgeCost());
+    }
+
+    @Test
+    public void testGetCost_2argsInvalidChromosome() throws InvalidConfigurationException {
+	PathChromosome chromosome = new PathChromosome(conf, genes, 
+		graphMock.getFirstNode(), graphMock.getThirdNode());
+	DirectedWeightedEdge edge = new DirectedWeightedEdge(
+		graphMock.getSecondNode(), graphMock.getThirdNode());
+	EdgeGene gene = new EdgeGene(edge, conf);
+	chromosome.setGene(0, gene, false);
+
+	Assert.assertFalse(chromosome.isLegal());
+	Assert.assertTrue(chromosome.getCost(0, 1) == Integer.MAX_VALUE);
     }
 
     @Test

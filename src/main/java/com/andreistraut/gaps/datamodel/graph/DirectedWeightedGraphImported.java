@@ -23,12 +23,12 @@ public class DirectedWeightedGraphImported extends DirectedWeightedGraph {
 
     @Override
     public ArrayList<Node> initNodes() {
-	return new ArrayList<>(this.vertexSet());
+	return new ArrayList<Node>();
     }
 
     @Override
     public ArrayList<DirectedWeightedEdge> initEdges() {
-	return new ArrayList<>(this.edgeSet());
+	return new ArrayList<DirectedWeightedEdge>();
     }
 
     public DirectedWeightedGraphImported fromJson(JsonArray graph) throws Exception {
