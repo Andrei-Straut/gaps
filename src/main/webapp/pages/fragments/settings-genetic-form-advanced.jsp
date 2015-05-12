@@ -14,6 +14,8 @@
                    id="minPopSizePercent" 
                    name="minPopSizePercent"
                    class="form-control" 
+                   data-toggle="tooltip" 
+                   data-original-title="Minimum population size, with regard to initial population"
                    type="number"
                    min="0"
                    max="100"
@@ -33,12 +35,17 @@
                        type="checkbox"
                        checked
                        data-toggle="toggle"
-                       data-on="Yes"
-                       data-off="No"
+                       data-width="100"
+                       data-on="Constant"
+                       data-off="Variable"
                        data-size="small"
                        ng-disabled="!(getStatistics().getGraphStatisticsLoaded())">
             </label>
-            <label class="control-label" for="keepPopSizeConstant">Keep Population Constant</label>
+            <label class="control-label" for="keepPopSizeConstant"
+                   data-toggle="tooltip" 
+                   data-original-title="If selected, population will always have the same number of individuals">
+                Population Size
+            </label>
         </div>
 
         <div class="form-group">       
@@ -47,12 +54,17 @@
                        type="checkbox"
                        checked
                        data-toggle="toggle"
-                       data-on="Yes"
-                       data-off="No"
+                       data-width="100"
+                       data-on="Always"
+                       data-off="As Needed"
                        data-size="small"
                        ng-disabled="!(getStatistics().getGraphStatisticsLoaded())">
             </label>
-            <label class="control-label" for="alwaysCalculateFitness">Always Calculate Fitness</label>     
+            <label class="control-label" for="alwaysCalculateFitness"
+                   data-toggle="tooltip" 
+                   data-original-title="If selected, fitness will always be calculated for chromosomes, even if they are not modified">
+                Calculate Fitness
+            </label>     
         </div>
 
         <div class="form-group">
@@ -61,16 +73,21 @@
                        type="checkbox"
                        checked
                        data-toggle="toggle"
+                       data-width="100"
                        data-on="Yes"
                        data-off="No"
                        data-size="small"
                        ng-disabled="!(getStatistics().getGraphStatisticsLoaded())">
             </label>
-            <label class="control-label" for="preserveFittestIndividual">Preserve Fittest</label>    
+            <label class="control-label" for="preserveFittestIndividual"
+                   data-toggle="tooltip" 
+                   data-original-title="If selected, the fittest individual of a generation will always be preserved">
+                Preserve Fittest
+            </label>    
         </div>
     </div>
 </div>
-    
+
 <!-- Hide this for now
 <div class="row">
     <div class="col-md-12 col-sm-12 col-xs-12">

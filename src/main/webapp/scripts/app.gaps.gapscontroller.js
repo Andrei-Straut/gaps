@@ -1,8 +1,8 @@
 /**
  * Main GAPS controller
  */
-gaps.controller('gapscontroller', ['$rootScope', '$scope', 'Socket', 'Notification', 'Statistics',
-    function ($rootScope, $scope, $socket, Notification, Statistics) {
+gaps.controller('gapscontroller', ['$rootScope', '$scope', 'Socket', 'Statistics',
+    function ($rootScope, $scope, $socket, Statistics) {
 
         $scope.init = function () {
             var $graphGenerationType = $('#graphGenerationType').bootstrapToggle({
@@ -34,7 +34,7 @@ gaps.controller('gapscontroller', ['$rootScope', '$scope', 'Socket', 'Notificati
                 $scope.graphUpload.then(function (response) {
                     if (response.status === 200) {
                         $rootScope.$broadcast('resetViews', {});
-                        
+
                         $scope.initGraphView(response.data.graph);
                         Statistics.setGraphStatistics(response.data.statistics);
 
@@ -61,7 +61,7 @@ gaps.controller('gapscontroller', ['$rootScope', '$scope', 'Socket', 'Notificati
                 $scope.graphGeneration.then(function (response) {
                     if (response.status === 200) {
                         $rootScope.$broadcast('resetViews', {});
-                        
+
                         $scope.initGraphView(response.data.graph);
                         Statistics.setGraphStatistics(response.data.statistics);
 
@@ -190,27 +190,33 @@ gaps.controller('gapscontroller', ['$rootScope', '$scope', 'Socket', 'Notificati
             });
         };
         $scope.previewGraph = function () {
-            var graphPreviewWrapper = $('div#infovis-preview');
+            $scope.load.graphPreviewerLoaded = true;
 
-            if (graphPreviewWrapper && graphPreviewWrapper[0]) {
-                graphPreviewWrapper = graphPreviewWrapper[0];
-            }
+            var interval = window.setInterval(function () {
+                var graphPreviewWrapper = $('div#infovis-preview');
 
-            if (graphPreviewWrapper && graphPreviewWrapper.firstChild) {
-                while (graphPreviewWrapper.firstChild) {
-                    graphPreviewWrapper.removeChild(graphPreviewWrapper.firstChild);
+                if (graphPreviewWrapper && graphPreviewWrapper[0]) {
+                    graphPreviewWrapper = graphPreviewWrapper[0];
                 }
-            }
 
-            try {
-                var parsedJson = JSON.parse($('#graphJson').val());
-                $scope.graphJson.graph = parsedJson;
-                $scope.uploadJsonValid = true;
+                if (graphPreviewWrapper && graphPreviewWrapper.firstChild) {
+                    while (graphPreviewWrapper.firstChild) {
+                        graphPreviewWrapper.removeChild(graphPreviewWrapper.firstChild);
+                    }
+                }
 
-                jitPreview($scope.graphJson.graph);
-            } catch (e) {
-                $scope.uploadJsonValid = false;
-            }
+                try {
+                    var parsedJson = JSON.parse($('#graphJson').val());
+                    $scope.graphJson.graph = parsedJson;
+                    $scope.uploadJsonValid = true;
+
+                    jitPreview($scope.graphJson.graph);
+                } catch (e) {
+                    $scope.uploadJsonValid = false;
+                }
+                
+                window.clearInterval(interval);
+            }, 200);
         };
         $scope.checkGraph = function () {
             try {
@@ -390,6 +396,7 @@ gaps.controller('gapscontroller', ['$rootScope', '$scope', 'Socket', 'Notificati
             wip: false,
             wipType: '',
             graphViewerLoaded: false,
+            graphPreviewerLoaded: false,
             graphDisplayed: true
         };
         // Settings for graph generation

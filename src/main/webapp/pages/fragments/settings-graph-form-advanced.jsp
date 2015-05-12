@@ -27,7 +27,7 @@
         </div>
 
         <div class="form-group">
-            <div id="infovis-wrapper-preview" class="panel-body">
+            <div id="infovis-wrapper-preview" class="panel-body" ng-show="load.graphPreviewerLoaded">
                 <div id="infovis-preview" class="infovis"></div>
             </div>
         </div>

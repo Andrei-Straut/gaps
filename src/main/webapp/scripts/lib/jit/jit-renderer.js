@@ -211,7 +211,10 @@ function jitPreview(json) {
         Node: GraphViewerOptions.NodeOptions.get(),
         Edge: GraphViewerOptions.EdgeOptions.get(),
         Navigation: {
-            enable: false
+            enable: true,
+            type: 'Native',
+            panning: 'avoid nodes',
+            zooming: 0
         },
         iterations: GraphViewerOptions.iterations,
         levelDistance: GraphViewerOptions.levelDistance,
@@ -240,7 +243,7 @@ function jitPreview(json) {
             fdPreview.animate({
                 modes: ['linear', 'node-property:dim', 'edge-property:lineWidth:color'],
                 transition: $jit.Trans.Circ.easeIn,
-                duration: GraphViewerOptions.computeAnimationDuration
+                duration: 10
             });
         }
     });

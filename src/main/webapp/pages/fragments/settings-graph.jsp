@@ -18,6 +18,9 @@
                                    id="numberOfNodes" 
                                    name="numberOfNodes" 
                                    class="form-control"
+                                   data-toggle="tooltip" 
+                                   data-placement="bottom" 
+                                   data-original-title="The number of nodes in the graph edges. Always the same regardless of graph generation type"
                                    type="number"                                     
                                    ng-model="graphSettings.numberOfNodes" 
                                    min="1"
@@ -43,6 +46,8 @@
                                    id="numberOfEdges" 
                                    name="numberOfEdges" 
                                    class="form-control"
+                                   data-toggle="tooltip" 
+                                   data-original-title="The number of graph edges. Generated randomly if graph-generation is set to 'Random'"
                                    type="number"                                     
                                    ng-model="graphSettings.numberOfEdges" 
                                    min="{{graphSettings.numberOfNodes}}"
@@ -66,6 +71,8 @@
                                 id="minimumEdgeWeight" 
                                 name="minimumEdgeWeight" 
                                 class="form-control" 
+                                data-toggle="tooltip" 
+                                data-original-title="The minimum cost an edge may have. Please note that for static graph generation this field is disregarded"
                                 type="number"
                                 ng-model="graphSettings.minimumEdgeWeight" 
                                 min="1"
@@ -85,6 +92,8 @@
                                 id="maximumEdgeWeight" 
                                 name="maximumEdgeWeight" 
                                 class="form-control" 
+                                data-toggle="tooltip" 
+                                data-original-title="The maximum cost an edge may have. Please note that for static graph generation this field is disregarded"
                                 type="number"
                                 ng-model="graphSettings.maximumEdgeWeight" 
                                 min="{{graphSettings.minimumEdgeWeight}}"
@@ -97,7 +106,11 @@
                         </div>
 
                         <div class="form-group">        
-                            <label class="control-label" for="graphGenerationType">Graph Generation</label><br/>
+                            <label class="control-label" for="graphGenerationType"
+                                data-toggle="tooltip" 
+                                data-original-title="If set to random, a different graph will be generated each time">
+                                Graph Generation
+                            </label><br/>
                             <label class="checkbox-inline">
                                 <input id="graphGenerationType"
                                        type="checkbox"
@@ -114,6 +127,8 @@
                             id="graph-viewer-generate-graph" 
                             class="btn btn-primary btn-lg"
                             type="submit" 
+                            data-toggle="tooltip" 
+                            data-original-title="Generate graph according to specified settings"
                             ng-disabled="graphgenerationsettings.$invalid || load.wip" 
                             ng-click="processGraph();">Generate!</button>
 
@@ -123,7 +138,6 @@
                                 name="graphSettingsAdvanced"
                                 type="button"
                                 class="btn btn-primary btn-lg"
-                                href="#"
                                 data-toggle="modal"
                                 data-target="#graphSettingsAdvancedModal"
                                 ng-disabled="load.wip" 
