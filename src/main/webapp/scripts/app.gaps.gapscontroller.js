@@ -33,6 +33,8 @@ gaps.controller('gapscontroller', ['$rootScope', '$scope', 'Socket', 'Notificati
                 $scope.graphUpload = $socket.uploadGraph($scope.graphJson);
                 $scope.graphUpload.then(function (response) {
                     if (response.status === 200) {
+                        $rootScope.$broadcast('resetViews', {});
+                        
                         $scope.initGraphView(response.data.graph);
                         Statistics.setGraphStatistics(response.data.statistics);
 
@@ -58,6 +60,8 @@ gaps.controller('gapscontroller', ['$rootScope', '$scope', 'Socket', 'Notificati
                 $scope.graphGeneration = $socket.getGraph($scope.graphSettings);
                 $scope.graphGeneration.then(function (response) {
                     if (response.status === 200) {
+                        $rootScope.$broadcast('resetViews', {});
+                        
                         $scope.initGraphView(response.data.graph);
                         Statistics.setGraphStatistics(response.data.statistics);
 
@@ -227,7 +231,7 @@ gaps.controller('gapscontroller', ['$rootScope', '$scope', 'Socket', 'Notificati
             $rootScope.$broadcast('resetViews', {});
             $scope.resetGraphView();
             jitInit($data);
-            
+
             $(window).scrollTop($(window).scrollTop() + 1);
             $(window).scrollTop($(window).scrollTop() - 1);
             $scope.load.graphViewerLoaded = true;
@@ -249,7 +253,7 @@ gaps.controller('gapscontroller', ['$rootScope', '$scope', 'Socket', 'Notificati
             if (graphWrapper && graphWrapper[0]) {
                 graphWrapper = graphWrapper[0];
             }
-            
+
             if (graphWrapper && graphWrapper.firstChild) {
                 while (graphWrapper.firstChild) {
                     graphWrapper.removeChild(graphWrapper.firstChild);
@@ -267,7 +271,7 @@ gaps.controller('gapscontroller', ['$rootScope', '$scope', 'Socket', 'Notificati
                     labelWrapper.removeChild(labelWrapper.firstChild);
                 }
             }
-            
+
             $scope.load.graphViewerLoaded = false;
         };
         /*

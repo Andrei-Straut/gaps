@@ -12,7 +12,7 @@
                         href="#"
                         data-toggle="modal"
                         data-target="#geneticSettingsAdvancedModal"
-                        ng-disabled="!(getStatistics().getGraphStatisticsLoaded())"
+                        ng-disabled="!(getStatistics().getGraphStatisticsLoaded()) || load.wip"
                         ng-click="initGeneticSettingsAdvanced();">
                     Advanced</button>
             </div>

@@ -35,6 +35,7 @@
                        data-toggle="toggle"
                        data-on="Yes"
                        data-off="No"
+                       data-size="small"
                        ng-disabled="!(getStatistics().getGraphStatisticsLoaded())">
             </label>
             <label class="control-label" for="keepPopSizeConstant">Keep Population Constant</label>
@@ -48,6 +49,7 @@
                        data-toggle="toggle"
                        data-on="Yes"
                        data-off="No"
+                       data-size="small"
                        ng-disabled="!(getStatistics().getGraphStatisticsLoaded())">
             </label>
             <label class="control-label" for="alwaysCalculateFitness">Always Calculate Fitness</label>     
@@ -61,6 +63,7 @@
                        data-toggle="toggle"
                        data-on="Yes"
                        data-off="No"
+                       data-size="small"
                        ng-disabled="!(getStatistics().getGraphStatisticsLoaded())">
             </label>
             <label class="control-label" for="preserveFittestIndividual">Preserve Fittest</label>    

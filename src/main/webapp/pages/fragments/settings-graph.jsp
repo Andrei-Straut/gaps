@@ -104,7 +104,9 @@
                                        checked
                                        data-toggle="toggle"
                                        data-on="Static"
-                                       data-off="Random">
+                                       data-off="Random"
+                                       data-size="small"
+                                       ng-disabled="graphgenerationsettings.$invalid || load.wip">
                             </label>
                         </div>
 
@@ -124,6 +126,7 @@
                                 href="#"
                                 data-toggle="modal"
                                 data-target="#graphSettingsAdvancedModal"
+                                ng-disabled="load.wip" 
                                 ng-click="initGraphSettingsAdvanced();">
                             Upload</button>
                     </div>
