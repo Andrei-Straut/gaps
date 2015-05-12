@@ -61,11 +61,11 @@ public abstract class DirectedWeightedGraph extends DirectedPseudograph<Node, Di
     //</editor-fold>
 
     public int getNumberOfNodes() {
-	return numberOfNodes;
+	return this.vertexSet() != null ? this.vertexSet().size() : 0;
     }
 
     public int getNumberOfEdges() {
-	return numberOfEdges;
+	return this.edgeSet()!= null ? this.edgeSet().size() : 0;
     }
 
     public Node getNodeById(String id) {
