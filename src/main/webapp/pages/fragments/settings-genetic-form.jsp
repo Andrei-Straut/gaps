@@ -62,13 +62,13 @@
      ng-class="{'has-error' : 
          geneticsettings.numberOfPaths.$error.required
                  || !geneticsettings.numberOfPaths.$valid}">
-    <label class="control-label" for="numberOfPaths">Population size start</label>
+    <label class="control-label" for="numberOfPaths">Initial Population Size</label>
     <input required
            id="numberOfPaths" 
            name="numberOfPaths"
            class="form-control"
            data-toggle="tooltip" 
-           data-original-title="Number of initial (non-optimized) paths to calculate"
+           data-original-title="Size of initial population"
            type="number"
            ng-model="geneticSettings.numberOfPaths"
            ng-disabled="!(getStatistics().getGraphStatisticsLoaded())"
