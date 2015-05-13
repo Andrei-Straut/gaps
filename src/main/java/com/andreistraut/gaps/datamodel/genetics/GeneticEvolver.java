@@ -13,6 +13,7 @@ import java.util.List;
 import org.jgap.Configuration;
 import org.jgap.GeneticOperator;
 import org.jgap.Genotype;
+import org.jgap.IChromosome;
 import org.jgap.InvalidConfigurationException;
 import org.jgap.event.EventManager;
 import org.jgap.impl.BestChromosomesSelector;
@@ -135,14 +136,26 @@ public class GeneticEvolver {
 	GenerationStatistic statistic = new GenerationStatistic(this.evolutions + 1, date);
 
 	int populationSize = genotype.getPopulation().size();
+	double startTotalFitness = 0;
+	double startTotalCost = 0;
+
+	if (genotype.getPopulation() != null
+		&& genotype.getPopulation().getChromosomes() != null
+		&& !genotype.getPopulation().getChromosomes().isEmpty()) {
+
+	    for (Object chromosome : genotype.getPopulation().getChromosomes()) {
+		startTotalCost += ((PathChromosome) chromosome).getCost();
+		startTotalFitness += ((PathChromosome) chromosome).getFitnessValue();
+	    }
+	}
 
 	if (genotype.getFittestChromosome() != null) {
 	    PathChromosome fittest = (PathChromosome) genotype.getFittestChromosome();
 	    statistic
 		    .setStartBestFitness((int) fittest.getFitnessValue())
-		    .setStartAverageFitness(populationSize / fittest.getFitnessValue())
-		    .setStartBestCost((int) fittest.getCost())
-		    .setStartAverageCost(populationSize / (double) ((fittest.getCost() != 0) ? fittest.getCost() : 1 ));
+		    .setStartAverageFitness(startTotalFitness / populationSize)
+		    .setStartBestCost(fittest.getCost())
+		    .setStartAverageCost(startTotalCost / populationSize);
 	}
 
 	statistic.setStartPopulationSize(populationSize);
@@ -155,17 +168,27 @@ public class GeneticEvolver {
 	PathChromosome worstChromosome = (PathChromosome) genotype.getFittestChromosome(
 		genotype.getPopulation().size() - 1, genotype.getPopulation().size() - 1);
 
-	double endAverageFitness = bestChromosome.getFitnessValue() / genotype.getPopulation().size();
-	double endAverageCost = bestChromosome.getCost() / genotype.getPopulation().size();
 	int endBestFitness = (int) bestChromosome.getFitnessValue();
 	int endBestCost = bestChromosome.getCost();
+	double endTotalFitness = 0;
+	double endTotalCost = 0;
+
+	if (genotype.getPopulation() != null
+		&& genotype.getPopulation().getChromosomes() != null
+		&& !genotype.getPopulation().getChromosomes().isEmpty()) {
+
+	    for (Object chromosome : genotype.getPopulation().getChromosomes()) {
+		endTotalCost += ((PathChromosome) chromosome).getCost();
+		endTotalFitness += ((PathChromosome) chromosome).getFitnessValue();
+	    }
+	}
 
 	statistic
 		.setEndPopulationSize(genotype.getPopulation().size())
 		.setEndBestFitness(endBestFitness)
-		.setEndAverageFitness(endAverageFitness)
+		.setEndAverageFitness(endTotalFitness / populationSize)
 		.setEndBestCost(endBestCost)
-		.setEndAverageCost(endAverageCost);
+		.setEndAverageCost(endTotalCost / populationSize);
 	statistic.setEndBestChromosome(bestChromosome.toJson());
 	statistic.setEndWorstChromosome(worstChromosome.toJson());
 
@@ -302,7 +325,7 @@ public class GeneticEvolver {
 		.append("numberOfEvolutionsWithoutChange: ").append(numberOfEvolutionsWithoutChange).append(System.getProperty("line.separator"))
 		.append("hasFinished: ").append(hasFinished).append(System.getProperty("line.separator"))
 		.append("]");
-	
+
 	return builder.toString();
     }
 }

@@ -31,9 +31,12 @@
                                    data-slider-tooltip="hide">
 
                             <div class="panel-body">
-                                Generation <span class="label-info">{{(getStatistics().getGeneticStatistics()).selectedGeneration.evolutionStage}}</span><br/>
+                                Generation <span class="label-info">{{(getStatistics().getGeneticStatistics()).selectedGeneration.evolutionStage}}</span><br/>       
                                 Best Cost: <span class="label-info">{{(getStatistics().getGeneticStatistics()).selectedGeneration.bestChromosome.cost}}</span><br/>
+                                Average Cost: <span class="label-info">{{(getStatistics().getGeneticStatistics()).selectedGeneration.endAverageCost}}</span><br/>
                                 Best Fitness: <span class="label-info">{{(getStatistics().getGeneticStatistics()).selectedGeneration.bestChromosome.fitness}}</span><br/>
+                                Average Fitness: <span class="label-info">{{(getStatistics().getGeneticStatistics()).selectedGeneration.endAverageFitness}}</span><br/>
+                                <br/>
                                 Best Path:
                                 <div class="panel-body">
                                     <span 
