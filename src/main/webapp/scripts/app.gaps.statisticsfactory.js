@@ -60,36 +60,36 @@ gaps.factory('Statistics', ['$rootScope', function ($rootScope) {
             compareChart: [],
             chromosomes: []
         };
-        
-        Service.getGraphStatisticsLoaded = function() {
+
+        Service.getGraphStatisticsLoaded = function () {
             return _graphStatisticsLoaded;
         };
 
-        Service.setGraphStatisticsLoaded = function(statisticsLoaded) {
+        Service.setGraphStatisticsLoaded = function (statisticsLoaded) {
             _graphStatisticsLoaded = statisticsLoaded;
         };
-        
-        Service.getPathStatisticsLoaded = function() {
+
+        Service.getPathStatisticsLoaded = function () {
             return _pathStatisticsLoaded;
         };
 
-        Service.setPathStatisticsLoaded = function(statisticsLoaded) {
+        Service.setPathStatisticsLoaded = function (statisticsLoaded) {
             _pathStatisticsLoaded = statisticsLoaded;
         };
-        
-        Service.getGeneticStatisticsLoaded = function() {
+
+        Service.getGeneticStatisticsLoaded = function () {
             return _geneticStatisticsLoaded;
         };
 
-        Service.setGeneticStatisticsLoaded = function(statisticsLoaded) {
+        Service.setGeneticStatisticsLoaded = function (statisticsLoaded) {
             _geneticStatisticsLoaded = statisticsLoaded;
         };
-        
-        Service.getCompareStatisticsLoaded = function() {
+
+        Service.getCompareStatisticsLoaded = function () {
             return _compareStatisticsLoaded;
         };
 
-        Service.setCompareStatisticsLoaded = function(statisticsLoaded) {
+        Service.setCompareStatisticsLoaded = function (statisticsLoaded) {
             _compareStatisticsLoaded = statisticsLoaded;
         };
 
@@ -208,14 +208,14 @@ gaps.factory('Statistics', ['$rootScope', function ($rootScope) {
                     _geneticStatistics.bestPathFitness = geneticStatistic.bestChromosome.fitness;
                 }
             }
-            _geneticStatistics.generations.push(geneticStatistic);
-            _geneticStatistics.bestPath = geneticStatistic.bestChromosome;
 
-            var generationDataChart = {};
-            generationDataChart.y = 'Gen ' + geneticStatistic.evolutionStage;
-            generationDataChart.a = geneticStatistic.endBestCost;
+                _geneticStatistics.generations.push(geneticStatistic);
 
-            _geneticStatistics.generationChart.push(generationDataChart);
+                var generationDataChart = {};
+                generationDataChart.y = 'Gen ' + geneticStatistic.evolutionStage;
+                generationDataChart.a = geneticStatistic.endBestCost;
+
+                _geneticStatistics.generationChart.push(generationDataChart);
         };
 
         Service.resetGeneticStatistics = function () {
@@ -254,10 +254,21 @@ gaps.factory('Statistics', ['$rootScope', function ($rootScope) {
         Service.addCompareStatistic = function (compareStatistic) {
             if (compareStatistic) {
                 _compareStatistics.chromosomes.push(compareStatistic);
+                var compChartLength = _compareStatistics.compareChart.length;
+                var genChartLength = _geneticStatistics.generationChart.length;
+                var cost = _geneticStatistics.bestPathCost;
 
                 var resultsCompareChart = {};
-                resultsCompareChart.y = 'GAPS Best, KShortest #' + _compareStatistics.compareChart.length;
-                resultsCompareChart.GAPS = _geneticStatistics.bestPathCost;
+                resultsCompareChart.y = 'GAPS #' +
+                        compChartLength +
+                        ', KShortest #' +
+                        compChartLength;
+
+                if (genChartLength > compChartLength + 1) {
+                    cost = _geneticStatistics.generationChart[genChartLength - (compChartLength + 1)].a;
+                }
+
+                resultsCompareChart.GAPS = cost;
                 resultsCompareChart.KShortest = compareStatistic.cost;
 
                 _compareStatistics.compareChart.push(resultsCompareChart);
@@ -280,8 +291,8 @@ gaps.factory('Statistics', ['$rootScope', function ($rootScope) {
             _compareStatistics.endTimestamp = new Date();
             _compareStatistics.compareDiffTimestamp = _compareStatistics.endTimestamp - _compareStatistics.startTimestamp;
         };
-        
-        Service.resetAllStatistics = function() {
+
+        Service.resetAllStatistics = function () {
             Service.resetGraphStatistics();
             Service.resetPathStatistics();
             Service.resetGeneticStatistics();
