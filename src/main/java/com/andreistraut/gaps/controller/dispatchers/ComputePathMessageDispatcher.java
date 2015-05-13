@@ -35,10 +35,10 @@ public class ComputePathMessageDispatcher extends MessageDispatcher {
 
     @Override
     boolean setRequest(MessageRequest request) throws Exception {
-        if(request == null || request.getData() == null) {
-            throw new Exception("Request invalid, missing data");
-        }
-        
+	if (request == null || request.getData() == null) {
+	    throw new Exception("Request invalid, missing data");
+	}
+
 	if (!request.getData().has("sourceNode")
 		|| !request.getData().has("destinationNode")
 		|| !request.getData().has("numberOfPaths")) {
@@ -46,10 +46,10 @@ public class ComputePathMessageDispatcher extends MessageDispatcher {
 	    throw new Exception("Path request malformed, missing parameters");
 	}
 
-	int sourceNodeId = request.getData().get("sourceNode").getAsInt();
-	int destinationNodeId = request.getData().get("destinationNode").getAsInt();
+	String sourceNodeId = request.getData().get("sourceNode").getAsString();
+	String destinationNodeId = request.getData().get("destinationNode").getAsString();
 
-	if (sourceNodeId == destinationNodeId) {
+	if (sourceNodeId.equals(destinationNodeId)) {
 	    throw new Exception("Source and destination nodes must be different");
 	}
 
@@ -60,24 +60,23 @@ public class ComputePathMessageDispatcher extends MessageDispatcher {
 
     @Override
     void setParameters(ArrayList<Object> parameters) throws Exception {
-	if (parameters == null || parameters.isEmpty() || 
-                !(parameters.get(0) instanceof DirectedWeightedGraph)) {
-            
+	if (parameters == null || parameters.isEmpty()
+		|| !(parameters.get(0) instanceof DirectedWeightedGraph)) {
+
 	    throw new Exception("First parameter must be a DirectedWeightedGraph");
 	}
 
 	this.graph = (DirectedWeightedGraph) parameters.get(0);
-	
-	int sourceNodeId = this.request.getData().get("sourceNode").getAsInt();
-	int destinationNodeId = this.request.getData().get("destinationNode").getAsInt();
 
-	if (graph.getNodes().size() <= sourceNodeId
-		|| graph.getNodes().size() <= destinationNodeId) {
+	String sourceNodeId = request.getData().get("sourceNode").getAsString();
+	String destinationNodeId = request.getData().get("destinationNode").getAsString();
+
+	if ((graph.getNodeById(sourceNodeId) == null || graph.getNodeByName(destinationNodeId) == null)) {
 	    throw new Exception("Source or destination node not found in graph");
 	}
 
-	this.sourceNode = this.graph.getNodes().get(sourceNodeId);
-	this.destinationNode = this.graph.getNodes().get(destinationNodeId);
+	this.sourceNode = this.graph.getNodeById(sourceNodeId);
+	this.destinationNode = this.graph.getNodeById(destinationNodeId);
 	this.numberOfPaths = request.getData().get("numberOfPaths").getAsInt();
 	this.parameters = parameters;
     }
@@ -108,9 +107,9 @@ public class ComputePathMessageDispatcher extends MessageDispatcher {
 
     @Override
     void updateProgress(MessageResponse response) {
-        if(this.sendUpdates) {
-            this.controller.respond(this.session, response);
-        }
+	if (this.sendUpdates) {
+	    this.controller.respond(this.session, response);
+	}
     }
 
     public ArrayList<DirectedWeightedGraphPath> getPaths() {
