@@ -25,6 +25,9 @@ gaps.controller('statisticscontroller', ['$rootScope', '$scope', 'Notification',
 
         $rootScope.$on('graphDataLoaded', function (event, $data) {
             $scope.resetGraphStatistics();
+            $scope.resetPathStatistics();
+            $scope.resetGeneticStatistics();
+            $scope.resetCompareStatistics();
             $scope.initGraphStatistics($data);
         });
 
@@ -33,6 +36,9 @@ gaps.controller('statisticscontroller', ['$rootScope', '$scope', 'Notification',
         });
 
         $rootScope.$on('pathDataLoaded', function (event, $data) {
+            $scope.resetPathStatistics();
+            $scope.resetGeneticStatistics();
+            $scope.resetCompareStatistics();
             $scope.initPathStatistics();
         });
 
@@ -40,10 +46,13 @@ gaps.controller('statisticscontroller', ['$rootScope', '$scope', 'Notification',
         });
 
         $rootScope.$on('geneticDataLoaded', function (event, $data) {
+            $scope.resetGeneticStatistics();
+            $scope.resetCompareStatistics();
             $scope.initGeneticStatistics();
         });
 
         $rootScope.$on('compareDataLoaded', function (event, $data) {
+            $scope.resetCompareStatistics();
             $scope.initCompareStatistics();
         });
 
@@ -284,6 +293,11 @@ gaps.controller('statisticscontroller', ['$rootScope', '$scope', 'Notification',
             },
             clear: function (elementId) {
                 var chartWrapper = $('#' + elementId);
+
+                if (chartWrapper && chartWrapper[0]) {
+                    chartWrapper = chartWrapper[0];
+                }
+                
                 if (chartWrapper && chartWrapper.firstChild) {
                     while (chartWrapper.firstChild) {
                         chartWrapper.removeChild(chartWrapper.firstChild);
@@ -318,6 +332,11 @@ gaps.controller('statisticscontroller', ['$rootScope', '$scope', 'Notification',
             },
             clear: function (elementId) {
                 var chartWrapper = $('#' + elementId);
+
+                if (chartWrapper && chartWrapper[0]) {
+                    chartWrapper = chartWrapper[0];
+                }
+                
                 if (chartWrapper && chartWrapper.firstChild) {
                     while (chartWrapper.firstChild) {
                         chartWrapper.removeChild(chartWrapper.firstChild);

@@ -26,7 +26,9 @@ gaps.controller('gapscontroller', ['$rootScope', '$scope', 'Socket', 'Statistics
          */
         $scope.uploadGraph = function () {
             $scope.clearNotifs(3000);
+            Statistics.resetAllStatistics();
             $scope.notifyInfo('Uploading graph...');
+            
             var interval = window.setInterval(function () {
                 $('#graphSettingsAdvancedModal').modal('hide');
 
@@ -54,7 +56,9 @@ gaps.controller('gapscontroller', ['$rootScope', '$scope', 'Socket', 'Statistics
         };
         $scope.processGraph = function () {
             $scope.clearNotifs(3000);
+            Statistics.resetAllStatistics();
             $scope.notifyInfo('Loading graph...');
+            
             // Little hack to give notification time to pop-up
             var interval = window.setInterval(function () {
                 $scope.graphGeneration = $socket.getGraph($scope.graphSettings);
@@ -78,13 +82,14 @@ gaps.controller('gapscontroller', ['$rootScope', '$scope', 'Socket', 'Statistics
             }, 1000);
         };
         $scope.computePaths = function () {
+            Statistics.resetPathStatistics();
             $scope.notifyInfo('Computing paths...');
+            
             var interval = window.setInterval(function () {
-
                 $scope.geneticEvolution = $socket.computePaths($scope.geneticSettings);
                 $scope.geneticEvolution.then(function (response) {
 
-                    if (response.status === 200) {
+                    if (response.status === 200) {                        
                         $scope.load.wip = false;
                         $scope.load.wipType = '';
                         $rootScope.$broadcast('pathDataLoaded', {});
@@ -106,9 +111,10 @@ gaps.controller('gapscontroller', ['$rootScope', '$scope', 'Socket', 'Statistics
             }, 1000);
         };
         $scope.evolve = function () {
+            Statistics.resetGeneticStatistics();
             Statistics.markEvolutionStart();
-
             $scope.notifyInfo('Evolving...');
+            
             var interval = window.setInterval(function () {
                 $scope.geneticEvolution = $socket.evolve($scope.geneticSettings);
                 $scope.geneticEvolution.then(function (response) {
@@ -132,9 +138,10 @@ gaps.controller('gapscontroller', ['$rootScope', '$scope', 'Socket', 'Statistics
             }, 1000);
         };
         $scope.compare = function () {
+            Statistics.resetCompareStatistics();
             Statistics.markCompareStart();
-
             $scope.notifyInfo('Comparing Results...');
+            
             var interval = window.setInterval(function () {
                 $scope.geneticResultsCompare = $socket.compare($scope.geneticSettings);
                 $scope.geneticResultsCompare.then(function (response) {
@@ -416,7 +423,7 @@ gaps.controller('gapscontroller', ['$rootScope', '$scope', 'Socket', 'Statistics
             numberOfPaths: $scope.graphSettings.numberOfEdges,
             numberOfEvolutions: 10000,
             minPopSizePercent: 100,
-            stopConditionPercent: 100,
+            stopConditionPercent: 30,
             alwaysCalculateFitness: true,
             keepPopSizeConstant: false,
             preserveFittestIndividual: true,

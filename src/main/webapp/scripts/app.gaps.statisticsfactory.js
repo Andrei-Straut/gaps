@@ -280,6 +280,13 @@ gaps.factory('Statistics', ['$rootScope', function ($rootScope) {
             _compareStatistics.endTimestamp = new Date();
             _compareStatistics.compareDiffTimestamp = _compareStatistics.endTimestamp - _compareStatistics.startTimestamp;
         };
+        
+        Service.resetAllStatistics = function() {
+            Service.resetGraphStatistics();
+            Service.resetPathStatistics();
+            Service.resetGeneticStatistics();
+            Service.resetCompareStatistics();
+        };
 
         return Service;
     }]);
