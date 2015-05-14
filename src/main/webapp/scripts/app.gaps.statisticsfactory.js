@@ -207,13 +207,11 @@ gaps.factory('Statistics', ['$rootScope', function ($rootScope) {
                     _geneticStatistics.bestPathEdgeNumber = geneticStatistic.bestChromosome.path.length;
                     _geneticStatistics.bestPathCost = geneticStatistic.bestChromosome.cost;
 
-                    if (!_geneticStatistics.costs) {
-                        _geneticStatistics.costs = [];
-                    }
-                    if(_geneticStatistics.costs[_geneticStatistics.costs.length - 1] !== geneticStatistic.bestChromosome.cost) {
+                    if (_geneticStatistics.costs.length === 0 ||
+                            _geneticStatistics.costs[_geneticStatistics.costs.length - 1] !== geneticStatistic.bestChromosome.cost) {
                         _geneticStatistics.costs.push(geneticStatistic.bestChromosome.cost);
                     }
-                    
+
                     _geneticStatistics.bestPathFitness = geneticStatistic.bestChromosome.fitness;
                 }
             }
