@@ -168,4 +168,18 @@ public class GetGraphMessageDispatcherTest {
 	
 	Assert.assertFalse(isEqual);
     }
+
+    @Test
+    public void testProcessInvalidNoRequestSet() throws Exception {
+	GetGraphMessageDispatcher graphDispatcher = new GetGraphMessageDispatcher(this.controller, this.session, MessageType.GETGRAPH);
+	graphDispatcher.setSendUpdates(false);
+
+	try {
+	    boolean compareResult = graphDispatcher.process();
+	    //This MUST throw exception, if we get here, it's an error
+	    Assert.assertTrue(false);
+	} catch (Exception e) {
+	    Assert.assertTrue(e.getMessage().contains("Request invalid, missing data"));
+	}
+    }
 }

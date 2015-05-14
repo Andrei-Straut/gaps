@@ -83,6 +83,10 @@ public class ComputePathMessageDispatcher extends MessageDispatcher {
 
     @Override
     boolean process() throws Exception {
+	if (request == null || request.getData() == null) {
+	    throw new Exception("Request invalid, missing data");
+	}
+
 	this.paths = this.graph.getKPathsDepthFirst(this.sourceNode, this.destinationNode, this.numberOfPaths);
 
 	if (this.paths.isEmpty()) {

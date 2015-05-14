@@ -311,4 +311,19 @@ public class ComputePathMessageDispatcherTest {
         Assert.assertTrue(pathDispatcher.getPaths() != null && !pathDispatcher.getPaths().isEmpty());
     }
 
+    @Test
+    public void testProcessInvalidNoRequestSet() throws Exception {
+        ComputePathMessageDispatcher pathDispatcher = new ComputePathMessageDispatcher(
+                controller, session, MessageType.COMPUTEPATHS);
+        pathDispatcher.setSendUpdates(false);
+
+	try {
+	    boolean compareResult = pathDispatcher.process();
+	    //This MUST throw exception, if we get here, it's an error
+	    Assert.assertTrue(false);
+	} catch (Exception e) {
+	    Assert.assertTrue(e.getMessage().contains("Request invalid, missing data"));
+	}
+    }
+
 }

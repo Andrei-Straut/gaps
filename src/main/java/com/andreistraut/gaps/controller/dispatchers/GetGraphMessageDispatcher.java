@@ -49,6 +49,9 @@ public class GetGraphMessageDispatcher extends MessageDispatcher {
 
     @Override
     boolean process() throws Exception {
+	if (request == null || request.getData() == null) {
+	    throw new Exception("Request invalid, missing data");
+	}
         
         MessageResponse response = new MessageResponse(this.request.getCallbackId());
 

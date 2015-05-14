@@ -313,4 +313,19 @@ public class EvolveMessageDispatcherTest {
         boolean evolveResult = evolveDispatcher.process();
         Assert.assertTrue(evolveResult);
     }
+
+    @Test
+    public void testProcessInvalidNoRequestSet() throws Exception {
+        EvolveMessageDispatcher evolveDispatcher = new EvolveMessageDispatcher(
+                controller, session, MessageType.EVOLVE);
+        evolveDispatcher.setSendUpdates(false);
+
+	try {
+	    boolean compareResult = evolveDispatcher.process();
+	    //This MUST throw exception, if we get here, it's an error
+	    Assert.assertTrue(false);
+	} catch (Exception e) {
+	    Assert.assertTrue(e.getMessage().contains("Request invalid, missing data"));
+	}
+    }
 }

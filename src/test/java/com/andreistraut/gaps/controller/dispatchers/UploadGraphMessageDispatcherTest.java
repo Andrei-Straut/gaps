@@ -2,11 +2,9 @@ package com.andreistraut.gaps.controller.dispatchers;
 
 import com.andreistraut.gaps.controller.Controller;
 import com.andreistraut.gaps.controller.MessageRequest;
-import com.andreistraut.gaps.controller.MessageResponse;
 import com.andreistraut.gaps.controller.MessageType;
 import com.andreistraut.gaps.datamodel.graph.DirectedWeightedEdge;
 import com.andreistraut.gaps.datamodel.graph.DirectedWeightedGraph;
-import com.andreistraut.gaps.datamodel.graph.DirectedWeightedGraphImported;
 import com.andreistraut.gaps.datamodel.graph.Node;
 import com.andreistraut.gaps.datamodel.mock.DirectedWeightedGraphMockSemiRandomThreeNodeThreeEdges;
 import com.andreistraut.gaps.datamodel.mock.MessageRequestMock;
@@ -18,10 +16,8 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.websocket.Session;
 import junit.framework.Assert;
-import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
-import static org.junit.Assert.*;
 import org.junit.BeforeClass;
 
 public class UploadGraphMessageDispatcherTest {
@@ -238,4 +234,35 @@ public class UploadGraphMessageDispatcherTest {
 	Assert.assertTrue(graphDispatcher.getGraph().hasNode("Fourth"));
     }
 
+    @Test
+    public void testProcessInvalidGraphNoRequestSet() throws Exception {
+	UploadGraphMessageDispatcher graphDispatcher = new UploadGraphMessageDispatcher(
+		this.controller, this.session, MessageType.UPLOADGRAPH);
+	graphDispatcher.setSendUpdates(false);
+	
+	try {
+	    graphDispatcher.process();
+	} catch(Exception e) {
+	    Assert.assertTrue(e.getMessage().contains("Request invalid, missing data"));
+	}
+    }
+
+    @Test
+    public void testProcessInvalidGraphInvalidJSONArray() throws Exception {
+	UploadGraphMessageDispatcher graphDispatcher = new UploadGraphMessageDispatcher(
+		this.controller, this.session, MessageType.UPLOADGRAPH);
+	graphDispatcher.setSendUpdates(false);
+	
+	JsonArray invalidRequest = new JsonArray();
+	invalidRequest.add(new JsonObject());
+	invalidRequest.add(new JsonObject());
+	
+	MessageRequest uploadGraphRequest = this.messageRequestMock.getUploadGraphRequest();
+	uploadGraphRequest.getData().add("graph", invalidRequest);
+	graphDispatcher.setRequest(uploadGraphRequest);
+	graphDispatcher.setParameters(new ArrayList<>());
+	
+	boolean returnValue = graphDispatcher.process();
+	Assert.assertFalse(returnValue);
+    }
 }

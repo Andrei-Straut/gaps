@@ -11,14 +11,6 @@ public class DirectedWeightedGraphImported extends DirectedWeightedGraph {
 	super(1, 1);
 	this.fromJson(graph);
     }
-
-    private DirectedWeightedGraphImported(int numberOfNodes, int numberOfEdges) {
-	super(numberOfNodes, numberOfEdges);
-    }
-
-    private DirectedWeightedGraphImported(GraphSettings settings) {
-	super(settings);
-    }
     //</editor-fold>
 
     @Override

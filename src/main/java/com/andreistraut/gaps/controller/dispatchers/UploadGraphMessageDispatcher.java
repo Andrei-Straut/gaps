@@ -52,10 +52,14 @@ public class UploadGraphMessageDispatcher extends MessageDispatcher {
 
     @Override
     boolean process() throws Exception {
+	if (request == null || request.getData() == null) {
+	    throw new Exception("Request invalid, missing data");
+	}
+	
 	MessageResponse response = new MessageResponse(this.request.getCallbackId());
 
 	try {
-	    this.graph = new DirectedWeightedGraphImported(graphJson);
+	    this.graph = new DirectedWeightedGraphImported(this.graphJson);
 
 	    response
 		    .setStatus(HttpServletResponse.SC_OK)
