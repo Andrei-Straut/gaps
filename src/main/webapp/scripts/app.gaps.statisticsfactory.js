@@ -49,7 +49,8 @@ gaps.factory('Statistics', ['$rootScope', function ($rootScope) {
             evolutionDiffTimestamp: {},
             bestPath: {},
             generationChart: [],
-            generations: []
+            generations: [],
+            costs: []
         };
 
         // JGraphT KShortestPath comparison
@@ -205,17 +206,25 @@ gaps.factory('Statistics', ['$rootScope', function ($rootScope) {
                     _geneticStatistics.evolutionStage = geneticStatistic.evolutionStage;
                     _geneticStatistics.bestPathEdgeNumber = geneticStatistic.bestChromosome.path.length;
                     _geneticStatistics.bestPathCost = geneticStatistic.bestChromosome.cost;
+
+                    if (!_geneticStatistics.costs) {
+                        _geneticStatistics.costs = [];
+                    }
+                    if(_geneticStatistics.costs[_geneticStatistics.costs.length - 1] !== geneticStatistic.bestChromosome.cost) {
+                        _geneticStatistics.costs.push(geneticStatistic.bestChromosome.cost);
+                    }
+                    
                     _geneticStatistics.bestPathFitness = geneticStatistic.bestChromosome.fitness;
                 }
             }
 
-                _geneticStatistics.generations.push(geneticStatistic);
+            _geneticStatistics.generations.push(geneticStatistic);
 
-                var generationDataChart = {};
-                generationDataChart.y = 'Gen ' + geneticStatistic.evolutionStage;
-                generationDataChart.a = geneticStatistic.endBestCost;
+            var generationDataChart = {};
+            generationDataChart.y = 'Gen ' + geneticStatistic.evolutionStage;
+            generationDataChart.a = geneticStatistic.endBestCost;
 
-                _geneticStatistics.generationChart.push(generationDataChart);
+            _geneticStatistics.generationChart.push(generationDataChart);
         };
 
         Service.resetGeneticStatistics = function () {
@@ -255,7 +264,7 @@ gaps.factory('Statistics', ['$rootScope', function ($rootScope) {
             if (compareStatistic) {
                 _compareStatistics.chromosomes.push(compareStatistic);
                 var compChartLength = _compareStatistics.compareChart.length;
-                var genChartLength = _geneticStatistics.generationChart.length;
+                var genCostChartLength = _geneticStatistics.costs.length;
                 var cost = _geneticStatistics.bestPathCost;
 
                 var resultsCompareChart = {};
@@ -264,8 +273,8 @@ gaps.factory('Statistics', ['$rootScope', function ($rootScope) {
                         ', KShortest #' +
                         compChartLength;
 
-                if (genChartLength > compChartLength + 1) {
-                    cost = _geneticStatistics.generationChart[genChartLength - (compChartLength + 1)].a;
+                if (genCostChartLength > compChartLength + 1) {
+                    cost = _geneticStatistics.costs[genCostChartLength - (compChartLength + 1)];
                 }
 
                 resultsCompareChart.GAPS = cost;
