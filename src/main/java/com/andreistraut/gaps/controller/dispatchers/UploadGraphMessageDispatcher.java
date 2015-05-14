@@ -67,8 +67,6 @@ public class UploadGraphMessageDispatcher extends MessageDispatcher {
 		    .setDescription("Ok")
 		    .setData(graph.toJson());
 	    updateProgress(response);
-	    Logger.getLogger(GetGraphMessageDispatcher.class.getName()).log(Level.FINE, 
-		    "Generating graph: response returned: {0}", new Object[] {response.toJson()});
 
 	} catch (Exception e) {
 	    response.setStatus(HttpServletResponse.SC_BAD_REQUEST).setDescription(e.getMessage());
