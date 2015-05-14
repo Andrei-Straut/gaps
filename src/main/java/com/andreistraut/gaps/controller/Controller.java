@@ -122,7 +122,7 @@ public class Controller {
 	try {
 	    factory.process(messageDispatcher);
 	    Logger.getLogger(Controller.class.getName()).log(
-		    Level.FINE, "{0}: Message processed: {1}", new Object[]{session.getId(), message});
+		    Level.INFO, "{0}: Message processed: {1}", new Object[]{session.getId(), message});
 	} catch (Exception e) {
 	    Logger.getLogger(Controller.class.getName()).log(Level.SEVERE,
 		    "{0}: Error processing MessageDispatcher: ",

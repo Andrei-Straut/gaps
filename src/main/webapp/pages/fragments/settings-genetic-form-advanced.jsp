@@ -15,7 +15,7 @@
                    name="reportGenerations"
                    class="form-control" 
                    data-toggle="tooltip" 
-                   data-original-title="Report state once every X generations. When a change in state happens, report will be sent regardless of this settings"
+                   data-original-title="Report state once every X generations. When a change in state happens, report will be sent regardless of this setting"
                    type="number"
                    min="1"
                    max="{{$scope.geneticSettings.numberOfEvolutions}}"

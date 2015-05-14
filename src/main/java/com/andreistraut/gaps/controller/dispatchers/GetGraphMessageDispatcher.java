@@ -72,7 +72,7 @@ public class GetGraphMessageDispatcher extends MessageDispatcher {
 		    .setData(graph.toJson());
 	    updateProgress(response);
 	    Logger.getLogger(GetGraphMessageDispatcher.class.getName()).log(
-		    Level.FINE, "Generating graph: response returned: {0}", new Object[] {response.toJson()});
+		    Level.INFO, "Generating graph: response returned: {0}", new Object[] {response.toJson()});
 
 	} catch (Exception e) {
 	    response.setStatus(HttpServletResponse.SC_BAD_REQUEST).setDescription(e.getMessage());
