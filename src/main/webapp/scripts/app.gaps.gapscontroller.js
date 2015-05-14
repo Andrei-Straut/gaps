@@ -435,6 +435,7 @@ gaps.controller('gapscontroller', ['$rootScope', '$scope', 'Socket', 'Statistics
             numberOfEvolutions: 10000,
             minPopSizePercent: 100,
             stopConditionPercent: 30,
+            reportEveryXGenerations: 1000,
             alwaysCalculateFitness: true,
             keepPopSizeConstant: false,
             preserveFittestIndividual: true,

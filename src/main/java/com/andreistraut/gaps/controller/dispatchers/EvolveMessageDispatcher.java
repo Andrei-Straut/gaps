@@ -84,6 +84,11 @@ public class EvolveMessageDispatcher extends MessageDispatcher {
 
 	evolver.init();
 
+	int reportEveryXGenerations = 1000;
+	if(request.getData().has("reportEveryXGenerations")) {
+	    reportEveryXGenerations = request.getData().get("reportEveryXGenerations").getAsInt();
+	}
+	
 	while (!evolver.hasFinished()) {
 	    GenerationStatistic statistic = evolver.evolveAndGetStatistics();
 
@@ -100,7 +105,7 @@ public class EvolveMessageDispatcher extends MessageDispatcher {
 			Level.INFO, "Evolution update for session {0}: {1} ",
 			new Object[]{session.getId(), statistic.toJson().toString()});
 	    } else {
-		if (evolver.getCompletedSteps() % (numberOfEvolutions / 10) == 0) {
+		if (evolver.getCompletedSteps() % reportEveryXGenerations == 0) {
 		    response
 			    .setStatus(HttpServletResponse.SC_OK)
 			    .setIsEnded(false)

@@ -3,6 +3,8 @@ package com.andreistraut.gaps.datamodel.graph;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class DirectedWeightedGraphImported extends DirectedWeightedGraph {
 
@@ -34,6 +36,8 @@ public class DirectedWeightedGraphImported extends DirectedWeightedGraph {
 	    Node node = new Node(nodeJson);
 	    this.addVertex(node);
 	}
+	Logger.getLogger(DirectedWeightedGraphImported.class.getName()).log(
+		Level.FINE, "Generating graph: Finished creating nodes");
 
 	//then, import all edges
 	for (int i = 0; i < graph.size(); i++) {
@@ -96,6 +100,8 @@ public class DirectedWeightedGraphImported extends DirectedWeightedGraph {
 		}
 	    }
 	}
+	Logger.getLogger(DirectedWeightedGraphImported.class.getName()).log(
+		Level.FINE, "Generating graph: Finished creating edges");
 
 	this.numberOfNodes = this.vertexSet().size();
 	this.numberOfEdges = this.vertexSet().size();

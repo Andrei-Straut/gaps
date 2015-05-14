@@ -7,6 +7,30 @@
     <div class="col-md-6 col-sm-12 col-xs-12">
         <div class="form-group"
              ng-class="{'has-error':
+                         geneticsettings.reportGenerations.$error.required
+                         || !geneticsettings.reportGenerations.$valid}">
+            <label class="control-label" for="reportGenerations">Report Every X Generations</label>
+            <input required
+                   id="reportGenerations" 
+                   name="reportGenerations"
+                   class="form-control" 
+                   data-toggle="tooltip" 
+                   data-original-title="Report state once every X generations. When a change in state happens, report will be sent regardless of this settings"
+                   type="number"
+                   min="1"
+                   max="{{$scope.geneticSettings.numberOfEvolutions}}"
+                   ng-model="geneticSettings.reportEveryXGenerations" 
+                   ng-disabled="!(getStatistics().getGraphStatisticsLoaded())"
+                   disabled>
+            <label class="control-label" 
+                   for="reportGenerations" 
+                   ng-show="!geneticsettings.reportGenerations.$valid">
+                Report setting must be between 1 (report ALL generations) and maximum number of evolutions
+            </label>
+        </div>
+        
+        <div class="form-group"
+             ng-class="{'has-error':
                          geneticsettings.minPopSizePercent.$error.required
                          || !geneticsettings.minPopSizePercent.$valid}">
             <label class="control-label" for="minPopSizePercent">Minimum Population Size (%)</label>

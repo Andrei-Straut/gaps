@@ -97,4 +97,32 @@ public class DirectedWeightedGraphStaticTest {
             Assert.assertTrue(firstEdges.equals(secondEdges));
         }
     }
+
+    @Test
+    public void testGraphGenerationLargeGraphSpecialFailedTest() {
+	/**
+	 * Test a special case in which graph generation would hang up in GUI for a static graph
+	 * with these specific parameters
+	 */
+        for (int i = 0; i < RUN_LIMIT_LARGE; i++) {
+            DirectedWeightedGraphStatic first = new DirectedWeightedGraphStatic(
+                    100, 500);
+	    first.minimumEdgeWeight = 1;
+	    first.maximumEdgeWeight = 1000;
+	    
+            DirectedWeightedGraphStatic second = new DirectedWeightedGraphStatic(
+                    100, 500);
+	    second.minimumEdgeWeight = 1;
+	    second.maximumEdgeWeight = 1000;
+
+            first.initNodes();
+            second.initNodes();
+
+            ArrayList<DirectedWeightedEdge> firstEdges = first.initEdges();
+            ArrayList<DirectedWeightedEdge> secondEdges = second.initEdges();
+
+            Assert.assertTrue(first.equals(second));
+            Assert.assertTrue(firstEdges.equals(secondEdges));
+        }
+    }
 }

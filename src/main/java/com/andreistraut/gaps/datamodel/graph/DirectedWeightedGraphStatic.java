@@ -1,35 +1,39 @@
 package com.andreistraut.gaps.datamodel.graph;
 
 import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class DirectedWeightedGraphStatic extends DirectedWeightedGraph {
 
     public DirectedWeightedGraphStatic(int numberOfNodes, int numberOfEdges) {
-        super(numberOfNodes, numberOfEdges);
+	super(numberOfNodes, numberOfEdges);
     }
 
     public DirectedWeightedGraphStatic(GraphSettings settings) {
-        super(settings);
+	super(settings);
     }
 
     @Override
     public ArrayList<Node> initNodes() {
-        for (int i = 0; i < this.numberOfNodes; i++) {
-            Node node = new Node(Integer.toString(i), Integer.toString(i));
-            this.addVertex(node);
+	for (int i = 0; i < this.numberOfNodes; i++) {
+	    Node node = new Node(Integer.toString(i), Integer.toString(i));
+	    this.addVertex(node);
 	    this.nodeIdMap.put(node.getId(), node);
 	    this.nodeNameMap.put(node.getName(), node);
-        }
+	}
 
-        ArrayList<Node> nodesList = new ArrayList<Node>();
-        nodesList.addAll(this.vertexSet());
-
-        return nodesList;
+	ArrayList<Node> nodesList = new ArrayList<Node>();
+	nodesList.addAll(this.vertexSet());
+	
+	Logger.getLogger(DirectedWeightedGraphStatic.class.getName()).log(
+		Level.FINE, "Generating graph: Finished creating nodes");
+	return nodesList;
     }
 
     @Override
     public ArrayList<DirectedWeightedEdge> initEdges() {
-        ArrayList<Node> nodesList = this.getNodes();
+	ArrayList<Node> nodesList = this.getNodes();
 	ArrayList<DirectedWeightedEdge> edgeList = new ArrayList<DirectedWeightedEdge>();
 
 	for (int i = 0; i < this.numberOfNodes - 1; i++) {
@@ -57,28 +61,28 @@ public class DirectedWeightedGraphStatic extends DirectedWeightedGraph {
 	    this.totalEdgeCost += cost;
 	}
 
-        int numberOfCreatedEdges = this.edgeSet().size();
-        int edgeDifference = 2;
-        int sourceIndex = 0;
-        int destinationIndex = sourceIndex + edgeDifference;
-        
+	int numberOfCreatedEdges = this.edgeSet().size();
+	int edgeDifference = 2;
+	int sourceIndex = 0;
+	int destinationIndex = sourceIndex + edgeDifference;
+
 	for (int i = numberOfCreatedEdges; i < this.numberOfEdges; i++) {
-            
-            if(destinationIndex > this.vertexSet().size() - 1) {
-                
-                edgeDifference++;
-                sourceIndex = 0;
-                destinationIndex = sourceIndex + edgeDifference;
-                
-                if(destinationIndex > this.vertexSet().size() - 1) {
-                    destinationIndex = this.vertexSet().size() - 1;
-                }
-                
-                if(sourceIndex == destinationIndex && sourceIndex > 0) {
-                    sourceIndex = sourceIndex - 1;
-                }
-            }
-            
+
+	    if (destinationIndex > this.vertexSet().size() - 1) {
+
+		edgeDifference++;
+		sourceIndex = 0;
+		destinationIndex = sourceIndex + edgeDifference;
+
+		if (destinationIndex > this.vertexSet().size() - 1) {
+		    destinationIndex = this.vertexSet().size() - 1;
+		}
+
+		if (sourceIndex == destinationIndex && sourceIndex > 0) {
+		    sourceIndex = sourceIndex - 1;
+		}
+	    }
+
 	    Node source = nodesList.get(sourceIndex);
 	    Node destination = nodesList.get(destinationIndex);
 
@@ -91,9 +95,9 @@ public class DirectedWeightedGraphStatic extends DirectedWeightedGraph {
 
 	    this.addEdge(source, destination, edge);
 	    edgeList.add(edge);
-            
-            sourceIndex++;
-            destinationIndex++;
+
+	    sourceIndex++;
+	    destinationIndex++;
 
 	    /**
 	     * Statistics
@@ -107,6 +111,8 @@ public class DirectedWeightedGraphStatic extends DirectedWeightedGraph {
 	    this.totalEdgeCost += cost;
 	}
 
+	Logger.getLogger(DirectedWeightedGraphStatic.class.getName()).log(
+		Level.FINE, "Generating graph: Finished creating edges");
 	return edgeList;
     }
 

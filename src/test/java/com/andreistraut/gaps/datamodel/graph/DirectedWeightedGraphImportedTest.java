@@ -22,17 +22,17 @@ public class DirectedWeightedGraphImportedTest {
     public DirectedWeightedGraphImportedTest() {
     }
 
-    @Before
-    public void setUp() {
-	DirectedWeightedGraph graph = new DirectedWeightedGraphMockSemiRandomThreeNodeThreeEdges().getGraph();
-	this.graphJson = graph.toJson().get("graph").getAsJsonArray();
-    }
-
     @BeforeClass
     public static void setUpClass() {
 	Logger.getLogger(DirectedWeightedGraphImportedTest.class.getName()).log(Level.INFO,
 		"{0} TEST: Graph JSON Import",
 		DirectedWeightedGraphImportedTest.class.toString());
+    }
+
+    @Before
+    public void setUp() {
+	DirectedWeightedGraph graph = new DirectedWeightedGraphMockSemiRandomThreeNodeThreeEdges().getGraph();
+	this.graphJson = graph.toJson().get("graph").getAsJsonArray();
     }
 
     @Test

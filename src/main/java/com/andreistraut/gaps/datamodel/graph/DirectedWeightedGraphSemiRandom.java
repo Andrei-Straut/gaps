@@ -2,6 +2,8 @@ package com.andreistraut.gaps.datamodel.graph;
 
 import java.util.ArrayList;
 import java.util.Random;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class DirectedWeightedGraphSemiRandom extends DirectedWeightedGraph {
 
@@ -24,7 +26,9 @@ public class DirectedWeightedGraphSemiRandom extends DirectedWeightedGraph {
 
 	ArrayList<Node> nodesList = new ArrayList<Node>();
 	nodesList.addAll(this.vertexSet());
-
+	
+	Logger.getLogger(DirectedWeightedGraphSemiRandom.class.getName()).log(
+		Level.FINE, "Generating graph: Finished creating nodes");
 	return nodesList;
     }
 
@@ -103,7 +107,9 @@ public class DirectedWeightedGraphSemiRandom extends DirectedWeightedGraph {
 	    }
 	    this.totalEdgeCost += cost;
 	}
-
+	
+	Logger.getLogger(DirectedWeightedGraphSemiRandom.class.getName()).log(
+		Level.FINE, "Generating graph: Finished creating edges");
 	return edgeList;
     }
 }
