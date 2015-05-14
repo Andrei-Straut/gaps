@@ -5,17 +5,17 @@
                  || !geneticsettings.sourceNode.$valid}">
     <label class="control-label" for="sourceNode">Source Node Id</label>
     <input required
+           type="text"
            id="sourceNode"
            name="sourceNode"
            class="form-control"
            data-toggle="tooltip" 
            data-placement="bottom" 
            data-original-title="Start point of path search"
-           type="number"
            ng-model="geneticSettings.sourceNode"
            ng-disabled="!(getStatistics().getGraphStatisticsLoaded())"
-           min="0"
-           max="{{graphSettings.numberOfNodes - 1}}"
+           typeahead="id for id in nodeIds | filter: $viewValue | limitTo:8"
+           node-id-valid
            disabled>
     <label class="control-label" 
            for="sourceNode" 
@@ -25,14 +25,14 @@
     <label class="control-label" 
            for="sourceNode" 
            ng-show="!geneticsettings.sourceNode.$valid">
-        Source Node ID must be between 0 and number of nodes - 1
+        Source Node ID not found in graph
     </label>
 </div>
 
 <div class="form-group"
      ng-class="{'has-error' : 
-             geneticsettings.destinationNode.$error.required
-                 || !geneticsettings.destinationNode.$valid}">
+             (geneticsettings.destinationNode.$error.required
+                 || !geneticsettings.destinationNode.$valid)}">
     <label class="control-label" for="destinationNode">Destination Node Id</label>
     <input required 
            id="destinationNode" 
@@ -40,11 +40,10 @@
            class="form-control"
            data-toggle="tooltip" 
            data-original-title="End point of path search"
-           type="number"
            ng-model="geneticSettings.destinationNode"
            ng-disabled="!(getStatistics().getGraphStatisticsLoaded())"
-           min="0"
-           max="{{graphSettings.numberOfNodes - 1}}"
+           typeahead="id for id in nodeIds | filter: $viewValue | limitTo:8"
+           node-id-valid
            disabled>
     <label class="control-label" 
            for="destinationNode" 
@@ -53,8 +52,8 @@
     </label>
     <label class="control-label" 
            for="destinationNode" 
-           ng-show="!geneticsettings.destinationNode.$valid">
-        Destination Node ID must be between 0 and number of nodes - 1
+           ng-show="!(geneticsettings.destinationNode.$valid)">
+        Destination Node ID not found in graph
     </label>
 </div>
 

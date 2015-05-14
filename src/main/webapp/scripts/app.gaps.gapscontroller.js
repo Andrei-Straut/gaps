@@ -28,7 +28,7 @@ gaps.controller('gapscontroller', ['$rootScope', '$scope', 'Socket', 'Statistics
             $scope.clearNotifs(3000);
             Statistics.resetAllStatistics();
             $scope.notifyInfo('Uploading graph...');
-            
+
             var interval = window.setInterval(function () {
                 $('#graphSettingsAdvancedModal').modal('hide');
 
@@ -58,7 +58,7 @@ gaps.controller('gapscontroller', ['$rootScope', '$scope', 'Socket', 'Statistics
             $scope.clearNotifs(3000);
             Statistics.resetAllStatistics();
             $scope.notifyInfo('Loading graph...');
-            
+
             // Little hack to give notification time to pop-up
             var interval = window.setInterval(function () {
                 $scope.graphGeneration = $socket.getGraph($scope.graphSettings);
@@ -84,12 +84,12 @@ gaps.controller('gapscontroller', ['$rootScope', '$scope', 'Socket', 'Statistics
         $scope.computePaths = function () {
             Statistics.resetPathStatistics();
             $scope.notifyInfo('Computing paths...');
-            
+
             var interval = window.setInterval(function () {
                 $scope.geneticEvolution = $socket.computePaths($scope.geneticSettings);
                 $scope.geneticEvolution.then(function (response) {
 
-                    if (response.status === 200) {                        
+                    if (response.status === 200) {
                         $scope.load.wip = false;
                         $scope.load.wipType = '';
                         $rootScope.$broadcast('pathDataLoaded', {});
@@ -114,7 +114,7 @@ gaps.controller('gapscontroller', ['$rootScope', '$scope', 'Socket', 'Statistics
             Statistics.resetGeneticStatistics();
             Statistics.markEvolutionStart();
             $scope.notifyInfo('Evolving...');
-            
+
             var interval = window.setInterval(function () {
                 $scope.geneticEvolution = $socket.evolve($scope.geneticSettings);
                 $scope.geneticEvolution.then(function (response) {
@@ -141,7 +141,7 @@ gaps.controller('gapscontroller', ['$rootScope', '$scope', 'Socket', 'Statistics
             Statistics.resetCompareStatistics();
             Statistics.markCompareStart();
             $scope.notifyInfo('Comparing Results...');
-            
+
             var interval = window.setInterval(function () {
                 $scope.geneticResultsCompare = $socket.compare($scope.geneticSettings);
                 $scope.geneticResultsCompare.then(function (response) {
@@ -221,7 +221,7 @@ gaps.controller('gapscontroller', ['$rootScope', '$scope', 'Socket', 'Statistics
                 } catch (e) {
                     $scope.uploadJsonValid = false;
                 }
-                
+
                 window.clearInterval(interval);
             }, 200);
         };
@@ -243,7 +243,17 @@ gaps.controller('gapscontroller', ['$rootScope', '$scope', 'Socket', 'Statistics
         $scope.initGraphView = function ($data) {
             $rootScope.$broadcast('resetViews', {});
             $scope.resetGraphView();
-            jitInit($data);
+            var fd = jitInit($data);
+            
+            $scope.nodeIds = [];
+            fd.graph.eachNode(function (node) {
+                $scope.nodeIds.push(node.id);
+            });
+            
+            if($scope.nodeIds.length && $scope.nodeIds.length > 0) {
+                $scope.geneticSettings.sourceNode = $scope.nodeIds[0];
+                $scope.geneticSettings.destinationNode = $scope.nodeIds[$scope.nodeIds.length - 1];
+            }
 
             $(window).scrollTop($(window).scrollTop() + 1);
             $(window).scrollTop($(window).scrollTop() - 1);
@@ -397,6 +407,7 @@ gaps.controller('gapscontroller', ['$rootScope', '$scope', 'Socket', 'Statistics
                     ]};
         $scope.graphJsonString = JSON.stringify($scope.graphJson.graph, null, 2);
         $scope.uploadJsonValid = true;
+        $scope.nodeIds = [];
 
         // Keep track of what's been loaded
         $scope.load = {

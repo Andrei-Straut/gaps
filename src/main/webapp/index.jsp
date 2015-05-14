@@ -37,6 +37,7 @@
         <script src="scripts/lib/bootstrap/bootstrap.dataTables.js"></script>
         <!-- ANGULAR SCRIPTS -->
         <script src="scripts/lib/angular/angular.min.js"></script>
+        <script src="scripts/lib/angular/angular.ui.bootstrap.tpls.js"></script>
         <script src="scripts/lib/angular/angular.ui.notification.min.js"></script>
         <script src="scripts/lib/angular/angular.ui.bootstrap.slider.js"></script>
         <script src="scripts/lib/angular/angular.draganddrop.js"></script>
@@ -54,6 +55,7 @@
         <script src="scripts/app.gaps.statisticsfactory.js"></script>
         <script src="scripts/app.gaps.gapscontroller.js"></script>
         <script src="scripts/app.gaps.statisticscontroller.js"></script>
+        <script src="scripts/app.gaps.formvalidation.js"></script>
         <script src="scripts/main.js"></script>
 
     </head>

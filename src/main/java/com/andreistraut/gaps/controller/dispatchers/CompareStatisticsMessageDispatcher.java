@@ -30,107 +30,109 @@ public class CompareStatisticsMessageDispatcher extends MessageDispatcher {
     private Node destinationNode;
 
     public CompareStatisticsMessageDispatcher(Controller controller, Session session, MessageType type) {
-        super(controller, session, type);
-        this.controller = controller;
-        this.session = session;
-        this.type = type;
+	super(controller, session, type);
+	this.controller = controller;
+	this.session = session;
+	this.type = type;
     }
 
     @Override
     boolean setRequest(MessageRequest request) throws Exception {
-        if(request == null || request.getData() == null) {
-            throw new Exception("Request invalid, missing data");
-        }
-        
-        if (!request.getData().has("sourceNode")
-                || !request.getData().has("destinationNode")) {
+	if (request == null || request.getData() == null) {
+	    throw new Exception("Request invalid, missing data");
+	}
 
-            throw new Exception("Compare request malformed, missing parameters");
-        }
+	if (!request.getData().has("sourceNode")
+		|| !request.getData().has("destinationNode")) {
 
-	int sourceNodeId = request.getData().get("sourceNode").getAsInt();
-	int destinationNodeId = request.getData().get("destinationNode").getAsInt();
+	    throw new Exception("Compare request malformed, missing parameters");
+	}
 
-	if (sourceNodeId == destinationNodeId) {
+	String sourceNodeId = request.getData().get("sourceNode").getAsString();
+	String destinationNodeId = request.getData().get("destinationNode").getAsString();
+
+	if (sourceNodeId.equals(destinationNodeId)) {
 	    throw new Exception("Source and destination nodes must be different");
 	}
 
-        this.request = request;
-        
-        return true;
+	this.request = request;
+
+	return true;
     }
 
     @Override
     void setParameters(ArrayList<Object> parameters) throws Exception {
-	if (parameters == null || parameters.isEmpty() || 
-                !(parameters.get(0) instanceof DirectedWeightedGraph)) {
-            
+	if (parameters == null || parameters.isEmpty()
+		|| !(parameters.get(0) instanceof DirectedWeightedGraph)) {
+
 	    throw new Exception("First parameter must be a DirectedWeightedGraph");
 	}
 
-        this.graph = (DirectedWeightedGraph) parameters.get(0);
+	this.graph = (DirectedWeightedGraph) parameters.get(0);
 
-        int sourceNodeId = request.getData().get("sourceNode").getAsInt();
-        int destinationNodeId = request.getData().get("destinationNode").getAsInt();
+	String sourceNodeId = request.getData().get("sourceNode").getAsString();
+	String destinationNodeId = request.getData().get("destinationNode").getAsString();
 
-        if (graph.getNodes().size() <= sourceNodeId
-                || graph.getNodes().size() <= destinationNodeId) {
-            throw new Exception("Source or destination node not found in graph");
-        }
+	if (sourceNodeId.equals(destinationNodeId)) {
+	}
 
-        this.sourceNode = this.graph.getNodes().get(sourceNodeId);
-        this.destinationNode = this.graph.getNodes().get(destinationNodeId);
-        this.parameters = parameters;
+	if ((graph.getNodeById(sourceNodeId) == null || graph.getNodeByName(destinationNodeId) == null)) {
+	    throw new Exception("Source or destination node not found in graph");
+	}
+
+	this.sourceNode = this.graph.getNodeById(sourceNodeId);
+	this.destinationNode = this.graph.getNodeById(destinationNodeId);
+	this.parameters = parameters;
     }
 
     @Override
     boolean process() throws Exception {
-        MessageResponse response = new MessageResponse(request.getCallbackId());
+	MessageResponse response = new MessageResponse(request.getCallbackId());
 
-        List<GraphPath<Node, DirectedWeightedEdge>> kShortestPaths
-                = this.graph.getKShortestPaths(this.sourceNode, this.destinationNode,
-                        request.getData().get("comparePaths").getAsInt());
-        List<DirectedWeightedGraphPath> directedPaths = new ArrayList<DirectedWeightedGraphPath>();
+	List<GraphPath<Node, DirectedWeightedEdge>> kShortestPaths
+		= this.graph.getKShortestPaths(this.sourceNode, this.destinationNode,
+			request.getData().get("comparePaths").getAsInt());
+	List<DirectedWeightedGraphPath> directedPaths = new ArrayList<DirectedWeightedGraphPath>();
 
-        for (GraphPath<Node, DirectedWeightedEdge> kshortestPath : kShortestPaths) {
-            DirectedWeightedGraphPath path = new DirectedWeightedGraphPath(
-                    graph, kshortestPath.getEdgeList());
-            directedPaths.add(path);
-        }
+	for (GraphPath<Node, DirectedWeightedEdge> kshortestPath : kShortestPaths) {
+	    DirectedWeightedGraphPath path = new DirectedWeightedGraphPath(
+		    graph, kshortestPath.getEdgeList());
+	    directedPaths.add(path);
+	}
 
-        GeneticEvolver evolver = new GeneticEvolver(
-                0,
-                0,
-                this.graph, directedPaths);
+	GeneticEvolver evolver = new GeneticEvolver(
+		0,
+		0,
+		this.graph, directedPaths);
 
-        List<IChromosome> chromosomes = evolver.init().getChromosomes();
-        for (IChromosome chromosome : chromosomes) {
-            response
-                    .setStatus(HttpServletResponse.SC_OK)
-                    .setIsEnded(false)
-                    .setData(((PathChromosome) chromosome).toJson())
-                    .setDescription("Ok");
-            updateProgress(response);
-        }
+	List<IChromosome> chromosomes = evolver.init().getChromosomes();
+	for (IChromosome chromosome : chromosomes) {
+	    response
+		    .setStatus(HttpServletResponse.SC_OK)
+		    .setIsEnded(false)
+		    .setData(((PathChromosome) chromosome).toJson())
+		    .setDescription("Ok");
+	    updateProgress(response);
+	}
 
-        response
-                .setStatus(HttpServletResponse.SC_OK)
-                .setIsEnded(true)
-                .setData(null)
-                .setDescription("Ok");
-        updateProgress(response);
+	response
+		.setStatus(HttpServletResponse.SC_OK)
+		.setIsEnded(true)
+		.setData(null)
+		.setDescription("Ok");
+	updateProgress(response);
 
-        Logger.getLogger(Controller.class.getName()).log(Level.INFO,
-                "Request from {0} with callback ID {1} processed",
-                new Object[]{session.getId(), request.getCallbackId()});
+	Logger.getLogger(Controller.class.getName()).log(Level.INFO,
+		"Request from {0} with callback ID {1} processed",
+		new Object[]{session.getId(), request.getCallbackId()});
 
-        return true;
+	return true;
     }
 
     @Override
     protected void updateProgress(MessageResponse response) {
-        if(this.sendUpdates) {
-            this.controller.respond(this.session, response);
-        }
+	if (this.sendUpdates) {
+	    this.controller.respond(this.session, response);
+	}
     }
 }
