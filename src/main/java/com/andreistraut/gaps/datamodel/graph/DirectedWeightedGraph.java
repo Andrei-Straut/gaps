@@ -65,7 +65,7 @@ public abstract class DirectedWeightedGraph extends DirectedPseudograph<Node, Di
     }
 
     public int getNumberOfEdges() {
-	return this.edgeSet()!= null ? this.edgeSet().size() : 0;
+	return this.edgeSet() != null ? this.edgeSet().size() : 0;
     }
 
     public Node getNodeById(String id) {
@@ -86,10 +86,10 @@ public abstract class DirectedWeightedGraph extends DirectedPseudograph<Node, Di
 
     public Boolean hasNode(String id) {
 	Node node = null;
-	
+
 	if (this.nodeIdMap != null && !this.nodeIdMap.isEmpty()) {
 	    node = nodeIdMap.get(id);
-	    
+
 	    if (node != null) {
 		return true;
 	    }
@@ -151,17 +151,7 @@ public abstract class DirectedWeightedGraph extends DirectedPseudograph<Node, Di
 
     public ArrayList<DirectedWeightedGraphPath> getKPathsDepthFirst(Node source,
 	    Node destination, int numberOfPaths) {
-
-	depthFirstSearchResults.clear();
-	LinkedList<Node> visited = new LinkedList<Node>();
-	visited.add(source);
-
-	/**
-	 * Kinda reeks of bad engineering, side-effects on
-	 * depthFirstSearchResults :(
-	 */
-	depthFirstSearch(visited, destination, numberOfPaths);
-	return depthFirstSearchResults;
+	return new DepthFirstKPathsFinder(this, source, destination, numberOfPaths).getPaths();
     }
 
     public DirectedWeightedEdge getLowestCostEdge() {
@@ -206,64 +196,6 @@ public abstract class DirectedWeightedGraph extends DirectedPseudograph<Node, Di
 	}
 
 	return highestCost;
-    }
-
-    private void depthFirstSearch(LinkedList<Node> visited, Node destination, int maxIterations) {
-
-	if (this.depthFirstSearchResults.size() >= maxIterations) {
-	    return;
-	}
-
-	LinkedList<Node> outgoingNodes = new LinkedList<Node>();
-
-	Set<DirectedWeightedEdge> edges = this.outgoingEdgesOf(visited.getLast());
-	for (DirectedWeightedEdge edge : edges) {
-	    outgoingNodes.add(edge.getDestination());
-	}
-
-	/**
-	 * examine adjacent nodes
-	 */
-	for (Node node : outgoingNodes) {
-	    if (visited.contains(node)) {
-		continue;
-	    }
-	    if (node.equals(destination)) {
-		visited.add(node);
-
-		/**
-		 * Save path
-		 */
-		DirectedWeightedGraphPath path = new DirectedWeightedGraphPath(this);
-
-		for (int i = 0; i < visited.size() - 1; i++) {
-		    Node current = visited.get(i);
-		    Node next = visited.get(i + 1);
-
-		    path.addEdgeToList(this.getEdge(current, next));
-		}
-
-		this.depthFirstSearchResults.add(path);
-
-		/**
-		 * Remove last visited node and move one
-		 */
-		visited.removeLast();
-		break;
-	    }
-	}
-
-	/**
-	 * in depth-first, recursion needs to come after visiting adjacent nodes
-	 */
-	for (Node node : outgoingNodes) {
-	    if (visited.contains(node) || node.equals(destination)) {
-		continue;
-	    }
-	    visited.addLast(node);
-	    depthFirstSearch(visited, destination, maxIterations);
-	    visited.removeLast();
-	}
     }
 
     public JsonObject toJson() {
@@ -338,4 +270,88 @@ public abstract class DirectedWeightedGraph extends DirectedPseudograph<Node, Di
     public abstract ArrayList<Node> initNodes();
 
     public abstract ArrayList<DirectedWeightedEdge> initEdges();
+
+    private class DepthFirstKPathsFinder {
+
+	private final Node source;
+	private final Node destination;
+	private final int numberOfPaths;
+	private final DirectedWeightedGraph graph;
+	private ArrayList<DirectedWeightedGraphPath> depthFirstSearchResults = new ArrayList<DirectedWeightedGraphPath>();
+
+	public DepthFirstKPathsFinder(DirectedWeightedGraph graph, Node source, Node destination, int numberOfPaths) {
+	    this.graph = graph;
+	    this.source = source;
+	    this.destination = destination;
+	    this.numberOfPaths = numberOfPaths;
+	}
+
+	public ArrayList<DirectedWeightedGraphPath> getPaths() {
+	    depthFirstSearchResults.clear();
+	    LinkedList<Node> visited = new LinkedList<Node>();
+	    visited.add(source);
+
+	    this.depthFirstSearch(visited, destination, numberOfPaths);
+	    return depthFirstSearchResults;
+	}
+
+	private void depthFirstSearch(LinkedList<Node> visited, Node destination, int maxIterations) {
+
+	    if (this.depthFirstSearchResults.size() >= maxIterations) {
+		return;
+	    }
+
+	    LinkedList<Node> outgoingNodes = new LinkedList<Node>();
+
+	    Set<DirectedWeightedEdge> edges = graph.outgoingEdgesOf(visited.getLast());
+	    for (DirectedWeightedEdge edge : edges) {
+		outgoingNodes.add(edge.getDestination());
+	    }
+
+	    /**
+	     * examine adjacent nodes
+	     */
+	    for (Node node : outgoingNodes) {
+		if (visited.contains(node)) {
+		    continue;
+		}
+		if (node.equals(destination)) {
+		    visited.add(node);
+
+		    /**
+		     * Save path
+		     */
+		    DirectedWeightedGraphPath path = new DirectedWeightedGraphPath(graph);
+
+		    for (int i = 0; i < visited.size() - 1; i++) {
+			Node current = visited.get(i);
+			Node next = visited.get(i + 1);
+
+			path.addEdgeToList(graph.getEdge(current, next));
+		    }
+
+		    this.depthFirstSearchResults.add(path);
+
+		    /**
+		     * Remove last visited node and move one
+		     */
+		    visited.removeLast();
+		    break;
+		}
+	    }
+
+	    /**
+	     * in depth-first, recursion needs to come after visiting adjacent
+	     * nodes
+	     */
+	    for (Node node : outgoingNodes) {
+		if (visited.contains(node) || node.equals(destination)) {
+		    continue;
+		}
+		visited.addLast(node);
+		depthFirstSearch(visited, destination, maxIterations);
+		visited.removeLast();
+	    }
+	}
+    }
 }
