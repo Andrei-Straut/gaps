@@ -5,6 +5,7 @@ import com.andreistraut.gaps.controller.dispatchers.MessageDispatcher;
 import com.andreistraut.gaps.controller.dispatchers.MessageDispatcherFactory;
 import com.google.gson.JsonSyntaxException;
 import java.io.IOException;
+import java.util.Random;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.servlet.http.HttpServletResponse;
@@ -13,6 +14,7 @@ import javax.websocket.OnMessage;
 import javax.websocket.OnOpen;
 import javax.websocket.Session;
 import javax.websocket.server.ServerEndpoint;
+import org.jgap.RandomGenerator;
 
 /**
  * @ServerEndpoint handling the communication between the client and the server.
@@ -51,7 +53,6 @@ public class Controller {
 	} catch (IOException e) {
 	    Logger.getLogger(Controller.class.getName()).log(Level.SEVERE,
 		    "{0}: Could not send message to client: ", new Object[]{session.getId(), e});
-	    e.printStackTrace();
 	}
     }
 
@@ -64,7 +65,7 @@ public class Controller {
      * @param session
      */
     @OnMessage
-    public void onMessage(String message, Session session) {
+    public void onMessage(String message, Session session) {	
 	Logger.getLogger(Controller.class.getName()).log(
 		Level.INFO, "{0}: {1}",
 		new Object[]{session.getId(), message});
@@ -108,7 +109,6 @@ public class Controller {
 	    Logger.getLogger(Controller.class.getName()).log(Level.SEVERE,
 		    "{0}: Error initiating MessageDispatcher for session {1}",
 		    new Object[]{session.getId(), e});
-	    e.printStackTrace();
 
 	    response = new MessageResponse(request.getCallbackId());
 	    response
@@ -127,7 +127,6 @@ public class Controller {
 	    Logger.getLogger(Controller.class.getName()).log(Level.SEVERE,
 		    "{0}: Error processing MessageDispatcher: ",
 		    new Object[]{session.getId(), e});
-	    e.printStackTrace();
 
 	    response = new MessageResponse(request.getCallbackId());
 	    response
