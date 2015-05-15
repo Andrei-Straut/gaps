@@ -192,9 +192,7 @@ function jitInit(json) {
     fd.refresh();
     var distanceToRight = $(window).width() - $('#infovis').offset().left - 60;
     fd.canvas.resize(distanceToRight, $('#infovis').height());
-    fd.graph.eachNode(function (n) {
-        console.log(n);
-    });
+    
     // end
     window.fd = fd;
     return fd;
