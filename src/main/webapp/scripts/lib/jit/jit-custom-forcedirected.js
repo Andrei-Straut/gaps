@@ -339,7 +339,7 @@ var GraphViewerOptions = {
     selectEpsilon: 15,
     selectAnimationDuration: 50,
     computeAnimationDuration: 200,
-    iterations: 20,
+    iterations: 5,
     levelDistance: 150,
     NodeOptions: {
         overridable: true,

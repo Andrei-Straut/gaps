@@ -42,10 +42,10 @@
         <script src="scripts/lib/angular/angular.ui.bootstrap.slider.js"></script>
         <script src="scripts/lib/angular/angular.draganddrop.js"></script>
         <!-- JIT SCRIPTS -->
-        <script src="scripts/lib/jit/jit-prefuse-fd.js"></script>
         <script src="scripts/lib/jit/jit.js"></script>
-        <script src="scripts/lib/jit/jit-custom.js"></script>
-        <script src="scripts/lib/jit/jit-renderer.js"></script>
+        <script src="scripts/lib/jit/jit-custom-forcedirected.js"></script>
+        <script src="scripts/lib/jit/jit-renderer-prefuse-forcedirected.js"></script>
+        <script src="scripts/lib/jit/jit-renderer-forcedirected.js"></script>
         <!-- MORRIS CHART SCRIPTS -->
         <script src="scripts/lib/morris/raphael-2.1.0.min.js"></script>
         <script src="scripts/lib/morris/morris.js"></script>
