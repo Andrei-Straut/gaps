@@ -42,6 +42,17 @@ function resizePreviewEnd(fdPreview) {
     fdPreview.canvas.resize(distanceToRight - 20, $('#infovis-preview').height(), true);
 }
 
+var Log = {
+    elem: false,
+    write: function (text) {
+        if (!this.elem) {
+            this.elem = document.getElementById('log');
+        }
+        this.elem.innerHTML = text;
+        //this.elem.style.left = (500 - this.elem.offsetWidth / 2) + 'px';
+    }
+};
+
 function jitInit(json) {
 
     var fd = new $jit.ForceDirected({
@@ -182,16 +193,19 @@ function jitInit(json) {
     fd.loadJSON(json);
     // compute positions incrementally and animate.
     fd.computeIncremental({
-        iter: GraphViewerOptions.iterations,
+    //fd.computeFastIncremental({
+        iter: (GraphViewerOptions.iterations / 6),
         property: 'end',
         onStep: function (perc) {
-            Log.write(perc + '% loaded...');
+            console.log('Loading Graph...' + perc + '%');
+            //Log.write('Loading Graph...' + perc + '%');
         },
         onComplete: function () {
             var distanceToRight = $(window).width() - $('#infovis').offset().left - 60;
             fd.canvas.resize(distanceToRight, $('#infovis').height());
 
-            Log.write('Graph Loaded');
+            console.log('Graph Loaded');
+            //Log.write('Graph Loaded');
             fd.animate({
                 modes: ['linear', 'node-property:dim', 'edge-property:lineWidth:color'],
                 transition: $jit.Trans.Circ.easeIn,

@@ -11,7 +11,7 @@
 
     <div id="spinner-wrapper" style="position: fixed; right: 10px; top: 10px; z-index: 100000;" ng-show="load.wip">
         <div class="spinner"></div>
-        <span style="vertical-align: super; color: #428bca">{{load.wipType}}</span>
+        <span id="wipSpan" style="vertical-align: super; color: #428bca">{{load.wipType}}</span>
     </div>
 
     <nav class="navbar-default navbar-side" role="navigation">

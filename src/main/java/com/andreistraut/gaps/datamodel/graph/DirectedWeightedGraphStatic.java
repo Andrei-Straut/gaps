@@ -25,7 +25,7 @@ public class DirectedWeightedGraphStatic extends DirectedWeightedGraph {
 
 	ArrayList<Node> nodesList = new ArrayList<Node>();
 	nodesList.addAll(this.vertexSet());
-	
+
 	Logger.getLogger(DirectedWeightedGraphStatic.class.getName()).log(
 		Level.FINE, "Generating graph: Finished creating nodes");
 	return nodesList;
@@ -63,41 +63,36 @@ public class DirectedWeightedGraphStatic extends DirectedWeightedGraph {
 
 	int numberOfCreatedEdges = this.edgeSet().size();
 	int edgeDifference = 2;
+	int edgesLeft = this.numberOfEdges - numberOfCreatedEdges;
 	int sourceIndex = 0;
 	int destinationIndex = sourceIndex + edgeDifference;
 
-	for (int i = numberOfCreatedEdges; i < this.numberOfEdges; i++) {
+	while (edgesLeft > 0) {
+	    if (destinationIndex > this.vertexSet().size() - 1) {
+		sourceIndex = 0;
+	    }
+	    destinationIndex = sourceIndex + edgeDifference;
 
 	    if (destinationIndex > this.vertexSet().size() - 1) {
-
 		edgeDifference++;
-		sourceIndex = 0;
-		destinationIndex = sourceIndex + edgeDifference;
-
-		if (destinationIndex > this.vertexSet().size() - 1) {
-		    destinationIndex = this.vertexSet().size() - 1;
-		}
-
-		if (sourceIndex == destinationIndex && sourceIndex > 0) {
-		    sourceIndex = sourceIndex - 1;
-		}
+		continue;
 	    }
 
 	    Node source = nodesList.get(sourceIndex);
 	    Node destination = nodesList.get(destinationIndex);
 
-	    int cost = this.minimumEdgeWeight + i;
+	    int cost = this.maximumEdgeWeight - sourceIndex;
 	    if (cost < this.minimumEdgeWeight) {
 		cost = this.minimumEdgeWeight;
+	    }
+	    if (cost > this.maximumEdgeWeight) {
+		cost = this.maximumEdgeWeight;
 	    }
 
 	    DirectedWeightedEdge edge = new DirectedWeightedEdge(source, destination, cost);
 
 	    this.addEdge(source, destination, edge);
 	    edgeList.add(edge);
-
-	    sourceIndex++;
-	    destinationIndex++;
 
 	    /**
 	     * Statistics
@@ -109,6 +104,9 @@ public class DirectedWeightedGraphStatic extends DirectedWeightedGraph {
 		this.actualMaximumEdgeCost = cost;
 	    }
 	    this.totalEdgeCost += cost;
+
+	    sourceIndex++;
+	    edgesLeft--;
 	}
 
 	Logger.getLogger(DirectedWeightedGraphStatic.class.getName()).log(

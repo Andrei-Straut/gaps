@@ -243,14 +243,16 @@ gaps.controller('gapscontroller', ['$rootScope', '$scope', 'Socket', 'Statistics
         $scope.initGraphView = function ($data) {
             $rootScope.$broadcast('resetViews', {});
             $scope.resetGraphView();
-            var fd = jitInit($data);
-            
+            jitInit($data);
+
             $scope.nodeIds = [];
-            fd.graph.eachNode(function (node) {
-                $scope.nodeIds.push(node.id);
+            angular.forEach($data, function (graphNode, key) {
+                if (graphNode && graphNode.id) {
+                    $scope.nodeIds.push(graphNode.id);
+                }
             });
-            
-            if($scope.nodeIds.length && $scope.nodeIds.length > 0) {
+
+            if ($scope.nodeIds.length && $scope.nodeIds.length > 0) {
                 $scope.geneticSettings.sourceNode = $scope.nodeIds[0];
                 $scope.geneticSettings.destinationNode = $scope.nodeIds[$scope.nodeIds.length - 1];
             }
