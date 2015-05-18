@@ -17,7 +17,7 @@ public class DirectedWeightedGraphImportedTest {
     private final int NUMBER_OF_NODES_SMALL = 5;
     private final int NUMBER_OF_EDGES_SMALL = 10;
 
-    private JsonArray graphJson;
+    private JsonObject graphJson;
 
     public DirectedWeightedGraphImportedTest() {
     }
@@ -32,13 +32,13 @@ public class DirectedWeightedGraphImportedTest {
     @Before
     public void setUp() {
 	DirectedWeightedGraph graph = new DirectedWeightedGraphMockSemiRandomThreeNodeThreeEdges().getGraph();
-	this.graphJson = graph.toJson().get("graph").getAsJsonArray();
+	this.graphJson = graph.toJson().get("graph").getAsJsonObject();
     }
 
     @Test
     public void testFromJsonValidGraph() throws Exception {
 	for (int i = 0; i < RUN_LIMIT_SMALL; i++) {
-	    DirectedWeightedGraphImported graph = new DirectedWeightedGraphImported(graphJson.getAsJsonArray());
+	    DirectedWeightedGraphImported graph = new DirectedWeightedGraphImported(graphJson.getAsJsonObject());
 	    DirectedWeightedGraph expected = new DirectedWeightedGraphMockSemiRandomThreeNodeThreeEdges().getGraph();
 
 	    ArrayList<Node> mockNodes = expected.getNodes();
@@ -63,17 +63,22 @@ public class DirectedWeightedGraphImportedTest {
 
 	    DirectedWeightedEdge firstToSecondEdge = new DirectedWeightedEdge(first, second, 100, true);
 	    DirectedWeightedEdge secondToFirstEdge = new DirectedWeightedEdge(second, first, 100, true);
+	    
+	    JsonArray edgesArray = new JsonArray();
+	    edgesArray.add(firstToSecondEdge.toJson());
+	    edgesArray.add(secondToFirstEdge.toJson());
 
 	    JsonObject firstNodeJson = first.toJson();
-	    firstNodeJson.get("adjacencies").getAsJsonArray().add(firstToSecondEdge.toJson());
 	    JsonObject secondNodeJson = second.toJson();
-	    secondNodeJson.get("adjacencies").getAsJsonArray().add(secondToFirstEdge.toJson());
+	    JsonArray nodesArray = new JsonArray();
+	    nodesArray.add(firstNodeJson);
+	    nodesArray.add(secondNodeJson);
 
-	    JsonArray graphJsonArray = new JsonArray();
-	    graphJsonArray.add(firstNodeJson);
-	    graphJsonArray.add(secondNodeJson);
+	    JsonObject graphJsonObject = new JsonObject();
+	    graphJsonObject.add("nodes", nodesArray);
+	    graphJsonObject.add("edges", edgesArray);
 
-	    DirectedWeightedGraphImported graph = new DirectedWeightedGraphImported(graphJsonArray);
+	    DirectedWeightedGraphImported graph = new DirectedWeightedGraphImported(graphJsonObject);
 
 	    Assert.assertTrue(graph.getNodes().size() == 2);
 	    Assert.assertTrue(graph.getEdges().size() == 2);
@@ -89,22 +94,27 @@ public class DirectedWeightedGraphImportedTest {
 	    Node first = new Node("First", "First");
 	    Node second = new Node("Second", "Second");
 	    Node third = new Node("Third", "Third");
-
+	    
 	    DirectedWeightedEdge firstToSecondEdge = new DirectedWeightedEdge(first, second, 100, true);
 	    DirectedWeightedEdge secondToThirdEdge = new DirectedWeightedEdge(second, third, 100, true);
+	    
+	    JsonArray edgesArray = new JsonArray();
+	    edgesArray.add(firstToSecondEdge.toJson());
+	    edgesArray.add(secondToThirdEdge.toJson());
 
 	    JsonObject firstNodeJson = first.toJson();
-	    firstNodeJson.get("adjacencies").getAsJsonArray().add(firstToSecondEdge.toJson());
 	    JsonObject secondNodeJson = second.toJson();
-	    secondNodeJson.get("adjacencies").getAsJsonArray().add(secondToThirdEdge.toJson());
 	    JsonObject thirdNodeJson = third.toJson();
+	    JsonArray nodesArray = new JsonArray();
+	    nodesArray.add(firstNodeJson);
+	    nodesArray.add(secondNodeJson);
+	    nodesArray.add(thirdNodeJson);
 
-	    JsonArray graphJsonArray = new JsonArray();
-	    graphJsonArray.add(firstNodeJson);
-	    graphJsonArray.add(secondNodeJson);
-	    graphJsonArray.add(thirdNodeJson);
+	    JsonObject graphJsonObject = new JsonObject();
+	    graphJsonObject.add("nodes", nodesArray);
+	    graphJsonObject.add("edges", edgesArray);
 
-	    DirectedWeightedGraphImported graph = new DirectedWeightedGraphImported(graphJsonArray);
+	    DirectedWeightedGraphImported graph = new DirectedWeightedGraphImported(graphJsonObject);
 
 	    Assert.assertTrue(graph.getNodes().size() == 3);
 	    Assert.assertTrue(graph.getEdges().size() == 2);
@@ -115,41 +125,30 @@ public class DirectedWeightedGraphImportedTest {
     }
 
     @Test
-    public void testFromJsonValidGraphTwoNodesNoEdges() throws Exception {
-	for (int i = 0; i < RUN_LIMIT_SMALL; i++) {
-	    Node first = new Node("First", "First");
-	    Node second = new Node("Second", "Second");
-
-	    JsonArray graphJsonArray = new JsonArray();
-	    graphJsonArray.add(first.toJson());
-	    graphJsonArray.add(second.toJson());
-
-	    DirectedWeightedGraphImported graph = new DirectedWeightedGraphImported(graphJsonArray);
-
-	    Assert.assertTrue(graph.getNodes().size() == 2);
-	    Assert.assertTrue(graph.getEdges().isEmpty());
-	}
-    }
-
-    @Test
     public void testFromJsonValidGraphTwoNodesEdgeToInexistentNode() throws Exception {
 	for (int i = 0; i < RUN_LIMIT_SMALL; i++) {
 	    Node first = new Node("First", "First");
 	    Node second = new Node("Second", "Second");
 
-	    JsonObject invalidEdge = new JsonObject();
-	    invalidEdge.addProperty("nodeFrom", "First");
-	    invalidEdge.addProperty("nodeTo", "Fourth");
+	    JsonObject edge = new JsonObject();
+	    edge.addProperty("to", "Third");
+	    edge.addProperty("from", "Second");
+	    edge.addProperty("cost", 154);
+	    edge.addProperty("isDirected", true);
+	    JsonArray edgesArray = new JsonArray();
+	    edgesArray.add(edge);
 
 	    JsonObject firstNodeJson = first.toJson();
-	    firstNodeJson.get("adjacencies").getAsJsonArray().add(invalidEdge);
 	    JsonObject secondNodeJson = second.toJson();
+	    JsonArray nodesArray = new JsonArray();
+	    nodesArray.add(firstNodeJson);
+	    nodesArray.add(secondNodeJson);
 
-	    JsonArray graphJsonArray = new JsonArray();
-	    graphJsonArray.add(firstNodeJson);
-	    graphJsonArray.add(secondNodeJson);
+	    JsonObject graphJsonObject = new JsonObject();
+	    graphJsonObject.add("nodes", nodesArray);
+	    graphJsonObject.add("edges", edgesArray);
 
-	    DirectedWeightedGraphImported graph = new DirectedWeightedGraphImported(graphJsonArray);
+	    DirectedWeightedGraphImported graph = new DirectedWeightedGraphImported(graphJsonObject);
 
 	    Assert.assertTrue(graph.getNodes().size() == 3);
 	    Assert.assertTrue(graph.getEdges().size() == 1);
@@ -162,19 +161,25 @@ public class DirectedWeightedGraphImportedTest {
 	    Node first = new Node("First", "First");
 	    Node second = new Node("Second", "Second");
 
-	    JsonObject invalidEdge = new JsonObject();
-	    invalidEdge.addProperty("nodeFrom", "Fourth");
-	    invalidEdge.addProperty("nodeTo", "Second");
+	    JsonObject edge = new JsonObject();
+	    edge.addProperty("from", "Third");
+	    edge.addProperty("to", "Second");
+	    edge.addProperty("cost", 154);
+	    edge.addProperty("isDirected", true);
+	    JsonArray edgesArray = new JsonArray();
+	    edgesArray.add(edge);
 
 	    JsonObject firstNodeJson = first.toJson();
-	    firstNodeJson.get("adjacencies").getAsJsonArray().add(invalidEdge);
 	    JsonObject secondNodeJson = second.toJson();
+	    JsonArray nodesArray = new JsonArray();
+	    nodesArray.add(firstNodeJson);
+	    nodesArray.add(secondNodeJson);
 
-	    JsonArray graphJsonArray = new JsonArray();
-	    graphJsonArray.add(firstNodeJson);
-	    graphJsonArray.add(secondNodeJson);
+	    JsonObject graphJsonObject = new JsonObject();
+	    graphJsonObject.add("nodes", nodesArray);
+	    graphJsonObject.add("edges", edgesArray);
 
-	    DirectedWeightedGraphImported graph = new DirectedWeightedGraphImported(graphJsonArray);
+	    DirectedWeightedGraphImported graph = new DirectedWeightedGraphImported(graphJsonObject);
 
 	    Assert.assertTrue(graph.getNodes().size() == 3);
 	    Assert.assertTrue(graph.getEdges().size() == 1);
@@ -187,22 +192,24 @@ public class DirectedWeightedGraphImportedTest {
 	    Node first = new Node("First", "First");
 	    Node second = new Node("Second", "Second");
 
-	    JsonObject firstToSecondEdge = new JsonObject();
-	    firstToSecondEdge.addProperty("nodeFrom", "First");
-	    firstToSecondEdge.addProperty("nodeTo", "Second");
-	    JsonObject firstToSecondEdgeData = new JsonObject();
-	    firstToSecondEdgeData.addProperty("isDirected", true);
-	    firstToSecondEdge.add("data", firstToSecondEdgeData);
+	    JsonObject edge = new JsonObject();
+	    edge.addProperty("isDirected", true);
+	    edge.addProperty("from", "First");
+	    edge.addProperty("to", "Second");
+	    JsonArray edgesArray = new JsonArray();
+	    edgesArray.add(edge);
 
 	    JsonObject firstNodeJson = first.toJson();
-	    firstNodeJson.get("adjacencies").getAsJsonArray().add(firstToSecondEdge);
 	    JsonObject secondNodeJson = second.toJson();
+	    JsonArray nodesArray = new JsonArray();
+	    nodesArray.add(firstNodeJson);
+	    nodesArray.add(secondNodeJson);
 
-	    JsonArray graphJsonArray = new JsonArray();
-	    graphJsonArray.add(firstNodeJson);
-	    graphJsonArray.add(secondNodeJson);
+	    JsonObject graphJsonObject = new JsonObject();
+	    graphJsonObject.add("nodes", nodesArray);
+	    graphJsonObject.add("edges", edgesArray);
 
-	    DirectedWeightedGraphImported graph = new DirectedWeightedGraphImported(graphJsonArray);
+	    DirectedWeightedGraphImported graph = new DirectedWeightedGraphImported(graphJsonObject);
 
 	    Assert.assertTrue(graph.getNodes().size() == 2);
 	    Assert.assertTrue(graph.getEdges().size() == 1);
@@ -217,82 +224,28 @@ public class DirectedWeightedGraphImportedTest {
 	    Node first = new Node("First", "First");
 	    Node second = new Node("Second", "Second");
 
-	    JsonObject firstToSecondEdge = new JsonObject();
-	    firstToSecondEdge.addProperty("nodeFrom", "First");
-	    firstToSecondEdge.addProperty("nodeTo", "Second");
-	    JsonObject firstToSecondEdgeData = new JsonObject();
-	    firstToSecondEdgeData.addProperty("cost", 15);
-	    firstToSecondEdge.add("data", firstToSecondEdgeData);
+	    JsonObject edge = new JsonObject();
+	    edge.addProperty("cost", 154);
+	    edge.addProperty("from", "First");
+	    edge.addProperty("to", "Second");
+	    JsonArray edgesArray = new JsonArray();
+	    edgesArray.add(edge);
 
 	    JsonObject firstNodeJson = first.toJson();
-	    firstNodeJson.get("adjacencies").getAsJsonArray().add(firstToSecondEdge);
 	    JsonObject secondNodeJson = second.toJson();
+	    JsonArray nodesArray = new JsonArray();
+	    nodesArray.add(firstNodeJson);
+	    nodesArray.add(secondNodeJson);
 
-	    JsonArray graphJsonArray = new JsonArray();
-	    graphJsonArray.add(firstNodeJson);
-	    graphJsonArray.add(secondNodeJson);
+	    JsonObject graphJsonObject = new JsonObject();
+	    graphJsonObject.add("nodes", nodesArray);
+	    graphJsonObject.add("edges", edgesArray);
 
-	    DirectedWeightedGraphImported graph = new DirectedWeightedGraphImported(graphJsonArray);
+	    DirectedWeightedGraphImported graph = new DirectedWeightedGraphImported(graphJsonObject);
 
 	    Assert.assertTrue(graph.getNodes().size() == 2);
 	    Assert.assertTrue(graph.getEdges().size() == 1);
-	    Assert.assertTrue(graph.getEdges().get(0).getCost() == 15);
-	    Assert.assertTrue(graph.getEdges().get(0).isDirected());
-	}
-    }
-
-    @Test
-    public void testFromJsonValidEdgeEmptyData() throws Exception {
-	for (int i = 0; i < RUN_LIMIT_SMALL; i++) {
-	    Node first = new Node("First", "First");
-	    Node second = new Node("Second", "Second");
-
-	    JsonObject firstToSecondEdge = new JsonObject();
-	    firstToSecondEdge.addProperty("nodeFrom", "First");
-	    firstToSecondEdge.addProperty("nodeTo", "Second");
-	    JsonObject firstToSecondEdgeData = new JsonObject();
-	    firstToSecondEdge.add("data", firstToSecondEdgeData);
-
-	    JsonObject firstNodeJson = first.toJson();
-	    firstNodeJson.get("adjacencies").getAsJsonArray().add(firstToSecondEdge);
-	    JsonObject secondNodeJson = second.toJson();
-
-	    JsonArray graphJsonArray = new JsonArray();
-	    graphJsonArray.add(firstNodeJson);
-	    graphJsonArray.add(secondNodeJson);
-
-	    DirectedWeightedGraphImported graph = new DirectedWeightedGraphImported(graphJsonArray);
-
-	    Assert.assertTrue(graph.getNodes().size() == 2);
-	    Assert.assertTrue(graph.getEdges().size() == 1);
-	    Assert.assertTrue(graph.getEdges().get(0).getCost() == 0);
-	    Assert.assertTrue(graph.getEdges().get(0).isDirected());
-	}
-    }
-
-    @Test
-    public void testFromJsonValidEdgeMissingData() throws Exception {
-	for (int i = 0; i < RUN_LIMIT_SMALL; i++) {
-	    Node first = new Node("First", "First");
-	    Node second = new Node("Second", "Second");
-
-	    JsonObject firstToSecondEdge = new JsonObject();
-	    firstToSecondEdge.addProperty("nodeFrom", "First");
-	    firstToSecondEdge.addProperty("nodeTo", "Second");
-
-	    JsonObject firstNodeJson = first.toJson();
-	    firstNodeJson.get("adjacencies").getAsJsonArray().add(firstToSecondEdge);
-	    JsonObject secondNodeJson = second.toJson();
-
-	    JsonArray graphJsonArray = new JsonArray();
-	    graphJsonArray.add(firstNodeJson);
-	    graphJsonArray.add(secondNodeJson);
-
-	    DirectedWeightedGraphImported graph = new DirectedWeightedGraphImported(graphJsonArray);
-
-	    Assert.assertTrue(graph.getNodes().size() == 2);
-	    Assert.assertTrue(graph.getEdges().size() == 1);
-	    Assert.assertTrue(graph.getEdges().get(0).getCost() == 0);
+	    Assert.assertTrue(graph.getEdges().get(0).getCost() == 154);
 	    Assert.assertTrue(graph.getEdges().get(0).isDirected());
 	}
     }
@@ -303,20 +256,24 @@ public class DirectedWeightedGraphImportedTest {
 	    Node first = new Node("First", "First");
 	    Node second = new Node("Second", "Second");
 
-	    JsonObject invalidEdge = new JsonObject();
-	    invalidEdge.addProperty("nodeTo", "Second");
-	    invalidEdge.addProperty("cost", 154);
-	    invalidEdge.addProperty("isDirected", true);
+	    JsonObject edge = new JsonObject();
+	    edge.addProperty("cost", 154);
+	    edge.addProperty("isDirected", true);
+	    edge.addProperty("to", "Second");
+	    JsonArray edgesArray = new JsonArray();
+	    edgesArray.add(edge);
 
 	    JsonObject firstNodeJson = first.toJson();
-	    firstNodeJson.get("adjacencies").getAsJsonArray().add(invalidEdge);
 	    JsonObject secondNodeJson = second.toJson();
+	    JsonArray nodesArray = new JsonArray();
+	    nodesArray.add(firstNodeJson);
+	    nodesArray.add(secondNodeJson);
 
-	    JsonArray graphJsonArray = new JsonArray();
-	    graphJsonArray.add(firstNodeJson);
-	    graphJsonArray.add(secondNodeJson);
+	    JsonObject graphJsonObject = new JsonObject();
+	    graphJsonObject.add("nodes", nodesArray);
+	    graphJsonObject.add("edges", edgesArray);
 
-	    DirectedWeightedGraphImported graph = new DirectedWeightedGraphImported(graphJsonArray);
+	    DirectedWeightedGraphImported graph = new DirectedWeightedGraphImported(graphJsonObject);
 
 	    Assert.assertTrue(graph.getNodes().size() == 2);
 	    Assert.assertTrue(graph.getEdges().isEmpty());
@@ -329,20 +286,24 @@ public class DirectedWeightedGraphImportedTest {
 	    Node first = new Node("First", "First");
 	    Node second = new Node("Second", "Second");
 
-	    JsonObject invalidEdge = new JsonObject();
-	    invalidEdge.addProperty("nodeFrom", "First");
-	    invalidEdge.addProperty("cost", 154);
-	    invalidEdge.addProperty("isDirected", true);
+	    JsonObject edge = new JsonObject();
+	    edge.addProperty("cost", 154);
+	    edge.addProperty("isDirected", true);
+	    edge.addProperty("from", "First");
+	    JsonArray edgesArray = new JsonArray();
+	    edgesArray.add(edge);
 
 	    JsonObject firstNodeJson = first.toJson();
-	    firstNodeJson.get("adjacencies").getAsJsonArray().add(invalidEdge);
 	    JsonObject secondNodeJson = second.toJson();
+	    JsonArray nodesArray = new JsonArray();
+	    nodesArray.add(firstNodeJson);
+	    nodesArray.add(secondNodeJson);
 
-	    JsonArray graphJsonArray = new JsonArray();
-	    graphJsonArray.add(firstNodeJson);
-	    graphJsonArray.add(secondNodeJson);
+	    JsonObject graphJsonObject = new JsonObject();
+	    graphJsonObject.add("nodes", nodesArray);
+	    graphJsonObject.add("edges", edgesArray);
 
-	    DirectedWeightedGraphImported graph = new DirectedWeightedGraphImported(graphJsonArray);
+	    DirectedWeightedGraphImported graph = new DirectedWeightedGraphImported(graphJsonObject);
 
 	    Assert.assertTrue(graph.getNodes().size() == 2);
 	    Assert.assertTrue(graph.getEdges().isEmpty());
@@ -355,19 +316,23 @@ public class DirectedWeightedGraphImportedTest {
 	    Node first = new Node("First", "First");
 	    Node second = new Node("Second", "Second");
 
-	    JsonObject invalidEdge = new JsonObject();
-	    invalidEdge.addProperty("cost", 154);
-	    invalidEdge.addProperty("isDirected", true);
+	    JsonObject edge = new JsonObject();
+	    edge.addProperty("cost", 154);
+	    edge.addProperty("isDirected", true);
+	    JsonArray edgesArray = new JsonArray();
+	    edgesArray.add(edge);
 
 	    JsonObject firstNodeJson = first.toJson();
-	    firstNodeJson.get("adjacencies").getAsJsonArray().add(invalidEdge);
 	    JsonObject secondNodeJson = second.toJson();
+	    JsonArray nodesArray = new JsonArray();
+	    nodesArray.add(firstNodeJson);
+	    nodesArray.add(secondNodeJson);
 
-	    JsonArray graphJsonArray = new JsonArray();
-	    graphJsonArray.add(firstNodeJson);
-	    graphJsonArray.add(secondNodeJson);
+	    JsonObject graphJsonObject = new JsonObject();
+	    graphJsonObject.add("nodes", nodesArray);
+	    graphJsonObject.add("edges", edgesArray);
 
-	    DirectedWeightedGraphImported graph = new DirectedWeightedGraphImported(graphJsonArray);
+	    DirectedWeightedGraphImported graph = new DirectedWeightedGraphImported(graphJsonObject);
 
 	    Assert.assertTrue(graph.getNodes().size() == 2);
 	    Assert.assertTrue(graph.getEdges().isEmpty());
@@ -375,8 +340,48 @@ public class DirectedWeightedGraphImportedTest {
     }
 
     @Test
+    public void testFromJsonInvalidGraphTwoNodesNoEdges() throws Exception {
+	for (int i = 0; i < RUN_LIMIT_SMALL; i++) {
+	    Node first = new Node("First", "First");
+	    Node second = new Node("Second", "Second");
+
+	    JsonObject firstNodeJson = first.toJson();
+	    JsonObject secondNodeJson = second.toJson();
+	    JsonArray nodesArray = new JsonArray();
+	    nodesArray.add(firstNodeJson);
+	    nodesArray.add(secondNodeJson);
+
+	    JsonObject graphJsonObject = new JsonObject();
+	    graphJsonObject.add("nodes", nodesArray);
+	    graphJsonObject.add("edges", new JsonArray());
+
+	    try {
+		DirectedWeightedGraphImported graph = new DirectedWeightedGraphImported(graphJsonObject);
+	    } catch(Exception e) {
+		Assert.assertTrue(e.getMessage().contains("No edges found in graph"));
+	    }
+	}
+    }
+
+    @Test
+    public void testFromJsonInvalidGraphNoNodes() throws Exception {
+	for (int i = 0; i < RUN_LIMIT_SMALL; i++) {
+
+	    JsonObject graphJsonObject = new JsonObject();
+	    graphJsonObject.add("nodes", new JsonArray());
+	    graphJsonObject.add("edges", new JsonArray());
+
+	    try {
+		DirectedWeightedGraphImported graph = new DirectedWeightedGraphImported(graphJsonObject);
+	    } catch(Exception e) {
+		Assert.assertTrue(e.getMessage().contains("No nodes found in graph"));
+	    }
+	}
+    }
+
+    @Test
     public void testFromJsonInvalidGraphEmpty() throws Exception {
-	JsonArray graphEmptyJson = new JsonArray();
+	JsonObject graphEmptyJson = new JsonObject();
 
 	try {
 	    DirectedWeightedGraphImported graph = new DirectedWeightedGraphImported(graphEmptyJson);
@@ -387,7 +392,7 @@ public class DirectedWeightedGraphImportedTest {
 
     @Test
     public void testFromJsonInvalidGraphNull() throws Exception {
-	JsonArray graphEmptyJson = null;
+	JsonObject graphEmptyJson = null;
 
 	try {
 	    DirectedWeightedGraphImported graph = new DirectedWeightedGraphImported(graphEmptyJson);
@@ -402,25 +407,31 @@ public class DirectedWeightedGraphImportedTest {
 	    Node first = new Node("First", "First");
 	    Node second = new Node("Second", "Second");
 
-	    JsonObject invalidEdge = new JsonObject();
-	    invalidEdge.addProperty("cost", 154);
-	    invalidEdge.addProperty("isDirected", true);
+	    JsonObject edge = new JsonObject();
+	    edge.addProperty("cost", 154);
+	    edge.addProperty("isDirected", true);
+	    edge.addProperty("from", "First");
+	    edge.addProperty("to", "Second");
+	    JsonArray edgesArray = new JsonArray();
+	    edgesArray.add(edge);
 
 	    JsonObject firstNodeJson = first.toJson();
-	    firstNodeJson.get("adjacencies").getAsJsonArray().add(invalidEdge);
 	    JsonObject secondNodeJson = second.toJson();
+	    JsonArray nodesArray = new JsonArray();
+	    nodesArray.add(firstNodeJson);
+	    nodesArray.add(secondNodeJson);
 
-	    JsonArray graphJsonArray = new JsonArray();
-	    graphJsonArray.add(firstNodeJson);
-	    graphJsonArray.add(secondNodeJson);
+	    JsonObject graphJsonObject = new JsonObject();
+	    graphJsonObject.add("nodes", nodesArray);
+	    graphJsonObject.add("edges", edgesArray);
 
-	    DirectedWeightedGraphImported graph = new DirectedWeightedGraphImported(graphJsonArray);
-	    DirectedWeightedGraphImported copy = new DirectedWeightedGraphImported(graphJsonArray);
+	    DirectedWeightedGraphImported graph = new DirectedWeightedGraphImported(graphJsonObject);
+	    DirectedWeightedGraphImported copy = new DirectedWeightedGraphImported(graphJsonObject);
 
 	    Assert.assertTrue(graph.initNodes().isEmpty());
 	    Assert.assertTrue(graph.equals(copy));
 	    Assert.assertTrue(graph.getNodes().size() == 2);
-	    Assert.assertTrue(graph.getEdges().isEmpty());
+	    Assert.assertTrue(graph.getEdges().size() == 1);
 	}
     }
 
@@ -430,25 +441,31 @@ public class DirectedWeightedGraphImportedTest {
 	    Node first = new Node("First", "First");
 	    Node second = new Node("Second", "Second");
 
-	    JsonObject invalidEdge = new JsonObject();
-	    invalidEdge.addProperty("cost", 154);
-	    invalidEdge.addProperty("isDirected", true);
+	    JsonObject edge = new JsonObject();
+	    edge.addProperty("cost", 154);
+	    edge.addProperty("isDirected", true);
+	    edge.addProperty("from", "First");
+	    edge.addProperty("to", "Second");
+	    JsonArray edgesArray = new JsonArray();
+	    edgesArray.add(edge);
 
 	    JsonObject firstNodeJson = first.toJson();
-	    firstNodeJson.get("adjacencies").getAsJsonArray().add(invalidEdge);
 	    JsonObject secondNodeJson = second.toJson();
+	    JsonArray nodesArray = new JsonArray();
+	    nodesArray.add(firstNodeJson);
+	    nodesArray.add(secondNodeJson);
 
-	    JsonArray graphJsonArray = new JsonArray();
-	    graphJsonArray.add(firstNodeJson);
-	    graphJsonArray.add(secondNodeJson);
+	    JsonObject graphJsonObject = new JsonObject();
+	    graphJsonObject.add("nodes", nodesArray);
+	    graphJsonObject.add("edges", edgesArray);
 
-	    DirectedWeightedGraphImported graph = new DirectedWeightedGraphImported(graphJsonArray);
-	    DirectedWeightedGraphImported copy = new DirectedWeightedGraphImported(graphJsonArray);
+	    DirectedWeightedGraphImported graph = new DirectedWeightedGraphImported(graphJsonObject);
+	    DirectedWeightedGraphImported copy = new DirectedWeightedGraphImported(graphJsonObject);
 
 	    Assert.assertTrue(graph.initEdges().isEmpty());
 	    Assert.assertTrue(graph.equals(copy));
 	    Assert.assertTrue(graph.getNodes().size() == 2);
-	    Assert.assertTrue(graph.getEdges().isEmpty());
+	    Assert.assertTrue(graph.getEdges().size() == 1);
 	}
     }
 }

@@ -54,10 +54,10 @@ public class UploadGraphMessageDispatcherTest {
 	graphDispatcher.setRequest(uploadGraphRequest);
 
 	Assert.assertTrue(uploadGraphRequest.getData().get("graph") != null);
-	Assert.assertTrue(uploadGraphRequest.getData().get("graph") instanceof JsonArray);
+	Assert.assertTrue(uploadGraphRequest.getData().get("graph") instanceof JsonObject);
 	Assert.assertTrue(uploadGraphRequest.getData().get("graph").equals(
 		new DirectedWeightedGraphMockSemiRandomThreeNodeThreeEdges()
-		.getGraph().toJson().get("graph").getAsJsonArray()));
+		.getGraph().toJson().get("graph").getAsJsonObject()));
     }
 
     @Test
@@ -80,7 +80,7 @@ public class UploadGraphMessageDispatcherTest {
 		this.controller, this.session, MessageType.UPLOADGRAPH);
 	graphDispatcher.setSendUpdates(false);
 	MessageRequest uploadGraphRequest = this.messageRequestMock.getUploadGraphRequest();
-	uploadGraphRequest.getData().add("graph", new JsonArray());
+	uploadGraphRequest.getData().add("graph", new JsonObject());
 
 	try {
 	    graphDispatcher.setRequest(uploadGraphRequest);
@@ -148,21 +148,27 @@ public class UploadGraphMessageDispatcherTest {
 	DirectedWeightedEdge secondToThirdEdge = new DirectedWeightedEdge(second, third, 100, true);
 	
 	JsonObject firstNodeJson = first.toJson();
-	firstNodeJson.get("adjacencies").getAsJsonArray().add(firstToSecondEdge.toJson());
 	JsonObject secondNodeJson = second.toJson();
-	secondNodeJson.get("adjacencies").getAsJsonArray().add(secondToThirdEdge.toJson());
 	JsonObject thirdNodeJson = third.toJson();
 	
-	JsonArray graphJsonArray = new JsonArray();
-	graphJsonArray.add(firstNodeJson);
-	graphJsonArray.add(secondNodeJson);
-	graphJsonArray.add(thirdNodeJson);
+	JsonArray nodeJsonArray = new JsonArray();
+	nodeJsonArray.add(firstNodeJson);
+	nodeJsonArray.add(secondNodeJson);
+	nodeJsonArray.add(thirdNodeJson);
+	
+	JsonArray edgeJsonArray = new JsonArray();
+	edgeJsonArray.add(firstToSecondEdge.toJson());
+	edgeJsonArray.add(secondToThirdEdge.toJson());
+	
+	JsonObject graphObject = new JsonObject();
+	graphObject.add("nodes", nodeJsonArray);
+	graphObject.add("edges", edgeJsonArray);
 	
 	UploadGraphMessageDispatcher graphDispatcher = new UploadGraphMessageDispatcher(
 		this.controller, this.session, MessageType.UPLOADGRAPH);
 	graphDispatcher.setSendUpdates(false);
 	MessageRequest uploadGraphRequest = this.messageRequestMock.getUploadGraphRequest();
-	uploadGraphRequest.getData().add("graph", graphJsonArray);
+	uploadGraphRequest.getData().add("graph", graphObject);
 	
 	graphDispatcher.setRequest(uploadGraphRequest);
 	graphDispatcher.setParameters(new ArrayList<>());
@@ -176,52 +182,31 @@ public class UploadGraphMessageDispatcherTest {
     }
 
     @Test
-    public void testProcessValidGraphTwoNodesNoEdges() throws Exception {
-	Node first = new Node("First", "First");
-	Node second = new Node("Second", "Second");
-
-	JsonArray graphJsonArray = new JsonArray();
-	graphJsonArray.add(first.toJson());
-	graphJsonArray.add(second.toJson());
-	
-	UploadGraphMessageDispatcher graphDispatcher = new UploadGraphMessageDispatcher(
-		this.controller, this.session, MessageType.UPLOADGRAPH);
-	graphDispatcher.setSendUpdates(false);
-	MessageRequest uploadGraphRequest = this.messageRequestMock.getUploadGraphRequest();
-	uploadGraphRequest.getData().add("graph", graphJsonArray);
-	
-	graphDispatcher.setRequest(uploadGraphRequest);
-	graphDispatcher.setParameters(new ArrayList<>());
-	graphDispatcher.process();
-	
-	Assert.assertTrue(graphDispatcher.getGraph().getNumberOfNodes() == 2);
-	Assert.assertTrue(graphDispatcher.getGraph().getNumberOfEdges() == 0);
-	Assert.assertTrue(graphDispatcher.getGraph().hasNode("First"));
-	Assert.assertTrue(graphDispatcher.getGraph().hasNode("Second"));
-    }
-
-    @Test
     public void testProcessValidGraphTwoNodesEdgeToInexistentNode() throws Exception {
 	Node first = new Node("First", "First");
 	Node second = new Node("Second", "Second");
 	
-	JsonObject invalidEdge = new JsonObject();
-	invalidEdge.addProperty("nodeFrom", "First");
-	invalidEdge.addProperty("nodeTo", "Fourth");
+	JsonObject edge = new JsonObject();
+	edge.addProperty("from", "First");
+	edge.addProperty("to", "Fourth");
+	JsonArray edgeJsonArray = new JsonArray();
+	edgeJsonArray.add(edge);
 	
 	JsonObject firstNodeJson = first.toJson();
-	firstNodeJson.get("adjacencies").getAsJsonArray().add(invalidEdge);
-	JsonObject secondNodeJson = second.toJson();
+	JsonObject secondNodeJson = second.toJson();	
+	JsonArray nodeJsonArray = new JsonArray();
+	nodeJsonArray.add(firstNodeJson);
+	nodeJsonArray.add(secondNodeJson);
 	
-	JsonArray graphJsonArray = new JsonArray();
-	graphJsonArray.add(firstNodeJson);
-	graphJsonArray.add(secondNodeJson);
+	JsonObject graphObject = new JsonObject();
+	graphObject.add("nodes", nodeJsonArray);
+	graphObject.add("edges", edgeJsonArray);
 	
 	UploadGraphMessageDispatcher graphDispatcher = new UploadGraphMessageDispatcher(
 		this.controller, this.session, MessageType.UPLOADGRAPH);
 	graphDispatcher.setSendUpdates(false);
 	MessageRequest uploadGraphRequest = this.messageRequestMock.getUploadGraphRequest();
-	uploadGraphRequest.getData().add("graph", graphJsonArray);
+	uploadGraphRequest.getData().add("graph", graphObject);
 	
 	graphDispatcher.setRequest(uploadGraphRequest);
 	graphDispatcher.setParameters(new ArrayList<>());
@@ -253,9 +238,9 @@ public class UploadGraphMessageDispatcherTest {
 		this.controller, this.session, MessageType.UPLOADGRAPH);
 	graphDispatcher.setSendUpdates(false);
 	
-	JsonArray invalidRequest = new JsonArray();
-	invalidRequest.add(new JsonObject());
-	invalidRequest.add(new JsonObject());
+	JsonObject invalidRequest = new JsonObject();
+	invalidRequest.add("nodes", new JsonArray());
+	invalidRequest.add("edges", new JsonArray());
 	
 	MessageRequest uploadGraphRequest = this.messageRequestMock.getUploadGraphRequest();
 	uploadGraphRequest.getData().add("graph", invalidRequest);

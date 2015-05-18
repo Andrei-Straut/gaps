@@ -162,7 +162,7 @@ public class NodeTest {
 
 	Assert.assertTrue(nodeJson.has("id"));
 	Assert.assertTrue(nodeJson.has("name"));
-	Assert.assertTrue(nodeJson.has("data"));
+	Assert.assertTrue(nodeJson.has("label"));
 
 	assertEquals("Node1", nodeJson.get("id").getAsString());
 	assertEquals("Node1", nodeJson.get("name").getAsString());

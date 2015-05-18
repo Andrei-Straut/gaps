@@ -8,6 +8,7 @@ import com.andreistraut.gaps.datamodel.graph.DirectedWeightedGraphPath;
 import com.andreistraut.gaps.datamodel.mock.MessageRequestMock;
 import com.andreistraut.gaps.datamodel.mock.SessionMock;
 import com.google.gson.JsonArray;
+import com.google.gson.JsonObject;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -122,7 +123,7 @@ public class MessageDispatcherFactoryTest {
 
         Assert.assertTrue(graphDispatcher.request != null);
         Assert.assertTrue(graphDispatcher.request.getData().has("graph"));
-        Assert.assertTrue(graphDispatcher.request.getData().get("graph") instanceof JsonArray);
+        Assert.assertTrue(graphDispatcher.request.getData().get("graph") instanceof JsonObject);
     }
 
     @Test

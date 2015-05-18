@@ -279,13 +279,12 @@ public class DirectedWeightedGraphTest {
 	JsonObject graphJson = graph.toJson();
 
 	Assert.assertTrue(graphJson.has("graph"));
-	Assert.assertTrue(graphJson.has("edges"));
 	Assert.assertTrue(graphJson.has("statistics"));
 
-	JsonArray nodesJson = graphJson.get("graph").getAsJsonArray();
+	JsonArray nodesJson = graphJson.get("graph").getAsJsonObject().get("nodes").getAsJsonArray();
 	Assert.assertTrue(nodesJson.size() == 3);
 
-	JsonArray edgesJson = graphJson.get("edges").getAsJsonArray();
+	JsonArray edgesJson = graphJson.get("graph").getAsJsonObject().get("edges").getAsJsonArray();
 	Assert.assertTrue(edgesJson.size() == 2);
 
 	JsonObject statisticsJson = graphJson.get("statistics").getAsJsonObject();
