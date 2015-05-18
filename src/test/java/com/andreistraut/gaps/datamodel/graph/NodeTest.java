@@ -191,6 +191,85 @@ public class NodeTest {
     }
 
     @Test
+    public void testFromJsonValidNodeAllProps() throws Exception {
+	JsonObject nodeJson = new JsonObject();
+	nodeJson.addProperty("id", "First");
+	nodeJson.addProperty("name", "FirstName");
+	nodeJson.addProperty("label", "FirstLabel");
+	
+	Node firstFromJson = new Node(nodeJson);
+	Assert.assertTrue(firstFromJson.getId().equals("First"));
+	Assert.assertTrue(firstFromJson.getName().equals("FirstName"));
+    }
+
+    @Test
+    public void testFromJsonValidNodeMissingName() throws Exception {
+	JsonObject nodeJson = new JsonObject();
+	nodeJson.addProperty("id", "First");
+	nodeJson.addProperty("label", "FirstLabel");
+	
+	Node firstFromJson = new Node(nodeJson);
+	Assert.assertTrue(firstFromJson.getId().equals("First"));
+	Assert.assertTrue(firstFromJson.getName().equals("FirstLabel"));
+    }
+
+    @Test
+    public void testFromJsonValidNodeMissingLabel() throws Exception {
+	JsonObject nodeJson = new JsonObject();
+	nodeJson.addProperty("id", "First");
+	nodeJson.addProperty("name", "FirstName");
+	
+	Node firstFromJson = new Node(nodeJson);
+	Assert.assertTrue(firstFromJson.getId().equals("First"));
+	Assert.assertTrue(firstFromJson.getName().equals("FirstName"));
+    }
+
+    @Test
+    public void testFromJsonValidNodeMissingNameAndLabel() throws Exception {
+	JsonObject nodeJson = new JsonObject();
+	nodeJson.addProperty("id", "First");
+	
+	Node firstFromJson = new Node(nodeJson);
+	Assert.assertTrue(firstFromJson.getId().equals("First"));
+	Assert.assertTrue(firstFromJson.getName().equals("First"));
+    }
+
+    @Test
+    public void testFromJsonInvalidNodeMissingId() throws Exception {
+	JsonObject nodeJson = new JsonObject();
+	nodeJson.addProperty("name", "FirstName");
+	nodeJson.addProperty("label", "FirstLabel");
+	
+	try {
+	    Node firstFromJson = new Node(nodeJson);
+	} catch(Exception e) {
+	    Assert.assertTrue(e.getMessage().contains("Node object must have at least an id"));
+	}
+    }
+
+    @Test
+    public void testFromJsonInvalidNodeEmptyJson() throws Exception {
+	JsonObject nodeJson = new JsonObject();
+	
+	try {
+	    Node firstFromJson = new Node(nodeJson);
+	} catch(Exception e) {
+	    Assert.assertTrue(e.getMessage().contains("Node object must have at least an id"));
+	}
+    }
+
+    @Test
+    public void testFromJsonInvalidNodeNull() throws Exception {
+	JsonObject nodeJson = null;
+	
+	try {
+	    Node firstFromJson = new Node(nodeJson);
+	} catch(Exception e) {
+	    Assert.assertTrue(e.getMessage().contains("Node object must have at least an id"));
+	}
+    }
+
+    @Test
     public void testClone() {
 	Node node = new Node("Node1", "Node1");
 

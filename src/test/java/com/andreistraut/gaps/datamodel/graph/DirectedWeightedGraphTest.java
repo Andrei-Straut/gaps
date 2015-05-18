@@ -296,4 +296,43 @@ public class DirectedWeightedGraphTest {
 	Assert.assertTrue(statisticsJson.has("averageEdgeCost"));
 	Assert.assertTrue(statisticsJson.has("averageEdgesPerNode"));
     }
+
+    @Test
+    public void testToJsonGetNodes() {
+	JsonObject graphJson = graph.toJson();
+
+	Assert.assertTrue(graphJson.has("graph"));
+	Assert.assertTrue(graphJson.has("statistics"));
+
+	JsonArray nodesJson = graphJson.get("graph").getAsJsonObject().get("nodes").getAsJsonArray();
+	Assert.assertTrue(nodesJson.size() == 3);
+	
+	for(int i = 0; i < graphJson.get("graph").getAsJsonObject().get("nodes").getAsJsonArray().size(); i++) {
+	    JsonObject nodeJson = graphJson.get("graph").getAsJsonObject().get("nodes").getAsJsonArray().get(i).getAsJsonObject();
+	    Assert.assertTrue(nodeJson.has("id"));
+	    Assert.assertTrue(nodeJson.has("name"));
+	    Assert.assertTrue(nodeJson.has("label"));
+	}
+    }
+
+    @Test
+    public void testToJsonGetEdges() {
+	JsonObject graphJson = graph.toJson();
+
+	Assert.assertTrue(graphJson.has("graph"));
+	Assert.assertTrue(graphJson.has("statistics"));
+
+	JsonArray edgesJson = graphJson.get("graph").getAsJsonObject().get("edges").getAsJsonArray();
+	Assert.assertTrue(edgesJson.size() == 2);
+	
+	for(int i = 0; i < graphJson.get("graph").getAsJsonObject().get("edges").getAsJsonArray().size(); i++) {
+	    JsonObject edgeJson = graphJson.get("graph").getAsJsonObject().get("edges").getAsJsonArray().get(i).getAsJsonObject();
+	    Assert.assertTrue(edgeJson.has("from"));
+	    Assert.assertTrue(edgeJson.has("to"));
+	    Assert.assertTrue(edgeJson.has("cost"));
+	    Assert.assertTrue(edgeJson.has("weight"));
+	    Assert.assertTrue(edgeJson.has("label"));
+	    Assert.assertTrue(edgeJson.has("fontColor"));
+	}
+    }
 }

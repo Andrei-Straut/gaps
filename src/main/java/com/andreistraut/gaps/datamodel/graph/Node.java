@@ -65,7 +65,7 @@ public class Node implements ICloneable {
     }
 
     public Node fromJson(JsonObject nodeJson) throws Exception {
-	if (!nodeJson.has("id")) {
+	if (nodeJson == null || nodeJson.isJsonNull() || !nodeJson.has("id")) {
 	    throw new Exception("Node object must have at least an id");
 	}
 	this.id = nodeJson.get("id").getAsString();
@@ -84,7 +84,6 @@ public class Node implements ICloneable {
 	    this.name = nodeJson.get("label").getAsString();
 	    return this;
 	}
-
 
 	return this;
     }
