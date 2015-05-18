@@ -43,7 +43,7 @@ Special thanks
 
 [AngularJS](https://angularjs.org/) was love at first sight, and a lasting relationship since then, 'nuff said
 
-[JIT](http://philogb.github.io/jit/), Because rendering graphs in the browser should be this easy
+[Vis.js](http://visjs.org/), Because rendering graphs in the browser should be this easy
 
 [Angular UI notification](https://github.com/alexcrack/angular-ui-notification) because users should always be in the loop
 
