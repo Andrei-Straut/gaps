@@ -25,7 +25,6 @@ public abstract class DirectedWeightedGraph extends DirectedPseudograph<Node, Di
     protected HashMap<String, Node> nodeNameMap;
     protected int maximumEdgeWeight = 1000;
     protected int minimumEdgeWeight = 1;
-    protected ArrayList<DirectedWeightedGraphPath> depthFirstSearchResults = new ArrayList<DirectedWeightedGraphPath>();
 
     /**
      * Statistics Initialize actual weights with opposite values, so when
@@ -201,41 +200,85 @@ public abstract class DirectedWeightedGraph extends DirectedPseudograph<Node, Di
     public JsonObject toJson() {
 	JsonObject graph = new JsonObject();
 
-	JsonArray jsonNodesWithAdjacencies = this.getJsonNodesWithAdjacencies();
-	JsonArray jsonEdges = this.getJsonEdges();
 	JsonObject jsonStatistics = this.getJsonStatistics();
-
-	graph.add("graph", jsonNodesWithAdjacencies);
-	graph.add("edges", jsonEdges);
 	graph.add("statistics", jsonStatistics);
+	
+	JsonArray graphNodes = this.getNodesJson();
+	JsonArray graphEdges = this.getEdgesJson();
+	JsonObject graphWrapper = new JsonObject();
+	graphWrapper.add("nodes", graphNodes);
+	graphWrapper.add("edges", graphEdges);
+	graph.add("graph", graphWrapper);
 
 	return graph;
     }
-
-    private JsonArray getJsonNodesWithAdjacencies() {
-	JsonArray jsonNodesWithAdjacencies = new JsonArray();
+    
+    private JsonArray getNodesJson() {	
+	JsonArray jsonNodes = new JsonArray();
 	for (Node node : this.getNodes()) {
-	    JsonObject jsonNode = node.toJson();
-	    JsonArray jsonAdjacencies = jsonNode.getAsJsonArray("adjacencies");
-
-	    for (DirectedWeightedEdge edge : this.outgoingEdgesOf(node)) {
-		jsonAdjacencies.add(edge.toJson());
-	    }
-
-	    jsonNodesWithAdjacencies.add(jsonNode);
+	    jsonNodes.add(node.toJson());
 	}
-
-	return jsonNodesWithAdjacencies;
+	
+	return jsonNodes;
     }
-
-    private JsonArray getJsonEdges() {
+    
+    private JsonArray getEdgesJson() {
 	JsonArray jsonEdges = new JsonArray();
 	for (DirectedWeightedEdge edge : this.getEdges()) {
 	    JsonObject jsonEdge = edge.toJson();
+
+	    if (this.getEdgeCostClass(edge).equals("low")) {
+		jsonEdge.addProperty("fontColor", "#5cb85c");
+	    } else if (this.getEdgeCostClass(edge).equals("medium")) {
+		jsonEdge.addProperty("fontColor", "#f0ad4e");
+	    } else if (this.getEdgeCostClass(edge).equals("high")) {
+		jsonEdge.addProperty("fontColor", "#d9534f");
+	    } else {
+		jsonEdge.addProperty("fontColor", "#999");
+	    }
+	    jsonEdges.add(jsonEdge);
+	}
+	
+	return jsonEdges;
+    }
+
+    private JsonObject getGraphData() {
+	JsonObject vizData = new JsonObject();
+
+	JsonArray jsonNodes = new JsonArray();
+	for (Node node : this.getNodes()) {
+	    JsonObject jsonNode = new JsonObject();
+	    jsonNode.addProperty("id", node.getId());
+	    jsonNode.addProperty("label", node.getName());
+
+	    jsonNodes.add(jsonNode);
+	}
+
+	JsonArray jsonEdges = new JsonArray();
+	for (DirectedWeightedEdge edge : this.getEdges()) {
+	    JsonObject jsonEdge = new JsonObject();
+	    jsonEdge.addProperty("from", edge.getSource().getId());
+	    jsonEdge.addProperty("to", edge.getDestination().getId());
+	    jsonEdge.addProperty("id", edge.hashCode());
+	    jsonEdge.addProperty("label", edge.getCost());
+	    jsonEdge.addProperty("cost", edge.getCost());
+
+	    if (this.getEdgeCostClass(edge).equals("low")) {
+		jsonEdge.addProperty("fontColor", "#5cb85c");
+	    } else if (this.getEdgeCostClass(edge).equals("medium")) {
+		jsonEdge.addProperty("fontColor", "#f0ad4e");
+	    } else if (this.getEdgeCostClass(edge).equals("high")) {
+		jsonEdge.addProperty("fontColor", "#d9534f");
+	    } else {
+		jsonEdge.addProperty("fontColor", "#999");
+	    }
 	    jsonEdges.add(jsonEdge);
 	}
 
-	return jsonEdges;
+	vizData.add("nodes", jsonNodes);
+	vizData.add("edges", jsonEdges);
+
+	return vizData;
     }
 
     private JsonObject getJsonStatistics() {
@@ -265,6 +308,20 @@ public abstract class DirectedWeightedGraph extends DirectedPseudograph<Node, Di
 	statistics.addProperty("averageEdgesPerNode", this.averageEdgesPerNode);
 
 	return statistics;
+    }
+
+    private String getEdgeCostClass(DirectedWeightedEdge edge) {
+
+	double averageLowCostThreshold = this.averageEdgeCost - this.averageEdgeCost / 4;
+	double averageHighCostThreshold = this.averageEdgeCost + this.averageEdgeCost / 4;
+
+	if (edge.getCost() < averageLowCostThreshold) {
+	    return "low";
+	} else if (edge.getCost() >= averageLowCostThreshold && edge.getCost() <= averageHighCostThreshold) {
+	    return "medium";
+	} else {
+	    return "high";
+	}
     }
 
     public abstract ArrayList<Node> initNodes();

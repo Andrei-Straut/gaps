@@ -9,7 +9,7 @@ import java.util.logging.Logger;
 public class DirectedWeightedGraphImported extends DirectedWeightedGraph {
 
     //<editor-fold desc="Constructors" defaultstate="collapsed">
-    public DirectedWeightedGraphImported(JsonArray graph) throws Exception {
+    public DirectedWeightedGraphImported(JsonObject graph) throws Exception {
 	super(1, 1);
 	this.fromJson(graph);
     }
@@ -25,14 +25,23 @@ public class DirectedWeightedGraphImported extends DirectedWeightedGraph {
 	return new ArrayList<DirectedWeightedEdge>();
     }
 
-    public DirectedWeightedGraphImported fromJson(JsonArray graph) throws Exception {
-	if(graph == null || graph.size() == 0) {
+    public DirectedWeightedGraphImported fromJson(JsonObject graph) throws Exception {
+	if (graph == null || graph.isJsonNull() || !graph.has("nodes") || !graph.has("edges")) {
 	    throw new Exception("Cannot import empty graph");
 	}
-	
+
+	if (!graph.has("nodes") || (graph.get("nodes").getAsJsonArray()).size() == 0) {
+	    throw new Exception("No nodes found in graph");
+	}
+
+	if (!graph.has("edges") || (graph.get("edges").getAsJsonArray()).size() == 0) {
+	    throw new Exception("No edges found in graph");
+	}
+
 	//first, import all nodes
-	for (int i = 0; i < graph.size(); i++) {
-	    JsonObject nodeJson = graph.get(i).getAsJsonObject();
+	JsonArray nodes = graph.get("nodes").getAsJsonArray();
+	for (int i = 0; i < nodes.size(); i++) {
+	    JsonObject nodeJson = nodes.get(i).getAsJsonObject();
 	    Node node = new Node(nodeJson);
 	    this.addVertex(node);
 	}
@@ -40,65 +49,56 @@ public class DirectedWeightedGraphImported extends DirectedWeightedGraph {
 		Level.FINE, "Generating graph: Finished creating nodes");
 
 	//then, import all edges
-	for (int i = 0; i < graph.size(); i++) {
-	    JsonObject nodeJson = graph.get(i).getAsJsonObject();
+	JsonArray edges = graph.get("edges").getAsJsonArray();
+	for (int i = 0; i < edges.size(); i++) {
+	    JsonObject edgeJson = edges.get(i).getAsJsonObject();
 
-	    if (!nodeJson.has("adjacencies")
-		    || !nodeJson.get("adjacencies").isJsonArray()
-		    || ((JsonArray) nodeJson.get("adjacencies").getAsJsonArray()).size() == 0) {
+	    if (!edgeJson.has("from") || !edgeJson.has("to")) {
 		continue;
 	    }
 
-	    JsonArray edgesJson = nodeJson.get("adjacencies").getAsJsonArray();
-	    for (int j = 0; j < edgesJson.size(); j++) {
-		JsonObject edgeJson = edgesJson.get(j).getAsJsonObject();
+	    String sourceNodeId = edgeJson.get("from").getAsString();
+	    String destinationNodeId = edgeJson.get("to").getAsString();
 
-		if (edgeJson.has("nodeFrom") && edgeJson.has("nodeTo")) {
-		    /*
-		    TODO: 
-		    Probably refactor this a bit, as it's a pretty paranoic case to check again for
-		    a source node after having created it, unless we have a node that is storing edges to completely
-		    unrelated nodes. 
-		    In any case however, it has already been covered in unit tests
-		    */
-		    Node source = null;
-		    if(this.hasNode(edgeJson.get("nodeFrom").getAsString())) {
-			source = this.getNodeById(edgeJson.get("nodeFrom").getAsString());
-		    } else {
-			source = new Node(edgeJson.get("nodeFrom").getAsString());
-			this.addVertex(source);
-		    }
-		    
-		    Node destination = null;
-		    if(this.hasNode(edgeJson.get("nodeTo").getAsString())) {
-			destination = this.getNodeById(edgeJson.get("nodeTo").getAsString());
-		    } else {
-			destination = new Node(edgeJson.get("nodeTo").getAsString());
-			this.addVertex(destination);
-		    }
-
-		    if(source == null || destination == null) {
-			continue;
-		    }
-
-		    int cost = 0;
-		    boolean isDirected = true;
-		    if (edgeJson.has("data")) {
-			JsonObject data = edgeJson.get("data").getAsJsonObject();
-
-			if (data.has("cost")) {
-			    cost = data.get("cost").getAsInt();
-			}
-
-			if (data.has("isDirected")) {
-			    isDirected = data.get("isDirected").getAsBoolean();
-			}
-		    }
-
-		    DirectedWeightedEdge edge = new DirectedWeightedEdge(source, destination, cost, isDirected);		    
-		    this.addEdge(source, destination, edge);
-		}
+	    /*
+	     TODO: 
+	     Probably refactor this a bit, as it's a pretty paranoic case to check again for
+	     a source node after having created it, unless we have a node that is storing edges to completely
+	     unrelated nodes. 
+	     In any case however, it has already been covered in unit tests
+	     */
+	    Node source = null;
+	    if (this.hasNode(sourceNodeId)) {
+		source = this.getNodeById(sourceNodeId);
+	    } else {
+		source = new Node(sourceNodeId);
+		this.addVertex(source);
 	    }
+
+	    Node destination = null;
+	    if (this.hasNode(destinationNodeId)) {
+		destination = this.getNodeById(destinationNodeId);
+	    } else {
+		destination = new Node(destinationNodeId);
+		this.addVertex(destination);
+	    }
+
+	    if (source == null || destination == null) {
+		continue;
+	    }
+
+	    int cost = 0;
+	    if (edgeJson.has("cost")) {
+		cost = edgeJson.get("cost").getAsInt();
+	    }
+	    
+	    boolean isDirected = true;
+	    if (edgeJson.has("isDirected")) {
+		isDirected = edgeJson.get("isDirected").getAsBoolean();
+	    }
+
+	    DirectedWeightedEdge edge = new DirectedWeightedEdge(source, destination, cost, isDirected);
+	    this.addEdge(source, destination, edge);
 	}
 	Logger.getLogger(DirectedWeightedGraphImported.class.getName()).log(
 		Level.FINE, "Generating graph: Finished creating edges");

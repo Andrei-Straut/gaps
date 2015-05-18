@@ -7,14 +7,14 @@
                     <label class="checkbox-inline">
                         <input id="graph-viewer-toggle" type="checkbox" checked data-toggle="toggle" data-on="Visible" data-off="Hidden">
                     </label>
-                    Graph
+                    Graph&nbsp;&nbsp;
+                    (<span class="label label-default">Neutral Edge Cost</span>
+                    <span class="label label-success">Low Edge Cost</span>
+                    <span class="label label-warning">Medium Edge Cost</span>
+                    <span class="label label-danger">High Edge Cost</span>)
                 </div>
-                <div id="infovis-wrapper" class="panel-body" ng-show="load.graphDisplayed">
-                    <div id="log" class="log"></div>
-
-                    <div id="infovis" class="infovis"></div>
-
-                    <div id="inner-details" class="inner-details"></div>
+                <div id="graph-viewer-wrapper" class="panel-body" ng-show="load.graphDisplayed">
+                    <div id="graph-viewer-vis-canvas"></div>
                 </div>
             </div>
         </div>

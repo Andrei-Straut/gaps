@@ -1,4 +1,3 @@
-
 package com.andreistraut.gaps.datamodel.graph;
 
 import com.google.gson.JsonArray;
@@ -9,7 +8,7 @@ public class Node implements ICloneable {
 
     private String id;
     private String name;
-    
+
     private final int HASH = 7;
     private final int HASH_SEED = 71;
 
@@ -22,7 +21,7 @@ public class Node implements ICloneable {
 	this.id = id;
 	this.name = name;
     }
-    
+
     public Node(JsonObject nodeJson) throws Exception {
 	this.fromJson(nodeJson);
     }
@@ -55,29 +54,38 @@ public class Node implements ICloneable {
 
 	return builder.toString();
     }
-    
+
     public JsonObject toJson() {
 	JsonObject node = new JsonObject();
 	node.addProperty("id", this.id);
 	node.addProperty("name", this.name);
-	
-	JsonObject data = new JsonObject();
-	node.add("data", data);
-	
-	JsonArray adjacencies = new JsonArray();	
-	node.add("adjacencies", adjacencies);
-	
+	node.addProperty("label", this.name);
+
 	return node;
     }
-    
+
     public Node fromJson(JsonObject nodeJson) throws Exception {
-	if(!nodeJson.has("id") || !nodeJson.has("name")) {
-	    throw new Exception("Node object must have at least an id and a name");
+	if (!nodeJson.has("id")) {
+	    throw new Exception("Node object must have at least an id");
+	}
+	this.id = nodeJson.get("id").getAsString();
+
+	if(!nodeJson.has("name") && !nodeJson.has("label")) {
+	    this.name = this.id;
+	    return this;
 	}
 	
-	this.id = nodeJson.get("id").getAsString();
-	this.name = nodeJson.get("name").getAsString();
-	
+	if (nodeJson.has("name")) {
+	    this.name = nodeJson.get("name").getAsString();
+	    return this;
+	}
+
+	if (nodeJson.has("label")) {
+	    this.name = nodeJson.get("label").getAsString();
+	    return this;
+	}
+
+
 	return this;
     }
 

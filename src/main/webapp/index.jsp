@@ -18,8 +18,7 @@
         <link href="styles/lib/bootstrap/bootstrap.dataTables.css" rel="stylesheet" />
         <!-- FONTAWESOME STYLES-->
         <link href="styles/lib/font-awesome/font-awesome.css" rel="stylesheet" />
-        <!-- JIT STYLES-->
-        <link href="styles/lib/jit/jit.css" rel="stylesheet" />
+        <link href="styles/lib/vis/vis.css" rel="stylesheet" />
         <!-- MORRIS CHART STYLES-->
         <link href="styles/lib/morris/morris-0.4.3.min.css" rel="stylesheet" />
         <!-- GOOGLE FONTS-->
@@ -41,11 +40,8 @@
         <script src="scripts/lib/angular/angular.ui.notification.min.js"></script>
         <script src="scripts/lib/angular/angular.ui.bootstrap.slider.js"></script>
         <script src="scripts/lib/angular/angular.draganddrop.js"></script>
-        <!-- JIT SCRIPTS -->
-        <script src="scripts/lib/jit/jit.js"></script>
-        <script src="scripts/lib/jit/jit-custom-forcedirected.js"></script>
-        <script src="scripts/lib/jit/jit-renderer-prefuse-forcedirected.js"></script>
-        <script src="scripts/lib/jit/jit-renderer-forcedirected.js"></script>
+        <!-- VIS SCRIPTS -->
+        <script src="scripts/lib/vis/vis.js"></script>
         <!-- MORRIS CHART SCRIPTS -->
         <script src="scripts/lib/morris/raphael-2.1.0.min.js"></script>
         <script src="scripts/lib/morris/morris.js"></script>

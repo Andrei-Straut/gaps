@@ -59,8 +59,8 @@ gaps.controller('statisticscontroller', ['$rootScope', '$scope', 'Notification',
         $scope.initGraphStatistics = function ($data) {
             Statistics.setGraphStatisticsLoaded(true);
             var table = $('#graph-direct-edges').DataTable();
-            angular.forEach($data.edges, function (edgeValue, edgeKey) {
-                table.row.add([edgeValue.data.id, edgeValue.nodeFrom, edgeValue.nodeTo, edgeValue.data.cost]);
+            angular.forEach($data, function (edgeValue, edgeKey) {
+                table.row.add([edgeValue.id, edgeValue.from, edgeValue.to, edgeValue.label]);
             });
             table.draw();
 
@@ -133,7 +133,7 @@ gaps.controller('statisticscontroller', ['$rootScope', '$scope', 'Notification',
                 $scope.$apply();
 
                 var $slider = $('#generation-slider').slider();
-                $slider.on('slide', function (ev) {
+                $slider.on('slideStop', function (ev) {
                     $scope.sliderEvent(ev);
                 });
                 $slider.slider('setValue', 0);
@@ -200,7 +200,7 @@ gaps.controller('statisticscontroller', ['$rootScope', '$scope', 'Notification',
             $scope.compareChart.clear('morris-bar-compare-chart');
             Statistics.setCompareStatisticsLoaded(false);
         };
-        
+
         $scope.sliderEvent = function (event) {
             var geneticStatistics = Statistics.getGeneticStatistics();
 
@@ -211,56 +211,38 @@ gaps.controller('statisticscontroller', ['$rootScope', '$scope', 'Notification',
                                 geneticStatistics.selectedGenerationIndex];
             }
 
-            if (window.fd && window.fd.graph && geneticStatistics && geneticStatistics.selectedGeneration
+            if (window.graph && geneticStatistics && geneticStatistics.selectedGeneration
                     && geneticStatistics.selectedGeneration.bestChromosome) {
                 var $path = geneticStatistics.selectedGeneration.bestChromosome.path;
-                $scope.selectPath(window.fd, $path);
+                $scope.selectPath(window.graph, $path);
             }
 
             $scope.$apply();
         };
-        
-        $scope.selectPath = function (jitGraph, path) {
-            jitGraph.graph.eachNode(function (n) {
-                n.unselect(GraphViewerOptions);
-                n.unselectpath(GraphViewerOptions);
-            });
-            angular.forEach(path, function (edgeValue, edgeKey) {
-                var nodeFrom = jitGraph.graph.getNode(edgeValue.nodeFrom);
-                var nodeTo = jitGraph.graph.getNode(edgeValue.nodeTo);
-                var edge = jitGraph.graph.getAdjacence(edgeValue.nodeFrom, edgeValue.nodeTo);
-                jitGraph.canvas.getElement().style.cursor = 'move';
-                if (nodeFrom) {
-                    nodeFrom.selectpath(GraphViewerOptions);
-                }
 
-                if (nodeTo) {
-                    nodeTo.selectpath(GraphViewerOptions);
+        $scope.selectPath = function (graph, path) {
+            var nodeSelectionArray = [];
+            var edgeSelectionArray = [];
+            if (path) {
+                angular.forEach(path, function (edgeValue, edgeKey) {
+                    nodeSelectionArray.push(edgeValue.nodeFrom);
+                    if (edgeValue && edgeValue.data && edgeValue.data.id) {
+                        edgeSelectionArray.push(edgeValue.data.id);
+                    }
+                });
+                if ((path[path.length - 1]) && (path[path.length - 1]).nodeTo) {
+                    nodeSelectionArray.push((path[path.length - 1]).nodeTo);
                 }
+            }
 
-                if (edge) {
-                    edge.selectpath(GraphViewerOptions);
-                }
-            });
-            //trigger animation to final styles
-            jitGraph.fx.animate({
-                modes: ['node-property:dim',
-                    'edge-property:lineWidth:color'],
-                duration: GraphViewerOptions.selectAnimationDuration
-            });
+            graph.selectNodes(nodeSelectionArray, false);
+            graph.selectEdges(edgeSelectionArray);
         };
-        
+
         $scope.resetPathSelection = function () {
-            if (window.fd && window.fd.graph) {
-                window.fd.graph.eachNode(function (n) {
-                    n.unselect(GraphViewerOptions);
-                    n.unselectpath(GraphViewerOptions);
-                });
-                window.fd.fx.animate({
-                    modes: ['node-property:dim',
-                        'edge-property:lineWidth:color'],
-                    duration: GraphViewerOptions.selectAnimationDuration
-                });
+            if (window.graph) {
+                window.graph.selectNodes([]);
+                window.graph.selectEdges([]);
             }
 
             var geneticStatistics = Statistics.getGeneticStatistics();
@@ -297,7 +279,7 @@ gaps.controller('statisticscontroller', ['$rootScope', '$scope', 'Notification',
                 if (chartWrapper && chartWrapper[0]) {
                     chartWrapper = chartWrapper[0];
                 }
-                
+
                 if (chartWrapper && chartWrapper.firstChild) {
                     while (chartWrapper.firstChild) {
                         chartWrapper.removeChild(chartWrapper.firstChild);
@@ -336,7 +318,7 @@ gaps.controller('statisticscontroller', ['$rootScope', '$scope', 'Notification',
                 if (chartWrapper && chartWrapper[0]) {
                     chartWrapper = chartWrapper[0];
                 }
-                
+
                 if (chartWrapper && chartWrapper.firstChild) {
                     while (chartWrapper.firstChild) {
                         chartWrapper.removeChild(chartWrapper.firstChild);

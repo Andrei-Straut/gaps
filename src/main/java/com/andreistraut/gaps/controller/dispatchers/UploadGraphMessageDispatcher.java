@@ -7,6 +7,7 @@ import com.andreistraut.gaps.controller.MessageType;
 import com.andreistraut.gaps.datamodel.graph.DirectedWeightedGraph;
 import com.andreistraut.gaps.datamodel.graph.DirectedWeightedGraphImported;
 import com.google.gson.JsonArray;
+import com.google.gson.JsonObject;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -20,7 +21,7 @@ public class UploadGraphMessageDispatcher extends MessageDispatcher {
     private final MessageType type;
 
     private DirectedWeightedGraph graph;
-    private JsonArray graphJson;
+    private JsonObject graphJson;
 
     public UploadGraphMessageDispatcher(Controller controller, Session session, MessageType type) {
 	super(controller, session, type);
@@ -40,7 +41,7 @@ public class UploadGraphMessageDispatcher extends MessageDispatcher {
 	}
 
 	this.request = request;
-	this.graphJson = this.request.getData().get("graph").getAsJsonArray();
+	this.graphJson = this.request.getData().get("graph").getAsJsonObject();
 
 	return true;
     }

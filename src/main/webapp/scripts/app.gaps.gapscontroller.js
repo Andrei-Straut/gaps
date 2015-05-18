@@ -66,12 +66,13 @@ gaps.controller('gapscontroller', ['$rootScope', '$scope', 'Socket', 'Statistics
                     if (response.status === 200) {
                         $rootScope.$broadcast('resetViews', {});
 
-                        $scope.initGraphView(response.data.graph);
-                        Statistics.setGraphStatistics(response.data.statistics);
+                        $scope.initGraphView(response.data);
+                        Statistics.setGraphStatistics(response.data.graph.edges);
 
                         $scope.load.wip = false;
                         $scope.load.wipType = '';
-                        $rootScope.$broadcast('graphDataLoaded', response.data);
+                        $rootScope.$broadcast('graphDataLoaded', response.data.graph.edges);
+
                     } else {
                         $scope.notifyError(response.description, $('#modalLoadingError'));
                     }
@@ -242,11 +243,18 @@ gaps.controller('gapscontroller', ['$rootScope', '$scope', 'Socket', 'Statistics
         };
         $scope.initGraphView = function ($data) {
             $rootScope.$broadcast('resetViews', {});
-            $scope.resetGraphView();
-            jitInit($data);
+            $scope.load.graphViewerLoaded = true;
+
+            var interval = window.setInterval(function () {
+                var container = document.getElementById('graph-viewer-vis-canvas');
+                var network = new vis.Network(container, $data.graph, $scope.visOptions);
+                window.graph = network;
+
+                window.clearInterval(interval);
+            }, 500);
 
             $scope.nodeIds = [];
-            angular.forEach($data, function (graphNode, key) {
+            angular.forEach($data.graph.nodes, function (graphNode, key) {
                 if (graphNode && graphNode.id) {
                     $scope.nodeIds.push(graphNode.id);
                 }
@@ -257,9 +265,6 @@ gaps.controller('gapscontroller', ['$rootScope', '$scope', 'Socket', 'Statistics
                 $scope.geneticSettings.destinationNode = $scope.nodeIds[$scope.nodeIds.length - 1];
             }
 
-            $(window).scrollTop($(window).scrollTop() + 1);
-            $(window).scrollTop($(window).scrollTop() - 1);
-            $scope.load.graphViewerLoaded = true;
             var $graphViewerToggle = $('#graph-viewer-toggle').bootstrapToggle({
                 on: 'Visible',
                 off: 'Hidden'
@@ -273,7 +278,7 @@ gaps.controller('gapscontroller', ['$rootScope', '$scope', 'Socket', 'Statistics
             $scope.$apply();
         };
         $scope.resetGraphView = function () {
-            var graphWrapper = $("#infovis");
+            var graphWrapper = $("#graph-viewer-wrapper");
 
             if (graphWrapper && graphWrapper[0]) {
                 graphWrapper = graphWrapper[0];
@@ -282,18 +287,6 @@ gaps.controller('gapscontroller', ['$rootScope', '$scope', 'Socket', 'Statistics
             if (graphWrapper && graphWrapper.firstChild) {
                 while (graphWrapper.firstChild) {
                     graphWrapper.removeChild(graphWrapper.firstChild);
-                }
-            }
-            var logWrapper = $("#log");
-            if (logWrapper && logWrapper.firstChild) {
-                while (logWrapper.firstChild) {
-                    logWrapper.removeChild(logWrapper.firstChild);
-                }
-            }
-            var labelWrapper = $("#inner-details");
-            if (labelWrapper && labelWrapper.firstChild) {
-                while (labelWrapper.firstChild) {
-                    labelWrapper.removeChild(labelWrapper.firstChild);
                 }
             }
 
@@ -428,6 +421,43 @@ gaps.controller('gapscontroller', ['$rootScope', '$scope', 'Socket', 'Statistics
             minimumEdgeWeight: 1,
             maximumEdgeWeight: 100,
             isStatic: true
+        };
+
+        $scope.visOptions = {
+            width: '100%',
+            height: '400px',
+            zoomable: true,
+            navigation: true,
+            keyboard: false,
+            edges: {
+                style: 'arrow',
+                fontSize: 25,
+                color: {
+                    color: '#428bca',
+                    highlight: '#00CE6F'
+                },
+                width: 2,
+                widthSelectionMultiplier: 4
+            },
+            nodes: {
+                shape: 'rect',
+                radius: 35,
+                radiusMin: 35,
+                radiusMax: 50,
+                borderWidth: 2,
+                borderWidthSelected: 3,
+                fontColor: 'white',
+                fontSize: 25,
+                color: {
+                    background: '#428bca',
+                    border: '#357ebd',
+                    highlight: {
+                        background: '#00CE6F',
+                        border: '#428bca'
+                    }
+                },
+                scaleFontWithValue: true
+            }
         };
         // Settings for genetic algorithm
         $scope.geneticSettings = {

@@ -52,7 +52,7 @@ public class MessageRequestMock {
 	JsonObject graphJson = new JsonObject();
         
 	DirectedWeightedGraph graph = new DirectedWeightedGraphMockSemiRandomThreeNodeThreeEdges().getGraph();
-	graphJson.add("graph", graph.toJson().get("graph").getAsJsonArray());
+	graphJson.add("graph", graph.toJson().get("graph").getAsJsonObject());
 	
 	uploadGraphRequest.addProperty("callback_id", 1);
 	uploadGraphRequest.addProperty("type", "UploadGraph");
