@@ -183,8 +183,8 @@ gaps.factory('Statistics', ['$rootScope', function ($rootScope) {
         Service.getPathCost = function (pathStatistic) {
             var totalCost = 0;
             angular.forEach(pathStatistic, function (edge) {
-                if (edge.data && edge.data.cost) {
-                    totalCost += parseInt(edge.data.cost);
+                if (edge && edge.cost) {
+                    totalCost += parseInt(edge.cost);
                 }
             });
             return totalCost;

@@ -37,12 +37,12 @@ gaps.controller('gapscontroller', ['$rootScope', '$scope', 'Socket', 'Statistics
                     if (response.status === 200) {
                         $rootScope.$broadcast('resetViews', {});
 
-                        $scope.initGraphView(response.data.graph);
-                        Statistics.setGraphStatistics(response.data.statistics);
+                        $scope.initGraphView(response.data);
+                        Statistics.setGraphStatistics(response.data.graph.edges);
 
                         $scope.load.wip = false;
                         $scope.load.wipType = '';
-                        $rootScope.$broadcast('graphDataLoaded', response.data);
+                        $rootScope.$broadcast('graphDataLoaded', response.data.graph.edges);
                     } else {
                         $scope.notifyError(response.description, $('#modalLoadingError'));
                     }
@@ -201,7 +201,7 @@ gaps.controller('gapscontroller', ['$rootScope', '$scope', 'Socket', 'Statistics
             $scope.load.graphPreviewerLoaded = true;
 
             var interval = window.setInterval(function () {
-                var graphPreviewWrapper = $('div#infovis-preview');
+                var graphPreviewWrapper = $('div#graph-viewer-vis-preview');
 
                 if (graphPreviewWrapper && graphPreviewWrapper[0]) {
                     graphPreviewWrapper = graphPreviewWrapper[0];
@@ -218,7 +218,7 @@ gaps.controller('gapscontroller', ['$rootScope', '$scope', 'Socket', 'Statistics
                     $scope.graphJson.graph = parsedJson;
                     $scope.uploadJsonValid = true;
 
-                    jitPreview($scope.graphJson.graph);
+                    $scope.initGraphPreview($scope.graphJson.graph);
                 } catch (e) {
                     $scope.uploadJsonValid = false;
                 }
@@ -241,6 +241,11 @@ gaps.controller('gapscontroller', ['$rootScope', '$scope', 'Socket', 'Statistics
 
             return false;
         };
+
+        $scope.initGraphPreview = function ($data) {
+            var previewContainer = document.getElementById('graph-viewer-vis-preview');
+            new vis.Network(previewContainer, $data, $scope.visPreviewOptions);
+        };
         $scope.initGraphView = function ($data) {
             $rootScope.$broadcast('resetViews', {});
             $scope.load.graphViewerLoaded = true;
@@ -248,12 +253,25 @@ gaps.controller('gapscontroller', ['$rootScope', '$scope', 'Socket', 'Statistics
             var interval = window.setInterval(function () {
                 var container = document.getElementById('graph-viewer-vis-canvas');
                 var network = new vis.Network(container, $data.graph, $scope.visOptions);
+
+                /*
+                 * If number of nodes / edges is large enough, disable stabilization after a while in order to speed graph loading
+                 */
+                var stabilizationInterval = window.setInterval(function () {
+                    network.freezeSimulation(true);
+                    network.setOptions({freezeForStabilization: true});
+                    network.storePositions();
+                    console.log('Network animation disabled');
+                    window.clearInterval(stabilizationInterval);
+                }, $scope.stabilizationIntervalMs);
+
                 window.graph = network;
 
                 window.clearInterval(interval);
             }, 500);
 
             $scope.nodeIds = [];
+            console.log($data.graph.nodes);
             angular.forEach($data.graph.nodes, function (graphNode, key) {
                 if (graphNode && graphNode.id) {
                     $scope.nodeIds.push(graphNode.id);
@@ -359,47 +377,23 @@ gaps.controller('gapscontroller', ['$rootScope', '$scope', 'Socket', 'Statistics
          */
         // Keep a copy of the graph in JSON format
         $scope.graphJson = {
-            graph:
-                    [
-                        {
-                            id: '0',
-                            name: '0',
-                            data: {},
-                            adjacencies: [
-                                {
-                                    nodeFrom: '0',
-                                    nodeTo: '1',
-                                    data: {
-                                        id: 97316068,
-                                        cost: 100,
-                                        isDirected: true
-                                    }
-                                }
-                            ]
-                        },
-                        {
-                            id: '1',
-                            name: '1',
-                            data: {},
-                            adjacencies: [
-                                {
-                                    nodeFrom: '1',
-                                    nodeTo: '2',
-                                    data: {
-                                        id: 97316063,
-                                        cost: 100,
-                                        isDirected: true
-                                    }
-                                }
-                            ]
-                        },
-                        {
-                            id: '2',
-                            name: '2',
-                            data: {},
-                            adjacencies: []
-                        }
-                    ]};
+            graph: {
+                nodes: [
+                    {id: 0, name: 'Node 0', label: 'Node 0'},
+                    {id: 1, name: 'Node 1', label: 'Node 1'},
+                    {id: 2, name: 'Node 2', label: 'Node 2'},
+                    {id: 3, name: 'Node 3', label: 'Node 3'},
+                    {id: 4, name: 'Node 4', label: 'Node 4'}
+                ],
+                edges: [
+                    {from: 0, to: 1, cost: 1, weight: 1, label: 1},
+                    {from: 1, to: 2, cost: 2, weight: 2, label: 2},
+                    {from: 2, to: 3, cost: 3, weight: 3, label: 3},
+                    {from: 3, to: 4, cost: 4, weight: 4, label: 4},
+                    {from: 0, to: 2, cost: 2, weight: 2, label: 2},
+                    {from: 3, to: 4, cost: 4, weight: 4, label: 4}
+                ]
+            }};
         $scope.graphJsonString = JSON.stringify($scope.graphJson.graph, null, 2);
         $scope.uploadJsonValid = true;
         $scope.nodeIds = [];
@@ -422,13 +416,15 @@ gaps.controller('gapscontroller', ['$rootScope', '$scope', 'Socket', 'Statistics
             maximumEdgeWeight: 100,
             isStatic: true
         };
-
+        $scope.stabilizationIntervalMs = 20000;
         $scope.visOptions = {
             width: '100%',
             height: '400px',
             zoomable: true,
             navigation: true,
             keyboard: false,
+            stabilize: false,
+            stabilizationIterations: 20,
             edges: {
                 style: 'arrow',
                 fontSize: 25,
@@ -437,7 +433,7 @@ gaps.controller('gapscontroller', ['$rootScope', '$scope', 'Socket', 'Statistics
                     highlight: '#00CE6F'
                 },
                 width: 2,
-                widthSelectionMultiplier: 4
+                widthSelectionMultiplier: 5
             },
             nodes: {
                 shape: 'rect',
@@ -457,6 +453,42 @@ gaps.controller('gapscontroller', ['$rootScope', '$scope', 'Socket', 'Statistics
                     }
                 },
                 scaleFontWithValue: true
+            }
+        };
+
+        $scope.visPreviewOptions = {
+            width: '100%',
+            height: '200px',
+            zoomable: false,
+            navigation: false,
+            keyboard: false,
+            edges: {
+                style: 'line',
+                fontSize: 15,
+                color: {
+                    color: '#428bca',
+                    highlight: '#00CE6F'
+                },
+                width: 2
+            },
+            nodes: {
+                shape: 'rect',
+                radius: 15,
+                radiusMin: 20,
+                radiusMax: 20,
+                borderWidth: 1,
+                borderWidthSelected: 2,
+                fontColor: 'white',
+                fontSize: 15,
+                color: {
+                    background: '#428bca',
+                    border: '#357ebd',
+                    highlight: {
+                        background: '#00CE6F',
+                        border: '#428bca'
+                    }
+                },
+                scaleFontWithValue: false
             }
         };
         // Settings for genetic algorithm

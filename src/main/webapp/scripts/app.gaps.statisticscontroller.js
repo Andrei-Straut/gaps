@@ -36,7 +36,6 @@ gaps.controller('statisticscontroller', ['$rootScope', '$scope', 'Notification',
         });
 
         $rootScope.$on('pathDataLoaded', function (event, $data) {
-            $scope.resetPathStatistics();
             $scope.resetGeneticStatistics();
             $scope.resetCompareStatistics();
             $scope.initPathStatistics();
@@ -71,7 +70,7 @@ gaps.controller('statisticscontroller', ['$rootScope', '$scope', 'Notification',
             $graphStatisticsToggle.change(function () {
                 $scope.hideGraphStatistics();
             });
-            Notification.success({message: 'Loaded', delay: 2000});
+            Notification.success({message: 'Loaded', delay: 5000});
         };
 
         $scope.hideGraphStatistics = function () {
@@ -100,6 +99,7 @@ gaps.controller('statisticscontroller', ['$rootScope', '$scope', 'Notification',
 
         $scope.initPathStatistics = function () {
             Statistics.setPathStatisticsLoaded(true);
+
             var $pathStatisticsToggle = $('#path-statistics-viewer-toggle').bootstrapToggle({
                 on: 'Visible',
                 off: 'Hidden'
@@ -225,17 +225,17 @@ gaps.controller('statisticscontroller', ['$rootScope', '$scope', 'Notification',
             var edgeSelectionArray = [];
             if (path) {
                 angular.forEach(path, function (edgeValue, edgeKey) {
-                    nodeSelectionArray.push(edgeValue.nodeFrom);
-                    if (edgeValue && edgeValue.data && edgeValue.data.id) {
-                        edgeSelectionArray.push(edgeValue.data.id);
+                    nodeSelectionArray.push(edgeValue.from);
+                    if (edgeValue && edgeValue.id) {
+                        edgeSelectionArray.push(edgeValue.id);
                     }
                 });
-                if ((path[path.length - 1]) && (path[path.length - 1]).nodeTo) {
-                    nodeSelectionArray.push((path[path.length - 1]).nodeTo);
+                if ((path[path.length - 1]) && (path[path.length - 1]).to) {
+                    nodeSelectionArray.push((path[path.length - 1]).to);
                 }
             }
 
-            graph.selectNodes(nodeSelectionArray, false);
+            graph.selectNodes(nodeSelectionArray);
             graph.selectEdges(edgeSelectionArray);
         };
 

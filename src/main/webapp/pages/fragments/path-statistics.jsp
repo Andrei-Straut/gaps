@@ -22,8 +22,8 @@
                                 <span 
                                     class="label"
                                     ng-repeat="edge in (getStatistics().getPathStatistics()).cheapestPath"
-                                    ng-class="getEdgeClass(edge.data.cost)">
-                                    {{edge.nodeFrom}} - {{edge.nodeTo}} ({{edge.data.cost}})
+                                    ng-class="getEdgeClass(edge.cost)">
+                                    {{edge.from}} - {{edge.to}} ({{edge.cost}})
                                 </span>
                             </div>
                             <br/>
@@ -32,8 +32,8 @@
                                 <span 
                                     class="label"
                                     ng-repeat="edge in (getStatistics().getPathStatistics()).mostExpensivePath"
-                                    ng-class="getEdgeClass(edge.data.cost)">
-                                    {{edge.nodeFrom}} - {{edge.nodeTo}} ({{edge.data.cost}})
+                                    ng-class="getEdgeClass(edge.cost)">
+                                    {{edge.from}} - {{edge.to}} ({{edge.cost}})
                                 </span>
                             </div>
                         </div>
