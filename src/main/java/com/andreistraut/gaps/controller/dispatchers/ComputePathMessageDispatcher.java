@@ -71,7 +71,7 @@ public class ComputePathMessageDispatcher extends MessageDispatcher {
 	String sourceNodeId = request.getData().get("sourceNode").getAsString();
 	String destinationNodeId = request.getData().get("destinationNode").getAsString();
 
-	if ((graph.getNodeById(sourceNodeId) == null || graph.getNodeByName(destinationNodeId) == null)) {
+	if ((graph.getNodeById(sourceNodeId) == null || graph.getNodeById(destinationNodeId) == null)) {
 	    throw new Exception("Source or destination node not found in graph");
 	}
 

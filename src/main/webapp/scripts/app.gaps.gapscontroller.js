@@ -253,25 +253,30 @@ gaps.controller('gapscontroller', ['$rootScope', '$scope', 'Socket', 'Statistics
             var interval = window.setInterval(function () {
                 var container = document.getElementById('graph-viewer-vis-canvas');
                 var network = new vis.Network(container, $data.graph, $scope.visOptions);
+                window.graph = network;
 
                 /*
                  * If number of nodes / edges is large enough, disable stabilization after a while in order to speed graph loading
                  */
-                var stabilizationInterval = window.setInterval(function () {
-                    network.freezeSimulation(true);
-                    network.setOptions({freezeForStabilization: true});
-                    network.storePositions();
+                var stabilizationInterval = window.setInterval(function (network) {
+                    if (network) {
+                        network.freezeSimulation(true);
+                        network.setOptions({freezeForStabilization: true});
+                        network.storePositions();
+                    } else if (window.graph) {
+                        window.graph.freezeSimulation(true);
+                        window.graph.setOptions({freezeForStabilization: true});
+                        window.graph.storePositions();
+                    }
                     console.log('Network animation disabled');
                     window.clearInterval(stabilizationInterval);
                 }, $scope.stabilizationIntervalMs);
 
-                window.graph = network;
 
                 window.clearInterval(interval);
             }, 500);
 
             $scope.nodeIds = [];
-            console.log($data.graph.nodes);
             angular.forEach($data.graph.nodes, function (graphNode, key) {
                 if (graphNode && graphNode.id) {
                     $scope.nodeIds.push(graphNode.id);

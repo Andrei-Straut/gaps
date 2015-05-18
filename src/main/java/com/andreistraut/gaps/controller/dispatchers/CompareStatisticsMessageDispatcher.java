@@ -76,7 +76,7 @@ public class CompareStatisticsMessageDispatcher extends MessageDispatcher {
 	if (sourceNodeId.equals(destinationNodeId)) {
 	}
 
-	if ((graph.getNodeById(sourceNodeId) == null || graph.getNodeByName(destinationNodeId) == null)) {
+	if ((graph.getNodeById(sourceNodeId) == null || graph.getNodeById(destinationNodeId) == null)) {
 	    throw new Exception("Source or destination node not found in graph");
 	}
 
