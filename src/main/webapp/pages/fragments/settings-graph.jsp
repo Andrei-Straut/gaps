@@ -107,8 +107,8 @@
 
                         <div class="form-group">        
                             <label class="control-label" for="graphGenerationType"
-                                data-toggle="tooltip" 
-                                data-original-title="If set to random, a different graph will be generated each time">
+                                   data-toggle="tooltip" 
+                                   data-original-title="If set to random, a different graph will be generated each time">
                                 Graph Generation
                             </label><br/>
                             <label class="checkbox-inline">
@@ -125,7 +125,7 @@
 
                         <button 
                             id="graph-viewer-generate-graph" 
-                            class="btn btn-primary btn-lg"
+                            class="btn btn-primary"
                             type="submit" 
                             data-toggle="tooltip" 
                             data-original-title="Generate graph according to specified settings"
@@ -137,45 +137,32 @@
                         <button id="graph-settings-advanced" 
                                 name="graphSettingsAdvanced"
                                 type="button"
-                                class="btn btn-primary btn-lg"
+                                class="btn btn-primary"
                                 data-toggle="modal"
                                 data-target="#graphSettingsAdvancedModal"
                                 ng-disabled="load.wip" 
                                 ng-click="initGraphSettingsAdvanced();">
                             Upload</button>
+
+                        &nbsp; Or &nbsp;
+
+                        <button id="graph-settings-draw" 
+                                name="graphSettingsDraw"
+                                type="button"
+                                class="btn btn-primary"
+                                data-toggle="modal"
+                                data-target="#graphSettingsDrawModal"
+                                ng-disabled="load.wip"
+                                ng-click="initGraphDraw();">
+                            Draw</button>
                     </div>
                 </form>
             </div>
 
-            <div class="modal fade" 
-                 id="graphSettingsAdvancedModal" 
-                 tabindex="-1" role="dialog" 
-                 aria-labelledby="graphSettingsAdvancedModalTitle" 
-                 aria-hidden="true" 
-                 style="display: none;">
-                <div class="modal-dialog">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-                            <h4 class="modal-title" id="graphSettingsAdvancedModalTitle">Upload graph</h4>
-                        </div>
-                        <div class="modal-body">
-                            <form name="graphsettings" novalidate>
-                                <%@include file="settings-graph-form-advanced.jsp" %>
-                            </form>
-                        </div>
-                        <div class="modal-footer">
-                            <button 
-                                id="graphUploadButton" 
-                                class="btn btn-primary" 
-                                type="button" 
-                                ng-disabled="!uploadJsonValid"
-                                ng-click="uploadGraph();">Upload</button>
-                            <button id="graphUploadCancelButton" type="button" class="btn btn-warning" data-dismiss="modal">Cancel</button>
-                        </div>
-                    </div>
-                </div>
-            </div>
+            <%@include file="settings-graph-form-upload.jsp" %>
+            
+            <%@include file="settings-graph-form-draw.jsp" %>
+            
         </div>
     </div>
 </div>

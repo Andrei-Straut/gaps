@@ -428,7 +428,6 @@ gaps.controller('gapscontroller', ['$rootScope', '$scope', 'Socket', 'Statistics
             zoomable: true,
             navigation: true,
             keyboard: false,
-            stabilize: false,
             stabilizationIterations: 20,
             edges: {
                 style: 'arrow',
@@ -494,6 +493,129 @@ gaps.controller('gapscontroller', ['$rootScope', '$scope', 'Socket', 'Statistics
                     }
                 },
                 scaleFontWithValue: false
+            }
+        };
+
+        $scope.initGraphDraw = function () {
+            var interval = window.setInterval(function () {
+                var container = document.getElementById('graph-viewer-vis-canvas-draw');
+                var data = {
+                    nodes: [],
+                    edges: []
+                };
+                var options = $scope.visDrawOptions;
+                var network = new vis.Network(container, data, options);
+                network.freezeSimulation(true);
+                network.setOptions({freezeForStabilization: true});
+
+                // add event listeners
+                network.on('select', function (params) {
+                    document.getElementById('selection').innerHTML = 'Selection: ' + params.nodes;
+                });
+
+                network.on("resize", function (params) {
+                    console.log(params.width, params.height)
+                });
+
+                window.clearInterval(interval);
+            }, 200);
+        };
+
+        $scope.clearPopUp = function () {
+            var saveButton = document.getElementById('saveButton');
+            var cancelButton = document.getElementById('cancelButton');
+            saveButton.onclick = null;
+            cancelButton.onclick = null;
+            var div = document.getElementById('network-popUp');
+            div.style.display = 'none';
+        };
+
+        $scope.saveData = function (data, callback) {
+            var idInput = document.getElementById('node-id');
+            var labelInput = document.getElementById('node-label');
+            var div = document.getElementById('network-popUp');
+            data.id = idInput.value;
+            data.label = labelInput.value;
+            $scope.clearPopUp();
+            callback(data);
+        };
+
+        $scope.visDrawOptions = {
+            width: '100%',
+            height: '400px',
+            zoomable: true,
+            navigation: false,
+            keyboard: false,
+            physics: {
+                enabled: false
+            },
+            dataManipulation: true,
+            edges: {
+                style: 'arrow',
+                fontSize: 15,
+                color: {
+                    color: '#428bca',
+                    highlight: '#00CE6F'
+                },
+                width: 2
+            },
+            nodes: {
+                shape: 'rect',
+                radius: 15,
+                radiusMin: 20,
+                radiusMax: 20,
+                borderWidth: 1,
+                borderWidthSelected: 2,
+                fontColor: 'white',
+                fontSize: 15,
+                color: {
+                    background: '#428bca',
+                    border: '#357ebd',
+                    highlight: {
+                        background: '#00CE6F',
+                        border: '#428bca'
+                    }
+                },
+                scaleFontWithValue: false
+            },
+            onAdd: function (data, callback) {
+                var span = document.getElementById('operation');
+                var idInput = document.getElementById('node-id');
+                var labelInput = document.getElementById('node-label');
+                var saveButton = document.getElementById('saveButton');
+                var cancelButton = document.getElementById('cancelButton');
+                var div = document.getElementById('network-popUp');
+                span.innerHTML = "Add Node";
+                idInput.value = data.id;
+                labelInput.value = data.label;
+                saveButton.onclick = $scope.saveData.bind(this, data, callback);
+                cancelButton.onclick = $scope.clearPopUp.bind();
+                div.style.display = 'block';
+            },
+            onEdit: function (data, callback) {
+                var span = document.getElementById('operation');
+                var idInput = document.getElementById('node-id');
+                var labelInput = document.getElementById('node-label');
+                var saveButton = document.getElementById('saveButton');
+                var cancelButton = document.getElementById('cancelButton');
+                var div = document.getElementById('network-popUp');
+                span.innerHTML = "Edit Node";
+                idInput.value = data.id;
+                labelInput.value = data.label;
+                saveButton.onclick = $scope.saveData.bind(this, data, callback);
+                cancelButton.onclick = $scope.clearPopUp.bind();
+                div.style.display = 'block';
+            },
+            onConnect: function (data, callback) {
+                if (data.from == data.to) {
+                    var r = confirm("Do you want to connect the node to itself?");
+                    if (r == true) {
+                        callback(data);
+                    }
+                }
+                else {
+                    callback(data);
+                }
             }
         };
         // Settings for genetic algorithm

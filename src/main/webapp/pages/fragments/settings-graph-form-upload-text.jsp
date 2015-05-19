@@ -27,7 +27,7 @@
         </div>
 
         <div class="form-group">
-            <div id="graph-viewer-vis-canvas-preview" class="panel-body" ng-show="load.graphPreviewerLoaded">
+            <div id="graph-viewer-vis-canvas-preview" class="panel-body" ng-show="load.graphPreviewerLoaded">                
                 <div id="graph-viewer-vis-preview"></div>
             </div>
         </div>
