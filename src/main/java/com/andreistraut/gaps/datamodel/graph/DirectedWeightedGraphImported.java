@@ -87,8 +87,8 @@ public class DirectedWeightedGraphImported extends DirectedWeightedGraph {
 		continue;
 	    }
 
-	    int cost = 0;
-	    if (edgeJson.has("cost")) {
+	    int cost = 1;
+	    if (edgeJson.has("cost") && edgeJson.get("cost") == null && !edgeJson.get("cost").isJsonNull()) {
 		cost = edgeJson.get("cost").getAsInt();
 	    }
 	    
