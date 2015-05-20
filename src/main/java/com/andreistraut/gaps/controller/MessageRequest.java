@@ -35,7 +35,6 @@ public class MessageRequest {
 	    throw new NullPointerException("Request must contain a message type");
 	}
 	
-	System.out.println(json);
 	if(!json.has("data")) {
 	    throw new NullPointerException("Request must contain a request data (even if empty)");
 	}
