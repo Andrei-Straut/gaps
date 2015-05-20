@@ -83,7 +83,11 @@ gaps.factory('Graph', [function () {
             physics: {
                 barnesHut: {
                     enabled: true,
-                    springLength: 250
+                    springLength: 400,
+                    gravitationalConstant: -8000,
+                    centralGravity: 0.55, 
+                    springConstant: 0, 
+                    damping: 0.3
                 }
             },
             smoothCurves: {
