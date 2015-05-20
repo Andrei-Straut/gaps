@@ -213,7 +213,7 @@ public class DirectedWeightedGraphImportedTest {
 
 	    Assert.assertTrue(graph.getNodes().size() == 2);
 	    Assert.assertTrue(graph.getEdges().size() == 1);
-	    Assert.assertTrue(graph.getEdges().get(0).getCost() == 0);
+	    Assert.assertTrue(graph.getEdges().get(0).getCost() == 1);
 	    Assert.assertTrue(graph.getEdges().get(0).isDirected());
 	}
     }
