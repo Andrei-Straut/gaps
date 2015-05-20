@@ -239,6 +239,7 @@ gaps.factory('Statistics', ['$rootScope', function ($rootScope) {
             _geneticStatistics.generationChart = [];
             _geneticStatistics.generations = [];
             _geneticStatistics.bestPath = {};
+            _geneticStatistics.costs = [];
         };
 
         Service.markEvolutionStart = function () {

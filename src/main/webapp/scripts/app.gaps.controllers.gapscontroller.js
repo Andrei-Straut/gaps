@@ -1,8 +1,8 @@
 /**
  * Main GAPS controller
  */
-gaps.controller('gapscontroller', ['$rootScope', '$scope', 'Socket', 'Statistics',
-    function ($rootScope, $scope, $socket, Statistics) {
+gaps.controller('gapscontroller', ['$rootScope', '$scope', 'Socket', 'Statistics', 'Graph',
+    function ($rootScope, $scope, $socket, Statistics, Graph) {
 
         $scope.init = function () {
             var $graphGenerationType = $('#graphGenerationType').bootstrapToggle({
@@ -32,6 +32,36 @@ gaps.controller('gapscontroller', ['$rootScope', '$scope', 'Socket', 'Statistics
             var interval = window.setInterval(function () {
                 $('#graphSettingsAdvancedModal').modal('hide');
 
+                $scope.graphUpload = $socket.uploadGraph($scope.graphJson);
+                $scope.graphUpload.then(function (response) {
+                    if (response.status === 200) {
+                        $rootScope.$broadcast('resetViews', {});
+
+                        $scope.initGraphView(response.data);
+                        Statistics.setGraphStatistics(response.data.graph.edges);
+
+                        $scope.load.wip = false;
+                        $scope.load.wipType = '';
+                        $rootScope.$broadcast('graphDataLoaded', response.data.graph.edges);
+                    } else {
+                        $scope.notifyError(response.description, $('#modalLoadingError'));
+                    }
+                }).catch(function (e) {
+                    $scope.notifyError(e.description, $('#modalLoadingError'));
+                });
+
+                window.clearInterval(interval);
+            }, 1000);
+        };
+        $scope.uploadDrawGraph = function () {
+            $scope.clearNotifs(3000);
+            Statistics.resetAllStatistics();
+            $scope.notifyInfo('Uploading graph...');
+
+            var interval = window.setInterval(function () {
+                $('#graphSettingsDrawModal').modal('hide');
+
+                $scope.graphJson.graph = Graph.getDrawGraphData();
                 $scope.graphUpload = $socket.uploadGraph($scope.graphJson);
                 $scope.graphUpload.then(function (response) {
                     if (response.status === 200) {
@@ -243,30 +273,31 @@ gaps.controller('gapscontroller', ['$rootScope', '$scope', 'Socket', 'Statistics
         };
 
         $scope.initGraphPreview = function ($data) {
-            var previewContainer = document.getElementById('graph-viewer-vis-preview');
-            new vis.Network(previewContainer, $data, $scope.visPreviewOptions);
+            Graph.init(
+                    document.getElementById('graph-viewer-vis-preview'),
+                    $data,
+                    Graph.getPreviewOptions());
         };
         $scope.initGraphView = function ($data) {
             $rootScope.$broadcast('resetViews', {});
             $scope.load.graphViewerLoaded = true;
 
             var interval = window.setInterval(function () {
-                var container = document.getElementById('graph-viewer-vis-canvas');
-                var network = new vis.Network(container, $data.graph, $scope.visOptions);
-                window.graph = network;
+
+                var network = Graph.init(
+                        document.getElementById('graph-viewer-vis-canvas'),
+                        $data.graph,
+                        Graph.getDefaultOptions());
+                Graph.setNetwork(network);
 
                 /*
                  * If number of nodes / edges is large enough, disable stabilization after a while in order to speed graph loading
                  */
-                var stabilizationInterval = window.setInterval(function (network) {
-                    if (network) {
-                        network.freezeSimulation(true);
-                        network.setOptions({freezeForStabilization: true});
-                        network.storePositions();
-                    } else if (window.graph) {
-                        window.graph.freezeSimulation(true);
-                        window.graph.setOptions({freezeForStabilization: true});
-                        window.graph.storePositions();
+                var stabilizationInterval = window.setInterval(function () {
+                    if (Graph.getNetwork()) {
+                        Graph.getNetwork().freezeSimulation(true);
+                        Graph.getNetwork().setOptions({freezeForStabilization: true});
+                        Graph.getNetwork().storePositions();
                     }
                     console.log('Network animation disabled');
                     window.clearInterval(stabilizationInterval);
@@ -382,23 +413,8 @@ gaps.controller('gapscontroller', ['$rootScope', '$scope', 'Socket', 'Statistics
          */
         // Keep a copy of the graph in JSON format
         $scope.graphJson = {
-            graph: {
-                nodes: [
-                    {id: 0, name: 'Node 0', label: 'Node 0'},
-                    {id: 1, name: 'Node 1', label: 'Node 1'},
-                    {id: 2, name: 'Node 2', label: 'Node 2'},
-                    {id: 3, name: 'Node 3', label: 'Node 3'},
-                    {id: 4, name: 'Node 4', label: 'Node 4'}
-                ],
-                edges: [
-                    {from: 0, to: 1, cost: 1, weight: 1, label: 1},
-                    {from: 1, to: 2, cost: 2, weight: 2, label: 2},
-                    {from: 2, to: 3, cost: 3, weight: 3, label: 3},
-                    {from: 3, to: 4, cost: 4, weight: 4, label: 4},
-                    {from: 0, to: 2, cost: 2, weight: 2, label: 2},
-                    {from: 3, to: 4, cost: 4, weight: 4, label: 4}
-                ]
-            }};
+            graph: Graph.getDefaultGraphData()
+        };
         $scope.graphJsonString = JSON.stringify($scope.graphJson.graph, null, 2);
         $scope.uploadJsonValid = true;
         $scope.nodeIds = [];
@@ -422,89 +438,18 @@ gaps.controller('gapscontroller', ['$rootScope', '$scope', 'Socket', 'Statistics
             isStatic: true
         };
         $scope.stabilizationIntervalMs = 20000;
-        $scope.visOptions = {
-            width: '100%',
-            height: '400px',
-            zoomable: true,
-            navigation: true,
-            keyboard: false,
-            stabilizationIterations: 20,
-            edges: {
-                style: 'arrow',
-                fontSize: 25,
-                color: {
-                    color: '#428bca',
-                    highlight: '#00CE6F'
-                },
-                width: 2,
-                widthSelectionMultiplier: 5
-            },
-            nodes: {
-                shape: 'rect',
-                radius: 35,
-                radiusMin: 35,
-                radiusMax: 50,
-                borderWidth: 2,
-                borderWidthSelected: 3,
-                fontColor: 'white',
-                fontSize: 25,
-                color: {
-                    background: '#428bca',
-                    border: '#357ebd',
-                    highlight: {
-                        background: '#00CE6F',
-                        border: '#428bca'
-                    }
-                },
-                scaleFontWithValue: true
-            }
-        };
-
-        $scope.visPreviewOptions = {
-            width: '100%',
-            height: '200px',
-            zoomable: false,
-            navigation: false,
-            keyboard: false,
-            edges: {
-                style: 'line',
-                fontSize: 15,
-                color: {
-                    color: '#428bca',
-                    highlight: '#00CE6F'
-                },
-                width: 2
-            },
-            nodes: {
-                shape: 'rect',
-                radius: 15,
-                radiusMin: 20,
-                radiusMax: 20,
-                borderWidth: 1,
-                borderWidthSelected: 2,
-                fontColor: 'white',
-                fontSize: 15,
-                color: {
-                    background: '#428bca',
-                    border: '#357ebd',
-                    highlight: {
-                        background: '#00CE6F',
-                        border: '#428bca'
-                    }
-                },
-                scaleFontWithValue: false
-            }
-        };
 
         $scope.initGraphDraw = function () {
             var interval = window.setInterval(function () {
-                var container = document.getElementById('graph-viewer-vis-canvas-draw');
                 var data = {
                     nodes: [],
                     edges: []
                 };
-                var options = $scope.visDrawOptions;
-                var network = new vis.Network(container, data, options);
+
+                var network = Graph.init(
+                        document.getElementById('graph-viewer-vis-canvas-draw'),
+                        data,
+                        Graph.getDrawOptions());
                 network.freezeSimulation(true);
                 network.setOptions({freezeForStabilization: true});
 
@@ -521,103 +466,6 @@ gaps.controller('gapscontroller', ['$rootScope', '$scope', 'Socket', 'Statistics
             }, 200);
         };
 
-        $scope.clearPopUp = function () {
-            var saveButton = document.getElementById('saveButton');
-            var cancelButton = document.getElementById('cancelButton');
-            saveButton.onclick = null;
-            cancelButton.onclick = null;
-            var div = document.getElementById('network-popUp');
-            div.style.display = 'none';
-        };
-
-        $scope.saveData = function (data, callback) {
-            var idInput = document.getElementById('node-id');
-            var labelInput = document.getElementById('node-label');
-            var div = document.getElementById('network-popUp');
-            data.id = idInput.value;
-            data.label = labelInput.value;
-            $scope.clearPopUp();
-            callback(data);
-        };
-
-        $scope.visDrawOptions = {
-            width: '100%',
-            height: '400px',
-            zoomable: true,
-            navigation: false,
-            keyboard: false,
-            physics: {
-                enabled: false
-            },
-            dataManipulation: true,
-            edges: {
-                style: 'arrow',
-                fontSize: 15,
-                color: {
-                    color: '#428bca',
-                    highlight: '#00CE6F'
-                },
-                width: 2
-            },
-            nodes: {
-                shape: 'rect',
-                radius: 15,
-                radiusMin: 20,
-                radiusMax: 20,
-                borderWidth: 1,
-                borderWidthSelected: 2,
-                fontColor: 'white',
-                fontSize: 15,
-                color: {
-                    background: '#428bca',
-                    border: '#357ebd',
-                    highlight: {
-                        background: '#00CE6F',
-                        border: '#428bca'
-                    }
-                },
-                scaleFontWithValue: false
-            },
-            onAdd: function (data, callback) {
-                var span = document.getElementById('operation');
-                var idInput = document.getElementById('node-id');
-                var labelInput = document.getElementById('node-label');
-                var saveButton = document.getElementById('saveButton');
-                var cancelButton = document.getElementById('cancelButton');
-                var div = document.getElementById('network-popUp');
-                span.innerHTML = "Add Node";
-                idInput.value = data.id;
-                labelInput.value = data.label;
-                saveButton.onclick = $scope.saveData.bind(this, data, callback);
-                cancelButton.onclick = $scope.clearPopUp.bind();
-                div.style.display = 'block';
-            },
-            onEdit: function (data, callback) {
-                var span = document.getElementById('operation');
-                var idInput = document.getElementById('node-id');
-                var labelInput = document.getElementById('node-label');
-                var saveButton = document.getElementById('saveButton');
-                var cancelButton = document.getElementById('cancelButton');
-                var div = document.getElementById('network-popUp');
-                span.innerHTML = "Edit Node";
-                idInput.value = data.id;
-                labelInput.value = data.label;
-                saveButton.onclick = $scope.saveData.bind(this, data, callback);
-                cancelButton.onclick = $scope.clearPopUp.bind();
-                div.style.display = 'block';
-            },
-            onConnect: function (data, callback) {
-                if (data.from == data.to) {
-                    var r = confirm("Do you want to connect the node to itself?");
-                    if (r == true) {
-                        callback(data);
-                    }
-                }
-                else {
-                    callback(data);
-                }
-            }
-        };
         // Settings for genetic algorithm
         $scope.geneticSettings = {
             sourceNode: 0,

@@ -47,13 +47,13 @@
         <script src="scripts/lib/morris/morris.js"></script>
         <!-- CUSTOM SCRIPTS -->
         <script src="scripts/app.js"></script>
+        <script src="scripts/app.gaps.js"></script>
         <script src="scripts/app.gaps.factories.websocket.js"></script>
         <script src="scripts/app.gaps.factories.statistics.js"></script>
         <script src="scripts/app.gaps.factories.graph.js"></script>
         <script src="scripts/app.gaps.directives.formvalidation.js"></script>
         <script src="scripts/app.gaps.controllers.gapscontroller.js"></script>
         <script src="scripts/app.gaps.controllers.statistics.js"></script>
-        <script src="scripts/main.js"></script>
 
     </head>
     <body>

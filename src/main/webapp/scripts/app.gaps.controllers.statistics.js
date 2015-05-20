@@ -1,6 +1,7 @@
 
 
-gaps.controller('statisticscontroller', ['$rootScope', '$scope', 'Notification', 'Statistics', function ($rootScope, $scope, Notification, Statistics) {
+gaps.controller('statisticscontroller', ['$rootScope', '$scope', 'Notification', 'Statistics', 'Graph',
+    function ($rootScope, $scope, Notification, Statistics, Graph) {
 
         $scope.graphStatisticsDisplayed = true;
         $scope.pathStatisticsDisplayed = true;
@@ -159,6 +160,7 @@ gaps.controller('statisticscontroller', ['$rootScope', '$scope', 'Notification',
         $scope.resetGeneticStatistics = function () {
             $scope.evolutionChart.clear('morris-bar-cost-chart');
             var $slider = $('div.slider.slider-horizontal');
+            
             if ($slider && $slider.parentElement) {
                 var parent = $slider.parentElement;
                 while (parent.firstChild) {
@@ -211,10 +213,10 @@ gaps.controller('statisticscontroller', ['$rootScope', '$scope', 'Notification',
                                 geneticStatistics.selectedGenerationIndex];
             }
 
-            if (window.graph && geneticStatistics && geneticStatistics.selectedGeneration
+            if (Graph.getNetwork() && geneticStatistics && geneticStatistics.selectedGeneration
                     && geneticStatistics.selectedGeneration.bestChromosome) {
                 var $path = geneticStatistics.selectedGeneration.bestChromosome.path;
-                $scope.selectPath(window.graph, $path);
+                $scope.selectPath(Graph.getNetwork(), $path);
             }
 
             $scope.$apply();
@@ -240,9 +242,9 @@ gaps.controller('statisticscontroller', ['$rootScope', '$scope', 'Notification',
         };
 
         $scope.resetPathSelection = function () {
-            if (window.graph) {
-                window.graph.selectNodes([]);
-                window.graph.selectEdges([]);
+            if (Graph.getNetwork()) {
+                Graph.getNetwork().selectNodes([]);
+                Graph.getNetwork().selectEdges([]);
             }
 
             var geneticStatistics = Statistics.getGeneticStatistics();

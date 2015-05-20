@@ -1,23 +1,23 @@
 .vis .overlay {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
 
-  /* Must be displayed above for example selected Timeline items */
-  z-index: 10;
+    /* Must be displayed above for example selected Timeline items */
+    z-index: 10;
 }
 
 .vis-active {
-  box-shadow: 0 0 10px #86d5f8;
+    box-shadow: 0 0 10px #86d5f8;
 }
 
 /* override some bootstrap styles screwing up the timelines css */
 
 .vis [class*="span"] {
-  min-height: 0;
-  width: auto;
+    min-height: 0;
+    width: auto;
 }
 
 .vis.timeline {
@@ -25,23 +25,23 @@
 
 
 .vis.timeline.root {
-  position: relative;
-  border: 1px solid #bfbfbf;
+    position: relative;
+    border: 1px solid #bfbfbf;
 
-  overflow: hidden;
-  padding: 0;
-  margin: 0;
+    overflow: hidden;
+    padding: 0;
+    margin: 0;
 
-  box-sizing: border-box;
+    box-sizing: border-box;
 }
 
 .vis.timeline .vispanel {
-  position: absolute;
+    position: absolute;
 
-  padding: 0;
-  margin: 0;
+    padding: 0;
+    margin: 0;
 
-  box-sizing: border-box;
+    box-sizing: border-box;
 }
 
 .vis.timeline .vispanel.center,
@@ -49,320 +49,320 @@
 .vis.timeline .vispanel.right,
 .vis.timeline .vispanel.top,
 .vis.timeline .vispanel.bottom {
-  border: 1px #bfbfbf;
+    border: 1px #bfbfbf;
 }
 
 .vis.timeline .vispanel.center,
 .vis.timeline .vispanel.left,
 .vis.timeline .vispanel.right {
-  border-top-style: solid;
-  border-bottom-style: solid;
-  overflow: hidden;
+    border-top-style: solid;
+    border-bottom-style: solid;
+    overflow: hidden;
 }
 
 .vis.timeline .vispanel.center,
 .vis.timeline .vispanel.top,
 .vis.timeline .vispanel.bottom {
-  border-left-style: solid;
-  border-right-style: solid;
+    border-left-style: solid;
+    border-right-style: solid;
 }
 
 .vis.timeline .background {
-  overflow: hidden;
+    overflow: hidden;
 }
 
 .vis.timeline .vispanel > .content {
-  position: relative;
+    position: relative;
 }
 
 .vis.timeline .vispanel .shadow {
-  position: absolute;
-  width: 100%;
-  height: 1px;
-  box-shadow: 0 0 10px rgba(0,0,0,0.8);
-  /* TODO: find a nice way to ensure shadows are drawn on top of items
-  z-index: 1;
-  */
+    position: absolute;
+    width: 100%;
+    height: 1px;
+    box-shadow: 0 0 10px rgba(0,0,0,0.8);
+    /* TODO: find a nice way to ensure shadows are drawn on top of items
+    z-index: 1;
+    */
 }
 
 .vis.timeline .vispanel .shadow.top {
-  top: -1px;
-  left: 0;
+    top: -1px;
+    left: 0;
 }
 
 .vis.timeline .vispanel .shadow.bottom {
-  bottom: -1px;
-  left: 0;
+    bottom: -1px;
+    left: 0;
 }
 
 .vis.timeline .labelset {
-  position: relative;
+    position: relative;
 
-  overflow: hidden;
+    overflow: hidden;
 
-  box-sizing: border-box;
+    box-sizing: border-box;
 }
 
 .vis.timeline .labelset .vlabel {
-  position: relative;
-  left: 0;
-  top: 0;
-  width: 100%;
-  color: #4d4d4d;
+    position: relative;
+    left: 0;
+    top: 0;
+    width: 100%;
+    color: #4d4d4d;
 
-  box-sizing: border-box;
+    box-sizing: border-box;
 }
 
 .vis.timeline .labelset .vlabel {
-  border-bottom: 1px solid #bfbfbf;
+    border-bottom: 1px solid #bfbfbf;
 }
 
 .vis.timeline .labelset .vlabel:last-child {
-  border-bottom: none;
+    border-bottom: none;
 }
 
 .vis.timeline .labelset .vlabel .inner {
-  display: inline-block;
-  padding: 5px;
+    display: inline-block;
+    padding: 5px;
 }
 
 .vis.timeline .labelset .vlabel .inner.hidden {
-  padding: 0;
+    padding: 0;
 }
 
 
 .vis.timeline .itemset {
-  position: relative;
-  padding: 0;
-  margin: 0;
+    position: relative;
+    padding: 0;
+    margin: 0;
 
-  box-sizing: border-box;
+    box-sizing: border-box;
 }
 
 .vis.timeline .itemset .background,
 .vis.timeline .itemset .foreground {
-  position: absolute;
-  width: 100%;
-  height: 100%;
-  overflow: visible;
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    overflow: visible;
 }
 
 .vis.timeline .axis {
-  position: absolute;
-  width: 100%;
-  height: 0;
-  left: 0;
-  z-index: 1;
+    position: absolute;
+    width: 100%;
+    height: 0;
+    left: 0;
+    z-index: 1;
 }
 
 .vis.timeline  .foreground .group {
-  position: relative;
-  box-sizing: border-box;
-  border-bottom: 1px solid #bfbfbf;
+    position: relative;
+    box-sizing: border-box;
+    border-bottom: 1px solid #bfbfbf;
 }
 
 .vis.timeline  .foreground .group:last-child {
-  border-bottom: none;
+    border-bottom: none;
 }
 
 
 .vis.timeline .item {
-  position: absolute;
-  color: #1A1A1A;
-  border-color: #97B0F8;
-  border-width: 1px;
-  background-color: #D5DDF6;
-  display: inline-block;
-  padding: 5px;
+    position: absolute;
+    color: #1A1A1A;
+    border-color: #97B0F8;
+    border-width: 1px;
+    background-color: #D5DDF6;
+    display: inline-block;
+    padding: 5px;
 }
 
 .vis.timeline .item.selected {
-  border-color: #FFC200;
-  background-color: #FFF785;
+    border-color: #FFC200;
+    background-color: #FFF785;
 
-  /* z-index must be higher than the z-index of custom time bar and current time bar */
-  z-index: 2;
+    /* z-index must be higher than the z-index of custom time bar and current time bar */
+    z-index: 2;
 }
 
 .vis.timeline .editable .item.selected {
-  cursor: move;
+    cursor: move;
 }
 
 .vis.timeline .item.point.selected {
-  background-color: #FFF785;
+    background-color: #FFF785;
 }
 
 .vis.timeline .item.box {
-  text-align: center;
-  border-style: solid;
-  border-radius: 2px;
+    text-align: center;
+    border-style: solid;
+    border-radius: 2px;
 }
 
 .vis.timeline .item.point {
-  background: none;
+    background: none;
 }
 
 .vis.timeline .item.dot {
-  position: absolute;
-  padding: 0;
-  border-width: 4px;
-  border-style: solid;
-  border-radius: 4px;
+    position: absolute;
+    padding: 0;
+    border-width: 4px;
+    border-style: solid;
+    border-radius: 4px;
 }
 
 .vis.timeline .item.range {
-  border-style: solid;
-  border-radius: 2px;
-  box-sizing: border-box;
+    border-style: solid;
+    border-radius: 2px;
+    box-sizing: border-box;
 }
 
 .vis.timeline .item.background {
-  overflow: hidden;
-  border: none;
-  background-color: rgba(213, 221, 246, 0.4);
-  box-sizing: border-box;
-  padding: 0;
-  margin: 0;
+    overflow: hidden;
+    border: none;
+    background-color: rgba(213, 221, 246, 0.4);
+    box-sizing: border-box;
+    padding: 0;
+    margin: 0;
 }
 
 .vis.timeline .item.range .content {
-  position: relative;
-  display: inline-block;
-  max-width: 100%;
-  overflow: hidden;
+    position: relative;
+    display: inline-block;
+    max-width: 100%;
+    overflow: hidden;
 }
 
 .vis.timeline .item.background .content {
-  position: absolute;
-  display: inline-block;
-  overflow: hidden;
-  max-width: 100%;
-  margin: 5px;
+    position: absolute;
+    display: inline-block;
+    overflow: hidden;
+    max-width: 100%;
+    margin: 5px;
 }
 
 .vis.timeline .item.line {
-  padding: 0;
-  position: absolute;
-  width: 0;
-  border-left-width: 1px;
-  border-left-style: solid;
+    padding: 0;
+    position: absolute;
+    width: 0;
+    border-left-width: 1px;
+    border-left-style: solid;
 }
 
 .vis.timeline .item .content {
-  white-space: nowrap;
-  overflow: hidden;
+    white-space: nowrap;
+    overflow: hidden;
 }
 
 .vis.timeline .item .delete {
-  background: url('img/timeline/delete.png') no-repeat top center;
-  position: absolute;
-  width: 24px;
-  height: 24px;
-  top: 0;
-  right: -24px;
-  cursor: pointer;
+    background: url('../../../images/vis/network/delete.png') no-repeat top center;
+    position: absolute;
+    width: 24px;
+    height: 24px;
+    top: 0;
+    right: -24px;
+    cursor: pointer;
 }
 
 .vis.timeline .item.range .drag-left {
-  position: absolute;
-  width: 24px;
-  max-width: 20%;
-  height: 100%;
-  top: 0;
-  left: -4px;
+    position: absolute;
+    width: 24px;
+    max-width: 20%;
+    height: 100%;
+    top: 0;
+    left: -4px;
 
-  cursor: w-resize;
+    cursor: w-resize;
 }
 
 .vis.timeline .item.range .drag-right {
-  position: absolute;
-  width: 24px;
-  max-width: 20%;
-  height: 100%;
-  top: 0;
-  right: -4px;
+    position: absolute;
+    width: 24px;
+    max-width: 20%;
+    height: 100%;
+    top: 0;
+    right: -4px;
 
-  cursor: e-resize;
+    cursor: e-resize;
 }
 
 .vis.timeline .timeaxis {
-  position: relative;
-  overflow: hidden;
+    position: relative;
+    overflow: hidden;
 }
 
 .vis.timeline .timeaxis.foreground {
-  top: 0;
-  left: 0;
-  width: 100%;
+    top: 0;
+    left: 0;
+    width: 100%;
 }
 
 .vis.timeline .timeaxis.background {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
 }
 
 .vis.timeline .timeaxis .text {
-  position: absolute;
-  color: #4d4d4d;
-  padding: 3px;
-  white-space: nowrap;
+    position: absolute;
+    color: #4d4d4d;
+    padding: 3px;
+    white-space: nowrap;
 }
 
 .vis.timeline .timeaxis .text.measure {
-  position: absolute;
-  padding-left: 0;
-  padding-right: 0;
-  margin-left: 0;
-  margin-right: 0;
-  visibility: hidden;
+    position: absolute;
+    padding-left: 0;
+    padding-right: 0;
+    margin-left: 0;
+    margin-right: 0;
+    visibility: hidden;
 }
 
 .vis.timeline .timeaxis .grid.vertical {
-  position: absolute;
-  border-left: 1px solid;
+    position: absolute;
+    border-left: 1px solid;
 }
 
 .vis.timeline .timeaxis .grid.minor {
-  border-color: #e5e5e5;
+    border-color: #e5e5e5;
 }
 
 .vis.timeline .timeaxis .grid.major {
-  border-color: #bfbfbf;
+    border-color: #bfbfbf;
 }
 
 .vis.timeline .currenttime {
-  background-color: #FF7F6E;
-  width: 2px;
-  z-index: 1;
+    background-color: #FF7F6E;
+    width: 2px;
+    z-index: 1;
 }
 .vis.timeline .customtime {
-  background-color: #6E94FF;
-  width: 2px;
-  cursor: move;
-  z-index: 1;
+    background-color: #6E94FF;
+    width: 2px;
+    cursor: move;
+    z-index: 1;
 }
 .vis.timeline.root {
-  /*
-  -webkit-transition: height .4s ease-in-out;
-  transition:         height .4s ease-in-out;
-  */
+    /*
+    -webkit-transition: height .4s ease-in-out;
+    transition:         height .4s ease-in-out;
+    */
 }
 
 .vis.timeline .vispanel {
-  /*
-  -webkit-transition: height .4s ease-in-out, top .4s ease-in-out;
-  transition:         height .4s ease-in-out, top .4s ease-in-out;
-  */
+    /*
+    -webkit-transition: height .4s ease-in-out, top .4s ease-in-out;
+    transition:         height .4s ease-in-out, top .4s ease-in-out;
+    */
 }
 
 .vis.timeline .axis {
-  /*
-  -webkit-transition: top .4s ease-in-out;
-  transition:         top .4s ease-in-out;
-  */
+    /*
+    -webkit-transition: top .4s ease-in-out;
+    transition:         top .4s ease-in-out;
+    */
 }
 
 /* TODO: get animation working nicely
@@ -592,147 +592,160 @@
 
 
 div.network-manipulationDiv {
-  border-width: 0;
-  border-bottom: 1px;
-  border-style:solid;
-  border-color: #d6d9d8;
-  background: #ffffff; /* Old browsers */
-  background: -moz-linear-gradient(top,  #ffffff 0%, #fcfcfc 48%, #fafafa 50%, #fcfcfc 100%); /* FF3.6+ */
-  background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#ffffff), color-stop(48%,#fcfcfc), color-stop(50%,#fafafa), color-stop(100%,#fcfcfc)); /* Chrome,Safari4+ */
-  background: -webkit-linear-gradient(top,  #ffffff 0%,#fcfcfc 48%,#fafafa 50%,#fcfcfc 100%); /* Chrome10+,Safari5.1+ */
-  background: -o-linear-gradient(top,  #ffffff 0%,#fcfcfc 48%,#fafafa 50%,#fcfcfc 100%); /* Opera 11.10+ */
-  background: -ms-linear-gradient(top,  #ffffff 0%,#fcfcfc 48%,#fafafa 50%,#fcfcfc 100%); /* IE10+ */
-  background: linear-gradient(to bottom,  #ffffff 0%,#fcfcfc 48%,#fafafa 50%,#fcfcfc 100%); /* W3C */
-  filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', endColorstr='#fcfcfc',GradientType=0 ); /* IE6-9 */
+    border-width: 0;
+    border-bottom: 1px;
+    border-style:solid;
+    border-color: #d6d9d8;
+    background: #ffffff; /* Old browsers */
+    background: -moz-linear-gradient(top,  #ffffff 0%, #fcfcfc 48%, #fafafa 50%, #fcfcfc 100%); /* FF3.6+ */
+    background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#ffffff), color-stop(48%,#fcfcfc), color-stop(50%,#fafafa), color-stop(100%,#fcfcfc)); /* Chrome,Safari4+ */
+    background: -webkit-linear-gradient(top,  #ffffff 0%,#fcfcfc 48%,#fafafa 50%,#fcfcfc 100%); /* Chrome10+,Safari5.1+ */
+    background: -o-linear-gradient(top,  #ffffff 0%,#fcfcfc 48%,#fafafa 50%,#fcfcfc 100%); /* Opera 11.10+ */
+    background: -ms-linear-gradient(top,  #ffffff 0%,#fcfcfc 48%,#fafafa 50%,#fcfcfc 100%); /* IE10+ */
+    background: linear-gradient(to bottom,  #ffffff 0%,#fcfcfc 48%,#fafafa 50%,#fcfcfc 100%); /* W3C */
+    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', endColorstr='#fcfcfc',GradientType=0 ); /* IE6-9 */
 
-  position: absolute;
-  left: 0;
-  top: 0;
-  width: 100%;
-  height: 30px;
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 45px;
 }
 
 div.network-manipulation-editMode {
-  position:absolute;
-  left: 0;
-  top: 15px;
-  height: 30px;
+    position:absolute;
+    left: 0;
+    top: 15px;
+    height: 30px;
 }
 
 div.network-manipulation-closeDiv {
-  position:absolute;
-  right: 0;
-  top: 0;
-  width: 30px;
-  height: 30px;
+    position:absolute;
+    right: 0;
+    top: 0;
+    width: 30px;
+    height: 30px;
 
-  background-position: 20px 3px;
-  background-repeat: no-repeat;
-  background-image: url("img/network/cross.png");
-  cursor: pointer;
-  -webkit-touch-callout: none;
-  -webkit-user-select: none;
-  -khtml-user-select: none;
-  -moz-user-select: none;
-  -ms-user-select: none;
-  user-select: none;
+    background-position: 20px 3px;
+    background-repeat: no-repeat;
+    background-image: url("../../../images/vis/network/cross.png");
+    cursor: pointer;
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
 }
 
 div.network-manipulation-closeDiv:hover {
-  opacity: 0.6;
+    opacity: 0.6;
 }
 
 div.network-manipulationUI {
     position:relative;
     top:-7px;
-  font-family: verdana;
-  font-size: 12px;
-  -moz-border-radius: 15px;
-  border-radius: 15px;
-  display:inline-block;
-  background-position: 0px 0px;
-  background-repeat:no-repeat;
-  height:24px;
-  margin: 0px 0px 0px 10px;
-  vertical-align:middle;
-  cursor: pointer;
-  padding: 0px 8px 0px 8px;
-  -webkit-touch-callout: none;
-  -webkit-user-select: none;
-  -khtml-user-select: none;
-  -moz-user-select: none;
-  -ms-user-select: none;
-  user-select: none;
+    font-family: verdana;
+    font-size: 12px;
+    -moz-border-radius: 15px;
+    border-radius: 15px;
+    display:inline-block;
+    background-position: 0px 0px;
+    background-repeat:no-repeat;
+    margin: 0px 0px 0px 10px;
+    vertical-align:middle;
+    cursor: pointer;
+    padding: 0px 8px 0px 8px;
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
 }
 
 div.network-manipulationUI:hover {
-  box-shadow: 1px 1px 8px rgba(0, 0, 0, 0.20);
+    box-shadow: 1px 1px 8px rgba(0, 0, 0, 0.20);
 }
 
 div.network-manipulationUI:active {
-  box-shadow: 1px 1px 8px rgba(0, 0, 0, 0.50);
+    box-shadow: 1px 1px 8px rgba(0, 0, 0, 0.50);
 }
 
 div.network-manipulationUI.back {
-  background-image: url("img/network/backIcon.png");
+    background-image: url("../../../images/vis/network/backIcon.png");
 }
 
 div.network-manipulationUI.none:hover {
-  box-shadow: 1px 1px 8px rgba(0, 0, 0, 0.0);
-  cursor: default;
+    box-shadow: 1px 1px 8px rgba(0, 0, 0, 0.0);
+    cursor: default;
 }
 div.network-manipulationUI.none:active {
-  box-shadow: 1px 1px 8px rgba(0, 0, 0, 0.0);
+    box-shadow: 1px 1px 8px rgba(0, 0, 0, 0.0);
 }
 div.network-manipulationUI.none {
-  padding: 0;
+    padding: 0;
 }
 div.network-manipulationUI.notification{
-  margin: 2px;
-  font-weight: bold;
+    margin: 2px;
+    font-weight: bold;
 }
 
-div.network-manipulationUI.add {
-  background-image: url("img/network/addNodeIcon.png");
-}
-
-div.network-manipulationUI.edit {
-  background-image: url("img/network/editIcon.png");
-}
-
-div.network-manipulationUI.edit.editmode {
-  background-color: #fcfcfc;
-  border-style:solid;
-  border-width:1px;
-  border-color: #cccccc;
-}
-
-div.network-manipulationUI.connect {
-  background-image: url("img/network/connectIcon.png");
+div.network-manipulationUI.add,
+div.network-manipulationUI.connect,
+div.network-manipulationUI.edit,
+div.network-manipulationUI.edit.editmode,
+div.network-manipulationUI.back,
+div.network-manipulationUI.delete{
+    display: inline-block;
+    padding: 6px 6px;
+    margin-bottom: 0;
+    font-weight: normal;
+    line-height: 1.42857143;
+    text-align: center;
+    white-space: nowrap;
+    vertical-align: middle;
+    cursor: pointer;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    background-image: none;
+    border: 1px solid transparent;
+    border-radius: 4px;
+    color: #fff;
+    background-color: #428bca;
+    border-color: #357ebd;
 }
 
 div.network-manipulationUI.delete {
-  background-image: url("img/network/deleteIcon.png");
+    background-color: #d9534f;
+    border-color: #d43f3a;
+}
+
+div.network-manipulationUI.edit.node,
+div.network-manipulationUI.edit.edge {
+    background-color: #f0ad4e;
+    border-color: #eea236;
 }
 /* top right bottom left */
 div.network-manipulationLabel {
-  margin: 0px 0px 0px 23px;
-  line-height: 25px;
+    margin: 0px 0px 0px 0px;
 }
 div.network-seperatorLine {
-  display:inline-block;
-  width:1px;
-  height:20px;
-  background-color: #bdbdbd;
-  margin: 5px 7px 0px 15px;
+    display:inline-block;
+    width:1px;
+    height:20px;
+    background-color: #bdbdbd;
+    margin: 5px 7px 0px 15px;
 }
 
 div.network-navigation_wrapper {
-  position: absolute;
-  left: 0;
-  top: 0;
-  width: 100%;
-  height: 100%;
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
 }
 div.network-navigation {
     width:34px;
@@ -796,15 +809,15 @@ div.network-navigation.zoomExtends {
     right:15px;
 }
 div.network-tooltip {
-  position: absolute;
-  visibility: hidden;
-  padding: 5px;
-  white-space: nowrap;
+    position: absolute;
+    visibility: hidden;
+    padding: 5px;
+    white-space: nowrap;
 
-  -moz-border-radius: 3px;
-  -webkit-border-radius: 3px;
-  border-radius: 3px;
-  border: 1px solid;
+    -moz-border-radius: 3px;
+    -webkit-border-radius: 3px;
+    border-radius: 3px;
+    border: 1px solid;
 
-  box-shadow: 3px 3px 10px rgba(128, 128, 128, 0.5);
+    box-shadow: 3px 3px 10px rgba(128, 128, 128, 0.5);
 }
