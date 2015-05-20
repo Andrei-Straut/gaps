@@ -348,11 +348,15 @@ gaps.controller('gapscontroller', ['$rootScope', '$scope', 'Socket', 'Statistics
                 });
 
                 network.on("resize", function (params) {
-                    console.log(params.width, params.height)
+                    console.log(params.width, params.height);
                 });
 
                 window.clearInterval(interval);
             }, 200);
+        };
+        $scope.jsonifyGraph = function() {
+            var drawGraph = Graph.getDrawGraphData();
+            $('#graphDrawJson').val(JSON.stringify(drawGraph, null, 2));
         };
         $scope.hideGraphView = function () {
             $scope.load.graphDisplayed = $('#graph-viewer-toggle').prop('checked');

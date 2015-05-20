@@ -129,6 +129,11 @@ gaps.factory('Graph', [function () {
             zoomable: false,
             navigation: false,
             keyboard: false,
+            smoothCurves: {
+                dynamic: false,
+                type: 'continuous',
+                roundness: 0
+            },
             edges: {
                 style: 'line',
                 fontSize: 15,
@@ -160,12 +165,16 @@ gaps.factory('Graph', [function () {
         };
 
         var _drawOptions = {
-            clickToUse: true,
             width: '100%',
             height: '400px',
             zoomable: true,
             navigation: false,
             keyboard: false,
+            smoothCurves: {
+                dynamic: false,
+                type: 'continuous',
+                roundness: 0
+            },
             physics: {
                 enabled: false
             },

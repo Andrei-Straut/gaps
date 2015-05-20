@@ -29,11 +29,20 @@
             </div>
             <div class="modal-footer">
                 <button 
+                    id="graphConvertButton" 
+                    class="btn btn-primary" 
+                    type="button" 
+                    ng-click="jsonifyGraph();">Jsonify</button>
+                <button 
                     id="graphUploadButton" 
                     class="btn btn-primary" 
                     type="button" 
                     ng-click="uploadDrawGraph();">Upload</button>
                 <button id="graphDrawCancelButton" type="button" class="btn btn-warning" data-dismiss="modal">Cancel</button>
+                <textarea 
+                    id="graphDrawJson" 
+                    class="form-control" 
+                    rows="5"></textarea>
             </div>
         </div>
     </div>
