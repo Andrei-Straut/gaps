@@ -73,12 +73,24 @@ gaps.factory('Graph', [function () {
         };
 
         var _defaultOptions = {
+            clickToUse: true,
             width: '100%',
             height: '400px',
             zoomable: true,
             navigation: true,
             keyboard: false,
             stabilizationIterations: 20,
+            physics: {
+                barnesHut: {
+                    enabled: true,
+                    springLength: 250
+                }
+            },
+            smoothCurves: {
+                dynamic: false,
+                type: 'continuous',
+                roundness: 0
+            },
             edges: {
                 style: 'arrow',
                 fontSize: 25,
@@ -87,7 +99,7 @@ gaps.factory('Graph', [function () {
                     highlight: '#00CE6F'
                 },
                 width: 2,
-                widthSelectionMultiplier: 5
+                widthSelectionMultiplier: 4
             },
             nodes: {
                 shape: 'rect',
@@ -111,6 +123,7 @@ gaps.factory('Graph', [function () {
         };
 
         var _previewOptions = {
+            clickToUse: true,
             width: '100%',
             height: '200px',
             zoomable: false,
@@ -147,6 +160,7 @@ gaps.factory('Graph', [function () {
         };
 
         var _drawOptions = {
+            clickToUse: true,
             width: '100%',
             height: '400px',
             zoomable: true,
@@ -256,7 +270,7 @@ gaps.factory('Graph', [function () {
             div.style.display = 'none';
         };
 
-        var saveData = function (data, callback) {            
+        var saveData = function (data, callback) {
             var idInput = document.getElementById('node-id');
             var labelInput = document.getElementById('graph-element-label');
             var div = document.getElementById('network-popUp');
@@ -288,7 +302,7 @@ gaps.factory('Graph', [function () {
                 };
                 _drawGraphData.nodes.push(node);
             }
-            
+
             clearPopUp();
             callback(data);
         };

@@ -38,7 +38,7 @@ gaps.controller('gapscontroller', ['$rootScope', '$scope', 'Socket', 'Statistics
                         $rootScope.$broadcast('resetViews', {});
 
                         $scope.initGraphView(response.data);
-                        Statistics.setGraphStatistics(response.data.graph.edges);
+                        Statistics.setGraphStatistics(response.data.statistics);
 
                         $scope.load.wip = false;
                         $scope.load.wipType = '';
@@ -68,7 +68,7 @@ gaps.controller('gapscontroller', ['$rootScope', '$scope', 'Socket', 'Statistics
                         $rootScope.$broadcast('resetViews', {});
 
                         $scope.initGraphView(response.data);
-                        Statistics.setGraphStatistics(response.data.graph.edges);
+                        Statistics.setGraphStatistics(response.data.statistics);
 
                         $scope.load.wip = false;
                         $scope.load.wipType = '';
@@ -97,7 +97,7 @@ gaps.controller('gapscontroller', ['$rootScope', '$scope', 'Socket', 'Statistics
                         $rootScope.$broadcast('resetViews', {});
 
                         $scope.initGraphView(response.data);
-                        Statistics.setGraphStatistics(response.data.graph.edges);
+                        Statistics.setGraphStatistics(response.data.statistics);
 
                         $scope.load.wip = false;
                         $scope.load.wipType = '';
@@ -271,7 +271,6 @@ gaps.controller('gapscontroller', ['$rootScope', '$scope', 'Socket', 'Statistics
 
             return false;
         };
-
         $scope.initGraphPreview = function ($data) {
             Graph.init(
                     document.getElementById('graph-viewer-vis-preview'),
@@ -326,6 +325,34 @@ gaps.controller('gapscontroller', ['$rootScope', '$scope', 'Socket', 'Statistics
             $graphViewerToggle.change(function () {
                 $scope.hideGraphView();
             });
+        };
+        $scope.initGraphDraw = function () {
+            var interval = window.setInterval(function () {
+                var data = {
+                    nodes: [],
+                    edges: []
+                };
+
+                Graph.setDrawGraphData(data);
+                var network = Graph.init(
+                        document.getElementById('graph-viewer-vis-canvas-draw'),
+                        data,
+                        Graph.getDrawOptions());
+                
+                network.freezeSimulation(true);
+                network.setOptions({freezeForStabilization: true});
+
+                // add event listeners
+                network.on('select', function (params) {
+                    document.getElementById('selection').innerHTML = 'Selection: ' + params.nodes;
+                });
+
+                network.on("resize", function (params) {
+                    console.log(params.width, params.height)
+                });
+
+                window.clearInterval(interval);
+            }, 200);
         };
         $scope.hideGraphView = function () {
             $scope.load.graphDisplayed = $('#graph-viewer-toggle').prop('checked');
@@ -439,35 +466,6 @@ gaps.controller('gapscontroller', ['$rootScope', '$scope', 'Socket', 'Statistics
         };
         $scope.stabilizationIntervalMs = 20000;
 
-        $scope.initGraphDraw = function () {
-            var interval = window.setInterval(function () {
-                var data = {
-                    nodes: [],
-                    edges: []
-                };
-
-                Graph.setDrawGraphData(data);
-                var network = Graph.init(
-                        document.getElementById('graph-viewer-vis-canvas-draw'),
-                        data,
-                        Graph.getDrawOptions());
-                
-                network.freezeSimulation(true);
-                network.setOptions({freezeForStabilization: true});
-
-                // add event listeners
-                network.on('select', function (params) {
-                    document.getElementById('selection').innerHTML = 'Selection: ' + params.nodes;
-                });
-
-                network.on("resize", function (params) {
-                    console.log(params.width, params.height)
-                });
-
-                window.clearInterval(interval);
-            }, 200);
-        };
-
         // Settings for genetic algorithm
         $scope.geneticSettings = {
             sourceNode: 0,
@@ -480,30 +478,11 @@ gaps.controller('gapscontroller', ['$rootScope', '$scope', 'Socket', 'Statistics
             alwaysCalculateFitness: true,
             keepPopSizeConstant: false,
             preserveFittestIndividual: true,
-            comparePaths: 5,
-            mutators: {
-                selected: null,
-                lists: {
-                    "Available": [
-                        {label: "SingleGeneMutator"},
-                        {label: "OnePointCrossover"}
-                    ],
-                    "Used": [
-                        {label: "MultipleGeneMutator"},
-                        {label: "CycleRemoveMutator"},
-                        {label: "TwoPointCrossover"},
-                        {label: "BestChromosomeSelector"}
-                    ]}
-            }
+            comparePaths: 5
         };
         // Websocket error messages
         $scope.errorText = '';
         // Notification duration
         $scope.notificationTime = 2000;
         // Charts
-
-        // Model to JSON for demo purpose
-        $scope.$watch('geneticSettings.mutators', function (model) {
-            $scope.modelAsJson = angular.toJson(model, true);
-        }, true);
     }]);

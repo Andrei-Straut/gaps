@@ -57,6 +57,7 @@ gaps.controller('statisticscontroller', ['$rootScope', '$scope', 'Notification',
         });
 
         $scope.initGraphStatistics = function ($data) {
+            
             Statistics.setGraphStatisticsLoaded(true);
             var table = $('#graph-direct-edges').DataTable();
             angular.forEach($data, function (edgeValue, edgeKey) {
