@@ -124,6 +124,7 @@ public class DirectedWeightedEdge extends DefaultWeightedEdge {
 	edgeJson.addProperty("cost", this.cost);
 	edgeJson.addProperty("weight", this.cost);
 	edgeJson.addProperty("label", this.cost);
+	edgeJson.addProperty("title", "From: " + this.getSource().getId() + "<br/>To: " + this.getDestination().getId() + "<br/>Cost: " + this.getCost());
 	edgeJson.addProperty("isDirected", this.isDirected);
 
 	return edgeJson;

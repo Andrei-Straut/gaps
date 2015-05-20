@@ -60,6 +60,7 @@ public class Node implements ICloneable {
 	node.addProperty("id", this.id);
 	node.addProperty("name", this.name);
 	node.addProperty("label", this.name);
+	node.addProperty("title", "ID: " + this.id + "<br/>" + "Name: " + this.name);
 
 	return node;
     }

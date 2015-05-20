@@ -119,6 +119,14 @@ gaps.factory('Graph', [function () {
                     }
                 },
                 scaleFontWithValue: true
+            },
+            tooltip: {
+                delay: 100,
+                fontColor: "428bca",
+                color: {
+                    border: "#428bca",
+                    background: "#FFFFFF"
+                }
             }
         };
 
