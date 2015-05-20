@@ -4,30 +4,30 @@ import com.google.gson.JsonObject;
 import org.jgrapht.graph.DefaultWeightedEdge;
 
 public class DirectedWeightedEdge extends DefaultWeightedEdge {
-    
+
     private Node source;
     private Node destination;
     private int cost;
     private boolean isDirected;
-    
+
     //<editor-fold desc="Constructors" defaultstate="collapsed">
     public DirectedWeightedEdge(Node source, Node destination) {
 	this.source = source;
 	this.destination = destination;
 	this.isDirected = true;
     }
-    
+
     public DirectedWeightedEdge(Node source, Node destination, int cost) {
 	this(source, destination);
 	this.cost = cost;
     }
-    
+
     public DirectedWeightedEdge(Node source, Node destination, int cost, boolean isDirected) {
 	this(source, destination, cost);
 	this.isDirected = isDirected;
     }
     //</editor-fold>
-    
+
     public Node getSource() {
 	return source;
     }
@@ -51,6 +51,7 @@ public class DirectedWeightedEdge extends DefaultWeightedEdge {
     public void setIsDirected(boolean isDirected) {
 	this.isDirected = isDirected;
     }
+
     public int getCost() {
 	return cost;
     }
@@ -58,35 +59,35 @@ public class DirectedWeightedEdge extends DefaultWeightedEdge {
     public void setCost(int cost) {
 	this.cost = cost;
     }
-    
+
     @Override
     public boolean equals(Object obj) {
 	if (obj == null) {
 	    return false;
 	}
-	
+
 	if (getClass() != obj.getClass()) {
 	    return false;
 	}
-	
+
 	final DirectedWeightedEdge other = (DirectedWeightedEdge) obj;
-	
+
 	if (this.source == null || !this.source.equals(other.source)) {
 	    return false;
 	}
-	
+
 	if (this.destination == null || !this.destination.equals(other.destination)) {
 	    return false;
 	}
-	
+
 	if (this.cost != other.cost) {
 	    return false;
 	}
-	
+
 	if (this.isDirected != other.isDirected) {
 	    return false;
 	}
-	
+
 	return true;
     }
 
@@ -99,7 +100,7 @@ public class DirectedWeightedEdge extends DefaultWeightedEdge {
 	hash = (int) ((32 >>> this.cost) ^ this.cost) + 43 * hash;
 	return hash;
     }
-    
+
     @Override
     public String toString() {
 	StringBuilder builder = new StringBuilder();
@@ -110,13 +111,13 @@ public class DirectedWeightedEdge extends DefaultWeightedEdge {
 		.append(this.destination.getId())
 		.append("]").append(" (Cost: ")
 		.append(this.getCost()).append(")");
-	
+
 	return builder.toString();
     }
-    
+
     public JsonObject toJson() {
 	JsonObject edgeJson = new JsonObject();
-	
+
 	edgeJson.addProperty("from", this.source.getId());
 	edgeJson.addProperty("to", this.destination.getId());
 	edgeJson.addProperty("id", this.hashCode());
@@ -124,7 +125,7 @@ public class DirectedWeightedEdge extends DefaultWeightedEdge {
 	edgeJson.addProperty("weight", this.cost);
 	edgeJson.addProperty("label", this.cost);
 	edgeJson.addProperty("isDirected", this.isDirected);
-	 
+
 	return edgeJson;
     }
 }

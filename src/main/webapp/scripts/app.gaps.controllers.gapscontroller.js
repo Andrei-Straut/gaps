@@ -446,10 +446,12 @@ gaps.controller('gapscontroller', ['$rootScope', '$scope', 'Socket', 'Statistics
                     edges: []
                 };
 
+                Graph.setDrawGraphData(data);
                 var network = Graph.init(
                         document.getElementById('graph-viewer-vis-canvas-draw'),
                         data,
                         Graph.getDrawOptions());
+                
                 network.freezeSimulation(true);
                 network.setOptions({freezeForStabilization: true});
 

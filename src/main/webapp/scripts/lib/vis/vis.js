@@ -34275,7 +34275,7 @@ return /******/ (function(modules) { // webpackBootstrap
    */
   exports._createEdge = function(sourceNodeId,targetNodeId) {
     if (this.editMode == true) {
-      var defaultData = {from:sourceNodeId, to:targetNodeId};
+      var defaultData = {id:util.randomUUID(), from:sourceNodeId, to:targetNodeId};
       if (this.triggerFunctions.connect) {
         if (this.triggerFunctions.connect.length == 2) {
           var me = this;

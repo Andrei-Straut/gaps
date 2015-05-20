@@ -68,6 +68,10 @@ gaps.factory('Graph', [function () {
             return _drawGraphData;
         };
 
+        Service.setDrawGraphData = function (drawGraphData) {
+            _drawGraphData = drawGraphData;
+        };
+
         var _defaultOptions = {
             width: '100%',
             height: '400px',
@@ -252,7 +256,12 @@ gaps.factory('Graph', [function () {
             div.style.display = 'none';
         };
 
-        var saveData = function (data, callback) {
+        var saveData = function (data, callback) {            
+            var idInput = document.getElementById('node-id');
+            var labelInput = document.getElementById('graph-element-label');
+            var div = document.getElementById('network-popUp');
+            data.label = labelInput.value;
+
             _drawGraphData.nodes = _drawGraphData.nodes.filter(function (node) {
                 return node.id !== data.id;
             });
@@ -278,13 +287,8 @@ gaps.factory('Graph', [function () {
                     label: data.label
                 };
                 _drawGraphData.nodes.push(node);
-
             }
-
-            var idInput = document.getElementById('node-id');
-            var labelInput = document.getElementById('graph-element-label');
-            var div = document.getElementById('network-popUp');
-            data.label = labelInput.value;
+            
             clearPopUp();
             callback(data);
         };

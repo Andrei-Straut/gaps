@@ -91,7 +91,7 @@ public class DirectedWeightedGraphImported extends DirectedWeightedGraph {
 	    if (edgeJson.has("cost") && edgeJson.get("cost") != null && !edgeJson.get("cost").isJsonNull()) {
 		cost = edgeJson.get("cost").getAsInt();
 	    }
-	    
+
 	    boolean isDirected = true;
 	    if (edgeJson.has("isDirected")) {
 		isDirected = edgeJson.get("isDirected").getAsBoolean();
