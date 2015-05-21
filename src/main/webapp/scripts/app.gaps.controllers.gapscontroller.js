@@ -1,8 +1,8 @@
 /**
  * Main GAPS controller
  */
-gaps.controller('gapscontroller', ['$rootScope', '$scope', 'Socket', 'Statistics', 'Graph',
-    function ($rootScope, $scope, $socket, Statistics, Graph) {
+gaps.controller('gapscontroller', ['$rootScope', '$scope', 'Socket', 'PathStatistics', 'GeneticStatistics', 'CompareStatistics', 'Graph',
+    function ($rootScope, $scope, $socket, PathStatistics, GeneticStatistics, CompareStatistics, Graph) {
 
         $scope.init = function () {
             var $graphGenerationType = $('#graphGenerationType').bootstrapToggle({
@@ -15,10 +15,6 @@ gaps.controller('gapscontroller', ['$rootScope', '$scope', 'Socket', 'Statistics
             });
         };
 
-        $scope.getStatistics = function () {
-            return Statistics;
-        };
-
         /*
          * =====================================================================
          * Main functions
@@ -26,7 +22,6 @@ gaps.controller('gapscontroller', ['$rootScope', '$scope', 'Socket', 'Statistics
          */
         $scope.uploadGraph = function () {
             $scope.clearNotifs(3000);
-            Statistics.resetAllStatistics();
             $scope.notifyInfo('Uploading graph...');
 
             var interval = window.setInterval(function () {
@@ -52,7 +47,6 @@ gaps.controller('gapscontroller', ['$rootScope', '$scope', 'Socket', 'Statistics
         };
         $scope.uploadDrawGraph = function () {
             $scope.clearNotifs(3000);
-            Statistics.resetAllStatistics();
             $scope.notifyInfo('Uploading graph...');
 
             var interval = window.setInterval(function () {
@@ -80,7 +74,6 @@ gaps.controller('gapscontroller', ['$rootScope', '$scope', 'Socket', 'Statistics
         };
         $scope.processGraph = function () {
             $scope.clearNotifs(3000);
-            Statistics.resetAllStatistics();
             $scope.notifyInfo('Loading graph...');
 
             // Little hack to give notification time to pop-up
@@ -103,7 +96,6 @@ gaps.controller('gapscontroller', ['$rootScope', '$scope', 'Socket', 'Statistics
             }, 1000);
         };
         $scope.computePaths = function () {
-            Statistics.resetPathStatistics();
             $scope.notifyInfo('Computing paths...');
 
             var interval = window.setInterval(function () {
@@ -122,15 +114,14 @@ gaps.controller('gapscontroller', ['$rootScope', '$scope', 'Socket', 'Statistics
                     $scope.notifyError(error.description, $('#modalLoadingError'));
                 }, function (update) {
                         $rootScope.$broadcast('pathDataUpdated', update.data);
-                        $scope.notifyInfo('Computing paths (' + (Statistics.getPathStatistics()).counter + ' / '
+                        $scope.notifyInfo('Computing paths (' + (PathStatistics.getStatistics()).counter + ' / '
                                 + $scope.geneticSettings.numberOfPaths + ')...');
                 });
                 window.clearInterval(interval);
             }, 1000);
         };
         $scope.evolve = function () {
-            Statistics.resetGeneticStatistics();
-            Statistics.markEvolutionStart();
+            GeneticStatistics.markEvolutionStart();
             $scope.notifyInfo('Evolving...');
 
             var interval = window.setInterval(function () {
@@ -155,8 +146,7 @@ gaps.controller('gapscontroller', ['$rootScope', '$scope', 'Socket', 'Statistics
             }, 1000);
         };
         $scope.compare = function () {
-            Statistics.resetCompareStatistics();
-            Statistics.markCompareStart();
+            CompareStatistics.markCompareStart();
             $scope.notifyInfo('Comparing Results...');
 
             var interval = window.setInterval(function () {
@@ -213,8 +203,7 @@ gaps.controller('gapscontroller', ['$rootScope', '$scope', 'Socket', 'Statistics
             });
         };
         $scope.previewGraph = function () {
-            $scope.load.graphPreviewerLoaded = true;
-
+            
             var interval = window.setInterval(function () {
                 var graphPreviewWrapper = $('div#graph-viewer-vis-preview');
 
@@ -373,18 +362,6 @@ gaps.controller('gapscontroller', ['$rootScope', '$scope', 'Socket', 'Statistics
             });
             $('#' + id).addClass('active-menu');
         };
-        $scope.getEdgeClass = function (edgeCost) {
-            var graphStatistics = Statistics.getGraphStatistics();
-            var averageCostLowThreshold = graphStatistics.averageEdgeCost - (graphStatistics.averageEdgeCost / 4);
-            var averageCostHighThreshold = graphStatistics.averageEdgeCost + (graphStatistics.averageEdgeCost / 4);
-            if (edgeCost < averageCostLowThreshold) {
-                return 'label-success';
-            } else if (edgeCost >= averageCostLowThreshold && edgeCost <= averageCostHighThreshold) {
-                return 'label-warning';
-            } else {
-                return 'label-danger';
-            }
-        };
         $scope.notifyInfo = function (notification) {
             $scope.load.wip = true;
             $scope.load.wipType = notification;
@@ -405,23 +382,6 @@ gaps.controller('gapscontroller', ['$rootScope', '$scope', 'Socket', 'Statistics
                 }
             }, delay);
         };
-        $scope.convertTime = function (timestamp) {
-            if (timestamp !== undefined && timestamp !== null && timestamp != 'null') {
-                var a = new Date(timestamp * 1);
-                var months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
-                var year = $.isNumeric(a.getFullYear()) ? a.getFullYear() : '0000';
-                var month = $.isNumeric(a.getMonth()) ? months[a.getMonth()] : '00';
-                var date = $.isNumeric(('0' + a.getDate()).slice(-2)) ? ('0' + a.getDate()).slice(-2) : '00';
-                var hour = $.isNumeric(('0' + a.getHours()).slice(-2)) ? ('0' + a.getHours()).slice(-2) : '00';
-                var min = $.isNumeric(('0' + a.getMinutes()).slice(-2)) ? ('0' + a.getMinutes()).slice(-2) : '00';
-                var sec = $.isNumeric(('0' + a.getSeconds()).slice(-2)) ? ('0' + a.getSeconds()).slice(-2) : '00';
-                var millis = $.isNumeric(('0' + a.getMilliseconds()).slice(-2)) ? ('0' + a.getMilliseconds()).slice(-2) : '00';
-                var time = hour + ':' + min + ':' + sec + '.' + millis;
-                return time;
-            } else {
-                return null;
-            }
-        };
         /* 
          * =====================================================================
          * Variables
@@ -440,7 +400,6 @@ gaps.controller('gapscontroller', ['$rootScope', '$scope', 'Socket', 'Statistics
             wip: false,
             wipType: '',
             graphViewerLoaded: false,
-            graphPreviewerLoaded: false,
             graphDisplayed: true
         };
         // Settings for graph generation
@@ -460,7 +419,7 @@ gaps.controller('gapscontroller', ['$rootScope', '$scope', 'Socket', 'Statistics
             sourceNode: 0,
             destinationNode: 29,
             numberOfPaths: $scope.graphSettings.numberOfEdges,
-            numberOfEvolutions: 1000,
+            numberOfEvolutions: 10000,
             minPopSizePercent: 100,
             stopConditionPercent: 30,
             reportEveryXGenerations: 1000,

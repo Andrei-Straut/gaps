@@ -13,7 +13,7 @@
 
                 <div class="panel-body" ng-show="statisticsDisplayed">
                     <div class="row">
-                        <div class="col-md-12 col-sm-12 col-xs-12">                        
+                        <div class="col-md-12 col-sm-12 col-xs-12">
                             <div class="panel panel-default">
                                 <div class="panel-heading">
                                     Evolution steps
@@ -26,29 +26,28 @@
                                     <input type="text" 
                                            id="generation-slider"
                                            class="span" 
-                                           value="{{(getStatistics().getGeneticStatistics()).selectedGenerationIndex}}" 
+                                           value="{{(getStatistics()).selectedGenerationIndex}}" 
                                            style="width: 100%"
                                            data-slider-min="0" 
-                                           data-slider-max="{{(getStatistics().getGeneticStatistics()).generations.length - 1}}" 
+                                           data-slider-max="{{(getStatistics()).generations.length - 1}}" 
                                            data-slider-step="1" 
-                                           data-slider-value="{{(getStatistics().getGeneticStatistics()).selectedGenerationIndex}}" 
+                                           data-slider-value="{{(getStatistics()).selectedGenerationIndex}}" 
                                            data-slider-orientation="horizontal" 
                                            data-slider-selection="after"
                                            data-slider-tooltip="hide">
-
                                     <hr/>
 
-                                    Generation <span class="label-info">{{(getStatistics().getGeneticStatistics()).selectedGeneration.evolutionStage}}</span><br/>       
-                                    Best Cost: <span class="label-info">{{(getStatistics().getGeneticStatistics()).selectedGeneration.bestChromosome.cost}}</span><br/>
-                                    Average Cost: <span class="label-info">{{(getStatistics().getGeneticStatistics()).selectedGeneration.endAverageCost}}</span><br/>
-                                    Best Fitness: <span class="label-info">{{(getStatistics().getGeneticStatistics()).selectedGeneration.bestChromosome.fitness}}</span><br/>
-                                    Average Fitness: <span class="label-info">{{(getStatistics().getGeneticStatistics()).selectedGeneration.endAverageFitness}}</span><br/>
+                                    Generation <span class="label-info">{{(getStatistics()).selectedGeneration.evolutionStage}}</span><br/>
+                                    Best Cost: <span class="label-info">{{(getStatistics()).selectedGeneration.bestChromosome.cost}}</span><br/>
+                                    Average Cost: <span class="label-info">{{(getStatistics()).selectedGeneration.endAverageCost}}</span><br/>
+                                    Best Fitness: <span class="label-info">{{(getStatistics()).selectedGeneration.bestChromosome.fitness}}</span><br/>
+                                    Average Fitness: <span class="label-info">{{(getStatistics()).selectedGeneration.endAverageFitness}}</span><br/>
                                     <br/>
                                     Best Path:
                                     <div class="panel-body">
                                         <span 
                                             class="label"
-                                            ng-repeat="gene in (getStatistics().getGeneticStatistics()).selectedGeneration.bestChromosome.path"
+                                            ng-repeat="gene in (getStatistics()).selectedGeneration.bestChromosome.path"
                                             ng-class="getEdgeClass(gene.data.cost)">
                                             {{gene.from}} - {{gene.to}} ({{gene.cost}})
                                         </span>
@@ -77,13 +76,13 @@
                                 </div>
                                 <div class="panel-body">
                                     <i class="fa fa-bar-chart-o fa-5x"></i>
-                                    <h3>Found in generation: {{(getStatistics().getGeneticStatistics()).evolutionStage}}</h3>
-                                    <h3>Cost: {{(getStatistics().getGeneticStatistics()).bestPathCost}}</h3>
-                                    <h3>Fitness: {{(getStatistics().getGeneticStatistics()).bestPathFitness}}</h3>
-                                    <h3>Path Length: {{(getStatistics().getGeneticStatistics()).bestPathEdgeNumber}}</h3>
-                                    <h3>Evolution Started: {{convertTime((getStatistics().getGeneticStatistics()).startTimestamp)}}</h3>
-                                    <h3>Evolution Finished: {{convertTime((getStatistics().getGeneticStatistics()).endTimestamp)}}</h3>
-                                    <h3>Total Time: {{convertTime((getStatistics().getGeneticStatistics()).evolutionDiffTimestamp)}}</h3>
+                                    <h3>Found in generation: {{(getStatistics()).evolutionStage}}</h3>
+                                    <h3>Cost: {{(getStatistics()).bestPathCost}}</h3>
+                                    <h3>Fitness: {{(getStatistics()).bestPathFitness}}</h3>
+                                    <h3>Path Length: {{(getStatistics()).bestPathEdgeNumber}}</h3>
+                                    <h3>Evolution Started: {{getEvolutionStartTime()}}</h3>
+                                    <h3>Evolution Finished: {{getEvolutionEndTime()}}</h3>
+                                    <h3>Total Time: {{getEvolutionDiffTime()}}</h3>
                                 </div>
                             </div>                      
                         </div>

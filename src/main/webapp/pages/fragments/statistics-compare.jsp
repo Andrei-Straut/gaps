@@ -31,18 +31,18 @@
                                 </div>
                                 <div class="panel-body">
                                     <i class="fa fa-bar-chart-o fa-5x"></i>
-                                    <h3>Best Path Cost: {{(getStatistics().getCompareStatistics()).chromosomes[0].cost}}</h3>
-                                    <h3>Best Path Fitness: {{(getStatistics().getCompareStatistics()).chromosomes[0].fitness}}</h3>
+                                    <h3>Best Path Cost: {{(getStatistics()).chromosomes[0].cost}}</h3>
+                                    <h3>Best Path Fitness: {{(getStatistics()).chromosomes[0].fitness}}</h3>
                                     <h3 
-                                        ng-if="(getStatistics().getCompareStatistics()).chromosomes[0].cost < (getStatistics().getGeneticStatistics()).bestPathCost">
+                                        ng-if="(getStatistics()).chromosomes[0].cost < (getGeneticStatistics()).bestPathCost">
                                         Winner: KShortest</h3>
                                     <h3 
-                                        ng-if="(getStatistics().getCompareStatistics()).chromosomes[0].cost >= (getStatistics().getGeneticStatistics()).bestPathCost">
+                                        ng-if="(getStatistics().getCompareStatistics()).chromosomes[0].cost >= (getGeneticStatistics()).bestPathCost">
                                         Winner: GAPS</h3>
 
-                                    <h3>Search Started: {{convertTime((getStatistics().getCompareStatistics()).startTimestamp)}}</h3>
-                                    <h3>Search Finished: {{convertTime((getStatistics().getCompareStatistics()).endTimestamp)}}</h3>
-                                    <h3>Total Time: {{convertTime((getStatistics().getCompareStatistics()).compareDiffTimestamp)}}</h3>
+                                    <h3>Search Started: {{getCompareStartTime()}}</h3>
+                                    <h3>Search Finished: {{getCompareEndTime()}}</h3>
+                                    <h3>Total Time: {{getCompareDiffTime()}}</h3>
                                 </div>
                             </div>                      
                         </div>

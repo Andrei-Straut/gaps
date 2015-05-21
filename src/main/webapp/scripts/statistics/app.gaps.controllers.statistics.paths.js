@@ -1,6 +1,6 @@
 
-gaps.controller('pathsstatisticscontroller', ['$rootScope', '$scope', 'Notification', 'Statistics',
-    function ($rootScope, $scope, Notification, Statistics) {
+gaps.controller('pathsstatisticscontroller', ['$rootScope', '$scope', 'Notification', 'GraphStatistics', 'PathStatistics',
+    function ($rootScope, $scope, Notification, GraphStatistics, PathStatistics) {
 
         $scope.statisticsLoaded = false;
         $scope.statisticsDisplayed = true;
@@ -8,7 +8,11 @@ gaps.controller('pathsstatisticscontroller', ['$rootScope', '$scope', 'Notificat
         $scope.dataTableId = '#graph-paths';
 
         $scope.getStatistics = function () {
-            return Statistics;
+            return PathStatistics.getStatistics();
+        };
+
+        $scope.getGraphStatistics = function () {
+            return GraphStatistics;
         };
 
         $rootScope.$on('resetViews', function (event, $data) {
@@ -23,7 +27,7 @@ gaps.controller('pathsstatisticscontroller', ['$rootScope', '$scope', 'Notificat
 
         $rootScope.$on('pathDataUpdated', function (event, $data) {
             if ($data && $data.path) {
-                Statistics.addPathStatistic($data.path);
+                PathStatistics.add($data.path);
             }
 
             $scope.updateView($data);
@@ -36,7 +40,7 @@ gaps.controller('pathsstatisticscontroller', ['$rootScope', '$scope', 'Notificat
         });
 
         $scope.resetData = function () {
-            Statistics.resetPathStatistics();
+            PathStatistics.reset();
         };
 
         $scope.resetView = function () {
@@ -62,11 +66,11 @@ gaps.controller('pathsstatisticscontroller', ['$rootScope', '$scope', 'Notificat
         };
 
         $scope.updateView = function ($data) {
-            var pathStatistics = Statistics.getPathStatistics();
+            var pathStatistics = PathStatistics.getStatistics();
 
             if ($data && $data.path) {
                 var table = $($scope.dataTableId).DataTable();
-                table.row.add([pathStatistics.counter, $data.path.length, Statistics.getPathCost($data.path)]);
+                table.row.add([pathStatistics.counter, $data.path.length, PathStatistics.getPathCost($data.path)]);
 
                 table.draw();
             }

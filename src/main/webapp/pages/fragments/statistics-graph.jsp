@@ -43,11 +43,11 @@
                                 </div>
                                 <div class="panel-body">
                                     <i class="fa fa-bar-chart-o fa-5x"></i>
-                                    <h3>Number of edges: {{(getStatistics().getGraphStatistics()).numberOfEdges}}</h3>
-                                    <h3>Total edge cost: {{(getStatistics().getGraphStatistics()).totalEdgeCost}}</h3>
-                                    <h3>Most expensive edge: {{(getStatistics().getGraphStatistics()).maximumEdgeCost}}</h3>
-                                    <h3>Average edge cost: {{(getStatistics().getGraphStatistics()).averageEdgeCost}}</h3>
-                                    <h3>Average node connectivity: {{(getStatistics().getGraphStatistics()).averageEdgesPerNode}}</h3>
+                                    <h3>Number of edges: {{(getStatistics()).numberOfEdges}}</h3>
+                                    <h3>Total edge cost: {{(getStatistics()).totalEdgeCost}}</h3>
+                                    <h3>Most expensive edge: {{(getStatistics()).maximumEdgeCost}}</h3>
+                                    <h3>Average edge cost: {{(getStatistics()).averageEdgeCost}}</h3>
+                                    <h3>Average node connectivity: {{(getStatistics()).averageEdgesPerNode}}</h3>
                                 </div>
                             </div>
                         </div>

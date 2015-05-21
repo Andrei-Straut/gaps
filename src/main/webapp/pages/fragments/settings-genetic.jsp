@@ -12,7 +12,7 @@
                         href="#"
                         data-toggle="modal"
                         data-target="#geneticSettingsAdvancedModal"
-                        ng-disabled="load.wip"
+                        ng-disabled="!load.graphViewerLoaded || load.wip"
                         ng-click="initGeneticSettingsAdvanced();">
                     Advanced</button>
             </div>
@@ -24,7 +24,7 @@
                         <button id="graph-viewer-start-evolution"
                                 type="submit"
                                 class="btn btn-primary"
-                                ng-disabled="geneticsettings.$invalid || load.wip"
+                                ng-disabled="!load.graphViewerLoaded || geneticsettings.$invalid || load.wip"
                                 ng-click="computePaths();">Evolve!</button>
                     </div>
                 </form>

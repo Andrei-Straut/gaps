@@ -19,22 +19,22 @@
                     <div class="row">
                         <div class="col-md-12 col-sm-12 col-xs-12">
                             <div class="panel-body">
-                                Cheapest (Total Cost {{(getStatistics().getPathStatistics()).cheapestPathCost}})
+                                Cheapest (Total Cost {{(getStatistics()).cheapestPathCost}})
                                 <div class="panel-body">
                                     <span 
                                         class="label"
-                                        ng-repeat="edge in (getStatistics().getPathStatistics()).cheapestPath"
-                                        ng-class="getEdgeClass(edge.cost)">
+                                        ng-repeat="edge in (getStatistics()).cheapestPath"
+                                        ng-class="(getGraphStatistics()).getEdgeClass(edge.cost)">
                                         {{edge.from}} - {{edge.to}} ({{edge.cost}})
                                     </span>
                                 </div>
                                 <br/>
-                                Most Expensive (Total Cost {{(getStatistics().getPathStatistics()).mostExpensivePathCost}})
+                                Most Expensive (Total Cost {{(getStatistics()).mostExpensivePathCost}})
                                 <div class="panel-body">
                                     <span 
                                         class="label"
-                                        ng-repeat="edge in (getStatistics().getPathStatistics()).mostExpensivePath"
-                                        ng-class="getEdgeClass(edge.cost)">
+                                        ng-repeat="edge in (getStatistics()).mostExpensivePath"
+                                        ng-class="(getGraphStatistics()).getEdgeClass(edge.cost)">
                                         {{edge.from}} - {{edge.to}} ({{edge.cost}})
                                     </span>
                                 </div>
@@ -57,7 +57,7 @@
                                                     <th>Cost</th>
                                                 </tr>
                                             </thead>
-                                            <tbody>                                
+                                            <tbody>
                                             </tbody>
                                         </table>
                                     </div>
@@ -72,13 +72,13 @@
                                 </div>
                                 <div class="panel-body">
                                     <i class="fa fa-bar-chart-o fa-5x"></i>
-                                    <h3>Number of paths: {{(getStatistics().getPathStatistics()).paths.length}}</h3>
-                                    <h3>Total path cost: {{(getStatistics().getPathStatistics()).totalPathCost}}</h3>
-                                    <h3>Most expensive path cost: {{(getStatistics().getPathStatistics()).mostExpensivePathCost}}</h3>
-                                    <h3>Most expensive path length: {{(getStatistics().getPathStatistics()).mostExpensivePath.length}}</h3>
-                                    <h3>Cheapest path cost: {{(getStatistics().getPathStatistics()).cheapestPathCost}}</h3>
-                                    <h3>Cheapest path length: {{(getStatistics().getPathStatistics()).cheapestPath.length}}</h3>
-                                    <h3>Average path cost: {{(getStatistics().getPathStatistics()).averagePathCost}}</h3>
+                                    <h3>Number of paths: {{(getStatistics()).paths.length}}</h3>
+                                    <h3>Total path cost: {{(getStatistics()).totalPathCost}}</h3>
+                                    <h3>Most expensive path cost: {{(getStatistics()).mostExpensivePathCost}}</h3>
+                                    <h3>Most expensive path length: {{(getStatistics()).mostExpensivePath.length}}</h3>
+                                    <h3>Cheapest path cost: {{(getStatistics()).cheapestPathCost}}</h3>
+                                    <h3>Cheapest path length: {{(getStatistics()).cheapestPath.length}}</h3>
+                                    <h3>Average path cost: {{(getStatistics()).averagePathCost}}</h3>
                                 </div>
                             </div>                      
                         </div>

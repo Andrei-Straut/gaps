@@ -1,7 +1,7 @@
 
 
-gaps.controller('graphstatisticscontroller', ['$rootScope', '$scope', 'Notification', 'Statistics',
-    function ($rootScope, $scope, Notification, Statistics) {
+gaps.controller('graphstatisticscontroller', ['$rootScope', '$scope', 'Notification', 'GraphStatistics',
+    function ($rootScope, $scope, Notification, GraphStatistics) {
 
         $scope.statisticsLoaded = false;
         $scope.statisticsDisplayed = true;
@@ -9,7 +9,7 @@ gaps.controller('graphstatisticscontroller', ['$rootScope', '$scope', 'Notificat
         $scope.dataTableId = '#graph-statistics-direct-edges';
 
         $scope.getStatistics = function () {
-            return Statistics;
+            return GraphStatistics.getStatistics();
         };
 
         $rootScope.$on('resetViews', function (event, $data) {
@@ -18,7 +18,8 @@ gaps.controller('graphstatisticscontroller', ['$rootScope', '$scope', 'Notificat
         });
 
         $rootScope.$on('graphDataLoaded', function (event, $data) {
-            Statistics.setGraphStatistics($data.statistics);
+            GraphStatistics.setStatistics($data.statistics);
+            
             $scope.statisticsLoaded = true;
             $scope.statisticsDisplayed = true;
 
@@ -26,7 +27,7 @@ gaps.controller('graphstatisticscontroller', ['$rootScope', '$scope', 'Notificat
         });
 
         $scope.resetData = function () {
-            Statistics.resetGraphStatistics();
+            GraphStatistics.reset();
         };
 
         $scope.resetView = function () {

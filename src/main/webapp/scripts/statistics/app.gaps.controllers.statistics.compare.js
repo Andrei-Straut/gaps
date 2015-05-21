@@ -1,7 +1,7 @@
 
 
-gaps.controller('comparestatisticscontroller', ['$rootScope', '$scope', 'Notification', 'Statistics',
-    function ($rootScope, $scope, Notification, Statistics) {
+gaps.controller('comparestatisticscontroller', ['$rootScope', '$scope', 'Notification', 'GeneticStatistics', 'CompareStatistics',
+    function ($rootScope, $scope, Notification, GeneticStatistics, CompareStatistics) {
 
         $scope.statisticsLoaded = false;
         $scope.statisticsDisplayed = true;
@@ -11,7 +11,11 @@ gaps.controller('comparestatisticscontroller', ['$rootScope', '$scope', 'Notific
         $scope.dataToggleId = '#compare-statistics-viewer-toggle';
 
         $scope.getStatistics = function () {
-            return Statistics;
+            return CompareStatistics.getStatistics();
+        };
+
+        $scope.getGeneticStatistics = function () {
+            return GeneticStatistics.getStatistics();
         };
 
         $rootScope.$on('resetViews', function (event, $data) {
@@ -35,7 +39,7 @@ gaps.controller('comparestatisticscontroller', ['$rootScope', '$scope', 'Notific
         });
 
         $rootScope.$on('compareDataUpdated', function (event, $data) {
-            Statistics.addCompareStatistic($data);
+            CompareStatistics.add($data);
         });
 
         $rootScope.$on('compareDataLoaded', function (event, $data) {
@@ -45,7 +49,7 @@ gaps.controller('comparestatisticscontroller', ['$rootScope', '$scope', 'Notific
         });
 
         $scope.resetData = function () {
-            Statistics.resetCompareStatistics();
+            CompareStatistics.reset();
         };
 
         $scope.resetView = function () {
@@ -59,11 +63,10 @@ gaps.controller('comparestatisticscontroller', ['$rootScope', '$scope', 'Notific
         };
 
         $scope.initView = function () {
-            Statistics.markCompareEnd();
+            CompareStatistics.markCompareEnd();
 
             var interval = window.setInterval(function () {
-                var compareStatistics = Statistics.getCompareStatistics();
-                Statistics.setCompareStatisticsLoaded(true);
+                var compareStatistics = CompareStatistics.getStatistics();
                 $scope.$apply();
                 $scope.compareChart.initialize($scope.compareChartElementId, compareStatistics.compareChart);
                 window.clearInterval(interval);
@@ -82,6 +85,18 @@ gaps.controller('comparestatisticscontroller', ['$rootScope', '$scope', 'Notific
         $scope.hideView = function () {
             $scope.statisticsDisplayed = $($scope.dataToggleId).prop('checked');
             $scope.$apply();
+        };
+        
+        $scope.getCompareStartTime = function() {
+            return CompareStatistics.getCompareStartTime();
+        };
+        
+        $scope.getCompareEndTime = function() {
+            return CompareStatistics.getCompareEndTime();
+        };
+        
+        $scope.getCompareDiffTime = function() {
+            return CompareStatistics.getCompareDiffTime();
         };
 
         $scope.compareChart = {

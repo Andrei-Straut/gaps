@@ -54,7 +54,11 @@
         <script src="scripts/app.gaps.factories.websocket.js"></script>
         <script src="scripts/app.gaps.factories.graph.js"></script>
 
-        <script src="scripts/statistics/app.gaps.factories.statistics.js"></script>
+        <script src="scripts/statistics/app.gaps.factories.statistics.graph.js"></script>
+        <script src="scripts/statistics/app.gaps.factories.statistics.paths.js"></script>
+        <script src="scripts/statistics/app.gaps.factories.statistics.genetic.js"></script>
+        <script src="scripts/statistics/app.gaps.factories.statistics.compare.js"></script>
+        
         <script src="scripts/statistics/app.gaps.controllers.statistics.graph.js"></script>
         <script src="scripts/statistics/app.gaps.controllers.statistics.paths.js"></script>
         <script src="scripts/statistics/app.gaps.controllers.statistics.genetic.js"></script>

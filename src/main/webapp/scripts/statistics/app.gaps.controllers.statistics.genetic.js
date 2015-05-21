@@ -1,7 +1,7 @@
 
 
-gaps.controller('geneticstatisticscontroller', ['$rootScope', '$scope', 'Notification', 'Statistics', 'Graph',
-    function ($rootScope, $scope, Notification, Statistics, Graph) {
+gaps.controller('geneticstatisticscontroller', ['$rootScope', '$scope', 'Notification', 'GeneticStatistics', 'Graph',
+    function ($rootScope, $scope, Notification, GeneticStatistics, Graph) {
 
         $scope.statisticsLoaded = false;
         $scope.statisticsDisplayed = true;
@@ -13,7 +13,7 @@ gaps.controller('geneticstatisticscontroller', ['$rootScope', '$scope', 'Notific
         $scope.sliderId = '#generation-slider';
 
         $scope.getStatistics = function () {
-            return Statistics;
+            return GeneticStatistics.getStatistics();
         };
 
         $rootScope.$on('resetViews', function (event, $data) {
@@ -32,7 +32,7 @@ gaps.controller('geneticstatisticscontroller', ['$rootScope', '$scope', 'Notific
         });
 
         $rootScope.$on('geneticDataUpdated', function (event, $data) {
-            Statistics.addGeneticStatistic($data);
+            GeneticStatistics.add($data);
         });
 
         $rootScope.$on('geneticDataLoaded', function (event, $data) {
@@ -42,7 +42,7 @@ gaps.controller('geneticstatisticscontroller', ['$rootScope', '$scope', 'Notific
         });
 
         $scope.resetData = function () {
-            Statistics.resetGeneticStatistics();
+            GeneticStatistics.reset();
         };
 
         $scope.resetView = function () {
@@ -62,10 +62,10 @@ gaps.controller('geneticstatisticscontroller', ['$rootScope', '$scope', 'Notific
         };
 
         $scope.initView = function () {
-            Statistics.markEvolutionEnd();
+            GeneticStatistics.markEvolutionEnd();
 
             var interval = window.setInterval(function () {
-                var geneticStatistics = Statistics.getGeneticStatistics();
+                var geneticStatistics = GeneticStatistics.getStatistics();
                 $scope.$apply();
 
                 var $slider = $($scope.sliderId).slider();
@@ -77,6 +77,8 @@ gaps.controller('geneticstatisticscontroller', ['$rootScope', '$scope', 'Notific
                 $scope.evolutionChart.initialize($scope.costChartElementId,
                         geneticStatistics.generationChart);
                 window.clearInterval(interval);
+                
+                Notification.success({message: 'Evolved', delay: 2000});
             }, 1000);
 
             var $geneticStatisticsToggle = $($scope.dataToggleId).bootstrapToggle({
@@ -94,7 +96,7 @@ gaps.controller('geneticstatisticscontroller', ['$rootScope', '$scope', 'Notific
         };
 
         $scope.sliderEvent = function (event) {
-            var geneticStatistics = Statistics.getGeneticStatistics();
+            var geneticStatistics = GeneticStatistics.getStatistics();
 
             geneticStatistics.selectedGenerationIndex = event.value;
             if (geneticStatistics.generations[event.value]) {
@@ -137,9 +139,21 @@ gaps.controller('geneticstatisticscontroller', ['$rootScope', '$scope', 'Notific
                 Graph.getNetwork().selectEdges([]);
             }
 
-            var geneticStatistics = Statistics.getGeneticStatistics();
+            var geneticStatistics = GeneticStatistics.getStatistics();
             geneticStatistics.selectedGeneration = {};
             geneticStatistics.selectedGenerationIndex = 0;
+        };
+        
+        $scope.getEvolutionStartTime = function() {
+            return GeneticStatistics.getEvolutionStartTime();
+        };
+        
+        $scope.getEvolutionEndTime = function() {
+            return GeneticStatistics.getEvolutionEndTime();
+        };
+        
+        $scope.getEvolutionDiffTime = function() {
+            return GeneticStatistics.getEvolutionDiffTime();
         };
 
         $scope.evolutionChart = {

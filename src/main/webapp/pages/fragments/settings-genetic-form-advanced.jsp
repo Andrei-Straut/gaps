@@ -20,7 +20,7 @@
                    min="1"
                    max="{{$scope.geneticSettings.numberOfEvolutions}}"
                    ng-model="geneticSettings.reportEveryXGenerations" 
-                   ng-disabled="!(getStatistics().getGraphStatisticsLoaded())"
+                   ng-disabled="!load.graphViewerLoaded"
                    disabled>
             <label class="control-label" 
                    for="reportGenerations" 
@@ -44,7 +44,7 @@
                    min="0"
                    max="100"
                    ng-model="geneticSettings.minPopSizePercent" 
-                   ng-disabled="!(getStatistics().getGraphStatisticsLoaded())"
+                   ng-disabled="!load.graphViewerLoaded"
                    disabled>
             <label class="control-label" 
                    for="minPopSizePercent" 
@@ -63,7 +63,7 @@
                        data-on="Constant"
                        data-off="Variable"
                        data-size="small"
-                       ng-disabled="!(getStatistics().getGraphStatisticsLoaded())">
+                       ng-disabled="!load.graphViewerLoaded">
             </label>
             <label class="control-label" for="keepPopSizeConstant"
                    data-toggle="tooltip" 
@@ -82,7 +82,7 @@
                        data-on="Always"
                        data-off="As Needed"
                        data-size="small"
-                       ng-disabled="!(getStatistics().getGraphStatisticsLoaded())">
+                       ng-disabled="!load.graphViewerLoaded">
             </label>
             <label class="control-label" for="alwaysCalculateFitness"
                    data-toggle="tooltip" 
@@ -101,7 +101,7 @@
                        data-on="Yes"
                        data-off="No"
                        data-size="small"
-                       ng-disabled="!(getStatistics().getGraphStatisticsLoaded())">
+                       ng-disabled="!load.graphViewerLoaded">
             </label>
             <label class="control-label" for="preserveFittestIndividual"
                    data-toggle="tooltip" 

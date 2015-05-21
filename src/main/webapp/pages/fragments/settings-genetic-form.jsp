@@ -13,7 +13,7 @@
            data-placement="bottom" 
            data-original-title="Start point of path search"
            ng-model="geneticSettings.sourceNode"
-           ng-disabled="!(getStatistics().getGraphStatisticsLoaded())"
+           ng-disabled="!load.graphViewerLoaded"
            typeahead="id for id in nodeIds | filter: $viewValue | limitTo:8"
            node-id-valid
            disabled>
@@ -41,7 +41,7 @@
            data-toggle="tooltip" 
            data-original-title="End point of path search"
            ng-model="geneticSettings.destinationNode"
-           ng-disabled="!(getStatistics().getGraphStatisticsLoaded())"
+           ng-disabled="!load.graphViewerLoaded"
            typeahead="id for id in nodeIds | filter: $viewValue | limitTo:8"
            node-id-valid
            disabled>
@@ -70,7 +70,7 @@
            data-original-title="Size of initial population"
            type="number"
            ng-model="geneticSettings.numberOfPaths"
-           ng-disabled="!(getStatistics().getGraphStatisticsLoaded())"
+           ng-disabled="!load.graphViewerLoaded"
            min="1"
            disabled>
     <label class="control-label" 
@@ -93,7 +93,7 @@
            data-original-title="Maximum number of genetic algorithm iterations"
            type="number"
            ng-model="geneticSettings.numberOfEvolutions"
-           ng-disabled="!(getStatistics().getGraphStatisticsLoaded())"
+           ng-disabled="!load.graphViewerLoaded"
            min="100"
            disabled>
     <label class="control-label" 
@@ -116,7 +116,7 @@
            data-original-title="If no evolution happens during this percent of maximum number of evolutions, calculation stops"
            type="number"
            ng-model="geneticSettings.stopConditionPercent" 
-           ng-disabled="!(getStatistics().getGraphStatisticsLoaded())"
+           ng-disabled="!load.graphViewerLoaded"
            min="0"
            max="100"
            disabled>
