@@ -48,12 +48,18 @@
         <!-- CUSTOM SCRIPTS -->
         <script src="scripts/app.js"></script>
         <script src="scripts/app.gaps.js"></script>
-        <script src="scripts/app.gaps.factories.websocket.js"></script>
-        <script src="scripts/app.gaps.factories.statistics.js"></script>
-        <script src="scripts/app.gaps.factories.graph.js"></script>
+
         <script src="scripts/app.gaps.directives.formvalidation.js"></script>
+        
+        <script src="scripts/app.gaps.factories.websocket.js"></script>
+        <script src="scripts/app.gaps.factories.graph.js"></script>
+
+        <script src="scripts/statistics/app.gaps.factories.statistics.js"></script>
+        <script src="scripts/statistics/app.gaps.controllers.statistics.graph.js"></script>
+        <script src="scripts/statistics/app.gaps.controllers.statistics.paths.js"></script>
+        <script src="scripts/statistics/app.gaps.controllers.statistics.genetic.js"></script>
+        <script src="scripts/statistics/app.gaps.controllers.statistics.compare.js"></script>
         <script src="scripts/app.gaps.controllers.gapscontroller.js"></script>
-        <script src="scripts/app.gaps.controllers.statistics.js"></script>
 
     </head>
     <body>
@@ -66,38 +72,17 @@
             <!-- /. NAV SIDE  -->
             <div id="page-wrapper" >
                 <div id="page-inner">
-
                     <%@include file="/pages/fragments/settings.jsp" %>
 
                     <%@include file="/pages/fragments/graph-viewer.jsp" %>
 
-                    <div ng-controller="statisticscontroller">
-                        <%@include file="/pages/fragments/genetic-statistics.jsp" %>
+                    <%@include file="/pages/fragments/statistics-genetic.jsp" %>
 
-                        <%@include file="/pages/fragments/compare-statistics.jsp" %>
+                    <%@include file="/pages/fragments/statistics-compare.jsp" %>
 
-                        <%@include file="/pages/fragments/path-statistics.jsp" %>
+                    <%@include file="/pages/fragments/statistics-paths.jsp" %>
 
-                        <%@include file="/pages/fragments/graph-statistics.jsp" %>
-                    </div>
-
-                    <div class="modal fade" id="modalLoadingError" tabindex="-1" role="dialog" aria-labelledby="loadingError" aria-hidden="true" style="display: none;">
-                        <div class="modal-dialog">
-                            <div class="modal-content">
-                                <div class="modal-header">
-                                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-                                    <h4 class="modal-title" id="loadingError">Loading error</h4>
-                                </div>
-                                <div class="modal-body">
-                                    An error has occurred loading the data :(<br/>
-                                    {{errorText}}
-                                </div>
-                                <div class="modal-footer">
-                                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+                    <%@include file="/pages/fragments/statistics-graph.jsp" %>
 
                 </div>
                 <!-- /. PAGE INNER  -->

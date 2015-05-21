@@ -93,7 +93,7 @@ gaps.factory('Graph', [function () {
             smoothCurves: {
                 dynamic: false,
                 type: 'continuous',
-                roundness: 0
+                roundness: 0.2
             },
             edges: {
                 style: 'arrow',

@@ -5,7 +5,6 @@ gaps.factory('Statistics', ['$rootScope', function ($rootScope) {
         var Service = {};
         var _sourceNodeId = 0;
         var _destinationNodeId = 1;
-        var _graphStatisticsLoaded = false;
         var _pathStatisticsLoaded = false;
         var _geneticStatisticsLoaded = false;
         var _compareStatisticsLoaded = false;
@@ -60,14 +59,6 @@ gaps.factory('Statistics', ['$rootScope', function ($rootScope) {
             compareDiffTimestamp: {},
             compareChart: [],
             chromosomes: []
-        };
-
-        Service.getGraphStatisticsLoaded = function () {
-            return _graphStatisticsLoaded;
-        };
-
-        Service.setGraphStatisticsLoaded = function (statisticsLoaded) {
-            _graphStatisticsLoaded = statisticsLoaded;
         };
 
         Service.getPathStatisticsLoaded = function () {
@@ -301,7 +292,6 @@ gaps.factory('Statistics', ['$rootScope', function ($rootScope) {
         };
 
         Service.resetAllStatistics = function () {
-            Service.resetGraphStatistics();
             Service.resetPathStatistics();
             Service.resetGeneticStatistics();
             Service.resetCompareStatistics();

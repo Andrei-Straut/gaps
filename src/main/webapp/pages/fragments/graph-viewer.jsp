@@ -1,5 +1,6 @@
-<div id="graph-viewer" ng-show="load.graphViewerLoaded">
-    <div class="row">
+
+<div class="row">
+    <div id="graph-viewer" ng-show="load.graphViewerLoaded">
         <a name="graph-viewer"></a>
         <div class="col-md-12 col-sm-12 col-xs-12">
             <div class="panel panel-default">
@@ -13,12 +14,17 @@
                     <span class="label label-warning">Medium Edge Cost</span>
                     <span class="label label-danger">High Edge Cost</span>)
                 </div>
-                <div id="graph-viewer-wrapper" class="panel-body" ng-show="load.graphDisplayed">
-                    <div id="graph-viewer-vis-canvas"></div>
+                <div class="panel-body">
+                    <div class="row">
+                        <div id="graph-viewer-wrapper" class="panel-body" ng-show="load.graphDisplayed">
+                            <div id="graph-viewer-vis-canvas">
+                            </div>                            
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
 
-    <hr/>
+        <hr/>
+    </div>
 </div>

@@ -36,13 +36,10 @@ gaps.controller('gapscontroller', ['$rootScope', '$scope', 'Socket', 'Statistics
                 $scope.graphUpload.then(function (response) {
                     if (response.status === 200) {
                         $rootScope.$broadcast('resetViews', {});
-
                         $scope.initGraphView(response.data);
-                        Statistics.setGraphStatistics(response.data.statistics);
-
                         $scope.load.wip = false;
                         $scope.load.wipType = '';
-                        $rootScope.$broadcast('graphDataLoaded', response.data.graph.edges);
+                        $rootScope.$broadcast('graphDataLoaded', response.data);
                     } else {
                         $scope.notifyError(response.description, $('#modalLoadingError'));
                     }
@@ -66,13 +63,10 @@ gaps.controller('gapscontroller', ['$rootScope', '$scope', 'Socket', 'Statistics
                 $scope.graphUpload.then(function (response) {
                     if (response.status === 200) {
                         $rootScope.$broadcast('resetViews', {});
-
                         $scope.initGraphView(response.data);
-                        Statistics.setGraphStatistics(response.data.statistics);
-
                         $scope.load.wip = false;
                         $scope.load.wipType = '';
-                        $rootScope.$broadcast('graphDataLoaded', response.data.graph.edges);
+                        $rootScope.$broadcast('graphDataLoaded', response.data);
                     } else {
                         $scope.notifyError(response.description, $('#modalLoadingError'));
                     }
@@ -95,14 +89,10 @@ gaps.controller('gapscontroller', ['$rootScope', '$scope', 'Socket', 'Statistics
                 $scope.graphGeneration.then(function (response) {
                     if (response.status === 200) {
                         $rootScope.$broadcast('resetViews', {});
-
                         $scope.initGraphView(response.data);
-                        Statistics.setGraphStatistics(response.data.statistics);
-
                         $scope.load.wip = false;
                         $scope.load.wipType = '';
-                        $rootScope.$broadcast('graphDataLoaded', response.data.graph.edges);
-
+                        $rootScope.$broadcast('graphDataLoaded', response.data);
                     } else {
                         $scope.notifyError(response.description, $('#modalLoadingError'));
                     }
@@ -131,12 +121,9 @@ gaps.controller('gapscontroller', ['$rootScope', '$scope', 'Socket', 'Statistics
                 }, function (error) {
                     $scope.notifyError(error.description, $('#modalLoadingError'));
                 }, function (update) {
-                    if (update.data && update.data.path) {
-                        Statistics.addPathStatistic(update.data.path);
-                        $rootScope.$broadcast('pathDataUpdated', update.data.path);
+                        $rootScope.$broadcast('pathDataUpdated', update.data);
                         $scope.notifyInfo('Computing paths (' + (Statistics.getPathStatistics()).counter + ' / '
                                 + $scope.geneticSettings.numberOfPaths + ')...');
-                    }
                 });
                 window.clearInterval(interval);
             }, 1000);
@@ -161,7 +148,6 @@ gaps.controller('gapscontroller', ['$rootScope', '$scope', 'Socket', 'Statistics
                 }, function (error) {
                     $scope.notifyError(error.description, $('#modalLoadingError'));
                 }, function (update) {
-                    Statistics.addGeneticStatistic(update.data);
                     $rootScope.$broadcast('geneticDataUpdated', update.data);
                     $scope.notifyInfo('Evolving (' + update.data.evolutionStage + ' / ' + $scope.geneticSettings.numberOfEvolutions + ')...');
                 });
@@ -187,7 +173,6 @@ gaps.controller('gapscontroller', ['$rootScope', '$scope', 'Socket', 'Statistics
                 }, function (error) {
                     $scope.notifyError(error.description, $('#modalLoadingError'));
                 }, function (update) {
-                    Statistics.addCompareStatistic(update.data);
                     $rootScope.$broadcast('compareDataUpdated', update.data);
                 });
                 window.clearInterval(interval);
@@ -475,7 +460,7 @@ gaps.controller('gapscontroller', ['$rootScope', '$scope', 'Socket', 'Statistics
             sourceNode: 0,
             destinationNode: 29,
             numberOfPaths: $scope.graphSettings.numberOfEdges,
-            numberOfEvolutions: 10000,
+            numberOfEvolutions: 1000,
             minPopSizePercent: 100,
             stopConditionPercent: 30,
             reportEveryXGenerations: 1000,
