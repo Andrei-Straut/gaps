@@ -12,30 +12,11 @@
                 </div>
 
                 <div class="panel-body" ng-show="statisticsDisplayed">
-                    <div class="row">
-                        <div class="col-md-12 col-sm-12 col-xs-12">
-                            <div class="panel panel-default">
-                                <div class="panel-heading">
-                                    Evolution steps
-                                </div>
-                                <div class="panel-body">
-                                    <div id="evolution-timeline"></div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
                     
                     <div class="row">
                         <div class="col-md-12 col-sm-12 col-xs-12">
                             <div class="panel panel-default">
-                                <div class="panel-heading">
-                                    Evolution steps
-                                </div>
                                 <div class="panel-body">
-                                    (Move slider to select generation or 
-                                    <button id="genetic-statistics-path-reset" type="reset" class="btn btn-primary btn-sm"
-                                            ng-click="resetPathSelection();">Reset Selection</button>)
-                                    <br/>
                                     <input type="text" 
                                            id="generation-slider"
                                            class="span" 
@@ -48,6 +29,10 @@
                                            data-slider-orientation="horizontal" 
                                            data-slider-selection="after"
                                            data-slider-tooltip="hide">
+                                    (Move above slider to select generation or 
+                                    <button id="genetic-statistics-path-reset" type="reset" class="btn btn-primary btn-sm"
+                                            ng-click="resetPathSelection();">Reset Selection</button>)
+                                    <br/>
                                     <hr/>
 
                                     Generation <span class="label-info">{{(getStatistics()).selectedGeneration.evolutionStage}}</span><br/>
@@ -65,6 +50,19 @@
                                             {{gene.from}} - {{gene.to}} ({{gene.cost}})
                                         </span>
                                     </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="row">
+                        <div class="col-md-12 col-sm-12 col-xs-12">
+                            <div class="panel panel-default">
+                                <div class="panel-heading">
+                                    Evolution steps
+                                </div>
+                                <div class="panel-body">
+                                    <div id="evolution-timeline"></div>
                                 </div>
                             </div>
                         </div>
