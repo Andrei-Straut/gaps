@@ -61,7 +61,7 @@
                                         <span 
                                             class="label"
                                             ng-repeat="gene in (getStatistics()).selectedGeneration.bestChromosome.path"
-                                            ng-class="getEdgeClass(gene.data.cost)">
+                                            ng-class="(getGraphStatistics()).getEdgeClass(gene.cost)">
                                             {{gene.from}} - {{gene.to}} ({{gene.cost}})
                                         </span>
                                     </div>

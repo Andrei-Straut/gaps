@@ -78,18 +78,6 @@ gaps.factory('PathStatistics', [function () {
             return totalCost;
         };
         
-        Service.getEdgeClass = function (edgeCost) {
-            var averageCostLowThreshold = _graphStatistics.averageEdgeCost - (_graphStatistics.averageEdgeCost / 4);
-            var averageCostHighThreshold = _graphStatistics.averageEdgeCost + (_graphStatistics.averageEdgeCost / 4);
-            if (edgeCost < averageCostLowThreshold) {
-                return 'label-success';
-            } else if (edgeCost >= averageCostLowThreshold && edgeCost <= averageCostHighThreshold) {
-                return 'label-warning';
-            } else {
-                return 'label-danger';
-            }
-        };
-        
         return Service;
 
     }]);

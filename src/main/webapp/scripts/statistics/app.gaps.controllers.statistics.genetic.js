@@ -1,7 +1,7 @@
 
 
-gaps.controller('geneticstatisticscontroller', ['$rootScope', '$scope', 'Notification', 'GeneticStatistics', 'Graph',
-    function ($rootScope, $scope, Notification, GeneticStatistics, Graph) {
+gaps.controller('geneticstatisticscontroller', ['$rootScope', '$scope', 'Notification', 'GraphStatistics', 'GeneticStatistics', 'Graph',
+    function ($rootScope, $scope, Notification, GraphStatistics, GeneticStatistics, Graph) {
 
         $scope.statisticsLoaded = false;
         $scope.statisticsDisplayed = true;
@@ -11,9 +11,14 @@ gaps.controller('geneticstatisticscontroller', ['$rootScope', '$scope', 'Notific
         $scope.dataToggleId = '#genetic-statistics-viewer-toggle';
         $scope.sliderContainerId = '#div.slider.slider-horizontal';
         $scope.sliderId = '#generation-slider';
-
+        $scope.timeline = null;
+        
         $scope.getStatistics = function () {
             return GeneticStatistics.getStatistics();
+        };
+
+        $scope.getGraphStatistics = function () {
+            return GraphStatistics;
         };
 
         $rootScope.$on('resetViews', function (event, $data) {
@@ -56,6 +61,10 @@ gaps.controller('geneticstatisticscontroller', ['$rootScope', '$scope', 'Notific
                 }
             }
             $($scope.sliderContainerId).css('width', 'auto');
+            
+            if($scope.timeline && $scope.timeline !== null) {
+                $scope.timeline.destroy();
+            }
 
             $scope.statisticsLoaded = false;
             $scope.statisticsDisplayed = false;
@@ -88,7 +97,7 @@ gaps.controller('geneticstatisticscontroller', ['$rootScope', '$scope', 'Notific
                     zoomMin: 150,
                     zoomMax: (geneticStatistics.evolutionStage * 5)
                 };
-                var timeline = new vis.Timeline(document.getElementById('evolution-timeline'), GeneticStatistics.getDataSet(), options);
+                $scope.timeline = new vis.Timeline(document.getElementById('evolution-timeline'), GeneticStatistics.getDataSet(), options);
 
                 window.clearInterval(interval);
 
@@ -124,7 +133,7 @@ gaps.controller('geneticstatisticscontroller', ['$rootScope', '$scope', 'Notific
                 var $path = geneticStatistics.selectedGeneration.bestChromosome.path;
                 $scope.selectPath(Graph.getNetwork(), $path);
             }
-
+            console.log(geneticStatistics.selectedGeneration.bestChromosome.path);
             $scope.$apply();
         };
 

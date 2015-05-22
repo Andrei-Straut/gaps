@@ -49,6 +49,7 @@ gaps.factory('GeneticStatistics', [function () {
             _geneticStatistics.generations = [];
             _geneticStatistics.bestPath = {};
             _geneticStatistics.costs = [];
+            dataSet.clear();
         };
 
         Service.add = function (geneticStatistic) {
