@@ -62,8 +62,9 @@ gaps.controller('geneticstatisticscontroller', ['$rootScope', '$scope', 'Notific
             }
             $($scope.sliderContainerId).css('width', 'auto');
             
-            if($scope.timeline && $scope.timeline !== null) {
+            if($scope.timeline && $scope.timeline !== null && $scope.timeline !== undefined) {
                 $scope.timeline.destroy();
+                $scope.timeline = null;
             }
 
             $scope.statisticsLoaded = false;
@@ -94,7 +95,7 @@ gaps.controller('geneticstatisticscontroller', ['$rootScope', '$scope', 'Notific
                     showCustomTime: false,
                     showMajorLabels: false,
                     min: -500,
-                    max: (geneticStatistics.evolutionStage * 3),
+                    start: -500,
                     zoomMin: 150,
                     zoomMax: (geneticStatistics.evolutionStage * 5)
                 };
