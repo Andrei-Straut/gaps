@@ -92,6 +92,7 @@ gaps.controller('geneticstatisticscontroller', ['$rootScope', '$scope', 'Notific
                     clickToUse: true,
                     showCurrentTime: false,
                     showCustomTime: false,
+                    showMajorLabels: false,
                     min: -500,
                     max: (geneticStatistics.evolutionStage * 10),
                     zoomMin: 150,
