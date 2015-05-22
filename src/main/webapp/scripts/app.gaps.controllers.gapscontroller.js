@@ -132,7 +132,7 @@ gaps.controller('gapscontroller', ['$rootScope', '$scope', 'Socket', 'PathStatis
                         $scope.load.wip = false;
                         $scope.load.wipType = '';
                         $rootScope.$broadcast('geneticDataLoaded', response.data);
-                        $scope.compare();
+                        //$scope.compare();
                     } else {
                         $scope.notifyError(response.description, $('#modalLoadingError'));
                     }

@@ -19,6 +19,19 @@
                                     Evolution steps
                                 </div>
                                 <div class="panel-body">
+                                    <div id="evolution-timeline"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="row">
+                        <div class="col-md-12 col-sm-12 col-xs-12">
+                            <div class="panel panel-default">
+                                <div class="panel-heading">
+                                    Evolution steps
+                                </div>
+                                <div class="panel-body">
                                     (Move slider to select generation or 
                                     <button id="genetic-statistics-path-reset" type="reset" class="btn btn-primary btn-sm"
                                             ng-click="resetPathSelection();">Reset Selection</button>)

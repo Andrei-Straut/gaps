@@ -76,8 +76,23 @@ gaps.controller('geneticstatisticscontroller', ['$rootScope', '$scope', 'Notific
 
                 $scope.evolutionChart.initialize($scope.costChartElementId,
                         geneticStatistics.generationChart);
+console.log(geneticStatistics);
+                var date = new Date();
+                var options = {
+                    height: '400px',
+                    editable: false,
+                    clickToUse: true,
+                    showCurrentTime: false,
+                    showCustomTime: false,
+                    min: -500,
+                    max: (geneticStatistics.evolutionStage * 10),
+                    zoomMin: 150,
+                    zoomMax: (geneticStatistics.evolutionStage * 5)
+                };
+                var timeline = new vis.Timeline(document.getElementById('evolution-timeline'), GeneticStatistics.getDataSet(), options);
+
                 window.clearInterval(interval);
-                
+
                 Notification.success({message: 'Evolved', delay: 2000});
             }, 1000);
 
@@ -143,16 +158,16 @@ gaps.controller('geneticstatisticscontroller', ['$rootScope', '$scope', 'Notific
             geneticStatistics.selectedGeneration = {};
             geneticStatistics.selectedGenerationIndex = 0;
         };
-        
-        $scope.getEvolutionStartTime = function() {
+
+        $scope.getEvolutionStartTime = function () {
             return GeneticStatistics.getEvolutionStartTime();
         };
-        
-        $scope.getEvolutionEndTime = function() {
+
+        $scope.getEvolutionEndTime = function () {
             return GeneticStatistics.getEvolutionEndTime();
         };
-        
-        $scope.getEvolutionDiffTime = function() {
+
+        $scope.getEvolutionDiffTime = function () {
             return GeneticStatistics.getEvolutionDiffTime();
         };
 

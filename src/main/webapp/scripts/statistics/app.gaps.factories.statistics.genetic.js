@@ -2,6 +2,7 @@
 
 gaps.factory('GeneticStatistics', [function () {
         var Service = {};
+        var dataSet = new vis.DataSet();
 
         // Genetic algorithm run statistics
         var _geneticStatistics = {
@@ -27,6 +28,10 @@ gaps.factory('GeneticStatistics', [function () {
 
         Service.setStatistics = function (geneticStatistics) {
             _geneticStatistics = geneticStatistics;
+        };
+
+        Service.getDataSet = function () {
+            return dataSet;
         };
 
         Service.reset = function () {
@@ -64,6 +69,14 @@ gaps.factory('GeneticStatistics', [function () {
                 }
             }
 
+            var dataPoint = {
+                id: (geneticStatistic.evolutionStage + geneticStatistic.timeStamp),
+                start: geneticStatistic.evolutionStage,
+                content: getDataPointContent(geneticStatistic),
+                path: geneticStatistic.bestChromosome.path
+            };
+            dataSet.add(dataPoint);
+            
             _geneticStatistics.generations.push(geneticStatistic);
 
             var generationDataChart = {};
@@ -110,6 +123,16 @@ gaps.factory('GeneticStatistics', [function () {
             } else {
                 return null;
             }
+        };
+        
+        var getDataPointContent = function(geneticStatistic) {
+            var content = '';
+            content = content + '<b>Generation: ' + geneticStatistic.evolutionStage + '</b><br/>';
+            content = content + 'Best cost: ' + geneticStatistic.endBestCost + '<br/>';
+            content = content + 'Average cost: ' + geneticStatistic.endAverageCost + '<br/>';
+            content = content + 'Time: ' + geneticStatistic.timeStamp;
+            
+            return content;
         };
 
         return Service;
