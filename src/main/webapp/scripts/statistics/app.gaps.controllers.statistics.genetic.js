@@ -76,8 +76,7 @@ gaps.controller('geneticstatisticscontroller', ['$rootScope', '$scope', 'Notific
 
                 $scope.evolutionChart.initialize($scope.costChartElementId,
                         geneticStatistics.generationChart);
-console.log(geneticStatistics);
-                var date = new Date();
+                        
                 var options = {
                     height: '400px',
                     editable: false,
