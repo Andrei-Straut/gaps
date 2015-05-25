@@ -151,7 +151,7 @@ gaps.controller('geneticstatisticscontroller', ['$rootScope', '$scope', 'Notific
                 var $path = geneticStatistics.selectedGeneration.bestChromosome.path;
                 $scope.selectPath(Graph.getNetwork(), $path);
             }
-            console.log(geneticStatistics.selectedGeneration.bestChromosome.path);
+            
             $scope.$apply();
         };
 

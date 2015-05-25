@@ -7,11 +7,10 @@ gaps.directive("infoCard", function () {
             infoData: '=',
             infoTitle: '@'
         },
-        templateUrl: 'scripts/templates/infoCardTemplate.jsp',
+        templateUrl: 'scripts/gaps/templates/infoCardTemplate.jsp',
         link: function (scope, element, attrs) {
 
-            scope.$watch(
-                    watchObject, handleUpdate, true);
+            scope.$watch(watchObject, handleUpdate, true);
 
             function watchObject() {
                 return scope.infoData;
