@@ -7,6 +7,7 @@ gaps.controller('graphstatisticscontroller', ['$rootScope', '$scope', 'Notificat
         $scope.statisticsDisplayed = true;
         $scope.dataToggleId = '#graph-statistics-viewer-toggle';
         $scope.dataTableId = '#graph-statistics-direct-edges';
+        $scope.statisticsInfoCardValue = [];
 
         $scope.getStatistics = function () {
             return GraphStatistics.getStatistics();
@@ -43,6 +44,8 @@ gaps.controller('graphstatisticscontroller', ['$rootScope', '$scope', 'Notificat
                 table.row.add([edgeValue.id, edgeValue.from, edgeValue.to, edgeValue.label]);
             });
             table.draw();
+            
+            $scope.statisticsInfoCardValue = $scope.buildInfoCardValue(GraphStatistics.getStatistics());
 
             var $graphStatisticsToggle = $($scope.dataToggleId).bootstrapToggle({
                 on: 'Visible',
@@ -52,6 +55,18 @@ gaps.controller('graphstatisticscontroller', ['$rootScope', '$scope', 'Notificat
                 $scope.hideView();
             });
             Notification.success({message: 'Loaded', delay: 2000});
+        };
+        
+        $scope.buildInfoCardValue = function($data) {
+            var value = [];
+            value.push({title: "Number of edges", value: $data.numberOfEdges});
+            value.push({title: "Total edge cost", value: $data.totalEdgeCost});
+            value.push({title: "Most expensive edge", value: $data.maximumEdgeCost});
+            value.push({title: "Cheapest edge", value: $data.minimumEdgeCost});
+            value.push({title: "Average edge cost", value: $data.averageEdgeCost});
+            value.push({title: "Average node connectivity", value: $data.averageEdgesPerNode});
+            
+           return value;
         };
 
         $scope.hideView = function () {

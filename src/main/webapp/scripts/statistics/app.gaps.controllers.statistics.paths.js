@@ -6,6 +6,7 @@ gaps.controller('pathsstatisticscontroller', ['$rootScope', '$scope', 'Notificat
         $scope.statisticsDisplayed = true;
         $scope.dataToggleId = '#path-statistics-viewer-toggle';
         $scope.dataTableId = '#graph-paths';
+        $scope.statisticsInfoCardValue = [];
 
         $scope.getStatistics = function () {
             return PathStatistics.getStatistics();
@@ -53,6 +54,8 @@ gaps.controller('pathsstatisticscontroller', ['$rootScope', '$scope', 'Notificat
 
         $scope.initView = function ($data) {
             var interval = window.setInterval(function () {
+                $scope.statisticsInfoCardValue = $scope.buildInfoCardValue(PathStatistics.getStatistics());
+                
                 var $pathStatisticsToggle = $($scope.dataToggleId).bootstrapToggle({
                     on: 'Visible',
                     off: 'Hidden'
@@ -74,6 +77,19 @@ gaps.controller('pathsstatisticscontroller', ['$rootScope', '$scope', 'Notificat
 
                 table.draw();
             }
+        };
+        
+        $scope.buildInfoCardValue = function($data) {
+            var value = [];
+            value.push({title: "Number of paths", value: $data.paths.length});
+            value.push({title: "Total path cost", value: $data.totalPathCost});
+            value.push({title: "Cheapest path cost", value: $data.cheapestPathCost});
+            value.push({title: "Cheapest path length", value: $data.cheapestPath.length});
+            value.push({title: "Most expensive path cost", value: $data.mostExpensivePathCost});
+            value.push({title: "Most expensive path length", value: $data.mostExpensivePath.length});
+            value.push({title: "Average path cost", value: $data.averagePathCost});
+            
+           return value;
         };
 
         $scope.hideView = function () {

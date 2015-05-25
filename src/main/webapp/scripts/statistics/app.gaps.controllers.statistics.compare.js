@@ -5,6 +5,7 @@ gaps.controller('comparestatisticscontroller', ['$rootScope', '$scope', 'Notific
 
         $scope.statisticsLoaded = false;
         $scope.statisticsDisplayed = true;
+        $scope.statisticsInfoCardValue = [];
 
         $scope.compareChartElementId = 'morris-bar-compare-chart';
 
@@ -67,6 +68,7 @@ gaps.controller('comparestatisticscontroller', ['$rootScope', '$scope', 'Notific
 
             var interval = window.setInterval(function () {
                 var compareStatistics = CompareStatistics.getStatistics();
+                $scope.statisticsInfoCardValue = $scope.buildInfoCardValue(compareStatistics);
                 $scope.$apply();
                 $scope.compareChart.initialize($scope.compareChartElementId, compareStatistics.compareChart);
                 window.clearInterval(interval);
@@ -80,6 +82,20 @@ gaps.controller('comparestatisticscontroller', ['$rootScope', '$scope', 'Notific
             $compareStatisticsToggle.change(function () {
                 $scope.hideView();
             });
+        };
+
+        $scope.buildInfoCardValue = function ($data) {
+            var value = [];
+            var winner = $scope.getWinner($data.chromosomes[0].cost, ($scope.getGeneticStatistics()).bestPathCost);
+            
+            value.push({title: "Best Path Cost", value: $data.chromosomes[0].cost});
+            value.push({title: "Best Path Fitness", value: $data.chromosomes[0].fitness});
+            value.push({title: "Winner", value: winner});
+            value.push({title: "Search Started", value: $scope.getCompareStartTime()});
+            value.push({title: "Search Finished", value: $scope.getCompareEndTime()});
+            value.push({title: "Total Time", value: $scope.getCompareDiffTime()});
+
+            return value;
         };
 
         $scope.hideView = function () {
@@ -98,6 +114,14 @@ gaps.controller('comparestatisticscontroller', ['$rootScope', '$scope', 'Notific
         $scope.getCompareDiffTime = function() {
             return CompareStatistics.getCompareDiffTime();
         };
+        
+        $scope.getWinner = function(jGraphTBestCost, gapsBestCost) {
+            if(jGraphTBestCost < gapsBestCost) {
+                return 'JGraphT';
+            }
+            
+            return 'GAPS';
+        };
 
         $scope.compareChart = {
             chart: function (element, data) {
@@ -113,8 +137,8 @@ gaps.controller('comparestatisticscontroller', ['$rootScope', '$scope', 'Notific
                     element: element,
                     data: data,
                     xkey: 'y',
-                    ykeys: ['GAPS', 'KShortest'],
-                    labels: ['GAPS', 'KShortest'],
+                    ykeys: ['GAPS', 'JGraphT'],
+                    labels: ['GAPS', 'JGraphT'],
                     hideHover: 'auto',
                     resize: true
                 });

@@ -79,24 +79,8 @@
                                 </div>
                             </div>                    
                         </div>
-
-                        <div class="col-md-3 col-sm-12 col-xs-12">
-                            <div class="panel panel-primary text-center no-boder bg-color-green">
-                                <div class="panel-footer back-footer-green">
-                                    Genetic Statistics: Best Path Values
-                                </div>
-                                <div class="panel-body">
-                                    <i class="fa fa-bar-chart-o fa-5x"></i>
-                                    <h3>Found in generation: {{(getStatistics()).evolutionStage}}</h3>
-                                    <h3>Cost: {{(getStatistics()).bestPathCost}}</h3>
-                                    <h3>Fitness: {{(getStatistics()).bestPathFitness}}</h3>
-                                    <h3>Path Length: {{(getStatistics()).bestPathEdgeNumber}}</h3>
-                                    <h3>Evolution Started: {{getEvolutionStartTime()}}</h3>
-                                    <h3>Evolution Finished: {{getEvolutionEndTime()}}</h3>
-                                    <h3>Total Time: {{getEvolutionDiffTime()}}</h3>
-                                </div>
-                            </div>                      
-                        </div>
+                        
+                        <div info-card info-title="Genetic Statistics: Best Path Values" info-data="statisticsInfoCardValue"></div>
                     </div>
                 </div>
             </div>        

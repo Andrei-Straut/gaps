@@ -24,28 +24,7 @@
                             </div>
                         </div>
 
-                        <div class="col-md-3 col-sm-12 col-xs-12">
-                            <div class="panel panel-primary text-center no-boder bg-color-green">
-                                <div class="panel-footer back-footer-green">
-                                    Results Comparison: JGraphT Values
-                                </div>
-                                <div class="panel-body">
-                                    <i class="fa fa-bar-chart-o fa-5x"></i>
-                                    <h3>Best Path Cost: {{(getStatistics()).chromosomes[0].cost}}</h3>
-                                    <h3>Best Path Fitness: {{(getStatistics()).chromosomes[0].fitness}}</h3>
-                                    <h3 
-                                        ng-if="(getStatistics()).chromosomes[0].cost < (getGeneticStatistics()).bestPathCost">
-                                        Winner: KShortest</h3>
-                                    <h3 
-                                        ng-if="(getStatistics().getCompareStatistics()).chromosomes[0].cost >= (getGeneticStatistics()).bestPathCost">
-                                        Winner: GAPS</h3>
-
-                                    <h3>Search Started: {{getCompareStartTime()}}</h3>
-                                    <h3>Search Finished: {{getCompareEndTime()}}</h3>
-                                    <h3>Total Time: {{getCompareDiffTime()}}</h3>
-                                </div>
-                            </div>                      
-                        </div>
+                        <div info-card info-title="Results Comparison: JGraphT Values" info-data="statisticsInfoCardValue"></div>
                     </div>            
                 </div>
             </div>

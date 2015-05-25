@@ -35,7 +35,7 @@ gaps.factory('CompareStatistics', ['GeneticStatistics', function (GeneticStatist
                 var resultsCompareChart = {};
                 resultsCompareChart.y = 'GAPS #' +
                         compChartLength +
-                        ', KShortest #' +
+                        ', JGraphT #' +
                         compChartLength;
 
                 if (genCostChartLength > compChartLength + 1) {
@@ -43,7 +43,7 @@ gaps.factory('CompareStatistics', ['GeneticStatistics', function (GeneticStatist
                 }
 
                 resultsCompareChart.GAPS = cost;
-                resultsCompareChart.KShortest = compareStatistic.cost;
+                resultsCompareChart.JGraphT = compareStatistic.cost;
 
                 _compareStatistics.compareChart.push(resultsCompareChart);
             }

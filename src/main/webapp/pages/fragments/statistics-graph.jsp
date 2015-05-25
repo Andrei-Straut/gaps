@@ -11,7 +11,8 @@
                     Graph Statistics
                 </div>
                 <div class="panel-body" ng-show="statisticsDisplayed">
-                    <div class="row">
+                    <div class="row">                        
+                        
                         <div class="col-md-9 col-sm-12 col-xs-12">
                             <div class="panel panel-default">
                                 <div class="panel-heading">
@@ -35,22 +36,8 @@
                                 </div>
                             </div>
                         </div>
-
-                        <div class="col-md-3 col-sm-12 col-xs-12">
-                            <div class="panel panel-primary text-center no-boder bg-color-green">
-                                <div class="panel-footer back-footer-green">
-                                    Graph Statistics: Edge Values
-                                </div>
-                                <div class="panel-body">
-                                    <i class="fa fa-bar-chart-o fa-5x"></i>
-                                    <h3>Number of edges: {{(getStatistics()).numberOfEdges}}</h3>
-                                    <h3>Total edge cost: {{(getStatistics()).totalEdgeCost}}</h3>
-                                    <h3>Most expensive edge: {{(getStatistics()).maximumEdgeCost}}</h3>
-                                    <h3>Average edge cost: {{(getStatistics()).averageEdgeCost}}</h3>
-                                    <h3>Average node connectivity: {{(getStatistics()).averageEdgesPerNode}}</h3>
-                                </div>
-                            </div>
-                        </div>
+                        
+                        <div info-card info-title="Graph Statistics: Edge Values" info-data="statisticsInfoCardValue"></div>
                     </div>
                 </div>
             </div>

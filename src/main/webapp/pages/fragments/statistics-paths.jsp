@@ -64,24 +64,8 @@
                                 </div>
                             </div>
                         </div>
-
-                        <div class="col-md-3 col-sm-12 col-xs-12">
-                            <div class="panel panel-primary text-center no-boder bg-color-green">
-                                <div class="panel-footer back-footer-green">
-                                    Path Statistics: Path Values
-                                </div>
-                                <div class="panel-body">
-                                    <i class="fa fa-bar-chart-o fa-5x"></i>
-                                    <h3>Number of paths: {{(getStatistics()).paths.length}}</h3>
-                                    <h3>Total path cost: {{(getStatistics()).totalPathCost}}</h3>
-                                    <h3>Most expensive path cost: {{(getStatistics()).mostExpensivePathCost}}</h3>
-                                    <h3>Most expensive path length: {{(getStatistics()).mostExpensivePath.length}}</h3>
-                                    <h3>Cheapest path cost: {{(getStatistics()).cheapestPathCost}}</h3>
-                                    <h3>Cheapest path length: {{(getStatistics()).cheapestPath.length}}</h3>
-                                    <h3>Average path cost: {{(getStatistics()).averagePathCost}}</h3>
-                                </div>
-                            </div>                      
-                        </div>
+                        
+                        <div info-card info-title="Path Statistics: Path Values" info-data="statisticsInfoCardValue"></div>
                     </div>
                 </div>
             </div>

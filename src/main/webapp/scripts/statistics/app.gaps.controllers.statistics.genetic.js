@@ -12,7 +12,8 @@ gaps.controller('geneticstatisticscontroller', ['$rootScope', '$scope', 'Notific
         $scope.sliderContainerId = '#div.slider.slider-horizontal';
         $scope.sliderId = '#generation-slider';
         $scope.timeline = null;
-        
+        $scope.statisticsInfoCardValue = [];
+
         $scope.getStatistics = function () {
             return GeneticStatistics.getStatistics();
         };
@@ -61,8 +62,8 @@ gaps.controller('geneticstatisticscontroller', ['$rootScope', '$scope', 'Notific
                 }
             }
             $($scope.sliderContainerId).css('width', 'auto');
-            
-            if($scope.timeline && $scope.timeline !== null && $scope.timeline !== undefined) {
+
+            if ($scope.timeline && $scope.timeline !== null && $scope.timeline !== undefined) {
                 $scope.timeline.destroy();
                 $scope.timeline = null;
             }
@@ -76,6 +77,8 @@ gaps.controller('geneticstatisticscontroller', ['$rootScope', '$scope', 'Notific
 
             var interval = window.setInterval(function () {
                 var geneticStatistics = GeneticStatistics.getStatistics();
+                $scope.statisticsInfoCardValue = $scope.buildInfoCardValue(geneticStatistics);
+
                 $scope.$apply();
 
                 var $slider = $($scope.sliderId).slider();
@@ -86,7 +89,7 @@ gaps.controller('geneticstatisticscontroller', ['$rootScope', '$scope', 'Notific
 
                 $scope.evolutionChart.initialize($scope.costChartElementId,
                         geneticStatistics.generationChart);
-                        
+
                 var options = {
                     height: '400px',
                     editable: false,
@@ -113,6 +116,19 @@ gaps.controller('geneticstatisticscontroller', ['$rootScope', '$scope', 'Notific
             $geneticStatisticsToggle.change(function () {
                 $scope.hideView();
             });
+        };
+
+        $scope.buildInfoCardValue = function ($data) {
+            var value = [];
+            value.push({title: "Found in generation", value: $data.evolutionStage});
+            value.push({title: "Cost", value: $data.bestPathCost});
+            value.push({title: "Fitness", value: $data.bestPathFitness});
+            value.push({title: "Path Length", value: $data.bestPathEdgeNumber});
+            value.push({title: "Evolution Started", value: $scope.getEvolutionStartTime()});
+            value.push({title: "Evolution Finished", value: $scope.getEvolutionEndTime()});
+            value.push({title: "Evolution Time", value: $scope.getEvolutionDiffTime()});
+
+            return value;
         };
 
         $scope.hideView = function () {
