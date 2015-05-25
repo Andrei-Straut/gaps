@@ -45,26 +45,26 @@
         <!-- MORRIS CHART SCRIPTS -->
         <script src="scripts/lib/morris/raphael-2.1.0.min.js"></script>
         <script src="scripts/lib/morris/morris.js"></script>
-        <!-- CUSTOM SCRIPTS -->
-        <script src="scripts/app.js"></script>
-        <script src="scripts/app.gaps.js"></script>
+        <!-- GAPS SCRIPTS -->
+        <script src="scripts/gaps/app.js"></script>
+        <script src="scripts/gaps/app.gaps.js"></script>
 
-        <script src="scripts/directives/app.gaps.directives.formvalidation.js"></script>
-        <script src="scripts/directives/app.gaps.directives.infocard.js"></script>
+        <script src="scripts/gaps/directives/app.gaps.directives.formvalidation.js"></script>
+        <script src="scripts/gaps/directives/app.gaps.directives.infocard.js"></script>
         
-        <script src="scripts/app.gaps.factories.websocket.js"></script>
-        <script src="scripts/app.gaps.factories.graph.js"></script>
+        <script src="scripts/gaps/app.gaps.factories.websocket.js"></script>
+        <script src="scripts/gaps/app.gaps.factories.graph.js"></script>
 
-        <script src="scripts/statistics/app.gaps.factories.statistics.graph.js"></script>
-        <script src="scripts/statistics/app.gaps.factories.statistics.paths.js"></script>
-        <script src="scripts/statistics/app.gaps.factories.statistics.genetic.js"></script>
-        <script src="scripts/statistics/app.gaps.factories.statistics.compare.js"></script>
+        <script src="scripts/gaps/statistics/app.gaps.factories.statistics.graph.js"></script>
+        <script src="scripts/gaps/statistics/app.gaps.factories.statistics.paths.js"></script>
+        <script src="scripts/gaps/statistics/app.gaps.factories.statistics.genetic.js"></script>
+        <script src="scripts/gaps/statistics/app.gaps.factories.statistics.compare.js"></script>
         
-        <script src="scripts/statistics/app.gaps.controllers.statistics.graph.js"></script>
-        <script src="scripts/statistics/app.gaps.controllers.statistics.paths.js"></script>
-        <script src="scripts/statistics/app.gaps.controllers.statistics.genetic.js"></script>
-        <script src="scripts/statistics/app.gaps.controllers.statistics.compare.js"></script>
-        <script src="scripts/app.gaps.controllers.gapscontroller.js"></script>
+        <script src="scripts/gaps/statistics/app.gaps.controllers.statistics.graph.js"></script>
+        <script src="scripts/gaps/statistics/app.gaps.controllers.statistics.paths.js"></script>
+        <script src="scripts/gaps/statistics/app.gaps.controllers.statistics.genetic.js"></script>
+        <script src="scripts/gaps/statistics/app.gaps.controllers.statistics.compare.js"></script>
+        <script src="scripts/gaps/app.gaps.controllers.gapscontroller.js"></script>
 
     </head>
     <body>
