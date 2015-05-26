@@ -20,6 +20,9 @@ gaps.controller('geneticstatisticscontroller', ['$rootScope', '$scope', 'Notific
             showCurrentTime: false,
             showCustomTime: false,
             showMajorLabels: false,
+            shaded: {
+                orientation: 'bottom'
+            },
             min: -500,
             start: -500,
             zoomMin: 150,
