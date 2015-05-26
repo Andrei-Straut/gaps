@@ -9,6 +9,7 @@ import java.util.Date;
 public class GenerationStatistic {
     private final int evolutionStage;
     private final Date timeStamp;
+    private final long timeStampRaw;
     
     private int startPopulationSize;
     private int startBestFitness;
@@ -28,6 +29,7 @@ public class GenerationStatistic {
     public GenerationStatistic(int evolutionStage, Date timeStamp) {
 	this.evolutionStage = evolutionStage;
 	this.timeStamp = timeStamp;
+        this.timeStampRaw = timeStamp.getTime();
     }
 
     public int getEvolutionStage() {
@@ -152,6 +154,7 @@ public class GenerationStatistic {
 	
 	jsonStatistic.addProperty("evolutionStage", this.evolutionStage);
 	jsonStatistic.addProperty("timeStamp", formatter.format(this.timeStamp));
+	jsonStatistic.addProperty("timeStampRaw", this.timeStampRaw);
 	jsonStatistic.addProperty("startPopulationSize", this.startPopulationSize);
 	jsonStatistic.addProperty("endPopulationSize", this.endPopulationSize);
 	

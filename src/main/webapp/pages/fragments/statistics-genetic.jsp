@@ -59,7 +59,7 @@
                         <div class="col-md-12 col-sm-12 col-xs-12">
                             <div class="panel panel-default">
                                 <div class="panel-heading">
-                                    Evolution steps
+                                    Evolution steps (Click on item to select generation)
                                 </div>
                                 <div class="panel-body">
                                     <div id="evolution-timeline"></div>

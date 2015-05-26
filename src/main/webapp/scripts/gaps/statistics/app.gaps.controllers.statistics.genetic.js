@@ -19,10 +19,7 @@ gaps.controller('geneticstatisticscontroller', ['$rootScope', '$scope', 'Notific
             clickToUse: true,
             showCurrentTime: false,
             showCustomTime: false,
-            showMajorLabels: false,
-            shaded: {
-                orientation: 'bottom'
-            },
+            showMajorLabels: true,
             min: -500,
             start: -500,
             zoomMin: 150,
@@ -38,6 +35,9 @@ gaps.controller('geneticstatisticscontroller', ['$rootScope', '$scope', 'Notific
             showCurrentTime: false,
             showCustomTime: false,
             showMajorLabels: false,
+            shaded: {
+                orientation: 'bottom'
+            },
             min: 0,
             max: 1000,
             start: 0,
@@ -118,16 +118,38 @@ gaps.controller('geneticstatisticscontroller', ['$rootScope', '$scope', 'Notific
                 $scope.$apply();
 
                 var $slider = $($scope.sliderId).slider();
-                $slider.on('slideStop', function (ev) {
+                $slider.on('slide', function (ev) {
                     $scope.sliderEvent(ev);
                 });
                 $slider.slider('setValue', 0);
 
-                $scope.evolutionTimelineOptions.zoomMax = (geneticStatistics.evolutionStage * 5);
+                $scope.evolutionTimelineOptions.start = geneticStatistics.startTimestamp;
+                $scope.evolutionTimelineOptions.end = geneticStatistics.endTimestamp + (1000 * 10);
+                $scope.evolutionTimelineOptions.min = geneticStatistics.startTimestamp;
+                $scope.evolutionTimelineOptions.max = geneticStatistics.endTimestamp + (1000 * 10);
+                $scope.evolutionTimelineOptions.zoomMin = 100;
+                $scope.evolutionTimelineOptions.zoomMax = 1000 * 60 * 60;
                 $scope.evolutionTimeline = new vis.Timeline(
                         document.getElementById($scope.evolutionTimelineChartId),
                         GeneticStatistics.getEvolutionDataSet(),
                         $scope.evolutionTimelineOptions);
+                        
+                $scope.evolutionTimeline.on('select', function (properties) {
+                    if (properties.items && properties.items[0]) {
+                        var selectedChromosome = GeneticStatistics.getEvolutionDataSet()
+                                .get(properties.items[0]);
+                        if (selectedChromosome && selectedChromosome.path) {
+                            var index = 0;
+                            for(index = 0; index < GeneticStatistics.getEvolutionDataSet().length; index++) {
+                                if((GeneticStatistics.getEvolutionDataSet().get())[index].id === 
+                                        selectedChromosome.id) {
+                                    break;
+                                }
+                            }
+                            $scope.selectGeneration(index);
+                        }
+                    }
+                });
 
                 $scope.costChartOptions.max = geneticStatistics.evolutionStage + 1000;
                 $scope.costChartOptions.end = geneticStatistics.evolutionStage + 1000;
@@ -170,10 +192,13 @@ gaps.controller('geneticstatisticscontroller', ['$rootScope', '$scope', 'Notific
         };
 
         $scope.sliderEvent = function (event) {
+            $scope.selectGeneration(event.value);
+        };
+        $scope.selectGeneration = function(generationIndex) {
             var geneticStatistics = GeneticStatistics.getStatistics();
 
-            geneticStatistics.selectedGenerationIndex = event.value;
-            if (geneticStatistics.generations[event.value]) {
+            geneticStatistics.selectedGenerationIndex = generationIndex;
+            if (geneticStatistics.generations[generationIndex]) {
                 geneticStatistics.selectedGeneration =
                         geneticStatistics.generations[
                                 geneticStatistics.selectedGenerationIndex];
@@ -185,9 +210,8 @@ gaps.controller('geneticstatisticscontroller', ['$rootScope', '$scope', 'Notific
                 $scope.selectPath(Graph.getNetwork(), $path);
             }
 
-            $scope.$apply();
+            $scope.$apply();            
         };
-
         $scope.selectPath = function (graph, path) {
             var nodeSelectionArray = [];
             var edgeSelectionArray = [];

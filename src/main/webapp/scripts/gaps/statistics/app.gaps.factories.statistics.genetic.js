@@ -69,7 +69,7 @@ gaps.factory('GeneticStatistics', [function () {
 
             var evolutionDataPoint = {
                 id: (geneticStatistic.evolutionStage + geneticStatistic.timeStamp),
-                start: geneticStatistic.evolutionStage,
+                start: geneticStatistic.timeStampRaw,
                 content: getDataPointContent(geneticStatistic),
                 path: geneticStatistic.bestChromosome.path
             };
@@ -128,7 +128,7 @@ gaps.factory('GeneticStatistics', [function () {
         
         var getDataPointContent = function(geneticStatistic) {
             var content = '';
-            content = content + '<b>Gen: ' + geneticStatistic.evolutionStage + '</b><br/>';
+            content = content + '<b>' + geneticStatistic.evolutionStage + '</b><br/>';
             content = content + 'Cost: ' + geneticStatistic.endBestCost/* + '<br/>';
             content = content + 'Average cost: ' + geneticStatistic.endAverageCost + '<br/>';
             content = content + 'Time: ' + geneticStatistic.timeStamp*/;
