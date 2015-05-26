@@ -7,9 +7,30 @@ gaps.controller('comparestatisticscontroller', ['$rootScope', '$scope', 'Notific
         $scope.statisticsDisplayed = true;
         $scope.statisticsInfoCardValue = [];
 
-        $scope.compareChartElementId = 'morris-bar-compare-chart';
-
         $scope.dataToggleId = '#compare-statistics-viewer-toggle';
+        $scope.compareChartElementId = 'compare-timeline';
+        $scope.compareChart = null;
+        $scope.compareChartOptions = {
+            height: '400px',
+            editable: false,
+            clickToUse: true,
+            showCurrentTime: false,
+            showCustomTime: false,
+            showMajorLabels: false,
+            style: 'bar',
+            stack: false,
+            legend: true,
+            barChart: {
+                sideBySide: true
+            },
+            drawPoints: true,
+            min: -1,
+            max: 2,
+            start: -1,
+            end: 2,
+            zoomMin: 2,
+            zoomMax: 2
+        };
 
         $scope.getStatistics = function () {
             return CompareStatistics.getStatistics();
@@ -57,7 +78,10 @@ gaps.controller('comparestatisticscontroller', ['$rootScope', '$scope', 'Notific
             var table = $($scope.dataTableId).DataTable();
             table.clear();
 
-            $scope.compareChart.clear($scope.compareChartElementId);
+            if ($scope.compareChart && $scope.compareChart !== null && $scope.compareChart !== undefined) {
+                $scope.compareChart.destroy();
+                $scope.compareChart = null;
+            }
 
             $scope.statisticsLoaded = false;
             $scope.statisticsDisplayed = false;
@@ -70,7 +94,17 @@ gaps.controller('comparestatisticscontroller', ['$rootScope', '$scope', 'Notific
                 var compareStatistics = CompareStatistics.getStatistics();
                 $scope.statisticsInfoCardValue = $scope.buildInfoCardValue(compareStatistics);
                 $scope.$apply();
-                $scope.compareChart.initialize($scope.compareChartElementId, compareStatistics.compareChart);
+
+                $scope.compareChartOptions.max = (CompareStatistics.getDataSet().length / 2);
+                $scope.compareChartOptions.end = (CompareStatistics.getDataSet().length / 2);
+                $scope.compareChartOptions.zoomMin = (CompareStatistics.getDataSet().length / 2);
+                $scope.compareChartOptions.zoomMax = (CompareStatistics.getDataSet().length / 2);
+                $scope.compareChart = new vis.Graph2d(
+                        document.getElementById($scope.compareChartElementId),
+                        CompareStatistics.getDataSet().get(),
+                        CompareStatistics.getDataSetGroups(),
+                        $scope.compareChartOptions);
+
                 window.clearInterval(interval);
 
                 Notification.success({message: 'Done', delay: 2000});
@@ -87,7 +121,7 @@ gaps.controller('comparestatisticscontroller', ['$rootScope', '$scope', 'Notific
         $scope.buildInfoCardValue = function ($data) {
             var value = [];
             var winner = $scope.getWinner($data.chromosomes[0].cost, ($scope.getGeneticStatistics()).bestPathCost);
-            
+
             value.push({title: "Best Path Cost", value: $data.chromosomes[0].cost});
             value.push({title: "Best Path Fitness", value: $data.chromosomes[0].fitness});
             value.push({title: "Winner", value: winner});
@@ -102,64 +136,25 @@ gaps.controller('comparestatisticscontroller', ['$rootScope', '$scope', 'Notific
             $scope.statisticsDisplayed = $($scope.dataToggleId).prop('checked');
             $scope.$apply();
         };
-        
-        $scope.getCompareStartTime = function() {
+
+        $scope.getCompareStartTime = function () {
             return CompareStatistics.getCompareStartTime();
         };
-        
-        $scope.getCompareEndTime = function() {
+
+        $scope.getCompareEndTime = function () {
             return CompareStatistics.getCompareEndTime();
         };
-        
-        $scope.getCompareDiffTime = function() {
+
+        $scope.getCompareDiffTime = function () {
             return CompareStatistics.getCompareDiffTime();
         };
-        
-        $scope.getWinner = function(jGraphTBestCost, gapsBestCost) {
-            if(jGraphTBestCost < gapsBestCost) {
+
+        $scope.getWinner = function (jGraphTBestCost, gapsBestCost) {
+            if (jGraphTBestCost < gapsBestCost) {
                 return 'JGraphT';
             }
-            
+
             return 'GAPS';
-        };
-
-        $scope.compareChart = {
-            chart: function (element, data) {
-                jQuery('#main-menu').metisMenu();
-                jQuery(window).bind("load resize", function () {
-                    if (jQuery(this).width() < 768) {
-                        jQuery('div.sidebar-collapse').addClass('collapse');
-                    } else {
-                        jQuery('div.sidebar-collapse').removeClass('collapse');
-                    }
-                });
-                Morris.Bar({
-                    element: element,
-                    data: data,
-                    xkey: 'y',
-                    ykeys: ['GAPS', 'JGraphT'],
-                    labels: ['GAPS', 'JGraphT'],
-                    hideHover: 'auto',
-                    resize: true
-                });
-            },
-            initialize: function (element, data) {
-                $scope.compareChart.chart(element, data);
-            },
-            clear: function (elementId) {
-                var chartWrapper = $('#' + elementId);
-
-                if (chartWrapper && chartWrapper[0]) {
-                    chartWrapper = chartWrapper[0];
-                }
-
-                if (chartWrapper && chartWrapper.firstChild) {
-                    while (chartWrapper.firstChild) {
-                        chartWrapper.removeChild(chartWrapper.firstChild);
-                    }
-                }
-                $(chartWrapper).css('height', 'auto');
-            }
         };
     }]);
 

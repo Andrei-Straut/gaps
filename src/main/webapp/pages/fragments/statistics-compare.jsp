@@ -12,14 +12,14 @@
                     Results Comparison
                 </div>
                 <div class="panel-body" ng-show="statisticsDisplayed">
-                    <div class="row">
+                    <div class="row">                        
                         <div class="col-md-9 col-sm-12 col-xs-12">
                             <div class="panel panel-default">
                                 <div class="panel-heading">
-                                    Best Values
+                                    Best Values (Costs, lower values are better)
                                 </div>
                                 <div class="panel-body">
-                                    <div id="morris-bar-compare-chart" style="height: 250px;"></div> 
+                                    <div id="compare-timeline"></div>
                                 </div>
                             </div>
                         </div>

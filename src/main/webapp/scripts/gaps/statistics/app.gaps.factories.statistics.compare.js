@@ -4,12 +4,17 @@
 gaps.factory('CompareStatistics', ['GeneticStatistics', function (GeneticStatistics) {
         var Service = {};
 
+        var _compareDataSet = new vis.DataSet();
+
+        var _compareDataSetGroups = new vis.DataSet();
+        _compareDataSetGroups.add({id: 0, content: "GAPS"});
+        _compareDataSetGroups.add({id: 1, content: "JGraphT"});
+
         // JGraphT KShortestPath comparison
         var _compareStatistics = {
             startTimestamp: {},
             endTimestamp: {},
             compareDiffTimestamp: {},
-            compareChart: [],
             chromosomes: []
         };
 
@@ -25,27 +30,43 @@ gaps.factory('CompareStatistics', ['GeneticStatistics', function (GeneticStatist
             _compareStatistics = compareStatistics;
         };
 
+        Service.getDataSet = function () {
+            return _compareDataSet;
+        };
+
+        Service.getDataSetGroups = function () {
+            return _compareDataSetGroups;
+        };
+
         Service.add = function (compareStatistic) {
             if (compareStatistic) {
                 _compareStatistics.chromosomes.push(compareStatistic);
-                var compChartLength = _compareStatistics.compareChart.length;
-                var genCostChartLength = GeneticStatistics.getStatistics().costs.length;
+                var xPoint = _compareDataSet.length / 2;
+                var costs = GeneticStatistics.getCostsDataSet().distinct('y');
                 var cost = GeneticStatistics.getStatistics().bestPathCost;
 
-                var resultsCompareChart = {};
-                resultsCompareChart.y = 'GAPS #' +
-                        compChartLength +
-                        ', JGraphT #' +
-                        compChartLength;
-
-                if (genCostChartLength > compChartLength + 1) {
-                    cost = GeneticStatistics.getStatistics().costs[genCostChartLength - (compChartLength + 1)];
+                if (costs.length > xPoint) {
+                    cost = costs[costs.length - (xPoint + 1)];
                 }
 
-                resultsCompareChart.GAPS = cost;
-                resultsCompareChart.JGraphT = compareStatistic.cost;
-
-                _compareStatistics.compareChart.push(resultsCompareChart);
+                var compareDataPointGaps = {
+                    x: xPoint,
+                    y: cost,
+                    group: 0,
+                    label: {
+                        content: 'GAPS: ' + cost
+                    }
+                };
+                var compareDataPointJGraphT = {
+                    x: xPoint,
+                    y: compareStatistic.cost,
+                    group: 1,
+                    label: {
+                        content: 'JGraphT: ' + compareStatistic.cost
+                    }
+                };
+                _compareDataSet.add(compareDataPointGaps);
+                _compareDataSet.add(compareDataPointJGraphT);
             }
         };
 
@@ -53,8 +74,8 @@ gaps.factory('CompareStatistics', ['GeneticStatistics', function (GeneticStatist
             _compareStatistics.startTimestamp = {};
             _compareStatistics.endTimestamp = {};
             _compareStatistics.compareDiffTimestamp = {};
-            _compareStatistics.compareChart = [];
             _compareStatistics.chromosomes = [];
+            _compareDataSet.clear();
         };
 
         Service.markCompareStart = function () {
@@ -65,19 +86,19 @@ gaps.factory('CompareStatistics', ['GeneticStatistics', function (GeneticStatist
             _compareStatistics.endTimestamp = new Date();
             _compareStatistics.compareDiffTimestamp = _compareStatistics.endTimestamp - _compareStatistics.startTimestamp;
         };
-        
-        Service.getCompareStartTime = function() {
+
+        Service.getCompareStartTime = function () {
             return convertTime(_compareStatistics.startTimestamp);
         };
-        
-        Service.getCompareEndTime = function() {
+
+        Service.getCompareEndTime = function () {
             return convertTime(_compareStatistics.endTimestamp);
         };
-        
-        Service.getCompareDiffTime = function() {
+
+        Service.getCompareDiffTime = function () {
             return convertTime(_compareStatistics.endTimestamp - _compareStatistics.startTimestamp);
         };
-        
+
         var convertTime = function (timestamp) {
             if (timestamp !== undefined && timestamp !== null && timestamp != 'null') {
                 var a = new Date(timestamp * 1);

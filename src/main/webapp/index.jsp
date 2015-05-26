@@ -19,8 +19,6 @@
         <!-- FONTAWESOME STYLES-->
         <link href="styles/lib/font-awesome/font-awesome.css" rel="stylesheet" />
         <link href="styles/lib/vis/vis.css" rel="stylesheet" />
-        <!-- MORRIS CHART STYLES-->
-        <link href="styles/lib/morris/morris-0.4.3.min.css" rel="stylesheet" />
         <!-- GOOGLE FONTS-->
         <link href='http://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css' />
         <!-- CUSTOM STYLES-->
@@ -42,9 +40,6 @@
         <script src="scripts/lib/angular/angular.draganddrop.js"></script>
         <!-- VIS SCRIPTS -->
         <script src="scripts/lib/vis/vis.js"></script>
-        <!-- MORRIS CHART SCRIPTS -->
-        <script src="scripts/lib/morris/raphael-2.1.0.min.js"></script>
-        <script src="scripts/lib/morris/morris.js"></script>
         <!-- GAPS SCRIPTS -->
         <script src="scripts/gaps/app.js"></script>
         <script src="scripts/gaps/app.gaps.js"></script>

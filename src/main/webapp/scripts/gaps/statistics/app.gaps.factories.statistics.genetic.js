@@ -2,7 +2,8 @@
 
 gaps.factory('GeneticStatistics', [function () {
         var Service = {};
-        var dataSet = new vis.DataSet();
+        var _evolutionDataSet = new vis.DataSet();
+        var _costsDataSet = new vis.DataSet();
 
         // Genetic algorithm run statistics
         var _geneticStatistics = {
@@ -17,9 +18,7 @@ gaps.factory('GeneticStatistics', [function () {
             endTimestamp: {},
             evolutionDiffTimestamp: {},
             bestPath: {},
-            generationChart: [],
-            generations: [],
-            costs: []
+            generations: []
         };
 
         Service.getStatistics = function () {
@@ -30,8 +29,12 @@ gaps.factory('GeneticStatistics', [function () {
             _geneticStatistics = geneticStatistics;
         };
 
-        Service.getDataSet = function () {
-            return dataSet;
+        Service.getEvolutionDataSet = function () {
+            return _evolutionDataSet;
+        };
+
+        Service.getCostsDataSet = function () {
+            return _costsDataSet;
         };
 
         Service.reset = function () {
@@ -45,11 +48,10 @@ gaps.factory('GeneticStatistics', [function () {
             _geneticStatistics.startTimestamp = {};
             _geneticStatistics.endTimestamp = {};
             _geneticStatistics.evolutionDiffTimestamp = {};
-            _geneticStatistics.generationChart = [];
             _geneticStatistics.generations = [];
             _geneticStatistics.bestPath = {};
-            _geneticStatistics.costs = [];
-            dataSet.clear();
+            _evolutionDataSet.clear();
+            _costsDataSet.clear();
         };
 
         Service.add = function (geneticStatistic) {
@@ -61,30 +63,28 @@ gaps.factory('GeneticStatistics', [function () {
                     _geneticStatistics.bestPathEdgeNumber = geneticStatistic.bestChromosome.path.length;
                     _geneticStatistics.bestPathCost = geneticStatistic.bestChromosome.cost;
 
-                    if (_geneticStatistics.costs.length === 0 ||
-                            _geneticStatistics.costs[_geneticStatistics.costs.length - 1] !== geneticStatistic.bestChromosome.cost) {
-                        _geneticStatistics.costs.push(geneticStatistic.bestChromosome.cost);
-                    }
-
                     _geneticStatistics.bestPathFitness = geneticStatistic.bestChromosome.fitness;
                 }
             }
 
-            var dataPoint = {
+            var evolutionDataPoint = {
                 id: (geneticStatistic.evolutionStage + geneticStatistic.timeStamp),
                 start: geneticStatistic.evolutionStage,
                 content: getDataPointContent(geneticStatistic),
                 path: geneticStatistic.bestChromosome.path
             };
-            dataSet.add(dataPoint);
+            _evolutionDataSet.add(evolutionDataPoint);
+            
+            var costDataPoint = {
+                x: (geneticStatistic.evolutionStage),
+                y: _geneticStatistics.bestPath.cost,
+                label: {
+                    content: _geneticStatistics.bestPath.cost
+                }
+            };
+            _costsDataSet.add(costDataPoint);
             
             _geneticStatistics.generations.push(geneticStatistic);
-
-            var generationDataChart = {};
-            generationDataChart.y = 'Gen ' + geneticStatistic.evolutionStage;
-            generationDataChart.a = geneticStatistic.endBestCost;
-
-            _geneticStatistics.generationChart.push(generationDataChart);
         };
 
         Service.markEvolutionStart = function () {

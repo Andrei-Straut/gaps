@@ -72,12 +72,12 @@
                         <div class="col-md-9 col-sm-12 col-xs-12">
                             <div class="panel panel-default">
                                 <div class="panel-heading">
-                                    Genetic Evolution (Costs)
+                                    Genetic Evolution (Costs, lower values are better)
                                 </div>
                                 <div class="panel-body">
-                                    <div id="morris-bar-cost-chart" style="height: 250px;"></div> 
+                                    <div id="costs-timeline"></div>
                                 </div>
-                            </div>                    
+                            </div>
                         </div>
                         
                         <div info-card info-title="Genetic Statistics: Best Path Values" info-data="statisticsInfoCardValue"></div>

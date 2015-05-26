@@ -6,13 +6,42 @@ gaps.controller('geneticstatisticscontroller', ['$rootScope', '$scope', 'Notific
         $scope.statisticsLoaded = false;
         $scope.statisticsDisplayed = true;
 
-        $scope.costChartElementId = 'morris-bar-cost-chart';
-
         $scope.dataToggleId = '#genetic-statistics-viewer-toggle';
         $scope.sliderContainerId = '#div.slider.slider-horizontal';
         $scope.sliderId = '#generation-slider';
-        $scope.timeline = null;
         $scope.statisticsInfoCardValue = [];
+
+        $scope.evolutionTimelineChartId = 'evolution-timeline';
+        $scope.evolutionTimeline = null;
+        $scope.evolutionTimelineOptions = {
+            height: '400px',
+            editable: false,
+            clickToUse: true,
+            showCurrentTime: false,
+            showCustomTime: false,
+            showMajorLabels: false,
+            min: -500,
+            start: -500,
+            zoomMin: 150,
+            zoomMax: 5
+        };
+
+        $scope.costChartElementId = 'costs-timeline';
+        $scope.costChart = null;
+        $scope.costChartOptions = {
+            height: '400px',
+            editable: false,
+            clickToUse: true,
+            showCurrentTime: false,
+            showCustomTime: false,
+            showMajorLabels: false,
+            min: 0,
+            max: 1000,
+            start: 0,
+            end: 1000,
+            zoomMin: 150,
+            zoomMax: 1000
+        };
 
         $scope.getStatistics = function () {
             return GeneticStatistics.getStatistics();
@@ -52,7 +81,6 @@ gaps.controller('geneticstatisticscontroller', ['$rootScope', '$scope', 'Notific
         };
 
         $scope.resetView = function () {
-            $scope.evolutionChart.clear($scope.costChartElementId);
             var $slider = $($scope.sliderContainerId);
 
             if ($slider && $slider.parentElement) {
@@ -63,9 +91,14 @@ gaps.controller('geneticstatisticscontroller', ['$rootScope', '$scope', 'Notific
             }
             $($scope.sliderContainerId).css('width', 'auto');
 
-            if ($scope.timeline && $scope.timeline !== null && $scope.timeline !== undefined) {
-                $scope.timeline.destroy();
-                $scope.timeline = null;
+            if ($scope.evolutionTimeline && $scope.evolutionTimeline !== null && $scope.evolutionTimeline !== undefined) {
+                $scope.evolutionTimeline.destroy();
+                $scope.evolutionTimeline = null;
+            }
+
+            if ($scope.costChart && $scope.costChart !== null && $scope.costChart !== undefined) {
+                $scope.costChart.destroy();
+                $scope.costChart = null;
             }
 
             $scope.statisticsLoaded = false;
@@ -87,22 +120,19 @@ gaps.controller('geneticstatisticscontroller', ['$rootScope', '$scope', 'Notific
                 });
                 $slider.slider('setValue', 0);
 
-                $scope.evolutionChart.initialize($scope.costChartElementId,
-                        geneticStatistics.generationChart);
+                $scope.evolutionTimelineOptions.zoomMax = (geneticStatistics.evolutionStage * 5);
+                $scope.evolutionTimeline = new vis.Timeline(
+                        document.getElementById($scope.evolutionTimelineChartId),
+                        GeneticStatistics.getEvolutionDataSet(),
+                        $scope.evolutionTimelineOptions);
 
-                var options = {
-                    height: '400px',
-                    editable: false,
-                    clickToUse: true,
-                    showCurrentTime: false,
-                    showCustomTime: false,
-                    showMajorLabels: false,
-                    min: -500,
-                    start: -500,
-                    zoomMin: 150,
-                    zoomMax: (geneticStatistics.evolutionStage * 5)
-                };
-                $scope.timeline = new vis.Timeline(document.getElementById('evolution-timeline'), GeneticStatistics.getDataSet(), options);
+                $scope.costChartOptions.max = geneticStatistics.evolutionStage + 1000;
+                $scope.costChartOptions.end = geneticStatistics.evolutionStage + 1000;
+                $scope.costChartOptions.zoomMax = geneticStatistics.evolutionStage + 1000;
+                $scope.costChart = new vis.Graph2d(document.getElementById(
+                        $scope.costChartElementId),
+                        GeneticStatistics.getCostsDataSet(),
+                        $scope.costChartOptions);
 
                 window.clearInterval(interval);
 
@@ -151,7 +181,7 @@ gaps.controller('geneticstatisticscontroller', ['$rootScope', '$scope', 'Notific
                 var $path = geneticStatistics.selectedGeneration.bestChromosome.path;
                 $scope.selectPath(Graph.getNetwork(), $path);
             }
-            
+
             $scope.$apply();
         };
 
@@ -195,44 +225,5 @@ gaps.controller('geneticstatisticscontroller', ['$rootScope', '$scope', 'Notific
 
         $scope.getEvolutionDiffTime = function () {
             return GeneticStatistics.getEvolutionDiffTime();
-        };
-
-        $scope.evolutionChart = {
-            chart: function (element, data) {
-                jQuery('#main-menu').metisMenu();
-                jQuery(window).bind("load resize", function () {
-                    if (jQuery(this).width() < 768) {
-                        jQuery('div.sidebar-collapse').addClass('collapse');
-                    } else {
-                        jQuery('div.sidebar-collapse').removeClass('collapse');
-                    }
-                });
-                Morris.Bar({
-                    element: element,
-                    data: data,
-                    xkey: 'y',
-                    ykeys: ['a'],
-                    labels: ['Best Chromosome'],
-                    hideHover: 'auto',
-                    resize: true
-                });
-            },
-            initialize: function (element, data) {
-                $scope.evolutionChart.chart(element, data);
-            },
-            clear: function (elementId) {
-                var chartWrapper = $('#' + elementId);
-
-                if (chartWrapper && chartWrapper[0]) {
-                    chartWrapper = chartWrapper[0];
-                }
-
-                if (chartWrapper && chartWrapper.firstChild) {
-                    while (chartWrapper.firstChild) {
-                        chartWrapper.removeChild(chartWrapper.firstChild);
-                    }
-                }
-                $(chartWrapper).css('height', 'auto');
-            }
         };
     }]);
