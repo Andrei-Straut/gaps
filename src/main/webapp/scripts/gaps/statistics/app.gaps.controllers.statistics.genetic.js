@@ -148,6 +148,9 @@ gaps.controller('geneticstatisticscontroller', ['$rootScope', '$scope', 'Notific
                                 }
                             }
                             $scope.selectGeneration(index);
+
+                            var $slider = $($scope.sliderId).slider();
+                            $slider.slider('setValue', index);
                         }
                     }
                 });
@@ -198,8 +201,8 @@ gaps.controller('geneticstatisticscontroller', ['$rootScope', '$scope', 'Notific
         $scope.selectGapsBest = function () {
             var generations = GeneticStatistics.getGenerations();
             var generationIndex = 0;
-            
-            if(generations != null && generations.length > 0) {
+
+            if (generations != null && generations.length > 0) {
                 generationIndex = generations.length - 1;
             }
 
@@ -211,7 +214,7 @@ gaps.controller('geneticstatisticscontroller', ['$rootScope', '$scope', 'Notific
         $scope.selectJgraphtBest = function () {
             var compareStatistics = CompareStatistics.getStatistics();
             var generationIndex = 0;
-            
+
             if (Graph.getNetwork() && compareStatistics.chromosomes && compareStatistics.chromosomes.length > 0) {
                 generationIndex = compareStatistics.chromosomes.length - 1;
 
@@ -238,6 +241,15 @@ gaps.controller('geneticstatisticscontroller', ['$rootScope', '$scope', 'Notific
 
             if (!skipApply || !skipApply == true) {
                 $scope.$apply();
+            }
+
+            if ($scope.evolutionTimeline && $scope.evolutionTimeline !== null && $scope.evolutionTimeline !== undefined) {
+                var dataSetItems = GeneticStatistics.getEvolutionDataSet().get();
+                var selectedItem = dataSetItems[generationIndex];
+
+                if (selectedItem && selectedItem.id) {
+                    $scope.evolutionTimeline.setSelection(selectedItem.id);
+                }
             }
 
             if (Graph.getNetwork() && (GeneticStatistics.getStatistics()).selectedGeneration
@@ -272,6 +284,10 @@ gaps.controller('geneticstatisticscontroller', ['$rootScope', '$scope', 'Notific
 
             var $slider = $($scope.sliderId).slider();
             $slider.slider('setValue', 0);
+
+            if ($scope.evolutionTimeline && $scope.evolutionTimeline !== null && $scope.evolutionTimeline !== undefined) {
+                $scope.evolutionTimeline.setSelection([]);
+            }
 
             if (Graph.getNetwork()) {
                 Graph.getNetwork().selectNodes([]);
