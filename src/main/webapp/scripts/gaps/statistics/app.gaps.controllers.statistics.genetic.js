@@ -125,9 +125,9 @@ gaps.controller('geneticstatisticscontroller', ['$rootScope', '$scope', 'Notific
                 $slider.slider('setValue', 0);
 
                 $scope.evolutionTimelineOptions.start = geneticStatistics.startTimestamp;
-                $scope.evolutionTimelineOptions.end = geneticStatistics.endTimestamp + (1000 * 10);
+                $scope.evolutionTimelineOptions.end = Date.now();
                 $scope.evolutionTimelineOptions.min = geneticStatistics.startTimestamp;
-                $scope.evolutionTimelineOptions.max = geneticStatistics.endTimestamp + (1000 * 10);
+                $scope.evolutionTimelineOptions.max = Date.now();
                 $scope.evolutionTimelineOptions.zoomMin = 100;
                 $scope.evolutionTimelineOptions.zoomMax = 1000 * 60 * 60;
                 $scope.evolutionTimeline = new vis.Timeline(
