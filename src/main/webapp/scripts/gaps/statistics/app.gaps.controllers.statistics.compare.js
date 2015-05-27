@@ -45,6 +45,11 @@ gaps.controller('comparestatisticscontroller', ['$rootScope', '$scope', 'Notific
             $scope.resetView();
         });
 
+        $rootScope.$on('resetPathGeneticViews', function (event, $data) {
+            $scope.resetData();
+            $scope.resetView();
+        });
+
         $rootScope.$on('graphDataLoaded', function (event, $data) {
             $scope.resetData();
             $scope.resetView();

@@ -97,6 +97,7 @@ gaps.controller('gapscontroller', ['$rootScope', '$scope', 'Socket', 'PathStatis
         };
         $scope.computePaths = function () {
             $scope.notifyInfo('Computing paths...');
+            $rootScope.$broadcast('resetPathGeneticViews', {});
 
             var interval = window.setInterval(function () {
                 $scope.geneticEvolution = $socket.computePaths($scope.geneticSettings);
@@ -113,9 +114,9 @@ gaps.controller('gapscontroller', ['$rootScope', '$scope', 'Socket', 'PathStatis
                 }, function (error) {
                     $scope.notifyError(error.description, $('#modalLoadingError'));
                 }, function (update) {
-                        $rootScope.$broadcast('pathDataUpdated', update.data);
-                        $scope.notifyInfo('Computing paths (' + (PathStatistics.getStatistics()).counter + ' / '
-                                + $scope.geneticSettings.numberOfPaths + ')...');
+                    $rootScope.$broadcast('pathDataUpdated', update.data);
+                    $scope.notifyInfo('Computing paths (' + (PathStatistics.getStatistics()).counter + ' / '
+                            + $scope.geneticSettings.numberOfPaths + ')...');
                 });
                 window.clearInterval(interval);
             }, 1000);
@@ -203,7 +204,7 @@ gaps.controller('gapscontroller', ['$rootScope', '$scope', 'Socket', 'PathStatis
             });
         };
         $scope.previewGraph = function () {
-            
+
             var interval = window.setInterval(function () {
                 var graphPreviewWrapper = $('div#graph-viewer-vis-preview');
 
@@ -312,7 +313,7 @@ gaps.controller('gapscontroller', ['$rootScope', '$scope', 'Socket', 'PathStatis
                         document.getElementById('graph-viewer-vis-canvas-draw'),
                         data,
                         Graph.getDrawOptions());
-                
+
                 network.freezeSimulation(true);
                 network.setOptions({freezeForStabilization: true});
 
@@ -328,7 +329,7 @@ gaps.controller('gapscontroller', ['$rootScope', '$scope', 'Socket', 'PathStatis
                 window.clearInterval(interval);
             }, 200);
         };
-        $scope.jsonifyGraph = function() {
+        $scope.jsonifyGraph = function () {
             var drawGraph = Graph.getDrawGraphData();
             $('#graphDrawJson').val(JSON.stringify(drawGraph, null, 2));
         };

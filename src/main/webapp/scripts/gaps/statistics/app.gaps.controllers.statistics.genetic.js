@@ -62,6 +62,11 @@ gaps.controller('geneticstatisticscontroller', ['$rootScope', '$scope', 'Notific
             $scope.resetView();
         });
 
+        $rootScope.$on('resetPathGeneticViews', function (event, $data) {
+            $scope.resetData();
+            $scope.resetView();
+        });
+
         $rootScope.$on('graphDataLoaded', function (event, $data) {
             $scope.resetData();
             $scope.resetView();
@@ -95,6 +100,9 @@ gaps.controller('geneticstatisticscontroller', ['$rootScope', '$scope', 'Notific
                     parent.removeChild(parent.firstChild);
                 }
             }
+            $($scope.sliderId).attr('data-slider-max', 0);
+            $($scope.sliderId).attr('data-slider-value', 0);
+            $($scope.sliderId).attr('value', 0);
             $($scope.sliderContainerId).css('width', 'auto');
 
             if ($scope.evolutionTimeline && $scope.evolutionTimeline !== null && $scope.evolutionTimeline !== undefined) {
@@ -110,7 +118,7 @@ gaps.controller('geneticstatisticscontroller', ['$rootScope', '$scope', 'Notific
             $scope.statisticsLoaded = false;
             $scope.statisticsDisplayed = false;
         };
-
+        
         $scope.initView = function () {
             GeneticStatistics.markEvolutionEnd();
 
@@ -120,11 +128,12 @@ gaps.controller('geneticstatisticscontroller', ['$rootScope', '$scope', 'Notific
 
                 $scope.$apply();
 
+                $($scope.sliderId).attr('data-slider-max', (GeneticStatistics.getStatistics()).generations.length - 1);
                 var $slider = $($scope.sliderId).slider();
+                $slider.slider('setValue', 0);
                 $slider.on('slide', function (ev) {
                     $scope.sliderEvent(ev);
                 });
-                $slider.slider('setValue', 0);
 
                 $scope.evolutionTimelineOptions.start = geneticStatistics.startTimestamp;
                 $scope.evolutionTimelineOptions.end = Date.now();
