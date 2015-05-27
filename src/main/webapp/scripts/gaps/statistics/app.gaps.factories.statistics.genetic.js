@@ -28,6 +28,38 @@ gaps.factory('GeneticStatistics', [function () {
         Service.setStatistics = function (geneticStatistics) {
             _geneticStatistics = geneticStatistics;
         };
+        
+        Service.getGeneration = function(generationIndex){
+            if(_geneticStatistics.generations && _geneticStatistics.generations.length > generationIndex) {
+                return _geneticStatistics.generations[generationIndex];
+            }
+            
+            return null;
+        };
+        
+        Service.getGenerations = function() {
+            if(_geneticStatistics.generations) {
+                return _geneticStatistics.generations;
+            }
+            
+            return null;
+        };
+
+        Service.getSelectedGeneration = function () {
+            return _geneticStatistics.selectedGeneration;
+        };
+
+        Service.setSelectedGeneration = function (selectedGeneration) {
+            _geneticStatistics.selectedGeneration = selectedGeneration;
+        };
+
+        Service.getSelectedGenerationIndex = function () {
+            return _geneticStatistics.selectedGenerationIndex;
+        };
+
+        Service.setSelectedGenerationIndex = function (selectedGenerationIndex) {
+            _geneticStatistics.selectedGenerationIndex = selectedGenerationIndex;
+        };
 
         Service.getEvolutionDataSet = function () {
             return _evolutionDataSet;

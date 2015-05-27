@@ -1,7 +1,7 @@
 
 
-gaps.controller('geneticstatisticscontroller', ['$rootScope', '$scope', 'Notification', 'GraphStatistics', 'GeneticStatistics', 'Graph',
-    function ($rootScope, $scope, Notification, GraphStatistics, GeneticStatistics, Graph) {
+gaps.controller('geneticstatisticscontroller', ['$rootScope', '$scope', 'Notification', 'GraphStatistics', 'GeneticStatistics', 'CompareStatistics', 'Graph',
+    function ($rootScope, $scope, Notification, GraphStatistics, GeneticStatistics, CompareStatistics, Graph) {
 
         $scope.statisticsLoaded = false;
         $scope.statisticsDisplayed = true;
@@ -134,15 +134,15 @@ gaps.controller('geneticstatisticscontroller', ['$rootScope', '$scope', 'Notific
                         document.getElementById($scope.evolutionTimelineChartId),
                         GeneticStatistics.getEvolutionDataSet(),
                         $scope.evolutionTimelineOptions);
-                        
+
                 $scope.evolutionTimeline.on('select', function (properties) {
                     if (properties.items && properties.items[0]) {
                         var selectedChromosome = GeneticStatistics.getEvolutionDataSet()
                                 .get(properties.items[0]);
                         if (selectedChromosome && selectedChromosome.path) {
                             var index = 0;
-                            for(index = 0; index < GeneticStatistics.getEvolutionDataSet().length; index++) {
-                                if((GeneticStatistics.getEvolutionDataSet().get())[index].id === 
+                            for (index = 0; index < GeneticStatistics.getEvolutionDataSet().length; index++) {
+                                if ((GeneticStatistics.getEvolutionDataSet().get())[index].id ===
                                         selectedChromosome.id) {
                                     break;
                                 }
@@ -195,23 +195,56 @@ gaps.controller('geneticstatisticscontroller', ['$rootScope', '$scope', 'Notific
         $scope.sliderEvent = function (event) {
             $scope.selectGeneration(event.value);
         };
-        $scope.selectGeneration = function(generationIndex) {
-            var geneticStatistics = GeneticStatistics.getStatistics();
-
-            geneticStatistics.selectedGenerationIndex = generationIndex;
-            if (geneticStatistics.generations[generationIndex]) {
-                geneticStatistics.selectedGeneration =
-                        geneticStatistics.generations[
-                                geneticStatistics.selectedGenerationIndex];
+        $scope.selectGapsBest = function () {
+            var generations = GeneticStatistics.getGenerations();
+            var generationIndex = 0;
+            
+            if(generations != null && generations.length > 0) {
+                generationIndex = generations.length - 1;
             }
 
-            if (Graph.getNetwork() && geneticStatistics && geneticStatistics.selectedGeneration
-                    && geneticStatistics.selectedGeneration.bestChromosome) {
-                var $path = geneticStatistics.selectedGeneration.bestChromosome.path;
+            $scope.selectGeneration(generationIndex, true);
+
+            var $slider = $($scope.sliderId).slider();
+            $slider.slider('setValue', generationIndex);
+        };
+        $scope.selectJgraphtBest = function () {
+            var compareStatistics = CompareStatistics.getStatistics();
+            var generationIndex = 0;
+            
+            if (Graph.getNetwork() && compareStatistics.chromosomes && compareStatistics.chromosomes.length > 0) {
+                generationIndex = compareStatistics.chromosomes.length - 1;
+
+                var chromosome = compareStatistics.chromosomes[generationIndex];
+                var $path = (compareStatistics.chromosomes[generationIndex]).path;
+
+                GeneticStatistics.setSelectedGenerationIndex(0);
+                GeneticStatistics.setSelectedGeneration(chromosome);
+
+                $scope.selectPath(Graph.getNetwork(), $path);
+
+                var $slider = $($scope.sliderId).slider();
+                $slider.slider('setValue', 0);
+            }
+        };
+        $scope.selectGeneration = function (generationIndex, skipApply) {
+
+            GeneticStatistics.setSelectedGenerationIndex(generationIndex);
+            var generation = GeneticStatistics.getGeneration(generationIndex);
+
+            if (generation && generation !== null) {
+                GeneticStatistics.setSelectedGeneration(generation);
+            }
+
+            if (!skipApply || !skipApply == true) {
+                $scope.$apply();
+            }
+
+            if (Graph.getNetwork() && (GeneticStatistics.getStatistics()).selectedGeneration
+                    && (GeneticStatistics.getStatistics()).selectedGeneration.bestChromosome) {
+                var $path = (GeneticStatistics.getStatistics()).selectedGeneration.bestChromosome.path;
                 $scope.selectPath(Graph.getNetwork(), $path);
             }
-
-            $scope.$apply();            
         };
         $scope.selectPath = function (graph, path) {
             var nodeSelectionArray = [];
@@ -233,14 +266,17 @@ gaps.controller('geneticstatisticscontroller', ['$rootScope', '$scope', 'Notific
         };
 
         $scope.resetPathSelection = function () {
+
+            GeneticStatistics.setSelectedGenerationIndex(0);
+            GeneticStatistics.setSelectedGeneration(null);
+
+            var $slider = $($scope.sliderId).slider();
+            $slider.slider('setValue', 0);
+
             if (Graph.getNetwork()) {
                 Graph.getNetwork().selectNodes([]);
                 Graph.getNetwork().selectEdges([]);
             }
-
-            var geneticStatistics = GeneticStatistics.getStatistics();
-            geneticStatistics.selectedGeneration = {};
-            geneticStatistics.selectedGenerationIndex = 0;
         };
 
         $scope.getEvolutionStartTime = function () {
