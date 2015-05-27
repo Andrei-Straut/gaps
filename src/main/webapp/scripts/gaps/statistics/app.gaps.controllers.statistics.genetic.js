@@ -226,8 +226,8 @@ gaps.controller('geneticstatisticscontroller', ['$rootScope', '$scope', 'Notific
             var compareStatistics = CompareStatistics.getStatistics();
             var generationIndex = 0;
 
-            if (Graph.getNetwork() && compareStatistics.chromosomes && compareStatistics.chromosomes.length > 0) {
-                generationIndex = compareStatistics.chromosomes.length - 1;
+            if (Graph.getNetwork() && compareStatistics.chromosomes && compareStatistics.chromosomes.length >= 0) {
+                generationIndex = 0;
 
                 var chromosome = compareStatistics.chromosomes[generationIndex];
                 var $path = (compareStatistics.chromosomes[generationIndex]).path;
