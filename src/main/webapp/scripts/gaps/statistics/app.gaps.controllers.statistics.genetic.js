@@ -41,6 +41,7 @@ gaps.controller('geneticstatisticscontroller', ['$rootScope', '$scope', 'Notific
                 orientation: 'bottom'
             },
             interpolation: false,
+            sampling: false,
             min: 0,
             max: 1000,
             start: 0,
