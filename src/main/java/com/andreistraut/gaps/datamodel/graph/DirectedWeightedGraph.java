@@ -228,13 +228,13 @@ public abstract class DirectedWeightedGraph extends DirectedPseudograph<Node, Di
 	    JsonObject jsonEdge = edge.toJson();
 
 	    if (this.getEdgeCostClass(edge).equals("low")) {
-		jsonEdge.addProperty("fontColor", "#5cb85c");
+		jsonEdge.addProperty("color", "#5cb85c");
 	    } else if (this.getEdgeCostClass(edge).equals("medium")) {
-		jsonEdge.addProperty("fontColor", "#f0ad4e");
+		jsonEdge.addProperty("color", "#f0ad4e");
 	    } else if (this.getEdgeCostClass(edge).equals("high")) {
-		jsonEdge.addProperty("fontColor", "#d9534f");
+		jsonEdge.addProperty("color", "#d9534f");
 	    } else {
-		jsonEdge.addProperty("fontColor", "#999");
+		jsonEdge.addProperty("color", "#999");
 	    }
 	    jsonEdges.add(jsonEdge);
 	}
