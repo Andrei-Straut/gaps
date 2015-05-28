@@ -24,6 +24,8 @@ gaps.controller('gapscontroller', ['$rootScope', '$scope', 'Socket', 'PathStatis
             $scope.clearNotifs(3000);
             $scope.notifyInfo('Uploading graph...');
 
+			appInsights.trackEvent("UploadGraph");
+
             var interval = window.setInterval(function () {
                 $('#graphSettingsAdvancedModal').modal('hide');
 
@@ -47,7 +49,9 @@ gaps.controller('gapscontroller', ['$rootScope', '$scope', 'Socket', 'PathStatis
         };
         $scope.uploadDrawGraph = function () {
             $scope.clearNotifs(3000);
-            $scope.notifyInfo('Uploading graph...');
+            $scope.notifyInfo('Uploading graph...');		
+
+			appInsights.trackEvent("DrawGraph");
 
             var interval = window.setInterval(function () {
                 $('#graphSettingsDrawModal').modal('hide');
@@ -74,7 +78,9 @@ gaps.controller('gapscontroller', ['$rootScope', '$scope', 'Socket', 'PathStatis
         };
         $scope.processGraph = function () {
             $scope.clearNotifs(3000);
-            $scope.notifyInfo('Loading graph...');
+            $scope.notifyInfo('Loading graph...');		
+	
+			appInsights.trackEvent("GenerateGraph");
 
             // Little hack to give notification time to pop-up
             var interval = window.setInterval(function () {
@@ -98,6 +104,8 @@ gaps.controller('gapscontroller', ['$rootScope', '$scope', 'Socket', 'PathStatis
         $scope.computePaths = function () {
             $scope.notifyInfo('Computing paths...');
             $rootScope.$broadcast('resetPathGeneticViews', {});
+
+			appInsights.trackEvent("Evolve");
 
             var interval = window.setInterval(function () {
                 $scope.geneticEvolution = $socket.computePaths($scope.geneticSettings);

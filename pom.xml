@@ -58,6 +58,12 @@
             <artifactId>jgrapht-core</artifactId>
             <version>0.9.1</version>
         </dependency>
+		  <dependency>
+			<groupId>com.microsoft.azure</groupId>
+			<artifactId>applicationinsights-web</artifactId>
+			<!-- or applicationinsights-core for bare API -->
+			<version>[0.9,)</version>
+		  </dependency>
     </dependencies>
 
     <build>
