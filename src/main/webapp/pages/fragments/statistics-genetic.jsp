@@ -38,18 +38,13 @@
                                                     ng-click="selectGapsBest();">Show GAPS Best</button>
                                             <button id="genetic-statistics-select-best-gaps" type="reset" class="btn btn-primary btn-sm"
                                                     ng-click="selectJgraphtBest();">Show JGraphT Best</button>
-                                            <br/>
                                             <hr/>
-                                            
-                                            Best Path:
-                                            <div class="panel-body">
-                                                <span 
-                                                    class="label"
-                                                    ng-repeat="gene in selectedPath"
-                                                    ng-class="(getGraphStatistics()).getEdgeClass(gene.cost)">
-                                                    {{gene.from}} - {{gene.to}} ({{gene.cost}})
-                                                </span>
-                                            </div>
+                                            <span 
+                                                class="label"
+                                                ng-repeat="gene in selectedPath"
+                                                ng-class="(getGraphStatistics()).getEdgeClass(gene.cost)">
+                                                {{gene.from}} - {{gene.to}} ({{gene.cost}})
+                                            </span>
                                         </div>
                                     </div>
                                 </div>
