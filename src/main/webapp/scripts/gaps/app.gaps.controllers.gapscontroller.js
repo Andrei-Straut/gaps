@@ -411,7 +411,7 @@ gaps.controller('gapscontroller', ['$rootScope', '$scope', 'Socket', 'PathStatis
             numberOfEdgesMax: 1000,
             minimumEdgeWeight: 1,
             maximumEdgeWeight: 100,
-            isStatic: true
+            isStatic: false
         };
         $scope.stabilizationIntervalMs = 20000;
 
