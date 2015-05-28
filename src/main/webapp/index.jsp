@@ -44,7 +44,8 @@
         <script src="scripts/gaps/app.js"></script>
         <script src="scripts/gaps/app.gaps.js"></script>
 
-        <script src="scripts/gaps/directives/app.gaps.directives.formvalidation.js"></script>
+        <script src="scripts/gaps/directives/app.gaps.directives.formvalidation.nodeidvalid.js"></script>
+        <script src="scripts/gaps/directives/app.gaps.directives.formvalidation.nodeiddifferent.js"></script>
         <script src="scripts/gaps/directives/app.gaps.directives.infocard.js"></script>
         
         <script src="scripts/gaps/app.gaps.factories.websocket.js"></script>

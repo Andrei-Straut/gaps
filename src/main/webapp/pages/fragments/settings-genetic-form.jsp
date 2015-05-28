@@ -2,7 +2,8 @@
 <div class="form-group"
      ng-class="{'has-error' : 
                  geneticsettings.sourceNode.$error.required
-                 || !geneticsettings.sourceNode.$valid}">
+                 || geneticsettings.sourceNode.$error.nodeidvalid
+                 || geneticsettings.sourceNode.$error.nodeiddifferent}">
     <label class="control-label" for="sourceNode">Source Node Id</label>
     <input required
            type="text"
@@ -16,6 +17,7 @@
            ng-disabled="!load.graphViewerLoaded"
            typeahead="id for id in nodeIds | filter: $viewValue | limitTo:8"
            node-id-valid
+           node-id-different
            disabled>
     <label class="control-label" 
            for="sourceNode" 
@@ -24,15 +26,21 @@
     </label>
     <label class="control-label" 
            for="sourceNode" 
-           ng-show="!geneticsettings.sourceNode.$valid">
+           ng-show="geneticsettings.sourceNode.$error.nodeidvalid">
         Source Node ID not found in graph
+    </label>
+    <label class="control-label" 
+           for="sourceNode" 
+           ng-show="geneticsettings.sourceNode.$error.nodeiddifferent">
+        Source and destination nodes must be different
     </label>
 </div>
 
 <div class="form-group"
      ng-class="{'has-error' : 
              (geneticsettings.destinationNode.$error.required
-                 || !geneticsettings.destinationNode.$valid)}">
+                 || geneticsettings.destinationNode.$error.nodeidvalid
+                 || geneticsettings.destinationNode.$error.nodeiddifferent)}">
     <label class="control-label" for="destinationNode">Destination Node Id</label>
     <input required 
            id="destinationNode" 
@@ -44,6 +52,7 @@
            ng-disabled="!load.graphViewerLoaded"
            typeahead="id for id in nodeIds | filter: $viewValue | limitTo:8"
            node-id-valid
+           node-id-different
            disabled>
     <label class="control-label" 
            for="destinationNode" 
@@ -52,8 +61,13 @@
     </label>
     <label class="control-label" 
            for="destinationNode" 
-           ng-show="!(geneticsettings.destinationNode.$valid)">
+           ng-show="geneticsettings.destinationNode.$error.nodeidvalid">
         Destination Node ID not found in graph
+    </label>
+    <label class="control-label" 
+           for="sourceNode" 
+           ng-show="geneticsettings.destinationNode.$error.nodeiddifferent">
+        Source and destination nodes must be different
     </label>
 </div>
 

@@ -8,10 +8,12 @@ gaps.directive("nodeIdValid", function () {
             $scope.$watch($attrs.ngModel, function (value) {
                 var isValid = true;
 
-                if ($scope.nodeIds && $scope.nodeIds.length > 0) {
+                if ($scope.nodeIds && $scope.nodeIds.length > 0 
+                        && value !== undefined && value.trim().replace(' ', '') !== '') {
                     isValid = ($scope.nodeIds.indexOf(value) > -1) ? true : false;
                 }
-                ngModel.$setValidity($attrs.ngModel, isValid);
+                
+                ngModel.$setValidity('nodeidvalid', isValid);
             });
         }
     };
