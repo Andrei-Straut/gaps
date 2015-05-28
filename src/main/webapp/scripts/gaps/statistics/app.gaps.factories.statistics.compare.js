@@ -7,8 +7,8 @@ gaps.factory('CompareStatistics', ['GeneticStatistics', function (GeneticStatist
         var _compareDataSet = new vis.DataSet();
 
         var _compareDataSetGroups = new vis.DataSet();
-        _compareDataSetGroups.add({id: 0, content: "GAPS"});
-        _compareDataSetGroups.add({id: 1, content: "JGraphT"});
+        _compareDataSetGroups.add({id: 0, content: "GAPS", options: {barChart: {align: 'left'}}});
+        _compareDataSetGroups.add({id: 1, content: "JGraphT", options: {barChart: {align: 'right'}}});
 
         // JGraphT KShortestPath comparison
         var _compareStatistics = {
@@ -54,7 +54,7 @@ gaps.factory('CompareStatistics', ['GeneticStatistics', function (GeneticStatist
                     y: cost,
                     group: 0,
                     label: {
-                        content: 'GAPS: ' + cost
+                        content: cost
                     }
                 };
                 var compareDataPointJGraphT = {
@@ -62,7 +62,7 @@ gaps.factory('CompareStatistics', ['GeneticStatistics', function (GeneticStatist
                     y: compareStatistic.cost,
                     group: 1,
                     label: {
-                        content: 'JGraphT: ' + compareStatistic.cost
+                        content: compareStatistic.cost
                     }
                 };
                 _compareDataSet.add(compareDataPointGaps);
