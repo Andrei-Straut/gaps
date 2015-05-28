@@ -1,6 +1,7 @@
 package com.andreistraut.gaps.datamodel.graph;
 
 import com.google.gson.JsonObject;
+import java.util.UUID;
 import org.jgrapht.graph.DefaultWeightedEdge;
 
 public class DirectedWeightedEdge extends DefaultWeightedEdge {
@@ -120,7 +121,7 @@ public class DirectedWeightedEdge extends DefaultWeightedEdge {
 
 	edgeJson.addProperty("from", this.source.getId());
 	edgeJson.addProperty("to", this.destination.getId());
-	edgeJson.addProperty("id", this.hashCode());
+	edgeJson.addProperty("id", UUID.randomUUID().getMostSignificantBits());
 	edgeJson.addProperty("cost", this.cost);
 	edgeJson.addProperty("weight", this.cost);
 	edgeJson.addProperty("label", this.cost);

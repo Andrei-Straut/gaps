@@ -103,7 +103,7 @@ gaps.factory('Graph', [function () {
                     highlight: '#00CE6F'
                 },
                 width: 2,
-                widthSelectionMultiplier: 4
+                widthSelectionMultiplier: 5
             },
             nodes: {
                 shape: 'rect',
