@@ -10,12 +10,15 @@ public class DirectedWeightedEdge extends DefaultWeightedEdge {
     private Node destination;
     private int cost;
     private boolean isDirected;
+    private String id;
 
     //<editor-fold desc="Constructors" defaultstate="collapsed">
     public DirectedWeightedEdge(Node source, Node destination) {
 	this.source = source;
 	this.destination = destination;
 	this.isDirected = true;
+	
+	this.id = UUID.randomUUID().toString();
     }
 
     public DirectedWeightedEdge(Node source, Node destination, int cost) {
@@ -121,7 +124,7 @@ public class DirectedWeightedEdge extends DefaultWeightedEdge {
 
 	edgeJson.addProperty("from", this.source.getId());
 	edgeJson.addProperty("to", this.destination.getId());
-	edgeJson.addProperty("id", UUID.randomUUID().getMostSignificantBits());
+	edgeJson.addProperty("id", this.id);
 	edgeJson.addProperty("cost", this.cost);
 	edgeJson.addProperty("weight", this.cost);
 	edgeJson.addProperty("label", this.cost);
