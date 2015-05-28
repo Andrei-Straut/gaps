@@ -83,6 +83,8 @@
                     <%@include file="/pages/fragments/statistics-paths.jsp" %>
 
                     <%@include file="/pages/fragments/statistics-graph.jsp" %>
+                    
+                    <%@include file="/pages/fragments/modal-loading-error.jsp" %>
 
                 </div>
                 <!-- /. PAGE INNER  -->
