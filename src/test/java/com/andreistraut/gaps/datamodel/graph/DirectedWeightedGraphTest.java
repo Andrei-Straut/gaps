@@ -332,7 +332,7 @@ public class DirectedWeightedGraphTest {
 	    Assert.assertTrue(edgeJson.has("cost"));
 	    Assert.assertTrue(edgeJson.has("weight"));
 	    Assert.assertTrue(edgeJson.has("label"));
-	    Assert.assertTrue(edgeJson.has("fontColor"));
+	    Assert.assertTrue(edgeJson.has("color"));
 	}
     }
 }

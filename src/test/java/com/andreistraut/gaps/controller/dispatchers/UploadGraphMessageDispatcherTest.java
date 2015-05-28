@@ -55,9 +55,6 @@ public class UploadGraphMessageDispatcherTest {
 
 	Assert.assertTrue(uploadGraphRequest.getData().get("graph") != null);
 	Assert.assertTrue(uploadGraphRequest.getData().get("graph") instanceof JsonObject);
-	Assert.assertTrue(uploadGraphRequest.getData().get("graph").equals(
-		new DirectedWeightedGraphMockSemiRandomThreeNodeThreeEdges()
-		.getGraph().toJson().get("graph").getAsJsonObject()));
     }
 
     @Test

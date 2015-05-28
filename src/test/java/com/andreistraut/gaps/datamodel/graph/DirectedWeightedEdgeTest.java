@@ -343,7 +343,6 @@ public class DirectedWeightedEdgeTest {
 
 	Assert.assertTrue(source.getId().equals(firstJson.get("from").getAsString()));
 	Assert.assertTrue(destination.getId().equals(firstJson.get("to").getAsString()));
-	Assert.assertTrue(first.hashCode() == firstJson.get("id").getAsInt());
 	Assert.assertTrue(first.getCost() == firstJson.get("cost").getAsInt());
 	Assert.assertTrue(first.isDirected() == firstJson.get("isDirected").getAsBoolean());
 
@@ -351,42 +350,63 @@ public class DirectedWeightedEdgeTest {
 	second = new DirectedWeightedEdge(source, destination);
 	firstJson = first.toJson();
 	secondJson = second.toJson();
-	Assert.assertEquals(firstJson, secondJson);
+	Assert.assertEquals(firstJson.get("from").getAsString(), secondJson.get("from").getAsString());
+	Assert.assertEquals(firstJson.get("to").getAsString(), secondJson.get("to").getAsString());
+	Assert.assertEquals(firstJson.get("cost").getAsInt(), secondJson.get("cost").getAsInt());
+	Assert.assertEquals(firstJson.get("isDirected").getAsBoolean(), secondJson.get("isDirected").getAsBoolean());
 
 	first = new DirectedWeightedEdge(source, destination, 100);
 	second = new DirectedWeightedEdge(source, destination, 100);
 	firstJson = first.toJson();
 	secondJson = second.toJson();
-	Assert.assertEquals(firstJson, secondJson);
+	Assert.assertEquals(firstJson.get("from").getAsString(), secondJson.get("from").getAsString());
+	Assert.assertEquals(firstJson.get("to").getAsString(), secondJson.get("to").getAsString());
+	Assert.assertEquals(firstJson.get("cost").getAsInt(), secondJson.get("cost").getAsInt());
+	Assert.assertEquals(firstJson.get("isDirected").getAsBoolean(), secondJson.get("isDirected").getAsBoolean());
 
 	first = new DirectedWeightedEdge(source, destination, 100, true);
 	second = new DirectedWeightedEdge(source, destination, 100, true);
 	firstJson = first.toJson();
 	secondJson = second.toJson();
-	Assert.assertEquals(firstJson, secondJson);
+	Assert.assertEquals(firstJson.get("from").getAsString(), secondJson.get("from").getAsString());
+	Assert.assertEquals(firstJson.get("to").getAsString(), secondJson.get("to").getAsString());
+	Assert.assertEquals(firstJson.get("cost").getAsInt(), secondJson.get("cost").getAsInt());
+	Assert.assertEquals(firstJson.get("isDirected").getAsBoolean(), secondJson.get("isDirected").getAsBoolean());
 
 	first = new DirectedWeightedEdge(source, destination, 100, true);
 	second = new DirectedWeightedEdge(destination, source, 100, true);
 	firstJson = first.toJson();
 	secondJson = second.toJson();
-	Assert.assertFalse(firstJson.equals(secondJson));
+	Assert.assertFalse(firstJson.get("from").getAsString().equals(secondJson.get("from").getAsString()));
+	Assert.assertFalse(firstJson.get("to").getAsString().equals(secondJson.get("to").getAsString()));
+	Assert.assertTrue(firstJson.get("cost").getAsString().equals(secondJson.get("cost").getAsString()));
+	Assert.assertTrue(firstJson.get("isDirected").getAsString().equals(secondJson.get("isDirected").getAsString()));
 
 	first = new DirectedWeightedEdge(source, destination, 100, true);
 	second = new DirectedWeightedEdge(source, source, 100, true);
 	firstJson = first.toJson();
 	secondJson = second.toJson();
-	Assert.assertFalse(firstJson.equals(secondJson));
+	Assert.assertTrue(firstJson.get("from").getAsString().equals(secondJson.get("from").getAsString()));
+	Assert.assertFalse(firstJson.get("to").getAsString().equals(secondJson.get("to").getAsString()));
+	Assert.assertTrue(firstJson.get("cost").getAsString().equals(secondJson.get("cost").getAsString()));
+	Assert.assertTrue(firstJson.get("isDirected").getAsString().equals(secondJson.get("isDirected").getAsString()));
 
 	first = new DirectedWeightedEdge(source, destination, 100, true);
 	second = new DirectedWeightedEdge(source, source, 101, true);
 	firstJson = first.toJson();
 	secondJson = second.toJson();
-	Assert.assertFalse(firstJson.equals(secondJson));
+	Assert.assertTrue(firstJson.get("from").getAsString().equals(secondJson.get("from").getAsString()));
+	Assert.assertFalse(firstJson.get("to").getAsString().equals(secondJson.get("to").getAsString()));
+	Assert.assertFalse(firstJson.get("cost").getAsString().equals(secondJson.get("cost").getAsString()));
+	Assert.assertTrue(firstJson.get("isDirected").getAsString().equals(secondJson.get("isDirected").getAsString()));
 
 	first = new DirectedWeightedEdge(source, destination, 100, true);
 	second = new DirectedWeightedEdge(source, source, 101, false);
 	firstJson = first.toJson();
 	secondJson = second.toJson();
-	Assert.assertFalse(firstJson.equals(secondJson));
+	Assert.assertTrue(firstJson.get("from").getAsString().equals(secondJson.get("from").getAsString()));
+	Assert.assertFalse(firstJson.get("to").getAsString().equals(secondJson.get("to").getAsString()));
+	Assert.assertFalse(firstJson.get("cost").getAsString().equals(secondJson.get("cost").getAsString()));
+	Assert.assertFalse(firstJson.get("isDirected").getAsString().equals(secondJson.get("isDirected").getAsString()));
     }
 }
