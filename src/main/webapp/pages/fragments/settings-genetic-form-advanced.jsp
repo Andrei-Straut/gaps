@@ -18,7 +18,7 @@
                    data-original-title="Report state once every X generations. When a change in state happens, report will be sent regardless of this setting"
                    type="number"
                    min="1"
-                   max="{{$scope.geneticSettings.numberOfEvolutions}}"
+                   max="{{geneticSettings.numberOfEvolutions}}"
                    ng-model="geneticSettings.reportEveryXGenerations" 
                    ng-disabled="!load.graphViewerLoaded"
                    disabled>
