@@ -1,11 +1,13 @@
 package com.andreistraut.gaps.controller;
 
-import com.andreistraut.gaps.controller.dispatchers.GetGraphMessageDispatcher;
 import com.andreistraut.gaps.controller.dispatchers.MessageDispatcher;
 import com.andreistraut.gaps.controller.dispatchers.MessageDispatcherFactory;
 import com.google.gson.JsonSyntaxException;
+import com.microsoft.applicationinsights.TelemetryClient;
+import com.microsoft.applicationinsights.telemetry.MetricTelemetry;
+import com.microsoft.applicationinsights.telemetry.RequestTelemetry;
 import java.io.IOException;
-import java.util.Random;
+import java.util.HashMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.servlet.http.HttpServletResponse;
@@ -14,7 +16,6 @@ import javax.websocket.OnMessage;
 import javax.websocket.OnOpen;
 import javax.websocket.Session;
 import javax.websocket.server.ServerEndpoint;
-import org.jgap.RandomGenerator;
 
 /**
  * @ServerEndpoint handling the communication between the client and the server.
@@ -26,6 +27,7 @@ import org.jgap.RandomGenerator;
 public class Controller {
 
     private MessageDispatcherFactory factory;
+    private TelemetryClient telemetry = new TelemetryClient();
 
     /**
      * @param session
@@ -36,6 +38,8 @@ public class Controller {
     @OnOpen
     public void onOpen(Session session) {
 	MessageResponse response = new MessageResponse(0, HttpServletResponse.SC_OK, true, "Connection Established", null);
+	telemetry.trackEvent("NewWebSocketConnection");
+	telemetry.trackRequest(new RequestTelemetry("NewWebSocketConnection", new java.util.Date(), 0, "200", true));
 
 	try {
 	    session.getBasicRemote().sendText(response.toJsonString());
@@ -53,6 +57,10 @@ public class Controller {
 	} catch (IOException e) {
 	    Logger.getLogger(Controller.class.getName()).log(Level.SEVERE,
 		    "{0}: Could not send message to client: ", new Object[]{session.getId(), e});
+	    
+	    HashMap<String, String> telemetryProperties = new HashMap<String, String>();
+	    telemetryProperties.put("Session", session.getId());
+	    telemetry.trackException(e, telemetryProperties, null);
 	}
     }
 
@@ -65,10 +73,17 @@ public class Controller {
      * @param session
      */
     @OnMessage
-    public void onMessage(String message, Session session) {	
+    public void onMessage(String message, Session session) {
 	Logger.getLogger(Controller.class.getName()).log(
 		Level.INFO, "{0}: {1}",
 		new Object[]{session.getId(), message});
+
+	HashMap<String, String> telemetryProperties = new HashMap<String, String>();
+	telemetryProperties.put("Session", session.getId());
+	telemetryProperties.put("Request", message);
+	telemetry.trackEvent("NewWebSocketRequest", telemetryProperties, null);
+	telemetry.trackRequest(new RequestTelemetry("NewWebSocketRequest", new java.util.Date(), 0, "200", true));
+	
 
 	MessageRequest request;
 	MessageResponse response;
@@ -77,6 +92,8 @@ public class Controller {
 	} catch (JsonSyntaxException e) {
 	    Logger.getLogger(Controller.class.getName()).log(Level.SEVERE,
 		    "{0}: Could not parse JSON request: {1}", new Object[]{session.getId(), e});
+
+	    telemetry.trackException(e, telemetryProperties, null);
 
 	    response = new MessageResponse(0);
 	    response
@@ -110,6 +127,8 @@ public class Controller {
 		    "{0}: Error initiating MessageDispatcher for session {1}",
 		    new Object[]{session.getId(), e});
 
+	    telemetry.trackException(e, telemetryProperties, null);
+
 	    response = new MessageResponse(request.getCallbackId());
 	    response
 		    .setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR)
@@ -128,6 +147,8 @@ public class Controller {
 		    "{0}: Error processing MessageDispatcher: ",
 		    new Object[]{session.getId(), e});
 
+	    telemetry.trackException(e, telemetryProperties, null);
+
 	    response = new MessageResponse(request.getCallbackId());
 	    response
 		    .setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR)
@@ -135,7 +156,7 @@ public class Controller {
 		    .setDescription(e.getMessage());
 	    respond(session, response);
 	}
-	
+
 	Logger.getLogger(Controller.class.getName()).log(
 		Level.INFO, "{0}: Idling", new Object[]{session.getId()});
     }
@@ -152,6 +173,8 @@ public class Controller {
 	if (this.factory != null) {
 	    this.factory.release();
 	}
+
+	telemetry.trackEvent("CloseWebSocketConnection");
 
 	Logger.getLogger(Controller.class.getName()).log(Level.INFO,
 		"{0}: session ended", session.getId());
