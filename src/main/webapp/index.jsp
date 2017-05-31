@@ -20,7 +20,7 @@
         <link href="styles/lib/font-awesome/font-awesome.css" rel="stylesheet" />
         <link href="styles/lib/vis/vis.css" rel="stylesheet" />
         <!-- GOOGLE FONTS-->
-        <link href='http://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css' />
+        <link href='https://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css' />
         <!-- CUSTOM STYLES-->
         <link href="styles/custom.css" rel="stylesheet" />
 
