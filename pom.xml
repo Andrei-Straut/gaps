@@ -10,7 +10,7 @@
 
     <name>GAPS</name>
     <description>Genetic Algorithm Path Search</description>
-    <url>http://gaps.azurewebsites.net</url>
+    <url>http://www.andreistraut.info/gaps</url>
 
     <properties>
         <endorsed.dir>${project.build.directory}/endorsed</endorsed.dir>
