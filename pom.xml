@@ -19,7 +19,7 @@
         
         <surefire-version>2.6</surefire-version>
         
-        <jacoco-version>0.7.4.201502262128</jacoco-version>
+        <jacoco-version>0.7.9</jacoco-version>
         <jacoco-exec-location>${project.build.directory}/jacoco.exec</jacoco-exec-location>
         <jacoco-output-dir>${project.build.directory}/site/jacoco</jacoco-output-dir>
     </properties>
