@@ -1,5 +1,4 @@
-[![Build Status](https://travis-ci.org/Andrei-Straut/gaps.svg?branch=master)](https://travis-ci.org/Andrei-Straut/gaps)
-[![Coverage Status](https://coveralls.io/repos/Andrei-Straut/gaps/badge.svg)](https://coveralls.io/r/Andrei-Straut/gaps)
+[![Build Status](https://img.shields.io/jenkins/s/https/www.andreistraut.info/jenkins/view/GAPS/job/GAPS-master.svg)](https://www.andreistraut.info/jenkins/view/GAPS/job/GAPS-master/) [![Tests](https://img.shields.io/jenkins/t/https/www.andreistraut.info/jenkins/view/GAPS/job/GAPS-master.svg)](https://www.andreistraut.info/jenkins/view/GAPS/job/GAPS-master/lastCompletedBuild/)
 
 GAPS (*Genetic Algorithm Path Search*)
 ==============
