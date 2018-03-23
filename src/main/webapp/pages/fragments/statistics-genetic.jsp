@@ -32,11 +32,11 @@
                                                    data-slider-selection="after"
                                                    data-slider-tooltip="hide">
                                             (Move above slider to select generation)<br/>
-                                            <button id="genetic-statistics-path-reset" type="reset" class="btn btn-primary btn-sm"
+                                            <button id="genetic-statistics-path-reset" type="reset" class="btn btn-success btn-sm"
                                                     ng-click="resetPathSelection();">Reset Selection</button>
-                                            <button id="genetic-statistics-select-best-gaps" type="reset" class="btn btn-primary btn-sm"
+                                            <button id="genetic-statistics-select-best-gaps" type="reset" class="btn btn-success btn-sm"
                                                     ng-click="selectGapsBest();">Show GAPS Best</button>
-                                            <button id="genetic-statistics-select-best-gaps" type="reset" class="btn btn-primary btn-sm"
+                                            <button id="genetic-statistics-select-best-gaps" type="reset" class="btn btn-success btn-sm"
                                                     ng-click="selectJgraphtBest();">Show JGraphT Best</button>
                                             <hr/>
                                             <span 

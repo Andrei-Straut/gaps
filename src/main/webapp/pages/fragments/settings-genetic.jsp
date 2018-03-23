@@ -8,7 +8,7 @@
                 <button id="genetic-settings-advanced" 
                         name="geneticSettingsAdvanced"
                         type="button"
-                        class="btn btn-primary btn-sm"
+                        class="btn btn btn-success btn-sm"
                         href="#"
                         data-toggle="modal"
                         data-target="#geneticSettingsAdvancedModal"
@@ -23,7 +23,7 @@
 
                         <button id="graph-viewer-start-evolution"
                                 type="submit"
-                                class="btn btn-primary"
+                                class="btn btn-success"
                                 ng-disabled="!load.graphViewerLoaded || geneticsettings.$invalid || load.wip"
                                 ng-click="computePaths();">Evolve!</button>
                     </div>
@@ -48,7 +48,7 @@
                             </form>
                         </div>
                         <div class="modal-footer">
-                            <button type="button" class="btn btn-primary" data-dismiss="modal">Ok</button>
+                            <button type="button" class="btn btn-success" data-dismiss="modal">Ok</button>
                         </div>
                     </div>
                 </div>
