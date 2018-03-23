@@ -497,7 +497,9 @@ div.modal-footer {
     .navbar-side {
         z-index: 1;
         position: fixed;
-        margin-top: 40px;
+        margin-top: 40px;    
+        border-right: 1px solid black;
+        border-bottom: 1px solid black;
     }
     .navbar {
         border-radius: 0px; 
