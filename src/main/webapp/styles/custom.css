@@ -106,26 +106,84 @@
 /*==============================================
     GENERAL  STYLES    
     =============================================*/
+body,
+header,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+.container {
+    color: white;
+}
+body,
+header,
+.container,
+div.jumbotron{
+    background: #335061;
+    overflow-x: hidden;
+}
+nav,
+.navbar-inverse {
+    background: #2C3E50;
+    color: white;
+}
+.nav-third-level > li > a:after,
+.nav-third-level > li > a:before  {
+    left:40px;
+}
+.navbar {
+    min-height: 40px;
+}
+.navbar-side {
+    border:none;
+    background: #2C3E50;
+}
+.navbar-cls-top {
+    background: #2C3E50;
+    border-bottom:none;
+}
+.navbar-cls-top .navbar-brand:hover {
+    background: #2C3E50;
+    color:#fff;
+}
+.navbar-default {
+    border:0px solid black;
+}
+.navbar-default .navbar-toggle:hover, .navbar-default .navbar-toggle:focus {
+    background-color: #B40101;
+}
+.navbar-default .navbar-toggle {
+    border-color: #fff;
+}
+.navbar-default .navbar-toggle .icon-bar {
+    background-color: #FFF;
+}
+a,
+a:hover,
+a:focus,
+a:active,
+a.active {
+    color: #337ab7;
+}
 body {
     font-family: 'Open Sans', sans-serif;
-    background-color: #F3F3F3;
 }
 
 #wrapper {
     width: 100%;
-    background:#202020;
+    color: #335061
 }
 
 #page-wrapper {
     padding: 15px 15px;
     min-height: 600px;
-    background:#F3F3F3;
 }
 
 #page-inner {
     width: 100%;
     margin: auto;
-    background-color: #fff !important;
     padding: 10px;
     padding-left: 30px;
 }
@@ -302,7 +360,6 @@ span.label {
 }
 .navbar-cls-top .navbar-brand {
     color: #fff;
-    background: #C90000;
     width: 350px;
     text-align: left;
     height: 40px;
@@ -313,7 +370,7 @@ span.label {
     padding: 10px 20px;
 }
 .active-menu {
-    background-color:#C90000!important;
+    background-color:#000000!important;
 }
 .arrow {
     float: right;
@@ -342,7 +399,6 @@ span.label {
 }
 .sidebar-collapse .nav > li > a {
     color:#fff;
-    background:#202020;
     text-shadow:none;
 }
 .nav > li {
@@ -388,40 +444,6 @@ span.label {
 .nav-third-level  > li:last-child > a:after {
     height:50%;
 }
-.nav-third-level > li > a:after,
-.nav-third-level > li > a:before  {
-    left:40px;
-}
-.navbar {
-    min-height: 40px;
-}
-.navbar-side {
-    border:none;
-    background-color: #202020;
-}
-.navbar-cls-top {
-    background:#4D4D4D;
-    border-bottom:none;
-}
-.navbar-cls-top .navbar-brand:hover {
-    background: #C90000;
-    color:#fff;
-}
-.navbar-default {
-    border:0px solid black;
-}
-.navbar-header {
-    background: #A70303;
-}
-.navbar-default .navbar-toggle:hover, .navbar-default .navbar-toggle:focus {
-    background-color: #B40101;
-}
-.navbar-default .navbar-toggle {
-    border-color: #fff;
-}
-.navbar-default .navbar-toggle .icon-bar {
-    background-color: #FFF;
-}
 .nav > li {
     height: auto;
 }
@@ -434,10 +456,18 @@ div.toggle {
 /*==============================================
     UI ELEMENTS STYLES     
     =============================================*/
+div.modal-content {
+    color: #335061;
+}
+.modal-title {
+    color: #335061;
+}
 div.modal-body {
     padding: 20px 20px 5px 20px;
 }
-
+.modal-header .close {
+    color: #335061;
+}
 div.modal-footer {
     padding: 5px 20px 20px;
     margin-top: 5px;

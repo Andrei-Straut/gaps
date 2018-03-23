@@ -20,7 +20,7 @@
         <div class="form-group">
             <button 
                 id="graph-viewer-preview-graph" 
-                class="btn btn-primary btn-sm"
+                class="btn btn-success btn-sm"
                 type="button" 
                 ng-disabled="!uploadJsonValid"
                 ng-click="previewGraph();">Validate and preview</button>

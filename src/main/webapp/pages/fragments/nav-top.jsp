@@ -88,8 +88,7 @@
                        target="_blank"
                        data-toggle="tooltip" 
                        data-placement="right"
-                       data-original-title="Help"
-                       style="background:#428bca;"><i class="fa fa-info-circle fa-3x"></i>
+                       data-original-title="Help"><i class="fa fa-info-circle fa-3x"></i>
                     </a>
                 </li>
             </ul>

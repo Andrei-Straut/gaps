@@ -125,7 +125,7 @@
 
                         <button 
                             id="graph-viewer-generate-graph" 
-                            class="btn btn-primary"
+                            class="btn btn-success"
                             type="submit" 
                             data-toggle="tooltip" 
                             data-original-title="Generate graph according to specified settings"
@@ -137,7 +137,7 @@
                         <button id="graph-settings-advanced" 
                                 name="graphSettingsAdvanced"
                                 type="button"
-                                class="btn btn-primary"
+                                class="btn btn-success"
                                 data-toggle="modal"
                                 data-target="#graphSettingsAdvancedModal"
                                 ng-disabled="load.wip" 
@@ -149,7 +149,7 @@
                         <button id="graph-settings-draw" 
                                 name="graphSettingsDraw"
                                 type="button"
-                                class="btn btn-primary"
+                                class="btn btn-success"
                                 data-toggle="modal"
                                 data-target="#graphSettingsDrawModal"
                                 ng-disabled="load.wip"
