@@ -61,8 +61,18 @@
         <script src="scripts/gaps/statistics/app.gaps.controllers.statistics.genetic.js"></script>
         <script src="scripts/gaps/statistics/app.gaps.controllers.statistics.compare.js"></script>
         <script src="scripts/gaps/app.gaps.controllers.gapscontroller.js"></script>
-        
-        <script src="scripts/gaps/analytics.js"></script>
+
+        <!-- Global site tag (gtag.js) - Google Analytics -->
+        <script async src="https://www.googletagmanager.com/gtag/js?id=UA-100610555-1"></script>
+        <script>
+            window.dataLayer = window.dataLayer || [];
+            function gtag() {
+                dataLayer.push(arguments);
+            }
+            gtag('js', new Date());
+            gtag('config', 'UA-100610555-1');
+            gtag('send', 'GAPS');
+        </script>
 
     </head>
     <body>
